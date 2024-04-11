@@ -38,3 +38,10 @@ prioritizes robustness over efficiency would look like
     then go to Step 7. Otherwise, go to Step 9
 
 9. Return `sorted_array_2`
+
+#### Notes
+
+- My intuition is that this algorithm will be less robust with very short array 
+    lengths. Maybe add a condition where if the array is short (say, less than 
+    8 to 10 elements), the algorithm will run a very naive but robust sorting 
+    algorithm instead of Quick Sort
