@@ -19,15 +19,18 @@ prioritizes robustness over efficiency would look like
 
 ### Idea One (Naive)
 
+0. Choose a base sorting algothim (hereafter called Basesort). By default 
+    this will be Quicksort
+
 1. Start with an array of integers, calling it `unsorted_array`
 
 2. Clone `unsorted_array`, calling the clone `sorted_array_1`
 
-3. Run Quick Sort on `sorted_array_1`
+3. Run Basesort on `sorted_array_1`
 
 4. Clone `unsorted_array` again, calling the clone `sorted_array_2`
 
-5. Run Quick Sort on `sorted_array_2`
+5. Run Basesort on `sorted_array_2`
 
 6. Compare each element in `sorted_array_1` and `sorted_array_2`
 
@@ -45,3 +48,15 @@ prioritizes robustness over efficiency would look like
     lengths. Maybe add a condition where if the array is short (say, less than 
     8 to 10 elements), the algorithm will run a very naive but robust sorting 
     algorithm instead of Quick Sort
+
+### Idea Two (Parallel)
+
+Similar to Idea One, but instead of running the identical Basesorts sequentially, 
+    run them in parallel and before each operation check to make sure both 
+    algorithms are planning to run the same operation. If they are not, 
+    re-calculate the operations and check again (or restart the algorithms)
+
+### Idea Three (Hybrid)
+
+Similar to Idea One, but instead of running the identical Basesorts sequentially, 
+    choose two different base sorting algotithms
