@@ -5,12 +5,15 @@ import RobustsortParallel qualified (rsortpb, rsortpm, rsortpq)
 import RobustsortSeries qualified (rsortsb, rsortsm, rsortsq)
 import Vanillasort qualified (bsort, msort, qsort)
 
+unsortedArray :: [String]
+unsortedArray = ["4", "7", "2", "8", "9", "6", "3", "5", "1", "0"]
+
 main :: IO ()
 main = do
   putStrLn "Hello, Haskell!"
   Vanillasort.bsort
   Vanillasort.msort
-  Vanillasort.qsort
+  putStrLn (unwords (Vanillasort.qsort unsortedArray))
   RobustsortSeries.rsortsb
   RobustsortSeries.rsortsm
   RobustsortSeries.rsortsq

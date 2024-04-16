@@ -1,4 +1,8 @@
 module Quicksort (qsort) where
 
-qsort :: IO ()
-qsort = putStrLn "qsort successfully called!"
+qsort :: (Ord array) => [array] -> [array]
+qsort [] = []
+qsort (element : elements) =
+  let lowerPartition = qsort [array | array <- elements, array <= element]
+      upperPartition = qsort [array | array <- elements, array > element]
+   in lowerPartition ++ [element] ++ upperPartition

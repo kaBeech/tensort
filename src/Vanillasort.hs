@@ -10,5 +10,5 @@ bsort = Bubblesort.bsort
 msort :: IO ()
 msort = Mergesort.msort
 
-qsort :: IO ()
+qsort :: (Ord array) => [array] -> [array]
 qsort = Quicksort.qsort
