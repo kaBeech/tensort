@@ -20,6 +20,6 @@ main = do
   RobustsortParallel.rsortpb
   RobustsortParallel.rsortpm
   putStrLn ("rsortpq: " ++ (unwords (RobustsortParallel.rsortpq unsortedArray)))
-  RobustsortHybrid.rsorthbm
-  RobustsortHybrid.rsorthbq
-  RobustsortHybrid.rsorthmq
+  putStrLn ("rsorthbm: " ++ (unwords (RobustsortHybrid.rsorthbm unsortedArray)))
+  putStrLn ("rsorthbq: " ++ (unwords (RobustsortHybrid.rsorthbq unsortedArray)))
+  putStrLn ("rsorthmq: " ++ (unwords (RobustsortHybrid.rsorthmq unsortedArray)))
