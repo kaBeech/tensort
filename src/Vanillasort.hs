@@ -4,10 +4,10 @@ import Bubblesort qualified (bsort)
 import Mergesort qualified (msort)
 import Quicksort qualified (qsort)
 
-bsort :: IO ()
+bsort :: (Ord array) => [array] -> [array]
 bsort = Bubblesort.bsort
 
-msort :: IO ()
+msort :: (Ord array) => [array] -> [array]
 msort = Mergesort.msort
 
 qsort :: (Ord array) => [array] -> [array]
