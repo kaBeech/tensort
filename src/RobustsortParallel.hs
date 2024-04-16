@@ -10,5 +10,6 @@ rsortpb = BubblesortParallel.bsortp
 rsortpm :: IO ()
 rsortpm = MergesortParallel.msortp
 
-rsortpq :: IO ()
-rsortpq = QuicksortParallel.qsortp
+rsortpq :: (Ord array) => [array] -> [array]
+rsortpq [] = []
+rsortpq elements = QuicksortParallel.qsortp elements

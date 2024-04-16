@@ -13,13 +13,13 @@ main = do
   putStrLn "Hello, Haskell!"
   Vanillasort.bsort
   Vanillasort.msort
-  putStrLn (unwords (Vanillasort.qsort unsortedArray))
+  putStrLn ("qsort: " ++ (unwords (Vanillasort.qsort unsortedArray)))
   RobustsortSeries.rsortsb
   RobustsortSeries.rsortsm
-  putStrLn (unwords (RobustsortSeries.rsortsq unsortedArray))
+  putStrLn ("rsortsq: " ++ (unwords (RobustsortSeries.rsortsq unsortedArray)))
   RobustsortParallel.rsortpb
   RobustsortParallel.rsortpm
-  RobustsortParallel.rsortpq
+  putStrLn ("rsortpq: " ++ (unwords (RobustsortParallel.rsortpq unsortedArray)))
   RobustsortHybrid.rsorthbm
   RobustsortHybrid.rsorthbq
   RobustsortHybrid.rsorthmq
