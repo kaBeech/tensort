@@ -2,11 +2,13 @@ module RobustsortSeries (rsortsb, rsortsm, rsortsq) where
 
 import Quicksort qualified (qsort)
 
-rsortsb :: IO ()
-rsortsb = putStrLn "rsortsq successfully called!"
+rsortsb :: (Ord array) => [array] -> [array]
+rsortsb [] = []
+rsortsb elements = robustsortSeries Quicksort.qsort elements
 
-rsortsm :: IO ()
-rsortsm = putStrLn "rsortsm successfully called!"
+rsortsm :: (Ord array) => [array] -> [array]
+rsortsm [] = []
+rsortsm elements = robustsortSeries Quicksort.qsort elements
 
 rsortsq :: (Ord array) => [array] -> [array]
 rsortsq [] = []

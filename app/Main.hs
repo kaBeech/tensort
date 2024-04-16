@@ -6,7 +6,7 @@ import RobustsortSeries qualified (rsortsb, rsortsm, rsortsq)
 import Vanillasort qualified (bsort, msort, qsort)
 
 unsortedArray :: [String]
-unsortedArray = ["4", "7", "2", "8", "9", "6", "3", "5", "1", "0"]
+unsortedArray = ["b", "e", "j", "d", "o", "k", "g", "n", "p", "f", "m", "c", "h", "i", "l", "a"]
 
 main :: IO ()
 main = do
@@ -14,8 +14,8 @@ main = do
   putStrLn ("bsort: " ++ (unwords (Vanillasort.bsort unsortedArray)))
   putStrLn ("msort: " ++ (unwords (Vanillasort.msort unsortedArray)))
   putStrLn ("qsort: " ++ (unwords (Vanillasort.qsort unsortedArray)))
-  RobustsortSeries.rsortsb
-  RobustsortSeries.rsortsm
+  putStrLn ("rsortsb: " ++ (unwords (RobustsortSeries.rsortsb unsortedArray)))
+  putStrLn ("rsortsm: " ++ (unwords (RobustsortSeries.rsortsm unsortedArray)))
   putStrLn ("rsortsq: " ++ (unwords (RobustsortSeries.rsortsq unsortedArray)))
   RobustsortParallel.rsortpb
   RobustsortParallel.rsortpm
