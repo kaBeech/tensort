@@ -16,7 +16,7 @@ main = do
   putStrLn (unwords (Vanillasort.qsort unsortedArray))
   RobustsortSeries.rsortsb
   RobustsortSeries.rsortsm
-  RobustsortSeries.rsortsq
+  putStrLn (unwords (RobustsortSeries.rsortsq unsortedArray))
   RobustsortParallel.rsortpb
   RobustsortParallel.rsortpm
   RobustsortParallel.rsortpq
