@@ -1,5 +1,6 @@
 # Custom ignore list
 .scratch
+scratch.md
 
 # Haskell stuff
 dist
