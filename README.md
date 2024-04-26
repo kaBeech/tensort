@@ -224,6 +224,11 @@ reverse Exchangesort.
 
 ...
 
+...the most robust, most correct, and all-around best algorithm of all time: 
+Bogosort
+
+...
+
 Well now that's pretty cool! But I wonder... can we make this more robust, if 
 we relax the rules just a little more?
 
