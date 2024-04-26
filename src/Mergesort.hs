@@ -1,6 +1,6 @@
 module Mergesort (mergesort) where
 
-mergesort :: (Ord array) => [array] -> [array]
+mergesort :: [Int] -> [Int]
 mergesort = mergeAll . map (: [])
   where
     mergeAll [] = []
@@ -11,7 +11,7 @@ mergesort = mergeAll . map (: [])
     mergePairs (element1 : element2 : remaningElements) = merge element1 element2 : mergePairs remaningElements
     mergePairs remaningElements = remaningElements
 
-merge :: (Ord array) => [array] -> [array] -> [array]
+merge :: [Int] -> [Int] -> [Int]
 merge [] element2 = element2
 merge element1 [] = element1
 merge (element1 : remainingElements1) (element2 : remainingElements2)

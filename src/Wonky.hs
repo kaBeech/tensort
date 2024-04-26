@@ -1,4 +1,4 @@
-module Wonky (trinaryCompare) where
+module Wonky (trinaryCompare, greaterThan, lessThan) where
 
 import Control.Monad.State
 import Pseudorandom (getRandomNumber, rollPercentChance)
@@ -21,3 +21,11 @@ trinaryCompare x y wonkinessPercentage seed = do
           if x == y
             then 0
             else 1
+
+greaterThan :: Int -> Int -> Int -> Int -> Bool
+greaterThan x y wonkinessPercentage seed = do
+  trinaryCompare x y wonkinessPercentage seed == 1
+
+lessThan :: Int -> Int -> Int -> Int -> Bool
+lessThan x y wonkinessPercentage seed = do
+  trinaryCompare x y wonkinessPercentage seed == -1

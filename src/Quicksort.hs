@@ -1,6 +1,6 @@
 module Quicksort (quicksort) where
 
-quicksort :: (Ord array) => [array] -> [array]
+quicksort :: [Int] -> [Int]
 quicksort [] = []
 quicksort (element : elements) =
   let lowerPartition = quicksort [array | array <- elements, array <= element]

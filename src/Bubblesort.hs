@@ -1,9 +1,9 @@
 module Bubblesort (bubblesort) where
 
-bubblesort :: (Ord array) => [array] -> [array]
+bubblesort :: [Int] -> [Int]
 bubblesort = foldr bubblesortSinglePass []
 
-bubblesortSinglePass :: (Ord array) => array -> [array] -> [array]
+bubblesortSinglePass :: Int -> [Int] -> [Int]
 bubblesortSinglePass element1 [] = [element1]
 bubblesortSinglePass element1 (element2 : remaningElements) = do
   if element1 < element2
