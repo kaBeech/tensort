@@ -9,7 +9,7 @@ compareRandomly = do
   randomResult <- getRandomNumber 3
   return (randomResult - 2)
 
-trinaryCompare :: (Ord a) => a -> a -> Int -> Int -> Int
+trinaryCompare :: Int -> Int -> Int -> Int -> Int
 trinaryCompare x y wonkinessPercentage seed = do
   if evalState (rollPercentChance wonkinessPercentage) (mkStdGen seed)
     then do
