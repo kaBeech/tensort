@@ -1,7 +1,7 @@
-module Mergesort (msort) where
+module Mergesort (mergesort) where
 
-msort :: (Ord array) => [array] -> [array]
-msort = mergeAll . map (: [])
+mergesort :: (Ord array) => [array] -> [array]
+mergesort = mergeAll . map (: [])
   where
     mergeAll [] = []
     mergeAll [singleElement] = singleElement

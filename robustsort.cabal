@@ -61,13 +61,6 @@ library
     exposed-modules:  Bubblesort,
                       Mergesort,
                       Quicksort,
-                      BubblesortParallel,
-                      MergesortParallel,
-                      QuicksortParallel,
-                      Vanillasort,
-                      RobustsortSeries,
-                      RobustsortParallel,
-                      RobustsortHybrid,
                       CoinFlip,
                       Pseudorandom,
                       Wonky

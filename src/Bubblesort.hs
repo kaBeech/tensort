@@ -1,7 +1,7 @@
-module Bubblesort (bsort) where
+module Bubblesort (bubblesort) where
 
-bsort :: (Ord array) => [array] -> [array]
-bsort = foldr bubblesortSinglePass []
+bubblesort :: (Ord array) => [array] -> [array]
+bubblesort = foldr bubblesortSinglePass []
 
 bubblesortSinglePass :: (Ord array) => array -> [array] -> [array]
 bubblesortSinglePass element1 [] = [element1]

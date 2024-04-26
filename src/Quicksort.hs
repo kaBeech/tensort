@@ -1,8 +1,8 @@
-module Quicksort (qsort) where
+module Quicksort (quicksort) where
 
-qsort :: (Ord array) => [array] -> [array]
-qsort [] = []
-qsort (element : elements) =
-  let lowerPartition = qsort [array | array <- elements, array <= element]
-      upperPartition = qsort [array | array <- elements, array > element]
+quicksort :: (Ord array) => [array] -> [array]
+quicksort [] = []
+quicksort (element : elements) =
+  let lowerPartition = quicksort [array | array <- elements, array <= element]
+      upperPartition = quicksort [array | array <- elements, array > element]
    in lowerPartition ++ [element] ++ upperPartition
