@@ -69,6 +69,7 @@ library
                       RobustsortParallel,
                       RobustsortHybrid,
                       CoinFlip,
+                      Pseudorandom,
                       Wonky
     -- Modules included in this library but not exported.
     -- other-modules:
