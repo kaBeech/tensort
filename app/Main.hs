@@ -5,6 +5,7 @@ import RobustsortHybrid qualified (rsorthbm, rsorthbq, rsorthmq)
 import RobustsortParallel qualified (rsortpb, rsortpm, rsortpq)
 import RobustsortSeries qualified (rsortsb, rsortsm, rsortsq)
 import Vanillasort qualified (bsort, msort, qsort)
+import Wonky qualified (trinaryCompare)
 
 unsortedArray :: [String]
 unsortedArray = ["b", "e", "j", "d", "o", "k", "g", "n", "p", "f", "m", "c", "h", "i", "l", "a"]
@@ -25,3 +26,4 @@ main = do
   putStrLn ("rsorthbq: " ++ unwords (RobustsortHybrid.rsorthbq unsortedArray))
   putStrLn ("rsorthmq: " ++ unwords (RobustsortHybrid.rsorthmq unsortedArray))
   putStrLn ("Flip Ten Coins: " ++ show (CoinFlip.flipTenCoins 3343))
+  putStrLn ("Trinary Compare: " ++ show (Wonky.trinaryCompare 1 2 50 345))
