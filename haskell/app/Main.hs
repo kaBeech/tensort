@@ -2,6 +2,7 @@ module Main where
 
 import Bubblesort qualified (bubblesort)
 import Mergesort qualified (mergesort)
+import Pseudorandom qualified (randomizeArray)
 import Quicksort qualified (quicksort)
 
 unsortedArray :: [Int]
@@ -13,3 +14,4 @@ main = do
   putStrLn ("bubblesort: " ++ show (Bubblesort.bubblesort unsortedArray))
   putStrLn ("mergesort: " ++ show (Mergesort.mergesort unsortedArray))
   putStrLn ("quicksort: " ++ show (Quicksort.quicksort unsortedArray))
+  putStrLn ("randomizeArray: " ++ show (Pseudorandom.randomizeArray [1 .. 16]))

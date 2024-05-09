@@ -60,7 +60,8 @@ library
     -- Modules exported by the library.
     exposed-modules:  Bubblesort,
                       Mergesort,
-                      Quicksort
+                      Quicksort,
+                      Pseudorandom
 
     -- Modules included in this library but not exported.
     -- other-modules:
@@ -69,7 +70,9 @@ library
     -- other-extensions:
 
     -- Other library packages from which modules are imported.
-    build-depends:    base ^>=4.18.2.0
+    build-depends:    base ^>=4.18.2.0,
+                      mtl,
+                      random
 
     -- Directories containing source files.
     hs-source-dirs:   src
