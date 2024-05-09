@@ -1,5 +1,9 @@
 import { bubblesort } from "./bubblesort.ts";
+import { setRandomComparitorPercentage } from "./globalState.ts";
+import unsortedArray from "./unsortedArray.ts";
 
-let unsortedArray = [5, 3, 1, 4, 6, 2, 0, 7, 9, 8];
+console.log(bubblesort(unsortedArray()));
 
-console.log(bubblesort(unsortedArray));
+setRandomComparitorPercentage(50);
+
+console.log(bubblesort(unsortedArray()));

@@ -2,7 +2,7 @@ let randomComparitorPercentage = 0;
 
 export const getRandomComparitorPercentage = () => randomComparitorPercentage;
 
-export const setComparitorPercentage = (percentage: number) => {
+export const setRandomComparitorPercentage = (percentage: number) => {
   randomComparitorPercentage = percentage;
 };
 
