@@ -60,10 +60,8 @@ library
     -- Modules exported by the library.
     exposed-modules:  Bubblesort,
                       Mergesort,
-                      Quicksort,
-                      CoinFlip,
-                      Pseudorandom,
-                      Wonky
+                      Quicksort
+
     -- Modules included in this library but not exported.
     -- other-modules:
 
@@ -71,9 +69,7 @@ library
     -- other-extensions:
 
     -- Other library packages from which modules are imported.
-    build-depends:    base ^>=4.18.2.0,
-                      random,
-                      mtl
+    build-depends:    base ^>=4.18.2.0
 
     -- Directories containing source files.
     hs-source-dirs:   src
@@ -97,7 +93,6 @@ executable robustsort
     -- Other library packages from which modules are imported.
     build-depends:
         base ^>=4.18.2.0,
-        random,
         robustsort
 
     -- Directories containing source files.
