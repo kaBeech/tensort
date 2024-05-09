@@ -1,6 +1,7 @@
 module Main where
 
 import Bubblesort qualified (bubblesort)
+import Convert qualified (intListToBoolList)
 import Mergesort qualified (mergesort)
 import Pseudorandom qualified (randomizeArray)
 import Quicksort qualified (quicksort)
@@ -15,3 +16,6 @@ main = do
   putStrLn ("mergesort: " ++ show (Mergesort.mergesort unsortedArray))
   putStrLn ("quicksort: " ++ show (Quicksort.quicksort unsortedArray))
   putStrLn ("randomizeArray: " ++ show (Pseudorandom.randomizeArray [1 .. 16]))
+  let randomizedArray = Pseudorandom.randomizeArray [1 .. 1021]
+  writeFile "generated_data/randomized_array.dat" (show randomizedArray)
+  writeFile "generated_data/bool_table.dat" (show (Convert.intListToBoolList randomizedArray))

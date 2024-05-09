@@ -61,7 +61,8 @@ library
     exposed-modules:  Bubblesort,
                       Mergesort,
                       Quicksort,
-                      Pseudorandom
+                      Pseudorandom,
+                      Convert
 
     -- Modules included in this library but not exported.
     -- other-modules:
