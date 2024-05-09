@@ -1,6 +1,6 @@
 import { greaterThan } from "./compare.ts";
 
-export const bubblesort = (array: number[]) => {
+export default (array: number[]) => {
   array = array.reduceRight((accumulator) => {
     for (let i = 0; i < accumulator.length - 1; i++) {
       if (greaterThan(accumulator[i], accumulator[i + 1])) {

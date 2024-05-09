@@ -1,4 +1,4 @@
-import { bubblesort } from "./bubblesort.ts";
+import bubblesort from "./bubblesort.ts";
 import { setRandomComparitorPercentage } from "./globalState.ts";
 import unsortedArray from "./unsortedArray.ts";
 
