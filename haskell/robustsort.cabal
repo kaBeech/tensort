@@ -63,7 +63,8 @@ library
                       Quicksort,
                       Pseudorandom,
                       Convert,
-                      Booltable
+                      Booltable,
+                      Dice
 
     -- Modules included in this library but not exported.
     -- other-modules:
