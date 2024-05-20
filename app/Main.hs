@@ -3,9 +3,7 @@
 module Main where
 
 import Bubblesort qualified (bubblesort)
-import Dice qualified (randomBoolList1021)
 import Mergesort qualified (mergesort)
-import Pseudorandom qualified (randomizeArray)
 import Quicksort qualified (quicksort)
 
 unsortedArray :: [Int]
@@ -17,8 +15,3 @@ main = do
   putStrLn ("bubblesort: " ++ show (Bubblesort.bubblesort unsortedArray))
   putStrLn ("mergesort: " ++ show (Mergesort.mergesort unsortedArray))
   putStrLn ("quicksort: " ++ show (Quicksort.quicksort unsortedArray))
-  putStrLn ("randomizeArray: " ++ show (Pseudorandom.randomizeArray [1 .. 16]))
-  let randomizedArray = Pseudorandom.randomizeArray [1 .. 1024]
-  putStrLn ("randomizeArray 1021: " ++ show randomizedArray)
-  writeFile "generated_data/randomized_array.dat" (show randomizedArray)
-  writeFile "generated_data/bool_table.dat" (show Dice.randomBoolList1021)
