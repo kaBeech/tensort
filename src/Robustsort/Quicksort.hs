@@ -1,4 +1,4 @@
-module Quicksort (quicksort) where
+module Robustsort.Quicksort (quicksort) where
 
 quicksort :: [Int] -> [Int]
 quicksort [] = []

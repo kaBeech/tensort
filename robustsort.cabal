@@ -58,9 +58,9 @@ library
     import:           warnings
 
     -- Modules exported by the library.
-    exposed-modules:  Bubblesort,
-                      Mergesort,
-                      Quicksort,
+    exposed-modules:  Robustsort.Bubblesort,
+                      Robustsort.Mergesort,
+                      Robustsort.Quicksort,
 
     -- Modules included in this library but not exported.
     -- other-modules:

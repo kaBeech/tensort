@@ -1,4 +1,4 @@
-module Mergesort (mergesort) where
+module Robustsort.Mergesort (mergesort) where
 
 mergesort :: [Int] -> [Int]
 mergesort = mergeAll . map (: [])
