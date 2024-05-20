@@ -1,3 +1,6 @@
+*.scratch
+scratch.md
+scratch.md
 dist
 dist-*
 cabal-dev

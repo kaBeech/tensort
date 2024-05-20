@@ -20,17 +20,6 @@ I'm just rhyming words =)
 The algorithms used here that I have made up or renamed are, in order of 
 appearance, Bytesort, Robustsort, Comparisonsort, and Magicsort. Get ready!
 
-We'll be accompanied on this journey by the image of Sir Michael Caine, who'll 
-be observing my work to make sure I stay on the straight and narrow. He's 
-also here as a bit of insurance to make sure you've read Beyond Efficiency - my 
-own version of Van Halen's "No Brown M&M's" clause (the most robust clause in 
-show business). If you don't understand why he's here, especially by the end of 
-this README, go back and (re-)read the paper =)
-
-Alright, let's get started! Ready, Michael?
-
-[insert Michael Caine image]
-
 ### Bytesort
 
 Bytesort is my attempt to write the most robust O(n log n) sorting algorithm 
@@ -49,7 +38,7 @@ Bytesort uses an underlying structure as well. We will discuss this structure
 before going over the algorithm's actual steps. If this doesn't make sense yet,
 fear not!
 
-[insert Michael Caine image]
+<!-- [image1] -->
 
 In Bytesort, the smallest unit of information is a Bit. Each bit stores one 
 element of the list to be sorted. A group of Bits is known as a Byte. 
@@ -146,7 +135,7 @@ mistakenly added (121, 122, and 123) are impossible to have been selected.
 Alright! Now we have a simple sorting algorithm absent of cheap hacks that is 
 both relatively fast and relatively robust. I'm pretty happy with that!
 
-[insert Michael Caine image]
+<!-- [image2] -->
 
 Now for some cheap hacks!
 
@@ -232,7 +221,7 @@ Bogosort
 Well now that's pretty cool! But I wonder... can we make this more robust, if 
 we relax the rules just a little more?
 
-(insert Michael Caine image)
+<!-- (image3) -->
 
 Of course we can! And we will. To do so, we will simply replace ... with 
 another newly-named sorting algorithm: Magicsort!
