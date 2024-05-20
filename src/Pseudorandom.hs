@@ -1,3 +1,5 @@
+{-# LANGUAGE GADTs #-}
+
 module Pseudorandom (randomizeArray) where
 
 import Control.Monad.State

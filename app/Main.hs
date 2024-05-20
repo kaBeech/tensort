@@ -1,3 +1,5 @@
+{-# LANGUAGE ImportQualifiedPost #-}
+
 module Main where
 
 import Bubblesort qualified (bubblesort)
