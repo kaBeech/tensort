@@ -1,4 +1,4 @@
-# Robust Sort
+# RobustSort
 
 The goal of this project is to explore what a sorting algorithm that 
 prioritizes robustness would look like
@@ -8,7 +8,12 @@ prioritizes robustness would look like
 - [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by David H. Ackley
 - Future of Coding's [podcast episode](https://futureofcoding.org/episodes/070) on the same paper
 
-## Implementation
+## Project structure
+
+- `src/` contains the RobustSort library
+- `app/` contains the suite for comparing different sorting algorithms in terms of robustness and time efficiency
+
+## Implementation Overview
 
 ...
 
