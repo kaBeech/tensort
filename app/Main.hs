@@ -4,6 +4,7 @@ module Main where
 
 import Robustsort.Bubblesort qualified (bubblesort)
 import Robustsort.Mergesort qualified (mergesort)
+import Robustsort.Permutationsort qualified (permutationsort)
 import Robustsort.Quicksort qualified (quicksort)
 
 unsortedArray :: [Int]
@@ -15,3 +16,4 @@ main = do
   putStrLn ("bubblesort: " ++ show (Robustsort.Bubblesort.bubblesort unsortedArray))
   putStrLn ("mergesort: " ++ show (Robustsort.Mergesort.mergesort unsortedArray))
   putStrLn ("quicksort: " ++ show (Robustsort.Quicksort.quicksort unsortedArray))
+  putStrLn ("permutationsort: " ++ show (Robustsort.Permutationsort.permutationsort [3, 1, 2]))
