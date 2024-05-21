@@ -28,7 +28,7 @@ interface Metabytestore {
 
 interface Reference {
     address: number,
-    topBit: Bit
+    topBit: Bit,
 }
 
 type Bytestack = Metabyte
@@ -41,6 +41,15 @@ const bubblesort = (a: number[]) => a.sort()
 // Dummy function in place of a true bubblesort
 const bubblesortRefs = (refs: Reference[]) => refs.sort((a, b) => a.topBit - b.topBit)
 
+// Dummy function in place of a true reverseExchangesort
+const reverseExchangesort = (a: number[]) => a.sort()
+
+// Dummy function in place of a true bogosort
+const bogosort = (a: number[]) => a.sort()
+
+// Dummy function in place of a true permutationsort
+const permutationsort = (a: number[]) => a.sort()
+
 // Dummy function for verifying that two Bytes or Bytestacks contain exactly 
 // the same values. I know that's not what this function does in TypeScript; 
 // this is for demonstration purposes only. In the Haskell version all the data 
@@ -49,6 +58,39 @@ const areStacksEqual = (array1, array2) => {
     return array1 === array2
 }
 
+const areTopsOfStacksEqual = (array1, array2) => {
+    return array1[array1.length - 1] === array2[array2.length - 1]
+}
+
+const magicsort = (a: number[]): number[] => {
+    const permutationsorted = permutationsort(a)
+    let bogosorted = bogosort(a)
+    while (!areStacksEqual(permutationsorted, bogosorted)) {
+        bogosorted = bogosort(a)
+    }
+    return bogosorted
+}
+
+const supersort = (a: number[]): number[] => {
+    const bubblesorted = bubblesort(a)
+    const reverseExchangesorted = reverseExchangesort(a)
+    if (areStacksEqual(bubblesorted, reverseExchangesorted)) {
+        return bubblesorted
+    } else {
+        const magicsorted = magicsort(a)
+        if (
+            areTopsOfStacksEqual(magicsorted, bubblesorted) ||
+            areTopsOfStacksEqual(magicsorted, reverseExchangesorted)
+        ) {
+            return magicsorted
+        } else if (areTopsOfStacksEqual(bubblesorted, reverseExchangesorted)) {
+            return bubblesorted
+        } else {
+            return magicsorted
+        }
+    }
+
+}
 
 export default (bits: number[]): number[] => {
     const bytesize = 3
@@ -77,7 +119,7 @@ const convertRawBitsToBytes = (bits: number[], bytesize: number): Byte[] => {
     const bytes: Byte[] = []
     while (bits.length > 0) {
         let byte = bits.slice(0, bytesize)
-        byte = bubblesort(byte)
+        byte = supersort(byte)
         bytes.push(byte)
         bits = bits.slice(bytesize)
     }
@@ -203,7 +245,7 @@ const removeTopValueFromBytestack = (bytestack: Bytestack): { topValue: number, 
             let topByte = topByteOrMetabyte as Byte
             const topValue = topByte.pop()!
             if (topByte.length > 0) {
-                topByte = bubblesort(topByte)
+                topByte = supersort(topByte)
                 topRef.topBit = topByte[topByte.length - 1]
             } else {
                 bytestack.register.pop()
