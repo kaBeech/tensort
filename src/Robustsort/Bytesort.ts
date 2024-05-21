@@ -126,17 +126,6 @@ const getTopValueFromBytestack = (bytestack: Bytestack): number | null => {
     }
 }
 
-const areAllEmpty = (metabytes: Metabyte[]): boolean => {
-    let allEmpty = true
-    for (const metabyte of metabytes) {
-        if (getTopValueFromBytestack(metabyte) != undefined) {
-            allEmpty = false
-            break
-        }
-    }
-    return allEmpty
-}
-
 const getSortedArrayFromBytestacks = (bytestacks: Bytestack[]): number[] => {
     const sortedArray: number[] = []
     while (!(areAllEmpty(bytestacks))) {
@@ -145,6 +134,17 @@ const getSortedArrayFromBytestacks = (bytestacks: Bytestack[]): number[] => {
         bytestacks = newBytestacks
     }
     return sortedArray
+}
+
+const areAllEmpty = (metabytes: Metabyte[]): boolean => {
+    let allEmpty = true
+    for (const metabyte of metabytes) {
+        if (getTopValueFromBytestack(metabyte) !== null) {
+            allEmpty = false
+            break
+        }
+    }
+    return allEmpty
 }
 
 const getNextElementFromBytestacks = (bytestacks: Bytestack[]): { nextElement: number, newBytestacks: Bytestack[] } => {
@@ -170,15 +170,22 @@ const getTopPackage = (packages: Package[]): Package => {
 }
 
 const removeTopValueFromBytestack = (bytestack: Bytestack): { topValue: number, newBytestack: Bytestack } => {
-    const topByteOrMetabyte: Byte | Metabyte = bytestack.data[bytestack.pointers[bytestack.pointers.length - 1]]
+    const topPointer = bytestack.pointers[bytestack.pointers.length - 1]
+    const topByteOrMetabyte: Byte | Metabyte = bytestack.data[topPointer]
     switch (topByteOrMetabyte[0]) {
-        case "undefined": {
-            bytestack.pointers.pop()
-            return removeTopValueFromBytestack(bytestack)
-        }
+        // This case should be unnecessary now
+        // case "undefined": {
+        //     bytestack.pointers.pop()
+        //     return removeTopValueFromBytestack(bytestack)
+        // }
         case "number": {
-            const topByte = topByteOrMetabyte as Byte
+            let topByte = topByteOrMetabyte as Byte
             const topValue = topByte.pop()!
+            if (topByte.length > 0) {
+                topByte = bubblesort(topByte)
+            } else {
+                bytestack.pointers.pop()
+            }
             return { topValue, newBytestack: bytestack }
         }
         default: return removeTopValueFromBytestack(topByteOrMetabyte as Bytestack)
