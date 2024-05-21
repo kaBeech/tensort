@@ -46,9 +46,9 @@ const bubblesortRefs = (refs: Reference[]) => refs.sort((a, b) => a.topBit - b.t
 export default (bits: number[], bytesize: number): number[] => {
     bits = randomizeArray(bits)
     const bytes = convertRawBitsToBytes(bits, bytesize)
-    let bytestacks = getBytestacksFromBytes(bytes)
+    let bytestacks = getBytestacksFromBytes(bytes, bytesize)
     while (bytestacks.length > bytesize) {
-        bytestacks = reduceBytestacks(bytestacks, 4)
+        bytestacks = reduceBytestacks(bytestacks, bytesize)
     }
     return getSortedArrayFromBytestacks(bytestacks)
 }
@@ -76,11 +76,11 @@ const convertRawBitsToBytes = (bits: number[], bytesize: number): Byte[] => {
     return bytes
 }
 
-const getBytestacksFromBytes = (bytes: Byte[]): Bytestack[] => {
+const getBytestacksFromBytes = (bytes: Byte[], bytesize: number): Bytestack[] => {
     const bytestacks: Bytestack[] = []
     while (bytes.length > 0) {
-        bytestacks.push(getBytestoreFromBytes(bytes.slice(0, 4)))
-        bytes = bytes.slice(4)
+        bytestacks.push(getBytestoreFromBytes(bytes.slice(0, bytesize)))
+        bytes = bytes.slice(bytesize)
     }
     return bytestacks
 }
