@@ -79,7 +79,9 @@ element in a Metabyte is an array of integer pointers representing the indices
 of the Bytemaps/Metabytes appearing in the second element.
 
 A Package is an array with two elements. The second element is a copy of a bit 
-from the top of a Bytestack. 
+from the top of a Bytestack. [The first element is an integer representing 
+the index of the bit's Bytestack in its Stackmap I think? I'm writing this note 
+way after I wrote the rest of this and trying to make sense of it ^_^]
 
 Now, on to the algorithm!
 
