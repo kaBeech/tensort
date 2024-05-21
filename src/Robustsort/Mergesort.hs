@@ -4,16 +4,16 @@ mergesort :: [Int] -> [Int]
 mergesort = mergeAll . map (: [])
   where
     mergeAll [] = []
-    mergeAll [singleElement] = singleElement
-    mergeAll [element1, element2] = merge element1 element2
+    mergeAll [x] = x
+    mergeAll [x, y] = merge x y
     mergeAll remaningElements = mergeAll (mergePairs remaningElements)
 
-    mergePairs (element1 : element2 : remaningElements) = merge element1 element2 : mergePairs remaningElements
-    mergePairs remaningElements = remaningElements
+    mergePairs (x : y : remaningElements) = merge x y : mergePairs remaningElements
+    mergePairs x = x
 
 merge :: [Int] -> [Int] -> [Int]
-merge [] element2 = element2
-merge element1 [] = element1
-merge (element1 : remainingElements1) (element2 : remainingElements2)
-  | element1 < element2 = element1 : merge remainingElements1 (element2 : remainingElements2)
-  | otherwise = element2 : merge (element1 : remainingElements1) remainingElements2
+merge [] y = y
+merge x [] = x
+merge (x : xs) (y : ys)
+  | x < y = x : merge xs (y : ys)
+  | otherwise = y : merge (x : xs) ys

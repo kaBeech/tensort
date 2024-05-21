@@ -2,7 +2,7 @@ module Robustsort.Quicksort (quicksort) where
 
 quicksort :: [Int] -> [Int]
 quicksort [] = []
-quicksort (element : elements) =
-  let lowerPartition = quicksort [array | array <- elements, array <= element]
-      upperPartition = quicksort [array | array <- elements, array > element]
-   in lowerPartition ++ [element] ++ upperPartition
+quicksort (x : xs) =
+  let lowerPartition = quicksort [a | a <- xs, a <= x]
+      upperPartition = quicksort [a | a <- xs, a > x]
+   in lowerPartition ++ [x] ++ upperPartition

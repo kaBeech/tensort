@@ -4,9 +4,9 @@ import Data.List (permutations)
 import Robustsort.Check (isSorted)
 
 permutationsort :: [Int] -> [Int]
-permutationsort elements = acc (permutations element) []
+permutationsort xs = acc (permutations x) []
   where
-    element = elements
+    x = xs
     acc :: [[Int]] -> [Int] -> [Int]
     acc [] unsortedPermutations = permutationsort unsortedPermutations
     acc (permutation : remainingPermutations) unsortedPermutations

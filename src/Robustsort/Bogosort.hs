@@ -5,6 +5,6 @@ import System.Random (mkStdGen)
 import System.Random.Shuffle (shuffle')
 
 bogosort :: [Int] -> Int -> [Int]
-bogosort elements seed
-  | isSorted elements = elements
-  | otherwise = bogosort (shuffle' elements (length elements) (mkStdGen seed)) (seed + 1)
+bogosort xs seed
+  | isSorted xs = xs
+  | otherwise = bogosort (shuffle' xs (length xs) (mkStdGen seed)) (seed + 1)
