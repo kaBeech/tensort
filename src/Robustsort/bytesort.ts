@@ -167,8 +167,8 @@ const areAllEmpty = (metabytes: Metabyte[]): boolean => {
 
 const getNextElementFromBytestacks = (bytestacks: Bytestack[]): { nextElement: number, newBytestacks: Bytestack[] } => {
     const refs = getRefsFromMetabytes(bytestacks)
-    const sortedPackages = bubblesortRefs(refs)
-    const topBytestackIndex = getTopRef(sortedPackages).address
+    const sortedRefs = bubblesortRefs(refs)
+    const topBytestackIndex = getTopRef(sortedRefs).address
     const topBytestack: Bytestack = bytestacks[topBytestackIndex]
     const result = removeTopValueFromBytestack(topBytestack)
     const topValue: number = result.topValue
@@ -184,7 +184,7 @@ const getTopRef = (refs: Reference[]): Reference => {
             return ref
         }
     }
-    throw Error("No package in input contains a numerical value")
+    throw Error("No ref in input contains a numerical value")
 }
 
 const removeTopValueFromBytestack = (bytestack: Bytestack): { topValue: number, newBytestack: Bytestack } => {
