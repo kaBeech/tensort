@@ -1,3 +1,15 @@
+// Note: this is valid TypeScript, but really it's pseudocode to guide me in 
+// writing the Haskell version
+
+// Notably, some of the subsidiary sorting 
+// functions (like bubblesort) are cheated using regular sort() methods that 
+// will function equivalently in code without errors, but do not provide the 
+// same benefits to robustness that the real methods do. These real subsidiary 
+// sorting functions will of course be defined in the Haskell version of the 
+// code
+
+// Also the Haskell version will likely be more optimized.
+
 type Bit = number
 
 type Byte = Bit[]
