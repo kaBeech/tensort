@@ -2,34 +2,44 @@ type Bit = number
 
 type Byte = Bit[]
 
-interface Bytemap {
-    pointers: number[],
+interface Bytestore {
+    register: Reference[],
     data: Byte[],
 }
 
-type Metabyte = Bytemap | Metabytemap
+type Metabyte = Bytestore | Metabytestore
 
-interface Metabytemap {
-    pointers: number[],
+interface Metabytestore {
+    register: Reference[],
     data: Metabyte[],
 }
 
-interface Package {
-    reference: number,
-    bit: Bit
+interface Reference {
+    address: number,
+    topBit: Bit
 }
 
 type Bytestack = Metabyte
 
-type Stackmap = Metabytemap
+// type Stackmap = Metabytestore
 
 // Dummy function in place of a true bubblesort
 const bubblesort = (a: number[]) => a.sort()
 
 // Dummy function in place of a true bubblesort
-const bubblesortPackages = (packages: Package[]) => packages.sort((a, b) => a.bit - b.bit)
+const bubblesortRefs = (refs: Reference[]) => refs.sort((a, b) => a.topBit - b.topBit)
 
 const bytesort4Bit = (a: number[]) => bytesort(a, 4)
+
+const bytesort = (bits: number[], bytesize: number): number[] => {
+    bits = randomizeArray(bits)
+    const bytes = convertRawBitsToBytes(bits, bytesize)
+    let bytestacks = getBytestacksFromBytes(bytes)
+    while (bytestacks.length > bytesize) {
+        bytestacks = reduceBytestacks(bytestacks, 4)
+    }
+    return getSortedArrayFromBytestacks(bytestacks)
+}
 
 const randomizeArray = (a: number[]): number[] => {
     const newArray: number[] = []
@@ -41,16 +51,6 @@ const randomizeArray = (a: number[]): number[] => {
         }
     }
     return newArray
-}
-
-const bytesort = (bits: number[], bytesize: number): number[] => {
-    bits = randomizeArray(bits)
-    const bytes = convertRawBitsToBytes(bits, bytesize)
-    let bytestacks = getBytestacksFromBytes(bytes)
-    while (bytestacks.length > bytesize) {
-        bytestacks = reduceBytestacks(bytestacks, 4)
-    }
-    return getSortedArrayFromBytestacks(bytestacks)
 }
 
 const convertRawBitsToBytes = (bits: number[], bytesize: number): Byte[] => {
@@ -67,20 +67,22 @@ const convertRawBitsToBytes = (bits: number[], bytesize: number): Byte[] => {
 const getBytestacksFromBytes = (bytes: Byte[]): Bytestack[] => {
     const bytestacks: Bytestack[] = []
     while (bytes.length > 0) {
-        bytestacks.push(getBytemapFromBytes(bytes.slice(0, 4)))
+        bytestacks.push(getBytestoreFromBytes(bytes.slice(0, 4)))
         bytes = bytes.slice(4)
     }
     return bytestacks
 }
 
-const getBytemapFromBytes = (bytes: Byte[]): Bytemap => {
-    const pointers: number[] = []
+const getBytestoreFromBytes = (bytes: Byte[]): Bytestore => {
+    const register: Reference[] = []
     let i = 0
-    while (i < bytes.length) {
-        pointers.push(i)
+    for (const byte of bytes) {
+        const topBit = byte[byte.length - 1]
+        const ref = { address: i, topBit }
+        register.push(ref)
         i++
     }
-    return { pointers, data: bytes }
+    return { register, data: bytes }
 }
 
 const reduceBytestacks = (bytestacks: Bytestack[], bytesize: number): Bytestack[] => {
@@ -93,37 +95,46 @@ const reduceBytestacks = (bytestacks: Bytestack[], bytesize: number): Bytestack[
     return newBytestacks
 }
 
+// Returns a Bytestack with the collated References from the Metabytes as the 
+// Register and the original Metabytes as the data
 const createBytestack = (metabytes: Metabyte[]): Bytestack => {
-    const packages = getPackagesFromMetabytes(metabytes)
-    let packagesSorted = bubblesortPackages(packages)
-    const pointers: number[] = []
-    for (const package of packagesSorted) {
-        pointers.push(package.reference)
-    }
-    return { pointers, data: metabytes }
+    const refs = getRefsFromMetabytes(metabytes)
+    const register = bubblesortRefs(refs)
+    // I'm pretty sure this code I commented out is no longer needed
+    // let i = 0
+    // for (const ref of refsSorted) {
+    //     const newRef = { address: i, topBit }
+    //     register.push(newRef)
+    //     i++
+    // }
+    return { register, data: metabytes }
 }
 
-const getPackagesFromMetabytes = (metabytes: Metabyte[]): Package[] => {
-    const packages: Package[] = []
+// For each Metabyte, produces a Reference by combining the top bit of the 
+// Metabyte with an index value for its address
+const getRefsFromMetabytes = (metabytes: Metabyte[]): Reference[] => {
+    const refs: Reference[] = []
     let i = 0
     for (const metabyte of metabytes) {
-        packages.push({ reference: i, bit: getTopValueFromBytestack(metabyte)! })
+        refs.push({ address: i, topBit: getTopValueFromBytestack(metabyte)! })
     }
-    return packages
+    return refs
 }
 
 const getTopValueFromBytestack = (bytestack: Bytestack): number | null => {
-    const topByteOrMetabyte: Byte | Metabyte = bytestack.data[bytestack.pointers[bytestack.pointers.length - 1]]
-    switch (topByteOrMetabyte[0]) {
-        case "undefined": {
-            return null
-        }
-        case "number": {
-            const topByte = topByteOrMetabyte as Byte
-            return topByte[topByte.length - 1]
-        }
-        default: return getTopValueFromBytestack(topByteOrMetabyte as Metabyte)
-    }
+    return bytestack.register[bytestack.register.length - 1].topBit
+    // Commented code below no longer needed - archiving for now
+    // const topByteOrMetabyte: Byte | Metabyte = bytestack.data[bytestack.register[bytestack.register.length - 1]]
+    // switch (topByteOrMetabyte[0]) {
+    //     case "undefined": {
+    //         return null
+    //     }
+    //     case "number": {
+    //         const topByte = topByteOrMetabyte as Byte
+    //         return topByte[topByte.length - 1]
+    //     }
+    //     default: return getTopValueFromBytestack(topByteOrMetabyte as Metabyte)
+    // }
 }
 
 const getSortedArrayFromBytestacks = (bytestacks: Bytestack[]): number[] => {
@@ -148,9 +159,9 @@ const areAllEmpty = (metabytes: Metabyte[]): boolean => {
 }
 
 const getNextElementFromBytestacks = (bytestacks: Bytestack[]): { nextElement: number, newBytestacks: Bytestack[] } => {
-    const packages = getPackagesFromMetabytes(bytestacks)
-    const sortedPackages = bubblesortPackages(packages)
-    const topBytestackIndex = getTopPackage(sortedPackages).reference
+    const refs = getRefsFromMetabytes(bytestacks)
+    const sortedPackages = bubblesortRefs(refs)
+    const topBytestackIndex = getTopRef(sortedPackages).address
     const topBytestack: Bytestack = bytestacks[topBytestackIndex]
     const result = removeTopValueFromBytestack(topBytestack)
     const topValue: number = result.topValue
@@ -159,32 +170,34 @@ const getNextElementFromBytestacks = (bytestacks: Bytestack[]): { nextElement: n
     return { nextElement: topValue, newBytestacks }
 }
 
-const getTopPackage = (packages: Package[]): Package => {
-    while (packages.length > 0) {
-        let package = packages.pop()!
-        if (typeof package.bit == "number") {
-            return package
+const getTopRef = (refs: Reference[]): Reference => {
+    while (refs.length > 0) {
+        let ref = refs.pop()!
+        if (typeof ref.topBit == "number") {
+            return ref
         }
     }
     throw Error("No package in input contains a numerical value")
 }
 
 const removeTopValueFromBytestack = (bytestack: Bytestack): { topValue: number, newBytestack: Bytestack } => {
-    const topPointer = bytestack.pointers[bytestack.pointers.length - 1]
-    const topByteOrMetabyte: Byte | Metabyte = bytestack.data[topPointer]
+    const topRegister = bytestack.register[bytestack.register.length - 1]
+    const topByteOrMetabyte: Byte | Metabyte = bytestack.data[topRegister.address]
     switch (topByteOrMetabyte[0]) {
         // This case should be unnecessary now
         // case "undefined": {
-        //     bytestack.pointers.pop()
+        //     bytestack.register.pop()
         //     return removeTopValueFromBytestack(bytestack)
         // }
         case "number": {
             let topByte = topByteOrMetabyte as Byte
             const topValue = topByte.pop()!
             if (topByte.length > 0) {
-                topByte = bubblesort(topByte)
+                // Actually, this step isn't necessary for COE Bytesort. Save 
+                // for Robustsort
+                // topByte = bubblesort(topByte)
             } else {
-                bytestack.pointers.pop()
+                bytestack.register.pop()
             }
             return { topValue, newBytestack: bytestack }
         }
