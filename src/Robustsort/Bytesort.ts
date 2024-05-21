@@ -145,7 +145,7 @@ const getSortedArrayFromBytestacks = (bytestacks: Bytestack[]): number[] => {
 const areAllEmpty = (metabytes: Metabyte[]): boolean => {
     let allEmpty = true
     for (const metabyte of metabytes) {
-        if (getTopValueFromBytestack(metabyte) !== null) {
+        if (metabyte.register.length > 0) {
             allEmpty = false
             break
         }
@@ -210,7 +210,7 @@ const removeTopValueFromBytestack = (bytestack: Bytestack): { topValue: number, 
             }
             const newRegister: Reference[] = bubblesortRefs(bytestack.register)
             const metabytes = bytestack.data as Metabyte[]
-            const newMetabytestore: Bytestack = { register: newRegister, data: metabytes }
+            const newMetabytestore: Metabytestore = { register: newRegister, data: metabytes }
             return { topValue, newBytestack: newMetabytestore }
         }
     }
