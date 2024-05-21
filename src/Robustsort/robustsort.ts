@@ -44,22 +44,33 @@ const bubblesortRefs = (refs: Reference[]) => refs.sort((a, b) => a.topBit - b.t
 // Dummy function in place of a true reverseExchangesort
 const reverseExchangesort = (a: number[]) => a.sort()
 
+// Dummy function in place of a true reverseExchangesort
+const reverseExchangesortRefs = (refs: Reference[]) => refs.sort((a, b) => a.topBit - b.topBit)
+
 // Dummy function in place of a true bogosort
 const bogosort = (a: number[]) => a.sort()
 
+// Dummy function in place of a true bogosort
+const bogosortRefs = (refs: Reference[]) => refs.sort((a, b) => a.topBit - b.topBit)
+
 // Dummy function in place of a true permutationsort
 const permutationsort = (a: number[]) => a.sort()
+
+// Dummy function in place of a true permutationsort
+const permutationsortRefs = (refs: Reference[]) => refs.sort((a, b) => a.topBit - b.topBit)
 
 // Dummy function for verifying that two Bytes or Bytestacks contain exactly 
 // the same values. I know that's not what this function does in TypeScript; 
 // this is for demonstration purposes only. In the Haskell version all the data 
 // will be Ords of Ints so I think we can just use a comparison operator there 
-const areStacksEqual = (array1, array2) => {
-    return array1 === array2
+const areStacksEqual = (stack1, stack2) => {
+    return stack1 === stack2
 }
 
-const areTopsOfStacksEqual = (array1, array2) => {
-    return array1[array1.length - 1] === array2[array2.length - 1]
+// Similar disclaimer as above for areStacksEqual(), except this one does 
+// actually work if the inputs are arrays of integers
+const areTopsOfStacksEqual = (stack1, stack2) => {
+    return stack1[stack1.length - 1] === stack2[stack2.length - 1]
 }
 
 const magicsort = (a: number[]): number[] => {
@@ -67,6 +78,15 @@ const magicsort = (a: number[]): number[] => {
     let bogosorted = bogosort(a)
     while (!areStacksEqual(permutationsorted, bogosorted)) {
         bogosorted = bogosort(a)
+    }
+    return bogosorted
+}
+
+const magicsortRefs = (refs: Reference[]): Reference[] => {
+    const permutationsorted = permutationsortRefs(refs)
+    let bogosorted = bogosortRefs(refs)
+    while (!areStacksEqual(permutationsorted, bogosorted)) {
+        bogosorted = bogosortRefs(refs)
     }
     return bogosorted
 }
@@ -89,7 +109,26 @@ const supersort = (a: number[]): number[] => {
             return magicsorted
         }
     }
+}
 
+const supersortRefs = (refs: Reference[]): Reference[] => {
+    const bubblesorted = bubblesortRefs(refs)
+    const reverseExchangesorted = reverseExchangesortRefs(refs)
+    if (areStacksEqual(bubblesorted, reverseExchangesorted)) {
+        return bubblesorted
+    } else {
+        const magicsorted = magicsortRefs(refs)
+        if (
+            areTopsOfStacksEqual(magicsorted, bubblesorted) ||
+            areTopsOfStacksEqual(magicsorted, reverseExchangesorted)
+        ) {
+            return magicsorted
+        } else if (areTopsOfStacksEqual(bubblesorted, reverseExchangesorted)) {
+            return bubblesorted
+        } else {
+            return magicsorted
+        }
+    }
 }
 
 export default (bits: number[]): number[] => {
@@ -161,7 +200,7 @@ const reduceBytestacks = (bytestacks: Bytestack[], bytesize: number): Bytestack[
 // Register and the original Metabytes as the data
 const createBytestack = (metabytes: Metabyte[]): Bytestack => {
     const refs = getRefsFromMetabytes(metabytes)
-    const register = bubblesortRefs(refs)
+    const register = supersortRefs(refs)
     // I'm pretty sure this code I commented out is no longer needed
     // let i = 0
     // for (const ref of refsSorted) {
@@ -217,7 +256,7 @@ const areAllEmpty = (metabytes: Metabyte[]): boolean => {
 
 const getNextElementFromBytestacks = (bytestacks: Bytestack[]): { nextElement: number, newBytestacks: Bytestack[] } => {
     const refs = getRefsFromMetabytes(bytestacks)
-    const sortedRefs = bubblesortRefs(refs)
+    const sortedRefs = supersortRefs(refs)
     const topBytestackIndex = getTopRef(sortedRefs).address
     const topBytestack: Bytestack = bytestacks[topBytestackIndex]
     const result = removeTopValueFromBytestack(topBytestack)
@@ -250,7 +289,7 @@ const removeTopValueFromBytestack = (bytestack: Bytestack): { topValue: number, 
             } else {
                 bytestack.register.pop()
             }
-            const newRegister: Reference[] = bubblesortRefs(bytestack.register)
+            const newRegister: Reference[] = supersortRefs(bytestack.register)
             const bytes = bytestack.data as Byte[]
             const newBytestore: Bytestore = { register: newRegister, data: bytes }
             return { topValue, newBytestack: newBytestore }
@@ -263,7 +302,7 @@ const removeTopValueFromBytestack = (bytestack: Bytestack): { topValue: number, 
             } else {
                 bytestack.register.pop()
             }
-            const newRegister: Reference[] = bubblesortRefs(bytestack.register)
+            const newRegister: Reference[] = supersortRefs(bytestack.register)
             const metabytes = bytestack.data as Metabyte[]
             const newMetabytestore: Metabytestore = { register: newRegister, data: metabytes }
             return { topValue, newBytestack: newMetabytestore }
