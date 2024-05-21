@@ -1,4 +1,4 @@
-module Robustsort.Check (isSorted) where
+module Robustsort.Utils.Check (isSorted) where
 
 isSorted :: [Int] -> Bool
 isSorted [] = True

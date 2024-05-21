@@ -1,7 +1,7 @@
 module Robustsort.Permutationsort (permutationsort) where
 
 import Data.List (permutations)
-import Robustsort.Check (isSorted)
+import Robustsort.Utils.Check (isSorted)
 
 permutationsort :: [Int] -> [Int]
 permutationsort xs = acc (permutations x) []

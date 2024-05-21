@@ -58,7 +58,8 @@ library
     import:           warnings
 
     -- Modules exported by the library.
-    exposed-modules:  Robustsort.Check,
+    exposed-modules:  Robustsort.Utils.Check,
+                      Robustsort.Utils.RandomizeList,
                       Robustsort.Bubblesort,
                       Robustsort.Mergesort,
                       Robustsort.Quicksort,
