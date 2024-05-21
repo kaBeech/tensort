@@ -2,6 +2,7 @@
 
 module Main where
 
+import Robustsort.Bogosort qualified (bogosort)
 import Robustsort.Bubblesort qualified (bubblesort)
 import Robustsort.Mergesort qualified (mergesort)
 import Robustsort.Permutationsort qualified (permutationsort)
@@ -17,3 +18,4 @@ main = do
   putStrLn ("mergesort: " ++ show (Robustsort.Mergesort.mergesort unsortedArray))
   putStrLn ("quicksort: " ++ show (Robustsort.Quicksort.quicksort unsortedArray))
   putStrLn ("permutationsort: " ++ show (Robustsort.Permutationsort.permutationsort [3, 1, 2]))
+  putStrLn ("bogosort: " ++ show (Robustsort.Bogosort.bogosort [3, 1, 2] 143))

@@ -63,6 +63,7 @@ library
                       Robustsort.Mergesort,
                       Robustsort.Quicksort,
                       Robustsort.Permutationsort,
+                      Robustsort.Bogosort,
 
     -- Modules included in this library but not exported.
     -- other-modules:
@@ -73,7 +74,8 @@ library
     -- Other library packages from which modules are imported.
     build-depends:    base ^>=4.18.2.0,
                       mtl,
-                      random
+                      random,
+                      random-shuffle
 
     -- Directories containing source files.
     hs-source-dirs:   src
