@@ -41,9 +41,9 @@ const bubblesort = (a: number[]) => a.sort()
 // Dummy function in place of a true bubblesort
 const bubblesortRefs = (refs: Reference[]) => refs.sort((a, b) => a.topBit - b.topBit)
 
-const bytesort4Bit = (a: number[]) => bytesort(a, 4)
+// const bytesort4Bit = (a: number[]) => bytesort(a, 4)
 
-const bytesort = (bits: number[], bytesize: number): number[] => {
+export default (bits: number[], bytesize: number): number[] => {
     bits = randomizeArray(bits)
     const bytes = convertRawBitsToBytes(bits, bytesize)
     let bytestacks = getBytestacksFromBytes(bytes)
