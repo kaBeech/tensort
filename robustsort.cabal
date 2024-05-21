@@ -65,6 +65,8 @@ library
                       Robustsort.Quicksort,
                       Robustsort.Permutationsort,
                       Robustsort.Bogosort,
+                      Robustsort.Bytesort,
+                      Robustsort.Robustsort,
 
     -- Modules included in this library but not exported.
     -- other-modules:
