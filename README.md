@@ -15,6 +15,19 @@ prioritizes robustness would look like
 
 ## Implementation Overview
 
+NOTE! This description is somewhat out of date. Please see the code for details.
+The `bytesort.ts` and `robustsort.ts` files are valid TypeScript, but really 
+they're pseudocode to guide me in writing the Haskell version.
+
+Notably, some of the subsidiary sorting functions (like bubblesort) are cheated 
+using regular sort() methods that will function equivalently in code without 
+errors, but do not provide the  same benefits to robustness that the real 
+methods do. These real subsidiary  sorting functions will of course be defined 
+in the Haskell version of the code.
+
+Once these modules are ported to Haskell (which I'll do soon), the package 
+should function correctly
+
 ...
 
 Please note that we will discuss a few algorithms that I've either made up or 
@@ -23,9 +36,12 @@ previously been named, please let me know. I don't actually know algorithms,
 I'm just rhyming words =)
 
 The algorithms used here that I have made up or renamed are, in order of 
-appearance, Bytesort, Robustsort, Comparisonsort, and Magicsort. Get ready!
+appearance, Bytesort, Robustsort, Permutaionsort, and Magicsort. Get ready!
 
 ### Bytesort
+
+NOTE! This description is somewhat out of date. Please see `bytesort.ts` for 
+current pseudocode
 
 Bytesort is my attempt to write the most robust O(n log n) sorting algorithm 
 possible while avoiding anything that Ackley might consider a "cheap hack." 
@@ -148,6 +164,9 @@ Now for some cheap hacks!
 
 ### Robustsort
 
+NOTE! This description is somewhat out of date. Please see `robustsort.ts` for 
+current pseudocode
+
 In Beyond Efficiency, Ackley augmented Mergesort and Quicksort with what he 
 called "cheap hacks" in order to give them a boost in robustness to get them to 
 compare with Bubblesort. This amounted to adding a quarum system to the 
@@ -176,14 +195,14 @@ utilizing some solution-checking on the (sub-)algorithmic level while still:
 With those ground rules in place, let's get to Robustsort!
 
 Once we have Bytesort in our toolbox, the road to Robustsort is pretty simple. 
-At its core, Robustsort is a 9-bit Bytesort with some extra parallelism baked 
-in. Why 9-bit? It's because of the power of threes.
+At its core, Robustsort is a 3-bit Bytesort with some extra parallelism baked 
+in. Why 3-bit? It's because of the power of threes.
 
 In Bytesort, we repeatedly run Bubblesort to sort our pointers. In Robustsort, 
 instead of simply taking the output from Bubblesort, we compare it to another 
 algorithm to see if they match.
 
-We use a 16-bit Bytesort as the standard above because there's something 
+We use a 4-bit Bytesort as the standard above because there's something 
 magical that happens around these numbers. Robust sorting algorithms tend to be 
 slow. Bubblesort, for example, has an average time efficiency of O(n^2), 
 compared with Quicksort and Mergesort, which both have an average of (n log n).
@@ -206,7 +225,7 @@ In addition, when making a mistake while sorting 3 elements, the mistake is
 most likely to displace an element by only 1 position (or 2 positions at the
 maximum), no matter which algorithm is used.
 
-This is all to say that using a 9-bit byte size allows us to have our pick of 
+This is all to say that using a 3-bit byte size allows us to have our pick of 
 algorithms to compare with!
 
 When choosing our comparison algorithm, we want something with logic 
