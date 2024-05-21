@@ -122,19 +122,14 @@ const getRefsFromMetabytes = (metabytes: Metabyte[]): Reference[] => {
 }
 
 const getTopValueFromBytestack = (bytestack: Bytestack): number | null => {
-    return bytestack.register[bytestack.register.length - 1].topBit
-    // Commented code below no longer needed - archiving for now
-    // const topByteOrMetabyte: Byte | Metabyte = bytestack.data[bytestack.register[bytestack.register.length - 1]]
-    // switch (topByteOrMetabyte[0]) {
-    //     case "undefined": {
-    //         return null
-    //     }
-    //     case "number": {
-    //         const topByte = topByteOrMetabyte as Byte
-    //         return topByte[topByte.length - 1]
-    //     }
-    //     default: return getTopValueFromBytestack(topByteOrMetabyte as Metabyte)
-    // }
+    const topRef = bytestack.register[bytestack.register.length - 1]
+    switch (typeof topRef) {
+        case "undefined": {
+            return null
+        }
+        default: return topRef.topBit
+    }
+
 }
 
 const getSortedArrayFromBytestacks = (bytestacks: Bytestack[]): number[] => {
@@ -181,8 +176,8 @@ const getTopRef = (refs: Reference[]): Reference => {
 }
 
 const removeTopValueFromBytestack = (bytestack: Bytestack): { topValue: number, newBytestack: Bytestack } => {
-    const topRegister = bytestack.register[bytestack.register.length - 1]
-    const topByteOrMetabyte: Byte | Metabyte = bytestack.data[topRegister.address]
+    const topRef = bytestack.register[bytestack.register.length - 1]
+    const topByteOrMetabyte: Byte | Metabyte = bytestack.data[topRef.address]
     switch (topByteOrMetabyte[0]) {
         // This case should be unnecessary now
         // case "undefined": {
@@ -193,14 +188,30 @@ const removeTopValueFromBytestack = (bytestack: Bytestack): { topValue: number, 
             let topByte = topByteOrMetabyte as Byte
             const topValue = topByte.pop()!
             if (topByte.length > 0) {
-                // Actually, this step isn't necessary for COE Bytesort. Save 
-                // for Robustsort
+                // Actually, this extra bubblesort step isn't necessary for COE 
+                // Bytesort. Save it for Robustsort
                 // topByte = bubblesort(topByte)
+                topRef.topBit = topByte[topByte.length - 1]
             } else {
                 bytestack.register.pop()
             }
-            return { topValue, newBytestack: bytestack }
+            const newRegister: Reference[] = bubblesortRefs(bytestack.register)
+            const bytes = bytestack.data as Byte[]
+            const newBytestore: Bytestore = { register: newRegister, data: bytes }
+            return { topValue, newBytestack: newBytestore }
         }
-        default: return removeTopValueFromBytestack(topByteOrMetabyte as Bytestack)
+        default: {
+            const result = removeTopValueFromBytestack(topByteOrMetabyte as Bytestack)
+            const topValue = result.topValue
+            if (result.newBytestack.register.length > 0) {
+                topRef.topBit = getTopValueFromBytestack(result.newBytestack)!
+            } else {
+                bytestack.register.pop()
+            }
+            const newRegister: Reference[] = bubblesortRefs(bytestack.register)
+            const metabytes = bytestack.data as Metabyte[]
+            const newMetabytestore: Bytestack = { register: newRegister, data: metabytes }
+            return { topValue, newBytestack: newMetabytestore }
+        }
     }
 }
