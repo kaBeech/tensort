@@ -12,15 +12,17 @@ type Reference = (Address, TopBit)
 
 type Register = [Reference]
 
-type Bytes = [Byte]
-
-type Metabytes = [Metabyte]
-
-data Memory = Bytes | Metabytes
+data Memory
+  = Memory [Byte]
+  | BigMemory [Metabyte]
+  deriving (Show)
 
 type Bytestore = (Register, Memory)
 
-data Metabyte = Bytestore | Metabytestore
+data Metabyte
+  = Metabyte Bytestore
+  | BigMetabyte Metabytestore
+  deriving (Show)
 
 type Metabytestore = (Register, Memory)
 
