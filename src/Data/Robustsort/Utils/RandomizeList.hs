@@ -1,4 +1,4 @@
-module Robustsort.Utils.RandomizeList (randomizeList) where
+module Data.Robustsort.Utils.RandomizeList (randomizeList) where
 
 import System.Random (mkStdGen)
 import System.Random.Shuffle (shuffle')
