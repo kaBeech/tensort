@@ -58,15 +58,15 @@ library
     import:           warnings
 
     -- Modules exported by the library.
-    exposed-modules:  Robustsort.Utils.Check,
-                      Robustsort.Utils.RandomizeList,
-                      Robustsort.Bubblesort,
-                      Robustsort.Mergesort,
-                      Robustsort.Quicksort,
-                      Robustsort.Permutationsort,
-                      Robustsort.Bogosort,
-                      Robustsort.Bytesort,
-                      Robustsort.Robustsort,
+    exposed-modules:  Data.Robustsort.Utils.Check,
+                      Data.Robustsort.Utils.RandomizeList,
+                      Data.Robustsort.Subalgorithms.Bubblesort,
+                      Data.Robustsort.Comparison.Mergesort,
+                      Data.Robustsort.Comparison.Quicksort,
+                      Data.Robustsort.Subalgorithms.Permutationsort,
+                      Data.Robustsort.Subalgorithms.Bogosort,
+                      Data.Bytesort,
+                      Data.Robustsort.Robustsort,
 
     -- Modules included in this library but not exported.
     -- other-modules:

@@ -1,4 +1,4 @@
-module Robustsort.Bubblesort (bubblesort) where
+module Data.Robustsort.Subalgorithms.Bubblesort (bubblesort) where
 
 bubblesort :: [Int] -> [Int]
 bubblesort = foldr bubblesortSinglePass []
