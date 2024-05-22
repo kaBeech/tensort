@@ -74,9 +74,10 @@ const areTopsOfStacksEqual = (stack1, stack2) => {
 }
 
 const magicsort = (a: number[]): number[] => {
-    const permutationsorted = permutationsort(a)
+    let permutationsorted = permutationsort(a)
     let bogosorted = bogosort(a)
     while (!areStacksEqual(permutationsorted, bogosorted)) {
+        permutationsorted = permutationsort(a)
         bogosorted = bogosort(a)
     }
     return bogosorted
