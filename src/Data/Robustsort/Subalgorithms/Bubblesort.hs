@@ -1,11 +1,23 @@
-module Data.Robustsort.Subalgorithms.Bubblesort (bubblesort) where
+module Data.Robustsort.Subalgorithms.Bubblesort (bubblesort, bubblesortRecords) where
+
+import Data.Robustsort.Utils.ComparisonFunctions (lessThanInt, lessThanRecord)
+import Data.Robustsort.Utils.Types (Record)
 
 bubblesort :: [Int] -> [Int]
-bubblesort = foldr bubblesortSinglePass []
+bubblesort = foldr acc []
+  where
+    acc :: Int -> [Int] -> [Int]
+    acc x xs = bubblesortSinglePass x xs lessThanInt
 
-bubblesortSinglePass :: Int -> [Int] -> [Int]
-bubblesortSinglePass x [] = [x]
-bubblesortSinglePass x (y : remaningElements) = do
-  if x < y
-    then x : bubblesortSinglePass y remaningElements
-    else y : bubblesortSinglePass x remaningElements
+bubblesortRecords :: [Record] -> [Record]
+bubblesortRecords = foldr acc []
+  where
+    acc :: Record -> [Record] -> [Record]
+    acc x xs = bubblesortSinglePass x xs lessThanRecord
+
+bubblesortSinglePass :: a -> [a] -> (a -> a -> Bool) -> [a]
+bubblesortSinglePass x [] _ = [x]
+bubblesortSinglePass x (y : remaningElements) comparisonFunction = do
+  if comparisonFunction x y
+    then x : bubblesortSinglePass y remaningElements comparisonFunction
+    else y : bubblesortSinglePass x remaningElements comparisonFunction

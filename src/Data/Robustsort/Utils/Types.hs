@@ -1,3 +1,5 @@
+{-# LANGUAGE GADTs #-}
+
 module Data.Robustsort.Utils.Types where
 
 --   All the data types used in the Bytesort and Robustsort algorithms are
@@ -38,7 +40,9 @@ type Record = (Address, TopBit)
 
 -- | A Register is a list of Records allowing for easy access to data in a
 --   Bytestore or Metabytestore's Memory
-type Register = [Record]
+data Register where
+  Register :: [Record] -> Register
+  deriving (Show)
 
 -- | A Memory contains the data to be sorted, either in the form of Bytes or
 --   Metabytes

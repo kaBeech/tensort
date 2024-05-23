@@ -1,4 +1,4 @@
-module Data.Robustsort.Comparison.Mergesort (mergesort) where
+module Data.Robustsort.OtherSorts.Mergesort (mergesort) where
 
 mergesort :: [Int] -> [Int]
 mergesort = mergeAll . map (: [])
