@@ -29,8 +29,18 @@ should function correctly
 
 Please note that we will discuss a few algorithms that I've either made up or 
 am just not familiar with by other names. If any of these algorithms have 
-previously been named, please let me know. I don't actually know algorithms, 
-I'm just rhyming words =)
+previously been named, please let me know. Prior to this project I really 
+only had a rudimentary understanding of insertionsort, quicksort, mergesort, 
+and bogosort, so it's entirely possible that I've reinvented a few things 
+that already exist
+
+It also may be helpful to note that this project was undertaken in an 
+endeavor to come up with a solution naively, for the practice, before 
+researching other algorithms built to tackle the same problem. I did very 
+briefly check out [Demon Horde Sort](https://www.youtube.com/watch?v=helScS3coAE&t=260s), 
+but only enough to verify that it is different from this algorithm. For the 
+record, if you do actually want a real, professional approach to robust 
+sorting, Demon Horde Sort is the place to look
 
 The algorithms used here that I have made up or renamed are, in order of 
 appearance, Bytesort, Robustsort, Permutaionsort, and Magicsort. Get ready!
