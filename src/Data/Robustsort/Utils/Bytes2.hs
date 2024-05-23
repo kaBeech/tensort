@@ -21,3 +21,42 @@ getSortedListFromBytestacks bytestacksRaw = acc bytestacksRaw []
         else acc bytestacks' (nextBit : sortedBits)
       where
         (nextBit, bytestacks') = getNextBitFromBytestacks bytestacks
+
+-- | Returns True if registers for all Bytestacks are empty and False otherwise
+
+-- | ==== __Examples__
+-- >>> areAllEmpty [([(0,3),(1,7)],Memory [[1,3],[5,7]]),([(0,4),(1,8)],Memory [[2,4],[6,8]])]
+-- False
+-- >>> areAllEmpty [([],Memory [[1,3],[5,7]]),([],Memory [[2,4],[6,8]])]
+-- True
+areAllEmpty :: [Bytestack] -> Bool
+areAllEmpty = all isEmpty
+  where
+    isEmpty :: Bytestack -> Bool
+    isEmpty bytestack = null (fst bytestack)
+
+-- | For use in compiling a list of Bytestacks into a sorted list of Bits
+
+-- | Removes the top Bit from the top Bytestack, rebalances the Bytestacks, and
+--   returns the removed Bit and the rebalanced Bytestacks
+
+-- | ==== __Examples__
+-- >>> getNextBitFromBytestacks [([(0,3),(1,7)],Memory [[1,3],[5,7]]),([(1,4), (0,8)],Memory [[6,8],[2,4]])]
+-- (8,[([(0,3),(1,7)],Memory [[1,3],[5,7]]),([(1,4),(0,6)],Memory [[2,4],[6]])])
+getNextBitFromBytestacks :: [Bytestack] -> (Int, [Bytestack])
+getNextBitFromBytestacks bytestacks = do
+  let topRecords = bubblesortRecords (getTopRecordsFromBytestacks bytestacks)
+  let topBytestackIndex = fst (last topRecords)
+  let topBytestack = bytestacks !! topBytestackIndex
+  let (nextBit, bytestack') = removeTopValueFromBytestack topBytestack
+  let newBytestacks = take topBytestackIndex bytestacks ++ [bytestack'] ++ drop (topBytestackIndex + 1) bytestacks
+  (nextBit, newBytestacks)
+
+getTopRecordsFromBytestacks :: [Bytestack] -> [(Int, Int)]
+getTopRecordsFromBytestacks = map (last . fst)
+
+-- This is a dummy function to be edited later
+removeTopValueFromBytestack :: Bytestack -> (Int, Bytestack)
+removeTopValueFromBytestack (register, memory) = (topBit, (init register, memory))
+  where
+    topBit = snd (last register)
