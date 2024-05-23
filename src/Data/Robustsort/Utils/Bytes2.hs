@@ -1,3 +1,6 @@
+-- Note: The Bytes utilities are split into two modules because my LSP was having 
+-- difficulty keeping up when it was all in one file. For the official release I 
+-- plan to either condense into one file or modularize into multiple files
 module Data.Robustsort.Utils.Bytes2
   ( getSortedBitsFromBytestacks,
   )
