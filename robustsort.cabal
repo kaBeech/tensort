@@ -61,12 +61,18 @@ library
     exposed-modules:  Data.Robustsort.Utils.Check,
                       Data.Robustsort.Utils.RandomizeList,
                       Data.Robustsort.Subalgorithms.Bubblesort,
-                      Data.Robustsort.Comparison.Mergesort,
-                      Data.Robustsort.Comparison.Quicksort,
+                      Data.Robustsort.OtherSorts.Mergesort,
+                      Data.Robustsort.OtherSorts.Quicksort,
                       Data.Robustsort.Subalgorithms.Permutationsort,
                       Data.Robustsort.Subalgorithms.Bogosort,
                       Data.Bytesort,
                       Data.Robustsort.Robustsort,
+                      Data.Robustsort.Bytesort,
+                      Data.Robustsort.Utils.Bytes,
+                      Data.Robustsort.Utils.Bytes2,
+                      Data.Robustsort.Utils.Types,
+                      Data.Robustsort.Utils.Split,
+                      Data.Robustsort.Utils.ComparisonFunctions
 
     -- Modules included in this library but not exported.
     -- other-modules:
