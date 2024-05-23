@@ -40,15 +40,13 @@ type Record = (Address, TopBit)
 
 -- | A Register is a list of Records allowing for easy access to data in a
 --   Bytestore or Metabytestore's Memory
-data Register where
-  Register :: [Record] -> Register
-  deriving (Show)
+type Register = [Record]
 
 -- | A Memory contains the data to be sorted, either in the form of Bytes or
 --   Metabytes
 data Memory
   = Memory [Byte]
-  | BigMemory [Metabyte]
+  | BigMemory [Bytestore]
   deriving (Show)
 
 -- | A Bytestore is a Metabytestore that only contains Bytes in its memory
@@ -65,10 +63,10 @@ type Bytestore = (Register, Memory)
 --   it's helpful to have different names for the same type of data depending
 --   on how it's being used, while still being able to use the same data in
 --   multiple contexts
-data Metabyte
-  = Metabyte Bytestore
-  | BigMetabyte Metabytestore
-  deriving (Show)
+-- data Metabyte
+--   = Metabyte Bytestore
+--   | BigMetabyte Metabytestore
+--   deriving (Show)
 
 -- | A Metabytestore contains data to be sorted in a structure allowing for
 --   easy access
@@ -77,9 +75,9 @@ data Metabyte
 --   contains
 
 -- | The Register is a list of Records referencing the top Bits in Memory
-type Metabytestore = (Register, Memory)
+-- type Metabytestore = (Register, Memory)
 
 -- | A Bytestack is a top-level Metabyte. In the final stages of Bytesort, the
 --   number of Bytestacks will equal the bytesize, but before that time there
 --   are expected to be many more Bytestacks
-type Bytestack = Metabyte
+type Bytestack = Bytestore
