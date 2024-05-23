@@ -5,16 +5,6 @@ import Data.Robustsort.Subalgorithms.Bubblesort (bubblesort, bubblesortRecords)
 import Data.Robustsort.Utils.Split (splitEvery)
 import Data.Robustsort.Utils.Types (Byte, Bytestack, Bytestore, Memory (..), Metabyte (..), Record, Register (..))
 
--- export default (bits: number[], bytesize: number): number[] => {
---     bits = randomizeArray(bits)
---     const bytes = convertRawBitsToBytes(bits, bytesize)
---     let bytestacks = getBytestacksFromBytes(bytes, bytesize)
---     while (bytestacks.length > bytesize) {
---         bytestacks = reduceBytestacks(bytestacks, bytesize)
---     }
---     return getSortedArrayFromBytestacks(bytestacks)
--- }
-
 -- | Convert a list of Bits to a list of Bytes of given bytesize, bubblesorting
 --   each byte.
 
@@ -108,7 +98,7 @@ createBytestack metabytes = Metabyte (Register (bubblesortRecords (getRegisterFr
 -- | For each Metabyte, produces a Record by combining the top bit of the
 --  Metabyte with an index value for its Address
 
--- | Note that this output is not sorted. Sorting is done in the 
+-- | Note that this output is not sorted. Sorting is done in the
 --   createBytestack function
 
 -- | ==== __Examples__
@@ -136,7 +126,7 @@ getRegisterFromMetabytes metabytes = acc metabytes []
 
 -- | Get the top Bit from a Bytestack
 
--- | The top Bit is the last Bit in the last Byte referenced in the last record 
+-- | The top Bit is the last Bit in the last Byte referenced in the last record
 --   of the Metabyte referenced in the last record of the last Metabyte of...
 --   and so on until you reach the top level of the Bytestack
 
@@ -147,3 +137,4 @@ getRegisterFromMetabytes metabytes = acc metabytes []
 -- 38
 getTopBitFromBytestack :: Metabyte -> Int
 getTopBitFromBytestack (Metabyte (Register register, _)) = snd (last register)
+
