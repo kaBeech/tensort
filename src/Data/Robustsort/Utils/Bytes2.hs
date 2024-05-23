@@ -4,7 +4,7 @@ module Data.Robustsort.Utils.Bytes2
 where
 
 import Data.Robustsort.Subalgorithms.Bubblesort (bubblesortRecords)
-import Data.Robustsort.Utils.Types (Bytestack, Memory (..))
+import Data.Robustsort.Utils.Types (Bytestack, Bytestore, Memory (..))
 
 -- | Compile a sorted list of Bits from a list of Bytestacks
 
@@ -48,15 +48,30 @@ getNextBitFromBytestacks bytestacks = do
   let topRecords = bubblesortRecords (getTopRecordsFromBytestacks bytestacks)
   let topBytestackIndex = fst (last topRecords)
   let topBytestack = bytestacks !! topBytestackIndex
-  let (nextBit, bytestack') = removeTopValueFromBytestack topBytestack
+  let (nextBit, bytestack') = removeTopBitFromBytestore topBytestack
   let newBytestacks = take topBytestackIndex bytestacks ++ [bytestack'] ++ drop (topBytestackIndex + 1) bytestacks
   (nextBit, newBytestacks)
 
 getTopRecordsFromBytestacks :: [Bytestack] -> [(Int, Int)]
 getTopRecordsFromBytestacks = map (last . fst)
 
--- This is a dummy function to be edited later
-removeTopValueFromBytestack :: Bytestack -> (Int, Bytestack)
-removeTopValueFromBytestack (register, memory) = (topBit, (init register, memory))
-  where
-    topBit = snd (last register)
+-- | For use in compiling a list of Bytestores into a sorted list of Bits
+--
+-- | Removes the top Bit from a Bytestore, rebalances the Bytestore and returns
+--   the removed Bit along with the rebalanced Bytestore
+
+-- | ==== __Examples__
+--   >>> removeTopBitFromBytestore  ([(0,5),(1,7)],Memory [[1,5],[3,7]])
+--   (7,([(1,3),(0,5)],Memory [[1,5],[3]]))
+removeTopBitFromBytestore :: Bytestore -> (Int, Bytestore)
+removeTopBitFromBytestore (register, memory) = do
+  let topRef = last register
+  let topByteOrBytestore = memory !! fst topRef
+  case topByteOrBytestore of
+    (address, bits) -> do
+      let topByte = bits !! address
+      let topValue = last topByte
+      let topByte' = init topByte
+      let newMemory = take address memory ++ [topByte'] ++ drop (address + 1) memory
+      let newRegister = bubblesortRecords (init register)
+      (topValue, (newRegister, Memory newMemory))

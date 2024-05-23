@@ -47,10 +47,17 @@ type Register = [Record]
 data Memory
   = Memory [Byte]
   | BigMemory [Bytestore]
-  deriving (Show)
+  deriving (Show, Eq, Ord)
+
+convertMemoryToBytes :: Memory -> [Byte]
+convertMemoryToBytes (Memory bytes) = bytes
+convertMemoryToBytes (BigMemory bytestores) = concatMap (convertMemoryToBytes . snd) bytestores
+
+convertMemoryToBytestores :: Memory -> [Bytestore]
+convertMemoryToBytestores (Memory bytes) = [(mempty, Memory bytes)]
+convertMemoryToBytestores (BigMemory bytestores) = bytestores
 
 -- | A Bytestore is a Metabytestore that only contains Bytes in its memory
-
 -- | The Memory is a list of the Bytes or Metabytes that the Metabytestore
 --   contains.
 
