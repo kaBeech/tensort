@@ -3,7 +3,7 @@
 The goal of this project is to explore what a sorting algorithm that 
 prioritizes robustness would look like
 
-DISCLAIMER: This project is still under construction. The basic ideas are all there, but still need to be 
+DISCLAIMER: This project is still under construction. The basic ideas are all there, but need to be 
 tied together and made to look pretty =)
 
 ## Inspiration
@@ -19,7 +19,7 @@ tied together and made to look pretty =)
 ## Implementation Overview
 
 NOTE! This description is somewhat out of date. Please see the code for details.
-The `robustsort.ts` files is valid TypeScript, but really 
+The `robustsort.ts` file is valid TypeScript, but really 
 it's pseudocode to guide me in writing the Haskell version.
 
 Once this module is ported to Haskell (which I'll do soon), the package 
