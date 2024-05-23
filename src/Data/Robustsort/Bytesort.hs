@@ -1,4 +1,3 @@
--- See `bytesort.ts` for (pseudo)code
 module Data.Robustsort.Bytesort (bytesort, bytesort4Bit) where
 
 import Data.Robustsort.Utils.Bytes (convertRawBitsToBytes, getBytestacksFromBytes, reduceBytestacks)
