@@ -33,105 +33,6 @@ interface Reference {
 
 type Bytestack = Metabyte
 
-// type Stackmap = Metabytestore
-
-// Dummy function in place of a true bubblesort
-const bubblesort = (a: number[]) => a.sort()
-
-// Dummy function in place of a true bubblesort
-const bubblesortRefs = (refs: Reference[]) => refs.sort((a, b) => a.topBit - b.topBit)
-
-// Dummy function in place of a true reverseExchangesort
-const reverseExchangesort = (a: number[]) => a.sort()
-
-// Dummy function in place of a true reverseExchangesort
-const reverseExchangesortRefs = (refs: Reference[]) => refs.sort((a, b) => a.topBit - b.topBit)
-
-// Dummy function in place of a true bogosort
-const bogosort = (a: number[]) => a.sort()
-
-// Dummy function in place of a true bogosort
-const bogosortRefs = (refs: Reference[]) => refs.sort((a, b) => a.topBit - b.topBit)
-
-// Dummy function in place of a true permutationsort
-const permutationsort = (a: number[]) => a.sort()
-
-// Dummy function in place of a true permutationsort
-const permutationsortRefs = (refs: Reference[]) => refs.sort((a, b) => a.topBit - b.topBit)
-
-// Dummy function for verifying that two Bytes or Bytestacks contain exactly 
-// the same values. I know that's not what this function does in TypeScript; 
-// this is for demonstration purposes only. In the Haskell version all the data 
-// will be Ords of Ints so I think we can just use a comparison operator there 
-const areStacksEqual = (stack1, stack2) => {
-    return stack1 === stack2
-}
-
-// Similar disclaimer as above for areStacksEqual(), except this one does 
-// actually work if the inputs are arrays of integers
-const areTopsOfStacksEqual = (stack1, stack2) => {
-    return stack1[stack1.length - 1] === stack2[stack2.length - 1]
-}
-
-const magicsort = (a: number[]): number[] => {
-    let permutationsorted = permutationsort(a)
-    let bogosorted = bogosort(a)
-    while (!areStacksEqual(permutationsorted, bogosorted)) {
-        permutationsorted = permutationsort(a)
-        bogosorted = bogosort(a)
-    }
-    return bogosorted
-}
-
-const magicsortRefs = (refs: Reference[]): Reference[] => {
-    const permutationsorted = permutationsortRefs(refs)
-    let bogosorted = bogosortRefs(refs)
-    while (!areStacksEqual(permutationsorted, bogosorted)) {
-        bogosorted = bogosortRefs(refs)
-    }
-    return bogosorted
-}
-
-const supersort = (a: number[]): number[] => {
-    const bubblesorted = bubblesort(a)
-    const reverseExchangesorted = reverseExchangesort(a)
-    if (areStacksEqual(bubblesorted, reverseExchangesorted)) {
-        return bubblesorted
-    } else {
-        const magicsorted = magicsort(a)
-        if (
-            areTopsOfStacksEqual(magicsorted, bubblesorted) ||
-            areTopsOfStacksEqual(magicsorted, reverseExchangesorted)
-        ) {
-            return magicsorted
-        } else if (areTopsOfStacksEqual(bubblesorted, reverseExchangesorted)) {
-            return bubblesorted
-        } else {
-            return magicsorted
-        }
-    }
-}
-
-const supersortRefs = (refs: Reference[]): Reference[] => {
-    const bubblesorted = bubblesortRefs(refs)
-    const reverseExchangesorted = reverseExchangesortRefs(refs)
-    if (areStacksEqual(bubblesorted, reverseExchangesorted)) {
-        return bubblesorted
-    } else {
-        const magicsorted = magicsortRefs(refs)
-        if (
-            areTopsOfStacksEqual(magicsorted, bubblesorted) ||
-            areTopsOfStacksEqual(magicsorted, reverseExchangesorted)
-        ) {
-            return magicsorted
-        } else if (areTopsOfStacksEqual(bubblesorted, reverseExchangesorted)) {
-            return bubblesorted
-        } else {
-            return magicsorted
-        }
-    }
-}
-
 export default (bits: number[]): number[] => {
     const bytesize = 3
     bits = randomizeArray(bits)
@@ -164,6 +65,62 @@ const convertRawBitsToBytes = (bits: number[], bytesize: number): Byte[] => {
         bits = bits.slice(bytesize)
     }
     return bytes
+}
+
+const supersort = (a: number[]): number[] => {
+    const bubblesorted = bubblesort(a)
+    const reverseExchangesorted = reverseExchangesort(a)
+    if (areStacksEqual(bubblesorted, reverseExchangesorted)) {
+        return bubblesorted
+    } else {
+        const magicsorted = magicsort(a)
+        if (
+            areTopsOfStacksEqual(magicsorted, bubblesorted) ||
+            areTopsOfStacksEqual(magicsorted, reverseExchangesorted)
+        ) {
+            return magicsorted
+        } else if (areTopsOfStacksEqual(bubblesorted, reverseExchangesorted)) {
+            return bubblesorted
+        } else {
+            return magicsorted
+        }
+    }
+}
+
+// Dummy function in place of a true bubblesort
+const bubblesort = (a: number[]) => a.sort()
+
+// Dummy function in place of a true reverseExchangesort
+const reverseExchangesort = (a: number[]) => a.sort()
+
+// Dummy function for verifying that two Bytes or Bytestacks contain exactly 
+// the same values. I know that's not what this function does in TypeScript; 
+// this is for demonstration purposes only. In the Haskell version all the data 
+// will be Ords of Ints so I think we can just use a comparison operator there 
+const areStacksEqual = (stack1, stack2) => {
+    return stack1 === stack2
+}
+
+const magicsort = (a: number[]): number[] => {
+    let permutationsorted = permutationsort(a)
+    let bogosorted = bogosort(a)
+    while (!areStacksEqual(permutationsorted, bogosorted)) {
+        permutationsorted = permutationsort(a)
+        bogosorted = bogosort(a)
+    }
+    return bogosorted
+}
+
+// Dummy function in place of a true permutationsort - see `Permutationsort.hs`
+const permutationsort = (a: number[]) => a.sort()
+
+// Dummy function in place of a true bogosort
+const bogosort = (a: number[]) => a.sort()
+
+// Similar disclaimer as above for areStacksEqual(), except this one does 
+// actually work if the inputs are arrays of integers
+const areTopsOfStacksEqual = (stack1, stack2) => {
+    return stack1[stack1.length - 1] === stack2[stack2.length - 1]
 }
 
 const getBytestacksFromBytes = (bytes: Byte[], bytesize: number): Bytestack[] => {
@@ -233,6 +190,47 @@ const getTopValueFromBytestack = (bytestack: Bytestack): number | null => {
     }
 
 }
+
+const supersortRefs = (refs: Reference[]): Reference[] => {
+    const bubblesorted = bubblesortRefs(refs)
+    const reverseExchangesorted = reverseExchangesortRefs(refs)
+    if (areStacksEqual(bubblesorted, reverseExchangesorted)) {
+        return bubblesorted
+    } else {
+        const magicsorted = magicsortRefs(refs)
+        if (
+            areTopsOfStacksEqual(magicsorted, bubblesorted) ||
+            areTopsOfStacksEqual(magicsorted, reverseExchangesorted)
+        ) {
+            return magicsorted
+        } else if (areTopsOfStacksEqual(bubblesorted, reverseExchangesorted)) {
+            return bubblesorted
+        } else {
+            return magicsorted
+        }
+    }
+}
+
+// Dummy function in place of a true bubblesort
+const bubblesortRefs = (refs: Reference[]) => refs.sort((a, b) => a.topBit - b.topBit)
+
+// Dummy function in place of a true reverseExchangesort
+const reverseExchangesortRefs = (refs: Reference[]) => refs.sort((a, b) => a.topBit - b.topBit)
+
+const magicsortRefs = (refs: Reference[]): Reference[] => {
+    const permutationsorted = permutationsortRefs(refs)
+    let bogosorted = bogosortRefs(refs)
+    while (!areStacksEqual(permutationsorted, bogosorted)) {
+        bogosorted = bogosortRefs(refs)
+    }
+    return bogosorted
+}
+
+// Dummy function in place of a true permutationsort - see `Permutationsort.hs`
+const permutationsortRefs = (refs: Reference[]) => refs.sort((a, b) => a.topBit - b.topBit)
+
+// Dummy function in place of a true bogosort
+const bogosortRefs = (refs: Reference[]) => refs.sort((a, b) => a.topBit - b.topBit)
 
 const getSortedArrayFromBytestacks = (bytestacks: Bytestack[]): number[] => {
     const sortedArray: number[] = []
