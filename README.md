@@ -3,6 +3,9 @@
 The goal of this project is to explore what a sorting algorithm that 
 prioritizes robustness would look like
 
+DISCLAIMER: This project is still under construction. The basic ideas are all there, but still need to be 
+tied together and made to look pretty =)
+
 ## Inspiration
 
 - [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by David H. Ackley
@@ -16,16 +19,10 @@ prioritizes robustness would look like
 ## Implementation Overview
 
 NOTE! This description is somewhat out of date. Please see the code for details.
-The `bytesort.ts` and `robustsort.ts` files are valid TypeScript, but really 
-they're pseudocode to guide me in writing the Haskell version.
+The `robustsort.ts` files is valid TypeScript, but really 
+it's pseudocode to guide me in writing the Haskell version.
 
-Notably, some of the subsidiary sorting functions (like bubblesort) are cheated 
-using regular sort() methods that will function equivalently in code without 
-errors, but do not provide the  same benefits to robustness that the real 
-methods do. These real subsidiary  sorting functions will of course be defined 
-in the Haskell version of the code.
-
-Once these modules are ported to Haskell (which I'll do soon), the package 
+Once this module is ported to Haskell (which I'll do soon), the package 
 should function correctly
 
 ...
@@ -40,8 +37,8 @@ appearance, Bytesort, Robustsort, Permutaionsort, and Magicsort. Get ready!
 
 ### Bytesort
 
-NOTE! This description is somewhat out of date. Please see `bytesort.ts` for 
-current pseudocode
+NOTE! This description is somewhat out of date. Please see `Bytesort.hs` for 
+details
 
 Bytesort is my attempt to write the most robust O(n log n) sorting algorithm 
 possible while avoiding anything that Ackley might consider a "cheap hack." 
