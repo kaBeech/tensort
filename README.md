@@ -19,7 +19,7 @@ tied together and made to look pretty =)
 ## Implementation Overview
 
 NOTE! This description is somewhat out of date. Please see the code for details.
-The code for `Bytesort.hs` and its dependencies fairly well documented and is 
+The code for `Bytesort.hs` and its dependencies\ is fairly well documented and is 
 *almost* completely valid Haskell. The `robustsort.ts` file is valid TypeScript, 
 but really it's pseudocode to guide me in writing the Haskell version. It's not 
 as well documented as the Haskell code, but is likely easy enough to follow
