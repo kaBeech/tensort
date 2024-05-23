@@ -1,5 +1,5 @@
 -- module Data.Robustsort.Utils.Bytes (convertRawBitsToBytes, getBytestacksFromBytes, getSortedArrayFromBytestacks, reduceBytestacks) where
-module Data.Robustsort.Utils.Bytes (convertRawBitsToBytes, getBytestoreFromBytes, getBytestacksFromBytes) where
+module Data.Robustsort.Utils.Bytes (convertRawBitsToBytes, getBytestoreFromBytes, getBytestacksFromBytes, reduceBytestacks, reduceBytestacksSinglePass, createBytestack, getRegisterFromMetabytes, getTopBitFromBytestack) where
 
 import Data.Robustsort.Subalgorithms.Bubblesort (bubblesort, bubblesortRecords)
 import Data.Robustsort.Utils.Split (splitEvery)
@@ -65,3 +65,85 @@ getBytestoreFromBytes bytes = do
     acc :: [Byte] -> [Record] -> Int -> [Record]
     acc [] register _ = register
     acc (byte : remainingBytes) register i = acc remainingBytes (register ++ [(i, last byte)]) (i + 1)
+
+-- | Take a list of Bytestacks (Metabytes) and group them together in new
+--   Bytestacks, each containing bytesize number of Metabytes (former
+--   Bytestacks), until the number of Bytestacks is equal to the bytesize
+
+-- | The Registers of the new Bytestacks are bubblesorted, as usual
+
+-- | ==== __Examples__
+-- >>> reduceBytestacks [Metabyte (Register [(0, 33), (1, 38)], Memory [[31, 33], [35, 38]]), Metabyte (Register [(0, 34), (1, 37)], Memory [[32, 14], [36, 37]]), Metabyte (Register [(0, 23), (1, 27)], Memory [[21, 23], [25, 27]]), Metabyte (Register [(0, 24), (1, 28)], Memory [[22, 24], [26, 28]]),Metabyte (Register [(0,13),(1,18)],Memory [[11,13],[15,18]]),Metabyte (Register [(0,14),(1,17)],Memory [[12,14],[16,17]]),Metabyte (Register [(0,3),(1,7)],Memory [[1,3],[5,7]]),Metabyte (Register [(0,4),(1,8)],Memory [[2,4],[6,8]])] 2
+-- [Metabyte (Register [(0,28),(1,38)],BigMemory [Metabyte (Register [(0,27),(1,28)],BigMemory [Metabyte (Register [(0,23),(1,27)],Memory [[21,23],[25,27]]),Metabyte (Register [(0,24),(1,28)],Memory [[22,24],[26,28]])]),Metabyte (Register [(1,37),(0,38)],BigMemory [Metabyte (Register [(0,33),(1,38)],Memory [[31,33],[35,38]]),Metabyte (Register [(0,34),(1,37)],Memory [[32,14],[36,37]])])]),Metabyte (Register [(0,8),(1,18)],BigMemory [Metabyte (Register [(0,7),(1,8)],BigMemory [Metabyte (Register [(0,3),(1,7)],Memory [[1,3],[5,7]]),Metabyte (Register [(0,4),(1,8)],Memory [[2,4],[6,8]])]),Metabyte (Register [(1,17),(0,18)],BigMemory [Metabyte (Register [(0,13),(1,18)],Memory [[11,13],[15,18]]),Metabyte (Register [(0,14),(1,17)],Memory [[12,14],[16,17]])])])]
+reduceBytestacks :: [Bytestack] -> Int -> [Bytestack]
+reduceBytestacks bytestacks bytesize = do
+  let newBytestacks = reduceBytestacksSinglePass bytestacks bytesize
+  if length newBytestacks <= bytesize
+    then newBytestacks
+    else reduceBytestacks newBytestacks bytesize
+
+-- | Take a list of Bytestacks (Metabytes) and group them together in new
+--   Bytestacks each containing bytesize number of Metabytes (former Bytestacks)
+
+-- | The Registers of the new Bytestacks are bubblesorted, as usual
+
+-- | ==== __Examples__
+-- >>> reduceBytestacks [Metabyte (Register [(0,13),(1,18)],Memory [[11,13],[15,18]]),Metabyte (Register [(0,14),(1,17)],Memory [[12,14],[16,17]]),Metabyte (Register [(0,3),(1,7)],Memory [[1,3],[5,7]]),Metabyte (Register [(0,4),(1,8)],Memory [[2,4],[6,8]])] 2
+-- [Metabyte (Register [(0,7),(1,8)],BigMemory [Metabyte (Register [(0,3),(1,7)],Memory [[1,3],[5,7]]),Metabyte (Register [(0,4),(1,8)],Memory [[2,4],[6,8]])]),Metabyte (Register [(1,17),(0,18)],BigMemory [Metabyte (Register [(0,13),(1,18)],Memory [[11,13],[15,18]]),Metabyte (Register [(0,14),(1,17)],Memory [[12,14],[16,17]])])]
+reduceBytestacksSinglePass :: [Bytestack] -> Int -> [Bytestack]
+reduceBytestacksSinglePass bytestacks bytesize = foldr acc [] (splitEvery bytesize bytestacks)
+  where
+    acc :: [Bytestack] -> [Bytestack] -> [Bytestack]
+    acc bytestack newBytestacks = newBytestacks ++ [createBytestack bytestack]
+
+-- | Create a Bytestack with the collated and bubblesorted References from the
+--   Metabytes as the Register and the original Metabytes as the data
+
+-- | ==== __Examples__
+-- >>> createBytestack [Metabyte (Register [(0,13),(1,18)],Memory [[11,13],[15,18]]),Metabyte (Register [(1,14),(0,17)],Memory [[16,17],[12,14]])]
+-- Metabyte (Register [(1,17),(0,18)],BigMemory [Metabyte (Register [(0,13),(1,18)],Memory [[11,13],[15,18]]),Metabyte (Register [(1,14),(0,17)],Memory [[16,17],[12,14]])])
+createBytestack :: [Metabyte] -> Bytestack
+createBytestack metabytes = Metabyte (Register (bubblesortRecords (getRegisterFromMetabytes metabytes)), BigMemory metabytes)
+
+-- | For each Metabyte, produces a Record by combining the top bit of the
+--  Metabyte with an index value for its Address
+
+-- | Note that this output is not sorted. Sorting is done in the 
+--   createBytestack function
+
+-- | ==== __Examples__
+-- >>> getRegisterFromMetabytes [Metabyte (Register [(0,13),(1,18)],Memory [[11,13],[15,18]]),Metabyte (Register [(0,14),(1,17)],Memory [[12,14],[16,17]]),Metabyte (Register [(0,3),(1,7)],Memory [[1,3],[5,7]]),Metabyte (Register [(0,4),(1,8)],Memory [[2,4],[6,8]])]
+-- [(0,18),(1,17),(2,7),(3,8)]
+getRegisterFromMetabytes :: [Metabyte] -> [Record]
+getRegisterFromMetabytes metabytes = acc metabytes []
+  where
+    acc :: [Metabyte] -> [Record] -> [Record]
+    acc [] refs = refs
+    acc (metabyte : remainingMetabytes) refs = acc remainingMetabytes (refs ++ [(i, getTopBitFromBytestack metabyte)])
+      where
+        i = length refs
+
+-- const getTopBitFromBytestack = (bytestack: Bytestack): number | null => {
+--     const topRef = bytestack.register[bytestack.register.length - 1]
+--     switch (typeof topRef) {
+--         case "undefined": {
+--             return null
+--         }
+--         default: return topRef.topBit
+--     }
+--
+-- }
+
+-- | Get the top Bit from a Bytestack
+
+-- | The top Bit is the last Bit in the last Byte referenced in the last record 
+--   of the Metabyte referenced in the last record of the last Metabyte of...
+--   and so on until you reach the top level of the Bytestack
+
+-- | This is also expected to be the highest value in the Bytestack
+
+-- | ==== __Examples__
+-- >>> getTopBitFromBytestack (Metabyte (Register [(0,28),(1,38)],BigMemory [Metabyte (Register [(0,27),(1,28)],BigMemory [Metabyte (Register [(0,23),(1,27)],Memory [[21,23],[25,27]]),Metabyte (Register [(0,24),(1,28)],Memory [[22,24],[26,28]])]),Metabyte (Register [(1,37),(0,38)],BigMemory [Metabyte (Register [(0,33),(1,38)],Memory [[31,33],[35,38]]),Metabyte (Register [(0,34),(1,37)],Memory [[32,14],[36,37]])])]))
+-- 38
+getTopBitFromBytestack :: Metabyte -> Int
+getTopBitFromBytestack (Metabyte (Register register, _)) = snd (last register)
