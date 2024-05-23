@@ -64,37 +64,25 @@ element of the list to be sorted. A group of Bits is known as a Byte.
 A Byte is an array of Bits. The maximum length of a Byte is set according to an 
 argument passsed to Bytesort. In practice, almost all Bytes will be of maximum 
 length until the final steps of Bytesort. In this explanation we will use a 
-4-Bit Bytesort as our example. Several Bytes are grouped together in a Bytemap.
+4-Bit Bytesort as our example. Several Bytes are grouped together in a Bytestore.
 
-A Bytemap is an array with two elements. The second element is an array of 
-Bytes. The length of this array is equal to the Bytesize. The first element 
-is an array of integers (ranging from 0 to the Bytesize - 1). These are 
-pointers to the Bytes, each containing the index of the 
-Byte they point to. They are arranged in the order that the Bytes are sorted 
-(this will be clarified soon). Several Bytemaps are grouped together in a 
-Metabyte.
+A Bytestore is an array with two elements. The second element is an array of 
+Bytes known as Memory. The length of this Memory array is equal to the Bytesize.
+The first element is a Register of Records, each of which has an Address 
+pointing to a Byte in memory and a copy of the TopBit in the referenced Byte. 
+These Records are arranged in the order that the Bytes are sorted (this will be 
+clarified soon). Several Bytestores are grouped together in a Metabyte.
 
 A Metabyte is an array with two elements. The second element is an array of 
-either Bytemaps or other Metabytes. The length of this array is equal to the 
-Bytesize. Similar to as in a Bytemap, the first 
+either Bytestores or other Metabytes. The length of this array is equal to the 
+Bytesize. Similar to as in a Bytestore, the first 
 element in a Metabyte is an array of integer pointers representing the indices 
-of the Bytemaps/Metabytes appearing in the second element.
+of the Bytestores/Metabytes appearing in the second element.
 
-A Bytestack is a top-level Metabyte along with all the Bits, Bytes, Bytemaps, 
+A Bytestack is a top-level Metabyte along with all the Bits, Bytes, Bytestores, 
 and Metabytes it contains. Once the Metabytes are fully built, the total number 
 of Bytestacks will equal the Bytesize, but before that point there will be many 
 more Bytestacks.
-
-A Stackmap is an array with two elements. The second element is an array of 
-Bytestacks. The length of this array is equal to the 
-Bytesize. Similar to as in a Bytemap, the first 
-element in a Metabyte is an array of integer pointers representing the indices 
-of the Bytemaps/Metabytes appearing in the second element.
-
-A Package is an array with two elements. The second element is a copy of a bit 
-from the top of a Bytestack. [The first element is an integer representing 
-the index of the bit's Bytestack in its Stackmap I think? I'm writing this note 
-way after I wrote the rest of this and trying to make sense of it ^_^]
 
 Now, on to the algorithm!
 
@@ -108,24 +96,28 @@ to make mistakes when the list is already nearly sorted.
 more Write operations on the Bits until the final steps. Instead, we will make 
 copies of the Bits and sort the copies alongside their pointers.
 
-3 - Assemble Bytemaps by grouping Bytes together (setting them as the Bytemap's 
-second element), making Packages from their top bits, running Bubblesort on the 
-Packages, and then recording the Pointers from the Packages (after being 
-sorted) as the Bytemap's first element.
+3 - Assemble Bytestores by grouping Bytes together (setting them as the Bytestore's 
+second element), making Records from their top bits, running Bubblesort on the 
+Records, and then recording the Pointers from the Records (after being 
+sorted) as the Bytestore's first element.
 
-4 - Assemble Metabytes by grouping Bytemaps together (setting them as the 
-Metabyte's second element), making Packages from their top Bits, running 
-Bubblesort on the Packages, and then recording the Pointers from the Packages 
-(after being sorted) as the Bytemap's first element.
+4 - Assemble Metabytes by grouping Bytestores together (setting them as the 
+Metabyte's second element), making Records from their top Bits, running 
+Bubblesort on the Records, and then recording the Pointers from the Records 
+(after being sorted) as the Bytestore's first element.
 
 5 - Assemble Metabytes by grouping existing Metabytes together, using a similar 
 process as in Steps 3 and 4.
 
 6 - Repeat Step 5 until the number of Bytestacks equals the Bytesize
 
-7 - Make Packages from the top Bits on each Bytestack and use Bubblesort on the 
-Packages.
+7 - Make Records from the top Bits on each Bytestack and use Bubblesort on the 
+Records.
 
+8 - Remove the top Bit from the top Bytestack, add it to the final sorted list, 
+and rebalance the Bytestack
+
+9 - Repeat Step 8 until all Bytestacks are empty
 ...
 
 <!-- It seems to me that ... is more time  -->
