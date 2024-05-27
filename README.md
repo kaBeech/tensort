@@ -175,7 +175,20 @@ mistakenly added (121, 122, and 123) are impossible to have been selected.
 
 #### How does this work?
 
+Bubblesort leverages the robustness of Bubblesort while reducing the time 
+required by never Bubblesorting the entire input. 
 
+We are able to do this because A) Bubblesort is really good at making sure the 
+last element is in the final 
+position of a list, and B) at each step of Bytesort the only element we 
+*really* care about is the last element (TopBit) of a given list 
+(Byte/Bytestore).
+
+As the Bytesize approaches the square root of the number of elements in the 
+input list, its time efficiency approaches O(n^2), but its robustness 
+increases (if I'm thinking about that correctly at least - benchmarks to 
+come!). I speculate that Bytesort will tend to be most useful with Bytesizes 
+between 2 and 4.
 
 Alright! Now we have a simple sorting algorithm absent of cheap hacks that is 
 both relatively fast and relatively robust. I'm pretty happy with that!
