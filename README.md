@@ -18,18 +18,6 @@ tied together and made to look pretty =)
 
 ## Implementation Overview
 
-NOTE! This description is somewhat out of date. Please see the code for details.
-The code for `Bytesort.hs` and its dependencies\ is fairly well documented and is 
-*almost* completely valid Haskell. The `robustsort.ts` file is valid TypeScript, 
-but really it's pseudocode to guide me in writing the Haskell version. It's not 
-as well documented as the Haskell code, but is likely easy enough to follow
-once you understand bytesort
-
-Unfortunately I also have to get paid and can't spend *all* my time writing 
-Haskell, but I intend to have everything functioning soon =)
-
-...
-
 Please note that we will discuss a few algorithms that I've either made up or 
 am just not familiar with by other names. If any of these algorithms have 
 previously been named, please let me know. Prior to this project I really 
@@ -51,9 +39,6 @@ appearance, Bytesort, Robustsort, Permutaionsort, and Magicsort. Get ready!
 ### Bytesort
 
 #### Introduction
-
-NOTE! This description is somewhat out of date. Please see `Bytesort.hs` for 
-details
 
 Bytesort is my attempt to write the most robust O(n log n) sorting algorithm 
 possible while avoiding anything that Ackley might consider a "cheap hack." 
@@ -83,14 +68,15 @@ Register <- List of Records referencing each Byte or Bytestore in Memory
 Record <- Tuple of the Address and the TopBit of the referenced Byte or Bytestore
 Address <- Pointer to a Byte in Memory
 TopBit <- Value of the Bit at the top of the stack in a Byte or Bytestore
+SubAlgorithm <- The sorting sub-algorithm used at various stages
 
 In Bytesort, the smallest unit of information is a Bit. Each Bit stores one 
 element of the list to be sorted. A group of Bits is known as a Byte. 
 
 A Byte is a list of Bits. The maximum length of a Byte is set according to an 
 argument passed to Bytesort. In practice, almost all Bytes will be of maximum 
-length until the final steps of Bytesort. In this explanation we will use a 
-4-Bit Bytesort as our example. Several Bytes are grouped together in a Bytestore.
+length until the final steps of Bytesort. Several Bytes are grouped together 
+in a Bytestore.
 
 A Bytestore is a tuple with two elements. The second element is a list of 
 Bytes known as Memory. The length of this Memory list is equal to the Bytesize.
@@ -105,10 +91,15 @@ clarified soon).
 <!-- element in a Metabyte is an array of integer pointers representing the indices  -->
 <!-- of the Bytestores/Metabytes appearing in the second element. -->
 
-A Bytestack is a top-level Metabyte along with all the Bits, Bytes, and 
+A Bytestack is a top-level Bytestore along with all the Bits, Bytes, and 
 Bytestores it contains. Once the Bytestores are fully built, the total number 
 of Bytestacks will equal the Bytesize, but before that point there will be many 
 more Bytestacks.
+
+The sorting SubAlgorithm will be used any time we sort something within 
+Bytesort. The choice of this SubAlgorithm is very important. For reasons that 
+will become clear soon, the SubAlgorithm will canonically be Bubblesort, but 
+it is sometimes useful to substitute another sorting algorithm.
 
 Now, on to the algorithm!
 
@@ -120,28 +111,28 @@ to make mistakes when the list is already nearly sorted.
 
 1 - Randomize the input list of elements (Bits)
 
-2 - Assemble Bytes by using Bubblesort on the Bits. After this, we will do no 
-more write operations on the Bits until the final steps. Instead, we will make 
-copies of the Bits and sort the copies alongside their pointers.
+2 - Assemble Bytes by sorting the Bits using the SubAlgorithm. After this, we 
+will do no more write operations on the Bits until the final steps. Instead, we 
+will make copies of the Bits and sort the copies alongside their pointers.
 
 3 - Assemble Bytestacks by creating Bytestores from the Bytes. Bytestores are 
 created by grouping Bytes together (setting them as the Bytestore's 
-second element), making Records from their top bits, running Bubblesort on the 
-Records, and then recording the Pointers from the Records (after being 
-sorted) as the Bytestore's first element.
+second element), making Records from their top bits, sorting the records, and 
+then recording the Pointers from the Records (after being sorted) as the 
+Bytestore's first element.
 
 4 - Reduce the number of Bytestacks by creating a new layer of Bytestores from 
 the Bytestores created in Step 3. These new Bytestores are created by grouping 
 the first layer of Bytestores together (setting them as the new Bytestore's 
-second element), making Records from their top Bits, running 
-Bubblesort on the Records, and then recording the Pointers from the Records 
+second element), making Records from their top Bits, sorting the Records, and 
+then recording the Pointers from the Records 
 (after being sorted) as the Bytestore's first element.
 
 5 - Continue in the same manner as in Step 4 until the number of Bytestacks 
 equals the Bytesize
 
 6 - Assemble a top Register by Making Records from the Top Bits on each 
-Bytestack and use Bubblesort on the Records.
+Bytestack and sort the Records.
 
 7 - Remove the Top Bit from the top Byte in the top Bytestack and add it to the 
 final Sorted List.
@@ -152,15 +143,15 @@ the Record that points to it from its Bytestore's Register. Do this recursively
 until the Bytestore is not empty or the top of the Bytestack is reached. If the 
 entire Bytestack is empty of Bits, remove its Record from the top Register. If 
 all Bytestacks are empty of Bits, return the final Sorted List. Otherwise, 
-re-Bubblesort the top Register
+re-sort the top Register
 
 9 - Otherwise (the top Byte (or a Bytestore that contains it) is not empty), 
 update the top Byte's (or Bytestore's) Record with its 
-new Top Bit and re-Bubblesort its Bytestore's Register. Then jump up a level to 
+new Top Bit and re-sort its Bytestore's Register. Then jump up a level to 
 the Bytestore that contains that Bytestore and update the top Bytestore's Record
-with its new Top Bit and re-Bubblesort its Register. Do this recursively until
+with its new Top Bit and re-sort its Register. Do this recursively until
 the whole Bytestack is rebalanced. Then update the Bytestack's Record in the 
-top Register with its new Top Bit and re-Bubblesort the top Register.
+top Register with its new Top Bit and re-sort the top Register.
 
 <!-- It seems to me that ... is more time  -->
 <!-- efficient than... , though it is less space-efficient. It also seems more  -->
@@ -181,6 +172,10 @@ everything performs as expected, but if something unexpected happens
 during an operation where we intend to add 124 to the final list  
 and we add a different element instead, three of the best-case elements to have
 mistakenly added (121, 122, and 123) are impossible to have been selected.
+
+#### How does this work?
+
+
 
 Alright! Now we have a simple sorting algorithm absent of cheap hacks that is 
 both relatively fast and relatively robust. I'm pretty happy with that!
@@ -221,39 +216,49 @@ utilizing some solution-checking on the (sub-)algorithmic level while still:
 
 With those ground rules in place, let's get to Robustsort!
 
+<!-- Once we have Bytesort in our toolbox, the road to Robustsort is pretty simple.  -->
+<!-- At its core, Robustsort is a 3-bit Bytesort with some extra parallelism baked  -->
+<!-- in. Why 3-bit? It's because of the power of threes. -->
+
 Once we have Bytesort in our toolbox, the road to Robustsort is pretty simple. 
-At its core, Robustsort is a 3-bit Bytesort with some extra parallelism baked 
-in. Why 3-bit? It's because of the power of threes.
+Robustsort is a 3-bit Bytesort with a custom SubAlgorithm that compares other 
+sub-algorithms. We use a 3-bit Bytesort here because there's something 
+magical that happens around these numbers.
 
-In Bytesort, we repeatedly run Bubblesort to sort our pointers. In Robustsort, 
-instead of simply taking the output from Bubblesort, we compare it to another 
-algorithm to see if they match.
-
-We use a 4-bit Bytesort as the standard above because there's something 
-magical that happens around these numbers. Robust sorting algorithms tend to be 
+Robust sorting algorithms tend to be 
 slow. Bubblesort, for example, has an average time efficiency of O(n^2), 
 compared with Quicksort and Mergesort, which both have an average of (n log n).
 
 Here's the trick though: with small numbers the difference between these values 
 is minimal. For example, when n=4, Mergesort will make 6 comparisons, while 
-Bubblesort will make 12. A Bit Array with 4 members is both small enough to run 
+Bubblesort will make 12. A Byte holding 4 Bites is both small enough to run 
 the Bubblesort quickly and large enough to allow multiple opportunities for a 
-mistake to be corrected. Since we don't have much built-in parallelism, we want 
-to weight more heavily on the side of making more checks.
+mistake to be corrected. Since we don't as much built-in parallelism in 
+Bytesort, it can make sense to weight more heavily on the side of making more 
+checks.
 
-In Robustsort, however, we do have built-in parallelism, so we can afford to 
-make less checks during this step. We choose a byte size of 9 because a Bit 
-Array with 3 elements has some special properties. For one thing, sorting at 
+In Robustsort, however, we have parallelism built into the SubAlgorithm, so we 
+can afford to make less checks during this step. We choose a Bytesize of 
+3 because a list of
+3 Bits has some special properties. For one thing, sorting at 
 this length greatly reduces the time it takes to run our slow-but-robust 
 algorithms. For example, at this size, Bubblesort will make only 6 comparisons. 
 Mergesort still makes 6 as well.
 
 In addition, when making a mistake while sorting 3 elements, the mistake is 
-most likely to displace an element by only 1 position (or 2 positions at the
-maximum), no matter which algorithm is used.
+will displace an element by only 1 or 2 positions at the, no matter which 
+algorithm is used.
 
 This is all to say that using a 3-bit byte size allows us to have our pick of 
 algorithms to compare with!
+
+Note: One might ask why we don't use a Bytesize of 2, since it would be even faster
+and still have the same property of displacing an element by only 1 or 2
+positions. Well, how many different algorithms can you use to sort 2 elements?
+At this length, most algorithms function equivalently (in terms of the 
+sub-operations performed) and in my mind running two such algorithms is 
+equivalent to re-running a single algorithm (which violates the requirements 
+of this project).
 
 When choosing our comparison algorithm, we want something with logic 
 substantially different than Bubblesort, for the sake of robustness. We do, 
