@@ -50,13 +50,15 @@ appearance, Bytesort, Robustsort, Permutaionsort, and Magicsort. Get ready!
 
 ### Bytesort
 
+#### Introduction
+
 NOTE! This description is somewhat out of date. Please see `Bytesort.hs` for 
 details
 
 Bytesort is my attempt to write the most robust O(n log n) sorting algorithm 
 possible while avoiding anything that Ackley might consider a "cheap hack." 
 My hope is that it will be, if not competitive with Bubblesort in robustness, 
-it at least is a major improvement over Quicksort and Mergesort. 
+at least a major improvement over Quicksort and Mergesort. 
 
 Again, I'm not well-studied in sorting algorithms, so this may well be known 
 already under another name. After settling on this algorithm, I looked into 
@@ -71,33 +73,46 @@ fear not!
 
 <!-- [image1] -->
 
-In Bytesort, the smallest unit of information is a Bit. Each bit stores one 
+#### Structure
+
+Bit <- Element of the list to be sorted
+Byte <- List of Bits
+Bytestore <- Tuple of a Register list and a Memory list
+Memory <- List of Bytes or Bytestores contained in the current Bytestore
+Register <- List of Records referencing each Byte or Bytestore in Memory
+Record <- Tuple of the Address and the TopBit of the referenced Byte or Bytestore
+Address <- Pointer to a Byte in Memory
+TopBit <- Value of the Bit at the top of the stack in a Byte or Bytestore
+
+In Bytesort, the smallest unit of information is a Bit. Each Bit stores one 
 element of the list to be sorted. A group of Bits is known as a Byte. 
 
-A Byte is an array of Bits. The maximum length of a Byte is set according to an 
+A Byte is a list of Bits. The maximum length of a Byte is set according to an 
 argument passed to Bytesort. In practice, almost all Bytes will be of maximum 
 length until the final steps of Bytesort. In this explanation we will use a 
 4-Bit Bytesort as our example. Several Bytes are grouped together in a Bytestore.
 
-A Bytestore is an array with two elements. The second element is an array of 
-Bytes known as Memory. The length of this Memory array is equal to the Bytesize.
+A Bytestore is a tuple with two elements. The second element is a list of 
+Bytes known as Memory. The length of this Memory list is equal to the Bytesize.
 The first element is a Register of Records, each of which has an Address 
 pointing to a Byte in memory and a copy of the TopBit in the referenced Byte. 
 These Records are arranged in the order that the Bytes are sorted (this will be 
-clarified soon). Several Bytestores are grouped together in a Metabyte.
+clarified soon).
 
-A Metabyte is an array with two elements. The second element is an array of 
-either Bytestores or other Metabytes. The length of this array is equal to the 
-Bytesize. Similar to as in a Bytestore, the first 
-element in a Metabyte is an array of integer pointers representing the indices 
-of the Bytestores/Metabytes appearing in the second element.
+<!-- A Metabyte is an array with two elements. The second element is an array of  -->
+<!-- either Bytestores or other Metabytes. The length of this array is equal to the  -->
+<!-- Bytesize. Similar to as in a Bytestore, the first  -->
+<!-- element in a Metabyte is an array of integer pointers representing the indices  -->
+<!-- of the Bytestores/Metabytes appearing in the second element. -->
 
-A Bytestack is a top-level Metabyte along with all the Bits, Bytes, Bytestores, 
-and Metabytes it contains. Once the Metabytes are fully built, the total number 
+A Bytestack is a top-level Metabyte along with all the Bits, Bytes, and 
+Bytestores it contains. Once the Bytestores are fully built, the total number 
 of Bytestacks will equal the Bytesize, but before that point there will be many 
 more Bytestacks.
 
 Now, on to the algorithm!
+
+#### Algorithm
 
 The first step in Bytesort is to randomize the input list. I'll explain why we 
 do this in more detail later - for now just know that it's easier for Bytesort 
@@ -106,32 +121,46 @@ to make mistakes when the list is already nearly sorted.
 1 - Randomize the input list of elements (Bits)
 
 2 - Assemble Bytes by using Bubblesort on the Bits. After this, we will do no 
-more Write operations on the Bits until the final steps. Instead, we will make 
+more write operations on the Bits until the final steps. Instead, we will make 
 copies of the Bits and sort the copies alongside their pointers.
 
-3 - Assemble Bytestores by grouping Bytes together (setting them as the Bytestore's 
+3 - Assemble Bytestacks by creating Bytestores from the Bytes. Bytestores are 
+created by grouping Bytes together (setting them as the Bytestore's 
 second element), making Records from their top bits, running Bubblesort on the 
 Records, and then recording the Pointers from the Records (after being 
 sorted) as the Bytestore's first element.
 
-4 - Assemble Metabytes by grouping Bytestores together (setting them as the 
-Metabyte's second element), making Records from their top Bits, running 
+4 - Reduce the number of Bytestacks by creating a new layer of Bytestores from 
+the Bytestores created in Step 3. These new Bytestores are created by grouping 
+the first layer of Bytestores together (setting them as the new Bytestore's 
+second element), making Records from their top Bits, running 
 Bubblesort on the Records, and then recording the Pointers from the Records 
 (after being sorted) as the Bytestore's first element.
 
-5 - Assemble Metabytes by grouping existing Metabytes together, using a similar 
-process as in Steps 3 and 4.
+5 - Continue in the same manner as in Step 4 until the number of Bytestacks 
+equals the Bytesize
 
-6 - Repeat Step 5 until the number of Bytestacks equals the Bytesize
+6 - Assemble a top Register by Making Records from the Top Bits on each 
+Bytestack and use Bubblesort on the Records.
 
-7 - Make Records from the top Bits on each Bytestack and use Bubblesort on the 
-Records.
+7 - Remove the Top Bit from the top Byte in the top Bytestack and add it to the 
+final Sorted List.
 
-8 - Remove the top Bit from the top Bytestack, add it to the final sorted list, 
-and rebalance the Bytestack
+8 - If the top Byte in the top Bytestack is empty, remove the Record that 
+points to it from its Bytestore's Register. If the Bytestore is empty, remove
+the Record that points to it from its Bytestore's Register. Do this recursively 
+until the Bytestore is not empty or the top of the Bytestack is reached. If the 
+entire Bytestack is empty of Bits, remove its Record from the top Register. If 
+all Bytestacks are empty of Bits, return the final Sorted List. Otherwise, 
+re-Bubblesort the top Register
 
-9 - Repeat Step 8 until all Bytestacks are empty
-...
+9 - Otherwise (the top Byte (or a Bytestore that contains it) is not empty), 
+update the top Byte's (or Bytestore's) Record with its 
+new Top Bit and re-Bubblesort its Bytestore's Register. Then jump up a level to 
+the Bytestore that contains that Bytestore and update the top Bytestore's Record
+with its new Top Bit and re-Bubblesort its Register. Do this recursively until
+the whole Bytestack is rebalanced. Then update the Bytestack's Record in the 
+top Register with its new Top Bit and re-Bubblesort the top Register.
 
 <!-- It seems to me that ... is more time  -->
 <!-- efficient than... , though it is less space-efficient. It also seems more  -->
@@ -140,8 +169,6 @@ and rebalance the Bytestack
 <!-- determinations. It's entirely possible that this method could be improved  -->
 <!-- (perhaps by using an [in-place data structure] and some clever swaperations).  -->
 <!-- As always, constructive feedback is welcome! -->
-
-...
 
 Now that we know all the steps, it's easier to see why we randomize the list
 as the beginning step. This way, if the list is already nearly 
@@ -154,8 +181,6 @@ everything performs as expected, but if something unexpected happens
 during an operation where we intend to add 124 to the final list  
 and we add a different element instead, three of the best-case elements to have
 mistakenly added (121, 122, and 123) are impossible to have been selected.
-
-...
 
 Alright! Now we have a simple sorting algorithm absent of cheap hacks that is 
 both relatively fast and relatively robust. I'm pretty happy with that!
