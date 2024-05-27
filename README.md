@@ -281,6 +281,9 @@ of this project).
 Before moving further, let's talk a little about Bubblesort, and why we're 
 using it in our SubAlgorithm.
 
+As a reminder, Bubblesort will make an average of 6 comparisons when sorting
+a 3-element list.
+
 We've said before that Bubblesort is likely to put the last element in the 
 correct position. Let's examine this in the context of Bubblesorting a 
 3-element list.
@@ -313,7 +316,10 @@ multiple times. And, as mentioned above, the element that is most important to
 our sorting is the top (biggest) element, by a large degree.
 
 With these priorities in mind, the comparison algorithm we choose shall be a 
-reverse Exchangesort.
+Reverse Exchangesort.
+
+Reverse Exchangesort will also make an average of 6 comparisons when sorting a
+3-element list.
 
 As with Bubblesort, Exchangesort will perform three iterations over a 3-element
 list, with the final iteration being redundant.
@@ -374,6 +380,34 @@ Permutationsort
 
 #### Permutationsort
 
+Permutationsort is a simple, brute-force sorting algorithm. As a first step we 
+generate all the different ways the elements could possibly be arranged in the 
+list. Then we loop over this list of permutations until we find one that is in 
+the right order. We check if a permutation is in the right order by comparing
+the first two elements, if they are in the right order comparing the next two
+elements, and so on until we either find two elements that are out of order or
+we confirm that the list is in order
+
+Permutationsort will also make an average of 7 comparisons when sorting a 
+3-element list. This is slightly more than the other algorithms examined but
+it's worth it because A) the spread of outcomes is favorable for our needs, and 
+B) it uses logic that is completely different from Bubblesort and Reverse
+Exchangesort. Using different manners of reasoning to reach an agreed-upon answer greatly 
+increases the robustness of the system.
+
+Given a Byte of [1,2,3], here are the chances of various outcomes from using a
+faulty comparator that gives a random result 10% of the time:
+
+~68.67% <- [1,2,3] (correct)
+~7.63% <- [2,1,3] (faulty first comparator)
+~7.63% <- [3,1,2] (faulty first comparator)
+~7.63% <- [1,3,2] (faulty second comparator)
+~7.63% <- [2,3,1] (faulty second comparator)
+~0.85% <- [3,2,1] (faulty first and second comparator)
+
+In these cases, 76.6% of the time the Top Bit will be in the correct position. 
+Notably the least likely outcome is a reverse-sorted Byte and the other 
+possible incorrect outcomes are in even distribution with each other.
 
 ...the most robust, most correct, and all-around best algorithm of all time: 
 Bogosort
