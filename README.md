@@ -1,4 +1,4 @@
-# RobustSort
+# Robustsort
 
 The goal of this project is to explore what a sorting algorithm that 
 prioritizes robustness would look like
@@ -13,7 +13,7 @@ tied together and made to look pretty =)
 
 ## Project structure
 
-- `src/` contains the RobustSort library
+- `src/` contains the Robustsort library
 - `app/` contains the suite for comparing different sorting algorithms in terms of robustness and time efficiency
 
 ## Implementation Overview
@@ -75,7 +75,7 @@ In Bytesort, the smallest unit of information is a Bit. Each bit stores one
 element of the list to be sorted. A group of Bits is known as a Byte. 
 
 A Byte is an array of Bits. The maximum length of a Byte is set according to an 
-argument passsed to Bytesort. In practice, almost all Bytes will be of maximum 
+argument passed to Bytesort. In practice, almost all Bytes will be of maximum 
 length until the final steps of Bytesort. In this explanation we will use a 
 4-Bit Bytesort as our example. Several Bytes are grouped together in a Bytestore.
 
@@ -143,7 +143,7 @@ and rebalance the Bytestack
 
 ...
 
-Now that we know all the steps, it's easier to see why we randomize the list. 
+Now that we know all the steps, it's easier to see why we randomize the list
 as the beginning step. This way, if the list is already nearly 
 sorted, values close to each other don't get stuck under each other in their 
 Byte. Ideally, we want the top Bits from all Bytestacks to be close to 
@@ -171,8 +171,8 @@ current pseudocode
 
 In Beyond Efficiency, Ackley augmented Mergesort and Quicksort with what he 
 called "cheap hacks" in order to give them a boost in robustness to get them to 
-compare with Bubblesort. This amounted to adding a quarum system to the 
-unpredictable comparison operator and choosing the most-agreed-apon answer. 
+compare with Bubblesort. This amounted to adding a quorum system to the 
+unpredictable comparison operator and choosing the most-agreed-upon answer. 
 
 I agree that adding a quorum for the unpredictable comparison operator is a bit 
 of a cheap hack, or at least a post-hoc solution to a known problem. Instead of 
@@ -231,7 +231,7 @@ This is all to say that using a 3-bit byte size allows us to have our pick of
 algorithms to compare with!
 
 When choosing our comparison algorithm, we want something with logic 
-substancially different than Bubblesort, for the sake of robustness. We do, 
+substantially different than Bubblesort, for the sake of robustness. We do, 
 however, want something similar to Bubblesort in that it compares our elements 
 multiple times. And, as mentioned above, the element that is most important to 
 our sorting is the top (biggest) element, by a large degree.
