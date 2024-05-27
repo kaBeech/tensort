@@ -199,8 +199,7 @@ Now for some cheap hacks!
 
 ### Robustsort
 
-NOTE! This description is somewhat out of date. Please see `robustsort.ts` for 
-current pseudocode
+#### Introduction
 
 In Beyond Efficiency, Ackley augmented Mergesort and Quicksort with what he 
 called "cheap hacks" in order to give them a boost in robustness to get them to 
@@ -233,9 +232,12 @@ With those ground rules in place, let's get to Robustsort!
 <!-- At its core, Robustsort is a 3-bit Bytesort with some extra parallelism baked  -->
 <!-- in. Why 3-bit? It's because of the power of threes. -->
 
+#### Overview
+
 Once we have Bytesort in our toolbox, the road to Robustsort is pretty simple. 
 Robustsort is a 3-bit Bytesort with a custom SubAlgorithm that compares other 
-sub-algorithms. We use a 3-bit Bytesort here because there's something 
+sub-algorithms. For convenience, we will call this custom SubAlgorithm 
+Supersort. We use a 3-bit Bytesort here because there's something 
 magical that happens around these numbers.
 
 Robust sorting algorithms tend to be 
@@ -250,15 +252,16 @@ mistake to be corrected. Since we don't as much built-in parallelism in
 Bytesort, it can make sense to weight more heavily on the side of making more 
 checks.
 
-In Robustsort, however, we have parallelism built into the SubAlgorithm, so we 
-can afford to make less checks during this step. We choose a Bytesize of 
+In Robustsort, however, we have parallelism built into the Supersort 
+SubAlgorithm, so we can afford to make less checks during this step. 
+We choose a Bytesize of 
 3 because a list of
 3 Bits has some special properties. For one thing, sorting at 
 this length greatly reduces the time it takes to run our slow-but-robust 
 algorithms. For example, at this size, Bubblesort will make only 6 comparisons. 
 Mergesort still makes 6 as well.
 
-In addition, when making a mistake while sorting 3 elements, the mistake is 
+In addition, when making a mistake while sorting 3 elements, the mistake 
 will displace an element by only 1 or 2 positions at the, no matter which 
 algorithm is used.
 
@@ -273,8 +276,38 @@ sub-operations performed) and in my mind running two such algorithms is
 equivalent to re-running a single algorithm (which violates the requirements 
 of this project).
 
-When choosing our comparison algorithm, we want something with logic 
-substantially different than Bubblesort, for the sake of robustness. We do, 
+#### Examining Bubblesort
+
+Before moving further, let's talk a little about Bubblesort, and why we're 
+using it in our SubAlgorithm.
+
+We've said before that Bubblesort is likely to put the last element in the 
+correct position. Let's examine this in the context of Bubblesorting a 
+3-element list.
+
+Our implementation of Bubblesort (which mirrors Ackley's) will perform three
+iterations over a 3-element list. After the second iteration, if everything
+goes as planned, the list will be sorted and the final iteration is an extra
+verification step. Therefore, to simplify the analysis, we will consider
+what happens with a faulty comparator during the final iteration, assuming the
+list has been correctly sorted up to that point.
+
+Given a Byte of [1,2,3], here are the chances of various outcomes from using a 
+faulty comparator that gives a random result 10% of the time:
+
+81% <- [1,2,3] (correct - no swaps made)
+9% <- [2,1,3] (faulty first swap)
+9% <- [1,3,2] (faulty second swap)
+1% <- [2,3,1] (faulty first and second swap)
+
+In these cases, 90% of the time the Top Bit will be in the correct position, 
+and in the other cases it will be off by one position, and in no case will the 
+Byte be reverse sorted
+
+#### Reverse Exchangesort
+
+When choosing an algorithm to compare with Bubblesort, we want something with 
+substantially different logic, for the sake of robustness. We do, 
 however, want something similar to Bubblesort in that it compares our elements 
 multiple times. And, as mentioned above, the element that is most important to 
 our sorting is the top (biggest) element, by a large degree.
@@ -282,7 +315,65 @@ our sorting is the top (biggest) element, by a large degree.
 With these priorities in mind, the comparison algorithm we choose shall be a 
 reverse Exchangesort.
 
-...
+As with Bubblesort, Exchangesort will perform three iterations over a 3-element
+list, with the final iteration being redundant.
+
+Given a Byte of [1,2,3], here are the chances of various outcomes from using a 
+faulty comparator that gives a random result 10% of the time:
+
+81% <- [1,2,3] (correct - no swaps made)
+9% <- [2,1,3] (faulty first swap)
+9% <- [3,2,1] (faulty second swap)
+1% <- [3,1,2] (faulty first and second swap)
+
+In these cases, 90% of the time the Top Bit will have the correct value. 
+Notably there is a 9% chance that the Byte will be reverse sorted, but we will 
+exploit this trait later on in the Supersort SubAlgorithm. Note also that the 
+only possible outcomes shared between this example and the Bubblesort example
+are the correct outcome and [2,1,3], which retains the TopBit with the correct 
+value.
+
+#### Introducing Supersort
+
+Supersort is a SubAlgorithm that compares the results of two different
+sorting algorithms, in our case Bubblesort and Reverse Exchangesort. If both 
+algorithms agree on the result, that result is used. 
+
+Looking at our analysis on Bubblesort and Reverse Exchangesort, we can 
+approximate the chances of various outcomes when comparing the results of 
+running these two algorithms in similar conditions:
+
+65.61% <- [1,2,3], [1,2,3] (Agree Correctly)
+7.29% <- [1,2,3], [2,1,3] (Disagree - TopBit agrees correctly)
+7.29% <- [1,2,3], [3,2,1] (Disagree Fully)
+7.29% <- [2,1,3], [1,2,3] (Disagree - TopBit agrees correctly)
+7.29% <- [1,3,2], [1,2,3] (Disagree Fully)
+0.81% <- [2,1,3], [2,1,3] (Agree Incorrectly - TopBit correct)
+0.81% <- [2,1,3], [3,2,1] (Disagree Fully)
+0.81% <- [1,3,2], [2,1,3] (Disagree Fully)
+0.81% <- [1,3,2], [3,2,1] (Disagree Fully)
+0.09% <- [2,1,3], [3,1,2] (Disagree Fully)
+0.09% <- [1,3,2], [3,1,2] (Disagree - TopBit agrees incorrectly)
+0.09% <- [2,3,1], [2,1,3] (Disagree Fully)
+0.09% <- [2,3,1], [3,2,1] (Disagree - TopBit agrees incorrectly)
+0.01% <- [2,3,1], [3,1,2] (Disagree Fully)
+
+In total, that makes:
+65.61% <- Agree Correctly
+17.2% <- Disagree Fully
+14.58% <- Disagree - TopBit agrees correctly
+0.81% <- Agree Incorrectly - TopBit correct
+0.18% <- Disagree - TopBit agrees incorrectly
+[no outcome] <- Agree with TopBit incorrect
+
+The first thing that might stand out is that around 34% of the time, these 
+sub-algorithms will disagree with each other. What happens then?
+
+Well, in that case we run a third sub-algorithm to compare the results with: 
+Permutationsort
+
+#### Permutationsort
+
 
 ...the most robust, most correct, and all-around best algorithm of all time: 
 Bogosort
