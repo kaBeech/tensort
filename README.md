@@ -6,6 +6,30 @@ prioritizes robustness would look like
 DISCLAIMER: This project is still under construction. The basic ideas are all there, but need to be 
 tied together and made to look pretty =)
 
+## Table of Contents
+
+- [Inspiration](#inspiration)
+- [Project structure](#project-structure)
+- [Algorithms overview](#algorithms-overview)
+  - [Bytesort](#bytesort)
+    - [Introduction](#introduction)
+    - [Structure](#structure)
+    - [Algorithm](#algorithm)
+    - [How does this work?](#how-does-this-work)
+  - [Robustsort](#robustsort)
+    - [Introduction](#introduction-1)
+    - [Overview](#overview)
+    - [Examining Bubblesort](#examining-bubblesort)
+    - [Reverse Exchangesort](#reverse-exchangesort)
+    - [Introducing Supersort](#introducing-supersort)
+    - [Permutationsort](#permutationsort)
+    - [Supersort Adjudication](#supersort-adjudication)
+  - [Magicsort](#magicsort)
+    - [Supersort adjudication with Magic](#supersort-adjudication-with-magic)
+  - [A note on Robustsort and Bogosort](#a-note-on-robustsort-and-bogosort)
+- [Comparing it all](#comparing-it-all)
+- [Library](#library)
+
 ## Inspiration
 
 - [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by David H. Ackley
@@ -16,7 +40,7 @@ tied together and made to look pretty =)
 - `src/` contains the Robustsort library
 - `app/` contains the suite for comparing different sorting algorithms in terms of robustness and time efficiency
 
-## Implementation Overview
+## Algorithms overview
 
 Please note that we will discuss a few algorithms that I've either made up or 
 am just not familiar with by other names. If any of these algorithms have 
