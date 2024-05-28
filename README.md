@@ -557,8 +557,10 @@ when no errors occur.
 
 Now let's take a look at how everything compares. Here is a graph showing the 
 benchmarking results in both in both robustness and time efficiency for 
-Quicksort, Mergesort, Bytesort, Rule-Abiding Robustsort, Robustsort With Magic, 
-and Bubblesort:
+Quicksort, Mergesort, 2-Bit Bytesort, 4-Bit Bytesort, Robustsort (Permutations), 
+Robustsort (Bogo), Robustsort (Magic), and Bubblesort:
+
+...Coming Soon!
 
 ## Library
 
