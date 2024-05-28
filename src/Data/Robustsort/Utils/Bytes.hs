@@ -1,5 +1,14 @@
--- module Data.Robustsort.Utils.Bytes (convertRawBitsToBytes, getBytestacksFromBytes, getSortedArrayFromBytestacks, reduceBytestacks) where
-module Data.Robustsort.Utils.Bytes (convertRawBitsToBytes, getBytestoreFromBytes, getBytestacksFromBytes, reduceBytestacks, reduceBytestacksSinglePass, createBytestack, getRegisterFromMetabytes, getTopBitFromBytestack) where
+module Data.Robustsort.Utils.Bytes
+  ( convertRawBitsToBytes,
+    getBytestoreFromBytes,
+    getBytestacksFromBytes,
+    reduceBytestacks,
+    reduceBytestacksSinglePass,
+    createBytestack,
+    getRegisterFromMetabytes,
+    getTopBitFromBytestack,
+  )
+where
 
 import Data.Robustsort.Subalgorithms.Bubblesort (bubblesort, bubblesortRecords)
 import Data.Robustsort.Utils.Split (splitEvery)
@@ -112,17 +121,6 @@ getRegisterFromMetabytes metabytes = acc metabytes []
     acc (metabyte : remainingMetabytes) refs = acc remainingMetabytes (refs ++ [(i, getTopBitFromBytestack metabyte)])
       where
         i = length refs
-
--- const getTopBitFromBytestack = (bytestack: Bytestack): number | null => {
---     const topRef = bytestack.register[bytestack.register.length - 1]
---     switch (typeof topRef) {
---         case "undefined": {
---             return null
---         }
---         default: return topRef.topBit
---     }
---
--- }
 
 -- | Get the top Bit from a Bytestack
 
