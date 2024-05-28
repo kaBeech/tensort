@@ -482,12 +482,62 @@ with another newly-named sorting algorithm: Magicsort!
 
 ### Magicsort
 
-...the most robust, most correct, and all-around best algorithm of all time: 
+For our most robust iteration of Robustsort we will relax the requirement on
+never re-running the same deterministic sub-algorithm in one specific context.
+Magicsort is an algorithm that will re-run Permutationsort only if it disagrees 
+with an extremely reliable algorithm algorithm - one that's so good it's robust 
+against logic itself...
+
+<!-- (image4) -->
+
 Bogosort
 
-...
+<!-- (image5) -->
 
-...
+Magicsort simply runs both Permutationsort and Bogosort on the same input and 
+checks if they agree. If they do, the result is used and if not, both 
+algorithms are run again. This process is repeated until the two algorithms
+agree on a result.
+
+Strong-brained readers may have already deduced that Permutationsort functions
+nearly identically to Bogosort. Indeed, their approximate analysis results are
+the same. Magicsort is based on the idea that if you happen to pull the right 
+answer out of a hat once, it might be random chance, but if you do it twice,
+it might just be magic!
+
+Given a Byte of [1,2,3], here are the approximate chances of various outcomes 
+from Magicsort using a faulty comparator that gives a random result 10% of the 
+time:
+
+~95.27% <- [1,2,3] (Correct)
+~1.18% <- [2,1,3] (Correct TopBit)
+~1.18% <- [1,3,2] (Incorrect)
+~1.18% <- [3,1,2] (Incorrect)
+~1.18% <- [2,3,1] (Incorrect)
+~0.02% <- [3,2,1] (Reverse)
+
+The downside here is that Magisort can take a long time to run. I don't know 
+how many comparisons are made on average, but it's well over 14.
+
+Thankfully, Magicsort will only be run in our algorithm if Bubblesort and Reverse
+Exchangesort disagree on an answer. Overall the Robustsort we're building that 
+uses Magicsort will still have an average of O(n log n) time efficiency.
+
+#### Supersort adjudication with Magic
+
+Since we have replaced Permutationsort with Magicsort (which is far more robust 
+than Bubblesort or Reverse Exchangesort), we will adjust our adjudication
+within the Supersort SubAlgorithm.
+
+If Bubblesort and Reverse Exchangesort disagree, we will run Magicsort on the
+input. If Magicsort agrees with either Bubblesort or Reverse Exchangesort, we
+will use the result from Magicsort. Otherwise, if Magicsort agrees on the 
+TopBit with either Bubblesort or Reverse Exchangesort, we will use the result
+from Magicsort. Otherwise, if Bubblesort and Reverse Exchangesort agree on the
+TopBit, we will use the result from Bubblesort.
+
+If no agreement is reached at this point, we abandon all logic and just use
+Magicsort.
 
 ### Comparing it all
 
@@ -496,5 +546,5 @@ benchmarking results in both in both robustness and time efficiency for
 Quicksort, Mergesort, Bytesort, Rule-Abiding Robustsort, Robustsort With Magic, 
 and Bubblesort:
 
-...
+
 
