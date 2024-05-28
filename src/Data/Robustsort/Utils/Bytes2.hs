@@ -1,5 +1,5 @@
--- Note: The Bytes utilities are split into two modules because my LSP was having 
--- difficulty keeping up when it was all in one file. For the official release I 
+-- Note: The Bytes utilities are split into two modules because my LSP was having
+-- difficulty keeping up when it was all in one file. For the official release I
 -- plan to either condense into one file or modularize into multiple files
 module Data.Robustsort.Utils.Bytes2
   ( getSortedBitsFromBytestacks,
@@ -7,6 +7,7 @@ module Data.Robustsort.Utils.Bytes2
 where
 
 import Data.Robustsort.Subalgorithms.Bubblesort (bubblesortRecords)
+import Data.Robustsort.Utils.Bytes (createBytestack)
 import Data.Robustsort.Utils.Types (Bytestack, Bytestore, Memory (..))
 
 -- | Compile a sorted list of Bits from a list of Bytestacks
@@ -68,13 +69,20 @@ getTopRecordsFromBytestacks = map (last . fst)
 --   (7,([(1,3),(0,5)],Memory [[1,5],[3]]))
 removeTopBitFromBytestore :: Bytestore -> (Int, Bytestore)
 removeTopBitFromBytestore (register, memory) = do
-  let topRef = last register
-  let topByteOrBytestore = memory !! fst topRef
-  case topByteOrBytestore of
-    (address, bits) -> do
-      let topByte = bits !! address
-      let topValue = last topByte
-      let topByte' = init topByte
-      let newMemory = take address memory ++ [topByte'] ++ drop (address + 1) memory
-      let newRegister = bubblesortRecords (init register)
-      (topValue, (newRegister, Memory newMemory))
+  let topRecord = last register
+  let topAddress = fst topRecord
+  let (topBit, memory') = removeBitFromMemory memory topAddress
+  return (topBit, createBytestack memory')
+
+removeBitFromMemory :: Memory -> Int -> (Int, Memory)
+removeBitFromMemory (SmallMemory bytes) i = do
+  let topByte = bytes !! i
+  let topBit = last topByte
+  let topByte' = init topByte
+  let bytes' = take i bytes ++ [topByte'] ++ drop (i + 1) bytes
+  (topBit, SmallMemory bytes')
+removeBitFromMemory (BigMemory bytestores) i = do
+  let topBytestore = bytestores !! i
+  let (topBit, topBytestore') = removeTopBitFromBytestore topBytestore
+  let bytestores' = take i bytestores ++ [topBytestore'] ++ drop (i + 1) bytestores
+  (topBit, BigMemory bytestores')
