@@ -1,10 +1,34 @@
-# RobustSort
+# Robustsort
 
 The goal of this project is to explore what a sorting algorithm that 
 prioritizes robustness would look like
 
-DISCLAIMER: This project is still under construction. The basic ideas are all there, but need to be 
-tied together and made to look pretty =)
+DISCLAIMER: This project is still under construction. The basic ideas are all 
+there, but need to be tied together and made to look pretty =)
+
+## Table of Contents
+
+- [Inspiration](#inspiration)
+- [Project structure](#project-structure)
+- [Algorithms overview](#algorithms-overview)
+  - [Bytesort](#bytesort)
+    - [Introduction](#introduction)
+    - [Structure](#structure)
+    - [Algorithm](#algorithm)
+    - [How does this work?](#how-does-this-work)
+  - [Robustsort](#robustsort)
+    - [Introduction](#introduction-1)
+    - [Overview](#overview)
+    - [Examining Bubblesort](#examining-bubblesort)
+    - [Reverse Exchangesort](#reverse-exchangesort)
+    - [Introducing Supersort](#introducing-supersort)
+    - [Permutationsort](#permutationsort)
+    - [Supersort Adjudication](#supersort-adjudication)
+  - [Magicsort](#magicsort)
+    - [Supersort adjudication with Magic](#supersort-adjudication-with-magic)
+  - [A note on Robustsort and Bogosort](#a-note-on-robustsort-and-bogosort)
+- [Comparing it all](#comparing-it-all)
+- [Library](#library)
 
 ## Inspiration
 
@@ -13,22 +37,10 @@ tied together and made to look pretty =)
 
 ## Project structure
 
-- `src/` contains the RobustSort library
+- `src/` contains the Robustsort library
 - `app/` contains the suite for comparing different sorting algorithms in terms of robustness and time efficiency
 
-## Implementation Overview
-
-NOTE! This description is somewhat out of date. Please see the code for details.
-The code for `Bytesort.hs` and its dependencies\ is fairly well documented and is 
-*almost* completely valid Haskell. The `robustsort.ts` file is valid TypeScript, 
-but really it's pseudocode to guide me in writing the Haskell version. It's not 
-as well documented as the Haskell code, but is likely easy enough to follow
-once you understand bytesort
-
-Unfortunately I also have to get paid and can't spend *all* my time writing 
-Haskell, but I intend to have everything functioning soon =)
-
-...
+## Algorithms overview
 
 Please note that we will discuss a few algorithms that I've either made up or 
 am just not familiar with by other names. If any of these algorithms have 
@@ -50,13 +62,12 @@ appearance, Bytesort, Robustsort, Permutaionsort, and Magicsort. Get ready!
 
 ### Bytesort
 
-NOTE! This description is somewhat out of date. Please see `Bytesort.hs` for 
-details
+#### Introduction
 
 Bytesort is my attempt to write the most robust O(n log n) sorting algorithm 
 possible while avoiding anything that Ackley might consider a "cheap hack." 
 My hope is that it will be, if not competitive with Bubblesort in robustness, 
-it at least is a major improvement over Quicksort and Mergesort. 
+at least a major improvement over Quicksort and Mergesort. 
 
 Again, I'm not well-studied in sorting algorithms, so this may well be known 
 already under another name. After settling on this algorithm, I looked into 
@@ -71,67 +82,100 @@ fear not!
 
 <!-- [image1] -->
 
-In Bytesort, the smallest unit of information is a Bit. Each bit stores one 
+#### Structure
+
+Bit <- Element of the list to be sorted
+Byte <- List of Bits
+Bytestore <- Tuple of a Register list and a Memory list
+Memory <- List of Bytes or Bytestores contained in the current Bytestore
+Register <- List of Records referencing each Byte or Bytestore in Memory
+Record <- Tuple of the Address and the TopBit of the referenced Byte or Bytestore
+Address <- Pointer to a Byte in Memory
+TopBit <- Value of the Bit at the top of the stack in a Byte or Bytestore
+SubAlgorithm <- The sorting sub-algorithm used at various stages
+
+In Bytesort, the smallest unit of information is a Bit. Each Bit stores one 
 element of the list to be sorted. A group of Bits is known as a Byte. 
 
-A Byte is an array of Bits. The maximum length of a Byte is set according to an 
-argument passsed to Bytesort. In practice, almost all Bytes will be of maximum 
-length until the final steps of Bytesort. In this explanation we will use a 
-4-Bit Bytesort as our example. Several Bytes are grouped together in a Bytestore.
+A Byte is a list of Bits. The maximum length of a Byte is set according to an 
+argument passed to Bytesort. In practice, almost all Bytes will be of maximum 
+length until the final steps of Bytesort. Several Bytes are grouped together 
+in a Bytestore.
 
-A Bytestore is an array with two elements. The second element is an array of 
-Bytes known as Memory. The length of this Memory array is equal to the Bytesize.
+A Bytestore is a tuple with two elements. The second element is a list of 
+Bytes known as Memory. The length of this Memory list is equal to the Bytesize.
 The first element is a Register of Records, each of which has an Address 
 pointing to a Byte in memory and a copy of the TopBit in the referenced Byte. 
 These Records are arranged in the order that the Bytes are sorted (this will be 
-clarified soon). Several Bytestores are grouped together in a Metabyte.
+clarified soon).
 
-A Metabyte is an array with two elements. The second element is an array of 
-either Bytestores or other Metabytes. The length of this array is equal to the 
-Bytesize. Similar to as in a Bytestore, the first 
-element in a Metabyte is an array of integer pointers representing the indices 
-of the Bytestores/Metabytes appearing in the second element.
+<!-- A Metabyte is an array with two elements. The second element is an array of  -->
+<!-- either Bytestores or other Metabytes. The length of this array is equal to the  -->
+<!-- Bytesize. Similar to as in a Bytestore, the first  -->
+<!-- element in a Metabyte is an array of integer pointers representing the indices  -->
+<!-- of the Bytestores/Metabytes appearing in the second element. -->
 
-A Bytestack is a top-level Metabyte along with all the Bits, Bytes, Bytestores, 
-and Metabytes it contains. Once the Metabytes are fully built, the total number 
+A Bytestack is a top-level Bytestore along with all the Bits, Bytes, and 
+Bytestores it contains. Once the Bytestores are fully built, the total number 
 of Bytestacks will equal the Bytesize, but before that point there will be many 
 more Bytestacks.
 
+The sorting SubAlgorithm will be used any time we sort something within 
+Bytesort. The choice of this SubAlgorithm is very important. For reasons that 
+will become clear soon, the SubAlgorithm will canonically be Bubblesort, but 
+it is sometimes useful to substitute another sorting algorithm.
+
 Now, on to the algorithm!
+
+#### Algorithm
 
 The first step in Bytesort is to randomize the input list. I'll explain why we 
 do this in more detail later - for now just know that it's easier for Bytesort 
 to make mistakes when the list is already nearly sorted.
 
-1 - Randomize the input list of elements (Bits)
+1. Randomize the input list of elements (Bits)
 
-2 - Assemble Bytes by using Bubblesort on the Bits. After this, we will do no 
-more Write operations on the Bits until the final steps. Instead, we will make 
-copies of the Bits and sort the copies alongside their pointers.
+2. Assemble Bytes by sorting the Bits using the SubAlgorithm. After this, we 
+will do no more write operations on the Bits until the final steps. Instead, we 
+will make copies of the Bits and sort the copies alongside their pointers.
 
-3 - Assemble Bytestores by grouping Bytes together (setting them as the Bytestore's 
-second element), making Records from their top bits, running Bubblesort on the 
-Records, and then recording the Pointers from the Records (after being 
-sorted) as the Bytestore's first element.
+3. Assemble Bytestacks by creating Bytestores from the Bytes. Bytestores are 
+created by grouping Bytes together (setting them as the Bytestore's 
+second element), making Records from their top bits, sorting the records, and 
+then recording the Pointers from the Records (after being sorted) as the 
+Bytestore's first element.
 
-4 - Assemble Metabytes by grouping Bytestores together (setting them as the 
-Metabyte's second element), making Records from their top Bits, running 
-Bubblesort on the Records, and then recording the Pointers from the Records 
+4. Reduce the number of Bytestacks by creating a new layer of Bytestores from 
+the Bytestores created in Step 3. These new Bytestores are created by grouping 
+the first layer of Bytestores together (setting them as the new Bytestore's 
+second element), making Records from their top Bits, sorting the Records, and 
+then recording the Pointers from the Records 
 (after being sorted) as the Bytestore's first element.
 
-5 - Assemble Metabytes by grouping existing Metabytes together, using a similar 
-process as in Steps 3 and 4.
+5. Continue in the same manner as in Step 4 until the number of Bytestacks 
+equals the Bytesize
 
-6 - Repeat Step 5 until the number of Bytestacks equals the Bytesize
+6. Assemble a top Register by Making Records from the Top Bits on each 
+Bytestack and sort the Records.
 
-7 - Make Records from the top Bits on each Bytestack and use Bubblesort on the 
-Records.
+7. Remove the Top Bit from the top Byte in the top Bytestack and add it to the 
+final Sorted List.
 
-8 - Remove the top Bit from the top Bytestack, add it to the final sorted list, 
-and rebalance the Bytestack
+8. If the top Byte in the top Bytestack is empty, remove the Record that 
+points to it from its Bytestore's Register. If the Bytestore is empty, remove
+the Record that points to it from its Bytestore's Register. Do this recursively 
+until the Bytestore is not empty or the top of the Bytestack is reached. If the 
+entire Bytestack is empty of Bits, remove its Record from the top Register. If 
+all Bytestacks are empty of Bits, return the final Sorted List. Otherwise, 
+re-sort the top Register
 
-9 - Repeat Step 8 until all Bytestacks are empty
-...
+9. Otherwise (the top Byte (or a Bytestore that contains it) is not empty), 
+update the top Byte's (or Bytestore's) Record with its 
+new Top Bit and re-sort its Bytestore's Register. Then jump up a level to 
+the Bytestore that contains that Bytestore and update the top Bytestore's Record
+with its new Top Bit and re-sort its Register. Do this recursively until
+the whole Bytestack is rebalanced. Then update the Bytestack's Record in the 
+top Register with its new Top Bit and re-sort the top Register.
 
 <!-- It seems to me that ... is more time  -->
 <!-- efficient than... , though it is less space-efficient. It also seems more  -->
@@ -141,9 +185,7 @@ and rebalance the Bytestack
 <!-- (perhaps by using an [in-place data structure] and some clever swaperations).  -->
 <!-- As always, constructive feedback is welcome! -->
 
-...
-
-Now that we know all the steps, it's easier to see why we randomize the list. 
+Now that we know all the steps, it's easier to see why we randomize the list
 as the beginning step. This way, if the list is already nearly 
 sorted, values close to each other don't get stuck under each other in their 
 Byte. Ideally, we want the top Bits from all Bytestacks to be close to 
@@ -155,7 +197,22 @@ during an operation where we intend to add 124 to the final list
 and we add a different element instead, three of the best-case elements to have
 mistakenly added (121, 122, and 123) are impossible to have been selected.
 
-...
+#### How does this work?
+
+Bubblesort leverages the robustness of Bubblesort while reducing the time 
+required by never Bubblesorting the entire input. 
+
+We are able to do this because A) Bubblesort is really good at making sure the 
+last element is in the final 
+position of a list, and B) at each step of Bytesort the only element we 
+*really* care about is the last element (TopBit) of a given list 
+(Byte/Bytestore).
+
+As the Bytesize approaches the square root of the number of elements in the 
+input list, its time efficiency approaches O(n^2), but its robustness 
+increases (if I'm thinking about that correctly at least - benchmarks to 
+come!). I speculate that Bytesort will tend to be most useful with Bytesizes 
+between 2 and 4.
 
 Alright! Now we have a simple sorting algorithm absent of cheap hacks that is 
 both relatively fast and relatively robust. I'm pretty happy with that!
@@ -166,13 +223,12 @@ Now for some cheap hacks!
 
 ### Robustsort
 
-NOTE! This description is somewhat out of date. Please see `robustsort.ts` for 
-current pseudocode
+#### Introduction
 
 In Beyond Efficiency, Ackley augmented Mergesort and Quicksort with what he 
 called "cheap hacks" in order to give them a boost in robustness to get them to 
-compare with Bubblesort. This amounted to adding a quarum system to the 
-unpredictable comparison operator and choosing the most-agreed-apon answer. 
+compare with Bubblesort. This amounted to adding a quorum system to the 
+unpredictable comparison operator and choosing the most-agreed-upon answer. 
 
 I agree that adding a quorum for the unpredictable comparison operator is a bit 
 of a cheap hack, or at least a post-hoc solution to a known problem. Instead of 
@@ -196,74 +252,342 @@ utilizing some solution-checking on the (sub-)algorithmic level while still:
 
 With those ground rules in place, let's get to Robustsort!
 
+<!-- Once we have Bytesort in our toolbox, the road to Robustsort is pretty simple.  -->
+<!-- At its core, Robustsort is a 3-bit Bytesort with some extra parallelism baked  -->
+<!-- in. Why 3-bit? It's because of the power of threes. -->
+
+#### Overview
+
 Once we have Bytesort in our toolbox, the road to Robustsort is pretty simple. 
-At its core, Robustsort is a 3-bit Bytesort with some extra parallelism baked 
-in. Why 3-bit? It's because of the power of threes.
+Robustsort is a 3-bit Bytesort with a custom SubAlgorithm that compares other 
+sub-algorithms. For convenience, we will call this custom SubAlgorithm 
+Supersort. We use a 3-bit Bytesort here because there's something 
+magical that happens around these numbers.
 
-In Bytesort, we repeatedly run Bubblesort to sort our pointers. In Robustsort, 
-instead of simply taking the output from Bubblesort, we compare it to another 
-algorithm to see if they match.
-
-We use a 4-bit Bytesort as the standard above because there's something 
-magical that happens around these numbers. Robust sorting algorithms tend to be 
+Robust sorting algorithms tend to be 
 slow. Bubblesort, for example, has an average time efficiency of O(n^2), 
 compared with Quicksort and Mergesort, which both have an average of (n log n).
 
 Here's the trick though: with small numbers the difference between these values 
 is minimal. For example, when n=4, Mergesort will make 6 comparisons, while 
-Bubblesort will make 12. A Bit Array with 4 members is both small enough to run 
+Bubblesort will make 12. A Byte holding 4 Bites is both small enough to run 
 the Bubblesort quickly and large enough to allow multiple opportunities for a 
-mistake to be corrected. Since we don't have much built-in parallelism, we want 
-to weight more heavily on the side of making more checks.
+mistake to be corrected. Since we don't as much built-in parallelism in 
+Bytesort, it can make sense to weight more heavily on the side of making more 
+checks.
 
-In Robustsort, however, we do have built-in parallelism, so we can afford to 
-make less checks during this step. We choose a byte size of 9 because a Bit 
-Array with 3 elements has some special properties. For one thing, sorting at 
+In Robustsort, however, we have parallelism built into the Supersort 
+SubAlgorithm, so we can afford to make less checks during this step. 
+We choose a Bytesize of 
+3 because a list of
+3 Bits has some special properties. For one thing, sorting at 
 this length greatly reduces the time it takes to run our slow-but-robust 
 algorithms. For example, at this size, Bubblesort will make only 6 comparisons. 
 Mergesort still makes 6 as well.
 
-In addition, when making a mistake while sorting 3 elements, the mistake is 
-most likely to displace an element by only 1 position (or 2 positions at the
-maximum), no matter which algorithm is used.
+In addition, when making a mistake while sorting 3 elements, the mistake 
+will displace an element by only 1 or 2 positions at the, no matter which 
+algorithm is used.
 
 This is all to say that using a 3-bit byte size allows us to have our pick of 
 algorithms to compare with!
 
-When choosing our comparison algorithm, we want something with logic 
-substancially different than Bubblesort, for the sake of robustness. We do, 
+Note: One might ask why we don't use a Bytesize of 2, since it would be even faster
+and still have the same property of displacing an element by only 1 or 2
+positions. Well, how many different algorithms can you use to sort 2 elements?
+At this length, most algorithms function equivalently (in terms of the 
+sub-operations performed) and in my mind running two such algorithms is 
+equivalent to re-running a single algorithm (which violates the requirements 
+of this project).
+
+#### Examining Bubblesort
+
+Before moving further, let's talk a little about Bubblesort, and why we're 
+using it in our SubAlgorithm.
+
+As a reminder, Bubblesort will make an average of 6 comparisons when sorting
+a 3-element list.
+
+We've said before that Bubblesort is likely to put the last element in the 
+correct position. Let's examine this in the context of Bubblesorting a 
+3-element list.
+
+Our implementation of Bubblesort (which mirrors Ackley's) will perform three
+iterations over a 3-element list. After the second iteration, if everything
+goes as planned, the list will be sorted and the final iteration is an extra
+verification step. Therefore, to simplify the analysis, we will consider
+what happens with a faulty comparator during the final iteration, assuming the
+list has been correctly sorted up to that point.
+
+Given a Byte of [1,2,3], here are the chances of various outcomes from using a 
+faulty comparator that gives a random result 10% of the time:
+
+81% <- [1,2,3] (correct - no swaps made)
+9% <- [2,1,3] (faulty first swap)
+9% <- [1,3,2] (faulty second swap)
+1% <- [2,3,1] (faulty first and second swap)
+
+In these cases, 90% of the time the Top Bit will be in the correct position, 
+and in the other cases it will be off by one position, and in no case will the 
+Byte be reverse sorted
+
+#### Reverse Exchangesort
+
+When choosing an algorithm to compare with Bubblesort, we want something with 
+substantially different logic, for the sake of robustness. We do, 
 however, want something similar to Bubblesort in that it compares our elements 
 multiple times. And, as mentioned above, the element that is most important to 
 our sorting is the top (biggest) element, by a large degree.
 
 With these priorities in mind, the comparison algorithm we choose shall be a 
-reverse Exchangesort.
+Reverse Exchangesort.
 
-...
+Reverse Exchangesort will also make an average of 6 comparisons when sorting a
+3-element list.
 
-...the most robust, most correct, and all-around best algorithm of all time: 
-Bogosort
+As with Bubblesort, Exchangesort will perform three iterations over a 3-element
+list, with the final iteration being redundant.
 
-...
+Given a Byte of [1,2,3], here are the chances of various outcomes from using a 
+faulty comparator that gives a random result 10% of the time:
 
-Well now that's pretty cool! But I wonder... can we make this more robust, if 
+81% <- [1,2,3] (correct - no swaps made)
+9% <- [2,1,3] (faulty first swap)
+9% <- [3,2,1] (faulty second swap)
+1% <- [3,1,2] (faulty first and second swap)
+
+In these cases, 90% of the time the Top Bit will have the correct value. 
+Notably there is a 9% chance that the Byte will be reverse sorted, but we will 
+exploit this trait later on in the Supersort SubAlgorithm. Note also that the 
+only possible outcomes shared between this example and the Bubblesort example
+are the correct outcome and [2,1,3], which retains the TopBit with the correct 
+value.
+
+#### Introducing Supersort
+
+Supersort is a SubAlgorithm that compares the results of two different
+sorting algorithms, in our case Bubblesort and Reverse Exchangesort. If both 
+algorithms agree on the result, that result is used. 
+
+Looking at our analysis on Bubblesort and Reverse Exchangesort, we can 
+approximate the chances of various outcomes when comparing the results of 
+running these two algorithms in similar conditions:
+
+65.61% <- [1,2,3], [1,2,3] (Agree Correctly)
+7.29% <- [1,2,3], [2,1,3] (Disagree - TopBit agrees correctly)
+7.29% <- [1,2,3], [3,2,1] (Disagree Fully)
+7.29% <- [2,1,3], [1,2,3] (Disagree - TopBit agrees correctly)
+7.29% <- [1,3,2], [1,2,3] (Disagree Fully)
+0.81% <- [2,1,3], [2,1,3] (Agree Incorrectly - TopBit correct)
+0.81% <- [2,1,3], [3,2,1] (Disagree Fully)
+0.81% <- [1,3,2], [2,1,3] (Disagree Fully)
+0.81% <- [1,3,2], [3,2,1] (Disagree Fully)
+0.09% <- [2,1,3], [3,1,2] (Disagree Fully)
+0.09% <- [1,3,2], [3,1,2] (Disagree - TopBit agrees incorrectly)
+0.09% <- [2,3,1], [2,1,3] (Disagree Fully)
+0.09% <- [2,3,1], [3,2,1] (Disagree - TopBit agrees incorrectly)
+0.01% <- [2,3,1], [3,1,2] (Disagree Fully)
+
+In total, that makes:
+65.61% <- Agree Correctly
+17.2% <- Disagree Fully
+14.58% <- Disagree - TopBit agrees correctly
+0.81% <- Agree Incorrectly - TopBit correct
+0.18% <- Disagree - TopBit agrees incorrectly
+[no outcome] <- Agree with TopBit incorrect
+
+The first thing that might stand out is that around 34% of the time, these 
+sub-algorithms will disagree with each other. What happens then?
+
+Well, in that case we run a third sub-algorithm to compare the results with: 
+Permutationsort
+
+#### Permutationsort
+
+Permutationsort is a simple, brute-force sorting algorithm. As a first step we 
+generate all the different ways the elements could possibly be arranged in the 
+list. Then we loop over this list of permutations until we find one that is in 
+the right order. We check if a permutation is in the right order by comparing
+the first two elements, if they are in the right order comparing the next two
+elements, and so on until we either find two elements that are out of order or
+we confirm that the list is in order
+
+Permutationsort will also make an average of 7 comparisons when sorting a 
+3-element list. This is slightly more than the other algorithms examined but
+it's worth it because A) the spread of outcomes is favorable for our needs, and 
+B) it uses logic that is completely different from Bubblesort and Reverse
+Exchangesort. Using different manners of reasoning to reach an agreed-upon answer greatly 
+increases the robustness of the system.
+
+Given a Byte of [1,2,3], here are the chances of various outcomes from using a
+faulty comparator that gives a random result 10% of the time:
+
+~68.67% <- [1,2,3] (correct)
+~7.63% <- [2,1,3] (faulty first comparator)
+~7.63% <- [3,1,2] (faulty first comparator)
+~7.63% <- [1,3,2] (faulty second comparator)
+~7.63% <- [2,3,1] (faulty second comparator)
+~0.85% <- [3,2,1] (faulty first and second comparator)
+
+In these cases, 76.6% of the time the Top Bit will be in the correct position. 
+Notably the least likely outcome is a reverse-sorted Byte and the other 
+possible incorrect outcomes are in even distribution with each other.
+
+#### Supersort Adjudication
+
+Supposing that our results from Bubblesort and Reverse Exchangesort disagree 
+and we now have our result from Permutationsort, how do we choose which to
+use?
+
+First we check to see whether the result from Permutationsort agrees with
+the results from either Bubblesort or Reverse Exchangesort. To keep things 
+simple, let's just look at the raw chances that 
+Permutationsort will agree on results with Bubblesort or Reverse
+Exchangesort.
+
+Permutationsort and Bubblesort:
+~55.62% <- [1,2,3] (Correct)
+~0.69% <- [2,1,3] (Correct TopBit)
+~0.69% <- [1,3,2] (Incorrect)
+~0.08% <- [2,3,1] (Incorrect)
+
+Permutationsort and Reverse Exchangesort:
+
+~55.62% <- [1,2,3] (Correct)
+~0.69% <- [2,1,3] (Correct TopBit)
+~0.08% <- [3,1,2] (Incorrect)
+~0.08% <- [3,2,1] (Reverse)
+
+As we can see, it is very unlikely that Permutationsort will agree with
+either Bubblesort or Reverse Exchangesort incorrectly. It is even less likely
+that they will do so when the TopBit is incorrect. However, there are many 
+cases in which they do not agree, so let's handle those.
+
+If there is no agreed-upon result between these three algorithms, we will look 
+at the top bit only.
+
+First we check if the results from Bubblesort and Reverse
+Exchangesort agree on the TopBit. This is because the chance is very unlikely 
+(0.18%) that they will agree on an incorrect TopBit. If they do agree, we use 
+the result from Bubblesort (as it will not return a reverse-sorted list).
+
+If they do not agree, we will check the TopBit results from Bubblesort and 
+Permutationsort. This is because it is unlikely 
+(~0.92%) that they will agree on an incorrect TopBit, and the chance of them 
+incorrectly agreeing on the highest Bit as the TopBit is even lower (~0.16%). 
+If they do agree, we use the result from Bubblesort.
+
+If they do not agree, we will check the TopBit results from Reverse 
+Exchangesort and Permutationsort. The chance that they will agree on an 
+incorrect TopBit is about 1.55%, with the chances of them incorrectly agreeing
+on the highest Bit as the TopBit also around 0.16%. If they do agree, we use
+the result from Reverse Exchangesort.
+
+If after all this adjudication we still do not have an agreed-upon result, we
+will use the result from Bubblesort.
+
+Now obviously we have made some approximations in our analysis (and I may have
+made some mistakes in my calculations), but in general I think we can conclude 
+that it is very unlikely that this Supersort process will return an incorrect 
+result, and that if an incorrect result is returned, it is very likely to still 
+have a correct TopBit.
+
+We now have the basic form of Robustsort: a 3-bit Bytesort with a Supersort 
+adjudicating Bubblesort, Reverse Exchangesort, and Permutationsort as its
+SubAlgorithm.
+
+Well that's pretty cool! But I wonder... can we make this more robust, if 
 we relax the rules just a little more?
 
 <!-- (image3) -->
 
-Of course we can! And we will. To do so, we will simply replace ... with 
-another newly-named sorting algorithm: Magicsort!
+Of course we can! And we will. To do so, we will simply replace Permutationsort
+with another newly-named sorting algorithm: Magicsort!
 
 ### Magicsort
 
-...
+For our most robust iteration of Robustsort we will relax the requirement on
+never re-running the same deterministic sub-algorithm in one specific context.
+Magicsort is an algorithm that will re-run Permutationsort only if it disagrees 
+with an extremely reliable algorithm algorithm - one that's so good it's robust 
+against logic itself...
 
-### Comparing it all
+<!-- (image4) -->
+
+Bogosort
+
+<!-- (image5) -->
+
+Magicsort simply runs both Permutationsort and Bogosort on the same input and 
+checks if they agree. If they do, the result is used and if not, both 
+algorithms are run again. This process is repeated until the two algorithms
+agree on a result.
+
+Strong-brained readers may have already deduced that Permutationsort functions
+nearly identically to Bogosort. Indeed, their approximate analysis results are
+the same. Magicsort is based on the idea that if you happen to pull the right 
+answer out of a hat once, it might be random chance, but if you do it twice,
+it might just be magic!
+
+Given a Byte of [1,2,3], here are the approximate chances of various outcomes 
+from Magicsort using a faulty comparator that gives a random result 10% of the 
+time:
+
+~95.27% <- [1,2,3] (Correct)
+~1.18% <- [2,1,3] (Correct TopBit)
+~1.18% <- [1,3,2] (Incorrect)
+~1.18% <- [3,1,2] (Incorrect)
+~1.18% <- [2,3,1] (Incorrect)
+~0.02% <- [3,2,1] (Reverse)
+
+The downside here is that Magisort can take a long time to run. I don't know 
+how many comparisons are made on average, but it's well over 14.
+
+Thankfully, Magicsort will only be run in our algorithm if Bubblesort and Reverse
+Exchangesort disagree on an answer. Overall the Robustsort we're building that 
+uses Magicsort will still have an average of O(n log n) time efficiency.
+
+#### Supersort adjudication with Magic
+
+Since we have replaced Permutationsort with Magicsort (which is far more robust 
+than Bubblesort or Reverse Exchangesort), we will adjust our adjudication
+within the Supersort SubAlgorithm.
+
+If Bubblesort and Reverse Exchangesort disagree, we will run Magicsort on the
+input. If Magicsort agrees with either Bubblesort or Reverse Exchangesort, we
+will use the result from Magicsort. Otherwise, if Magicsort agrees on the 
+TopBit with either Bubblesort or Reverse Exchangesort, we will use the result
+from Magicsort. Otherwise, if Bubblesort and Reverse Exchangesort agree on the
+TopBit, we will use the result from Bubblesort.
+
+If no agreement is reached at this point, we abandon all logic and just use
+Magicsort.
+
+### A note on Robustsort and Bogosort
+
+It is perfectly valid to use Bogosort in place of Permutationsort in Robustsort's 
+standard Supersort SubAlgorithm. It may be argued that doing so is even more 
+robust, since it barely even relies on logic. Here are some considerations to
+keep in mind:
+
+- Permutationsort uses additional space and may take slightly longer on average 
+due to computing all possible permutations of the input and storing them in a 
+list.
+
+- Bogosort could theoretically run forever without returning a result, even 
+when no errors occur.
+
+## Comparing it all
 
 Now let's take a look at how everything compares. Here is a graph showing the 
 benchmarking results in both in both robustness and time efficiency for 
-Quicksort, Mergesort, Bytesort, Rule-Abiding Robustsort, Robustsort With Magic, 
-and Bubblesort:
+Quicksort, Mergesort, 2-Bit Bytesort, 4-Bit Bytesort, Robustsort (Permutations), 
+Robustsort (Bogo), Robustsort (Magic), and Bubblesort:
 
-...
+...Coming Soon!
 
+## Library
+
+This package contains implementations of each algorithm discussed above. Check 
+the code in `src/` or the documentation on Hackage/Hoogle (Coming Soon!) for 
+details.
