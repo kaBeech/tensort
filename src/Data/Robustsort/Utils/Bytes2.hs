@@ -24,7 +24,7 @@ getSortedBitsFromBytestacks bytestacksRaw = acc bytestacksRaw []
         then sortedBits
         else acc bytestacks' (nextBit : sortedBits)
       where
-        (nextBit, bytestacks') = getNextBitFromBytestacks bytestacks
+        (nextBit, bytestacks') = removeNextBitFromBytestacks bytestacks
 
 -- | Returns True if registers for all Bytestacks are empty and False otherwise
 
@@ -45,10 +45,10 @@ areAllEmpty = all isEmpty
 --   returns the removed Bit and the rebalanced Bytestacks
 
 -- | ==== __Examples__
--- >>> getNextBitFromBytestacks [([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(1,4), (0,8)],SmallMemory [[6,8],[2,4]])]
+-- >>> removeNextBitFromBytestacks [([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(1,4), (0,8)],SmallMemory [[6,8],[2,4]])]
 -- (8,[([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(1,4),(0,6)],SmallMemory [[2,4],[6]])])
-getNextBitFromBytestacks :: [Bytestack] -> (Int, [Bytestack])
-getNextBitFromBytestacks bytestacks = do
+removeNextBitFromBytestacks :: [Bytestack] -> (Int, [Bytestack])
+removeNextBitFromBytestacks bytestacks = do
   let topRecords = bubblesortRecords (getTopRecordsFromBytestacks bytestacks)
   let topBytestackIndex = fst (last topRecords)
   let topBytestack = bytestacks !! topBytestackIndex
