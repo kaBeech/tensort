@@ -539,12 +539,15 @@ TopBit, we will use the result from Bubblesort.
 If no agreement is reached at this point, we abandon all logic and just use
 Magicsort.
 
-### Comparing it all
+## Comparing it all
 
 Now let's take a look at how everything compares. Here is a graph showing the 
 benchmarking results in both in both robustness and time efficiency for 
 Quicksort, Mergesort, Bytesort, Rule-Abiding Robustsort, Robustsort With Magic, 
 and Bubblesort:
 
+## Library
 
-
+This package contains implementations of each algorithm discussed above. Check 
+the code in `src/` or the documentation on Hackage/Hoogle (Coming Soon!) for 
+details.
