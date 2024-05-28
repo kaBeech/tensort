@@ -32,13 +32,15 @@ there, but need to be tied together and made to look pretty =)
 
 ## Inspiration
 
-- [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by David H. Ackley
-- Future of Coding's [podcast episode](https://futureofcoding.org/episodes/070) on the same paper
+  - [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by David H. Ackley
+    
+  - Future of Coding's [podcast episode](https://futureofcoding.org/episodes/070) on the same paper
 
 ## Project structure
 
-- `src/` contains the Robustsort library
-- `app/` contains the suite for comparing different sorting algorithms in terms of robustness and time efficiency
+  - `src/` contains the Robustsort library
+    
+  - `app/` contains the suite for comparing different sorting algorithms in terms of robustness and time efficiency
 
 ## Algorithms overview
 
@@ -84,15 +86,23 @@ fear not!
 
 #### Structure
 
-Bit <- Element of the list to be sorted
-Byte <- List of Bits
-Bytestore <- Tuple of a Register list and a Memory list
-Memory <- List of Bytes or Bytestores contained in the current Bytestore
-Register <- List of Records referencing each Byte or Bytestore in Memory
-Record <- Tuple of the Address and the TopBit of the referenced Byte or Bytestore
-Address <- Pointer to a Byte in Memory
-TopBit <- Value of the Bit at the top of the stack in a Byte or Bytestore
-SubAlgorithm <- The sorting sub-algorithm used at various stages
+    Bit <- Element of the list to be sorted
+    
+    Byte <- List of Bits
+    
+    Bytestore <- Tuple of a Register list and a Memory list
+    
+    Memory <- List of Bytes or Bytestores contained in the current Bytestore
+    
+    Register <- List of Records referencing each Byte or Bytestore in Memory
+    
+    Record <- Tuple of the Address and the TopBit of the referenced Byte or Bytestore
+    
+    Address <- Pointer to a Byte in Memory
+    
+    TopBit <- Value of the Bit at the top of the stack in a Byte or Bytestore
+    
+    SubAlgorithm <- The sorting sub-algorithm used at various stages
 
 In Bytesort, the smallest unit of information is a Bit. Each Bit stores one 
 element of the list to be sorted. A group of Bits is known as a Byte. 
@@ -133,49 +143,49 @@ The first step in Bytesort is to randomize the input list. I'll explain why we
 do this in more detail later - for now just know that it's easier for Bytesort 
 to make mistakes when the list is already nearly sorted.
 
-1. Randomize the input list of elements (Bits)
+    1. Randomize the input list of elements (Bits)
 
-2. Assemble Bytes by sorting the Bits using the SubAlgorithm. After this, we 
-will do no more write operations on the Bits until the final steps. Instead, we 
-will make copies of the Bits and sort the copies alongside their pointers.
+    2. Assemble Bytes by sorting the Bits using the SubAlgorithm. After this, we 
+    will do no more write operations on the Bits until the final steps. Instead, we 
+    will make copies of the Bits and sort the copies alongside their pointers.
 
-3. Assemble Bytestacks by creating Bytestores from the Bytes. Bytestores are 
-created by grouping Bytes together (setting them as the Bytestore's 
-second element), making Records from their top bits, sorting the records, and 
-then recording the Pointers from the Records (after being sorted) as the 
-Bytestore's first element.
+    3. Assemble Bytestacks by creating Bytestores from the Bytes. Bytestores are 
+    created by grouping Bytes together (setting them as the Bytestore's 
+    second element), making Records from their top bits, sorting the records, and 
+    then recording the Pointers from the Records (after being sorted) as the 
+    Bytestore's first element.
 
-4. Reduce the number of Bytestacks by creating a new layer of Bytestores from 
-the Bytestores created in Step 3. These new Bytestores are created by grouping 
-the first layer of Bytestores together (setting them as the new Bytestore's 
-second element), making Records from their top Bits, sorting the Records, and 
-then recording the Pointers from the Records 
-(after being sorted) as the Bytestore's first element.
+    4. Reduce the number of Bytestacks by creating a new layer of Bytestores from 
+    the Bytestores created in Step 3. These new Bytestores are created by grouping 
+    the first layer of Bytestores together (setting them as the new Bytestore's 
+    second element), making Records from their top Bits, sorting the Records, and 
+    then recording the Pointers from the Records 
+    (after being sorted) as the Bytestore's first element.
 
-5. Continue in the same manner as in Step 4 until the number of Bytestacks 
-equals the Bytesize
+    5. Continue in the same manner as in Step 4 until the number of Bytestacks 
+    equals the Bytesize
 
-6. Assemble a top Register by Making Records from the Top Bits on each 
-Bytestack and sort the Records.
+    6. Assemble a top Register by Making Records from the Top Bits on each 
+    Bytestack and sort the Records.
 
-7. Remove the Top Bit from the top Byte in the top Bytestack and add it to the 
-final Sorted List.
+    7. Remove the Top Bit from the top Byte in the top Bytestack and add it to the 
+    final Sorted List.
 
-8. If the top Byte in the top Bytestack is empty, remove the Record that 
-points to it from its Bytestore's Register. If the Bytestore is empty, remove
-the Record that points to it from its Bytestore's Register. Do this recursively 
-until the Bytestore is not empty or the top of the Bytestack is reached. If the 
-entire Bytestack is empty of Bits, remove its Record from the top Register. If 
-all Bytestacks are empty of Bits, return the final Sorted List. Otherwise, 
-re-sort the top Register
+    8. If the top Byte in the top Bytestack is empty, remove the Record that 
+    points to it from its Bytestore's Register. If the Bytestore is empty, remove
+    the Record that points to it from its Bytestore's Register. Do this recursively 
+    until the Bytestore is not empty or the top of the Bytestack is reached. If the 
+    entire Bytestack is empty of Bits, remove its Record from the top Register. If 
+    all Bytestacks are empty of Bits, return the final Sorted List. Otherwise, 
+    re-sort the top Register
 
-9. Otherwise (the top Byte (or a Bytestore that contains it) is not empty), 
-update the top Byte's (or Bytestore's) Record with its 
-new Top Bit and re-sort its Bytestore's Register. Then jump up a level to 
-the Bytestore that contains that Bytestore and update the top Bytestore's Record
-with its new Top Bit and re-sort its Register. Do this recursively until
-the whole Bytestack is rebalanced. Then update the Bytestack's Record in the 
-top Register with its new Top Bit and re-sort the top Register.
+    9. Otherwise (the top Byte (or a Bytestore that contains it) is not empty), 
+    update the top Byte's (or Bytestore's) Record with its 
+    new Top Bit and re-sort its Bytestore's Register. Then jump up a level to 
+    the Bytestore that contains that Bytestore and update the top Bytestore's Record
+    with its new Top Bit and re-sort its Register. Do this recursively until
+    the whole Bytestack is rebalanced. Then update the Bytestack's Record in the 
+    top Register with its new Top Bit and re-sort the top Register.
 
 <!-- It seems to me that ... is more time  -->
 <!-- efficient than... , though it is less space-efficient. It also seems more  -->
@@ -322,10 +332,13 @@ list has been correctly sorted up to that point.
 Given a Byte of [1,2,3], here are the chances of various outcomes from using a 
 faulty comparator that gives a random result 10% of the time:
 
-81% <- [1,2,3] (correct - no swaps made)
-9% <- [2,1,3] (faulty first swap)
-9% <- [1,3,2] (faulty second swap)
-1% <- [2,3,1] (faulty first and second swap)
+    81% <- [1,2,3] (correct - no swaps made)
+
+    9% <- [2,1,3] (faulty first swap)
+
+    9% <- [1,3,2] (faulty second swap)
+
+    1% <- [2,3,1] (faulty first and second swap)
 
 In these cases, 90% of the time the Top Bit will be in the correct position, 
 and in the other cases it will be off by one position, and in no case will the 
@@ -351,10 +364,13 @@ list, with the final iteration being redundant.
 Given a Byte of [1,2,3], here are the chances of various outcomes from using a 
 faulty comparator that gives a random result 10% of the time:
 
-81% <- [1,2,3] (correct - no swaps made)
-9% <- [2,1,3] (faulty first swap)
-9% <- [3,2,1] (faulty second swap)
-1% <- [3,1,2] (faulty first and second swap)
+    81% <- [1,2,3] (correct - no swaps made)
+
+    9% <- [2,1,3] (faulty first swap)
+
+    9% <- [3,2,1] (faulty second swap)
+
+    1% <- [3,1,2] (faulty first and second swap)
 
 In these cases, 90% of the time the Top Bit will have the correct value. 
 Notably there is a 9% chance that the Byte will be reverse sorted, but we will 
@@ -373,28 +389,47 @@ Looking at our analysis on Bubblesort and Reverse Exchangesort, we can
 approximate the chances of various outcomes when comparing the results of 
 running these two algorithms in similar conditions:
 
-65.61% <- [1,2,3], [1,2,3] (Agree Correctly)
-7.29% <- [1,2,3], [2,1,3] (Disagree - TopBit agrees correctly)
-7.29% <- [1,2,3], [3,2,1] (Disagree Fully)
-7.29% <- [2,1,3], [1,2,3] (Disagree - TopBit agrees correctly)
-7.29% <- [1,3,2], [1,2,3] (Disagree Fully)
-0.81% <- [2,1,3], [2,1,3] (Agree Incorrectly - TopBit correct)
-0.81% <- [2,1,3], [3,2,1] (Disagree Fully)
-0.81% <- [1,3,2], [2,1,3] (Disagree Fully)
-0.81% <- [1,3,2], [3,2,1] (Disagree Fully)
-0.09% <- [2,1,3], [3,1,2] (Disagree Fully)
-0.09% <- [1,3,2], [3,1,2] (Disagree - TopBit agrees incorrectly)
-0.09% <- [2,3,1], [2,1,3] (Disagree Fully)
-0.09% <- [2,3,1], [3,2,1] (Disagree - TopBit agrees incorrectly)
-0.01% <- [2,3,1], [3,1,2] (Disagree Fully)
+    65.61% <- [1,2,3], [1,2,3] (Agree Correctly)
+
+    7.29% <- [1,2,3], [2,1,3] (Disagree - TopBit agrees correctly)
+
+    7.29% <- [1,2,3], [3,2,1] (Disagree Fully)
+
+    7.29% <- [2,1,3], [1,2,3] (Disagree - TopBit agrees correctly)
+
+    7.29% <- [1,3,2], [1,2,3] (Disagree Fully)
+
+    0.81% <- [2,1,3], [2,1,3] (Agree Incorrectly - TopBit correct)
+
+    0.81% <- [2,1,3], [3,2,1] (Disagree Fully)
+
+    0.81% <- [1,3,2], [2,1,3] (Disagree Fully)
+
+    0.81% <- [1,3,2], [3,2,1] (Disagree Fully)
+
+    0.09% <- [2,1,3], [3,1,2] (Disagree Fully)
+
+    0.09% <- [1,3,2], [3,1,2] (Disagree - TopBit agrees incorrectly)
+
+    0.09% <- [2,3,1], [2,1,3] (Disagree Fully)
+  
+    0.09% <- [2,3,1], [3,2,1] (Disagree - TopBit agrees incorrectly)
+
+    0.01% <- [2,3,1], [3,1,2] (Disagree Fully)
 
 In total, that makes:
-65.61% <- Agree Correctly
-17.2% <- Disagree Fully
-14.58% <- Disagree - TopBit agrees correctly
-0.81% <- Agree Incorrectly - TopBit correct
-0.18% <- Disagree - TopBit agrees incorrectly
-[no outcome] <- Agree with TopBit incorrect
+
+    65.61% <- Agree Correctly
+
+    17.2% <- Disagree Fully
+
+    14.58% <- Disagree - TopBit agrees correctly
+
+    0.81% <- Agree Incorrectly - TopBit correct
+
+    0.18% <- Disagree - TopBit agrees incorrectly
+
+    [no outcome] <- Agree with TopBit incorrect
 
 The first thing that might stand out is that around 34% of the time, these 
 sub-algorithms will disagree with each other. What happens then?
@@ -422,12 +457,17 @@ increases the robustness of the system.
 Given a Byte of [1,2,3], here are the chances of various outcomes from using a
 faulty comparator that gives a random result 10% of the time:
 
-~68.67% <- [1,2,3] (correct)
-~7.63% <- [2,1,3] (faulty first comparator)
-~7.63% <- [3,1,2] (faulty first comparator)
-~7.63% <- [1,3,2] (faulty second comparator)
-~7.63% <- [2,3,1] (faulty second comparator)
-~0.85% <- [3,2,1] (faulty first and second comparator)
+    ~68.67% <- [1,2,3] (correct)
+
+    ~7.63% <- [2,1,3] (faulty first comparator)
+  
+    ~7.63% <- [3,1,2] (faulty first comparator)
+
+    ~7.63% <- [1,3,2] (faulty second comparator)
+
+    ~7.63% <- [2,3,1] (faulty second comparator)
+
+    ~0.85% <- [3,2,1] (faulty first and second comparator)
 
 In these cases, 76.6% of the time the Top Bit will be in the correct position. 
 Notably the least likely outcome is a reverse-sorted Byte and the other 
@@ -446,17 +486,24 @@ Permutationsort will agree on results with Bubblesort or Reverse
 Exchangesort.
 
 Permutationsort and Bubblesort:
-~55.62% <- [1,2,3] (Correct)
-~0.69% <- [2,1,3] (Correct TopBit)
-~0.69% <- [1,3,2] (Incorrect)
-~0.08% <- [2,3,1] (Incorrect)
+
+    ~55.62% <- [1,2,3] (Correct)
+
+    ~0.69% <- [2,1,3] (Correct TopBit)
+
+    ~0.69% <- [1,3,2] (Incorrect)
+
+    ~0.08% <- [2,3,1] (Incorrect)
 
 Permutationsort and Reverse Exchangesort:
 
-~55.62% <- [1,2,3] (Correct)
-~0.69% <- [2,1,3] (Correct TopBit)
-~0.08% <- [3,1,2] (Incorrect)
-~0.08% <- [3,2,1] (Reverse)
+    ~55.62% <- [1,2,3] (Correct)
+
+    ~0.69% <- [2,1,3] (Correct TopBit)
+
+    ~0.08% <- [3,1,2] (Incorrect)
+
+    ~0.08% <- [3,2,1] (Reverse)
 
 As we can see, it is very unlikely that Permutationsort will agree with
 either Bubblesort or Reverse Exchangesort incorrectly. It is even less likely
@@ -533,12 +580,17 @@ Given a Byte of [1,2,3], here are the approximate chances of various outcomes
 from Magicsort using a faulty comparator that gives a random result 10% of the 
 time:
 
-~95.27% <- [1,2,3] (Correct)
-~1.18% <- [2,1,3] (Correct TopBit)
-~1.18% <- [1,3,2] (Incorrect)
-~1.18% <- [3,1,2] (Incorrect)
-~1.18% <- [2,3,1] (Incorrect)
-~0.02% <- [3,2,1] (Reverse)
+    ~95.27% <- [1,2,3] (Correct)
+
+    ~1.18% <- [2,1,3] (Correct TopBit)
+
+    ~1.18% <- [1,3,2] (Incorrect)
+
+    ~1.18% <- [3,1,2] (Incorrect)
+
+    ~1.18% <- [2,3,1] (Incorrect)
+
+    ~0.02% <- [3,2,1] (Reverse)
 
 The downside here is that Magisort can take a long time to run. I don't know 
 how many comparisons are made on average, but it's well over 14.
@@ -570,13 +622,13 @@ standard Supersort SubAlgorithm. It may be argued that doing so is even more
 robust, since it barely even relies on logic. Here are some considerations to
 keep in mind:
 
-- Permutationsort uses additional space and may take slightly longer on average 
-due to computing all possible permutations of the input and storing them in a 
-list.
+    - Permutationsort uses additional space and may take slightly longer on average 
+      due to computing all possible permutations of the input and storing them in a 
+      list.
 
-- Bogosort could theoretically run forever without returning a result, even 
-when no errors occur.
-
+    - Bogosort could theoretically run forever without returning a result, even 
+      when no errors occur.
+  
 ## Comparing it all
 
 Now let's take a look at how everything compares. Here is a graph showing the 
