@@ -3,8 +3,8 @@
 The goal of this project is to explore what a sorting algorithm that 
 prioritizes robustness would look like
 
-DISCLAIMER: This project is still under construction. The basic ideas are all there, but need to be 
-tied together and made to look pretty =)
+DISCLAIMER: This project is still under construction. The basic ideas are all 
+there, but need to be tied together and made to look pretty =)
 
 ## Table of Contents
 
@@ -133,35 +133,35 @@ The first step in Bytesort is to randomize the input list. I'll explain why we
 do this in more detail later - for now just know that it's easier for Bytesort 
 to make mistakes when the list is already nearly sorted.
 
-1 - Randomize the input list of elements (Bits)
+1. Randomize the input list of elements (Bits)
 
-2 - Assemble Bytes by sorting the Bits using the SubAlgorithm. After this, we 
+2. Assemble Bytes by sorting the Bits using the SubAlgorithm. After this, we 
 will do no more write operations on the Bits until the final steps. Instead, we 
 will make copies of the Bits and sort the copies alongside their pointers.
 
-3 - Assemble Bytestacks by creating Bytestores from the Bytes. Bytestores are 
+3. Assemble Bytestacks by creating Bytestores from the Bytes. Bytestores are 
 created by grouping Bytes together (setting them as the Bytestore's 
 second element), making Records from their top bits, sorting the records, and 
 then recording the Pointers from the Records (after being sorted) as the 
 Bytestore's first element.
 
-4 - Reduce the number of Bytestacks by creating a new layer of Bytestores from 
+4. Reduce the number of Bytestacks by creating a new layer of Bytestores from 
 the Bytestores created in Step 3. These new Bytestores are created by grouping 
 the first layer of Bytestores together (setting them as the new Bytestore's 
 second element), making Records from their top Bits, sorting the Records, and 
 then recording the Pointers from the Records 
 (after being sorted) as the Bytestore's first element.
 
-5 - Continue in the same manner as in Step 4 until the number of Bytestacks 
+5. Continue in the same manner as in Step 4 until the number of Bytestacks 
 equals the Bytesize
 
-6 - Assemble a top Register by Making Records from the Top Bits on each 
+6. Assemble a top Register by Making Records from the Top Bits on each 
 Bytestack and sort the Records.
 
-7 - Remove the Top Bit from the top Byte in the top Bytestack and add it to the 
+7. Remove the Top Bit from the top Byte in the top Bytestack and add it to the 
 final Sorted List.
 
-8 - If the top Byte in the top Bytestack is empty, remove the Record that 
+8. If the top Byte in the top Bytestack is empty, remove the Record that 
 points to it from its Bytestore's Register. If the Bytestore is empty, remove
 the Record that points to it from its Bytestore's Register. Do this recursively 
 until the Bytestore is not empty or the top of the Bytestack is reached. If the 
@@ -169,7 +169,7 @@ entire Bytestack is empty of Bits, remove its Record from the top Register. If
 all Bytestacks are empty of Bits, return the final Sorted List. Otherwise, 
 re-sort the top Register
 
-9 - Otherwise (the top Byte (or a Bytestore that contains it) is not empty), 
+9. Otherwise (the top Byte (or a Bytestore that contains it) is not empty), 
 update the top Byte's (or Bytestore's) Record with its 
 new Top Bit and re-sort its Bytestore's Register. Then jump up a level to 
 the Bytestore that contains that Bytestore and update the top Bytestore's Record
