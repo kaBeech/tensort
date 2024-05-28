@@ -9,7 +9,7 @@ bytesort4Bit xs = bytesort xs 4
 
 bytesort :: [Int] -> Int -> [Int]
 bytesort xs bytesize = do
-  let bits = randomizeList xs
+  let bits = randomizeList xs 143
   let bytes = convertRawBitsToBytes bits bytesize
   let bytestacks = getBytestacksFromBytes bytes bytesize
   let bytestacks' = reduceBytestacks bytestacks bytesize
