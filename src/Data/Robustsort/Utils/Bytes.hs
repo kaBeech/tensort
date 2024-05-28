@@ -74,12 +74,12 @@ getBytestoreFromBytes bytes = do
 
 -- | ==== __Examples__
 -- >>> reduceBytestacks [([(0, 33), (1, 38)], SmallMemory [[31, 33], [35, 38]]), ([(0, 34), (1, 37)], SmallMemory [[32, 14], [36, 37]]), ([(0, 23), (1, 27)], SmallMemory [[21, 23], [25, 27]]), ([(0, 24), (1, 28)], SmallMemory [[22, 24], [26, 28]]),([(0,13),(1,18)],SmallMemory [[11,13],[15,18]]),([(0,14),(1,17)],SmallMemory [[12,14],[16,17]]),([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(0,4),(1,8)],SmallMemory [[2,4],[6,8]])] 2
--- [([(0,28),(1,38)],BigMemory [([(0,27),(1,28)],BigMemory [([(0,23),(1,27)],SmallMemory [[21,23],[25,27]]),([(0,24),(1,28)],SmallMemory [[22,24],[26,28]])]),([(1,37),(0,38)],BigMemory [([(0,33),(1,38)],SmallMemory [[31,33],[35,38]]),([(0,34),(1,37)],SmallMemory [[32,14],[36,37]])])]),([(0,8),(1,18)],BigMemory [([(0,7),(1,8)],BigMemory [([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(0,4),(1,8)],SmallMemory [[2,4],[6,8]])]),([(1,17),(0,18)],BigMemory [([(0,13),(1,18)],SmallMemory [[11,13],[15,18]]),([(0,14),(1,17)],SmallMemory [[12,14],[16,17]])])])]
-reduceBytestacks :: [Bytestack] -> Int -> [Bytestack]
+-- ([(1,18),(0,38)],BigMemory [([(0,28),(1,38)],BigMemory [([(0,27),(1,28)],BigMemory [([(0,23),(1,27)],SmallMemory [[21,23],[25,27]]),([(0,24),(1,28)],SmallMemory [[22,24],[26,28]])]),([(1,37),(0,38)],BigMemory [([(0,33),(1,38)],SmallMemory [[31,33],[35,38]]),([(0,34),(1,37)],SmallMemory [[32,14],[36,37]])])]),([(0,8),(1,18)],BigMemory [([(0,7),(1,8)],BigMemory [([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(0,4),(1,8)],SmallMemory [[2,4],[6,8]])]),([(1,17),(0,18)],BigMemory [([(0,13),(1,18)],SmallMemory [[11,13],[15,18]]),([(0,14),(1,17)],SmallMemory [[12,14],[16,17]])])])])
+reduceBytestacks :: [Bytestack] -> Int -> Bytestack
 reduceBytestacks bytestacks bytesize = do
   let newBytestacks = reduceBytestacksSinglePass bytestacks bytesize
   if length newBytestacks <= bytesize
-    then newBytestacks
+    then createBytestack newBytestacks
     else reduceBytestacks newBytestacks bytesize
 
 -- | Take a list of Bytestacks (Metabytes) and group them together in new
@@ -88,7 +88,7 @@ reduceBytestacks bytestacks bytesize = do
 -- | The Registers of the new Bytestacks are bubblesorted, as usual
 
 -- | ==== __Examples__
--- >>> reduceBytestacks [([(0,13),(1,18)],SmallMemory [[11,13],[15,18]]),([(0,14),(1,17)],SmallMemory [[12,14],[16,17]]),([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(0,4),(1,8)],SmallMemory [[2,4],[6,8]])] 2
+-- >>> reduceBytestacksSinglePass [([(0,13),(1,18)],SmallMemory [[11,13],[15,18]]),([(0,14),(1,17)],SmallMemory [[12,14],[16,17]]),([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(0,4),(1,8)],SmallMemory [[2,4],[6,8]])] 2
 -- [([(0,7),(1,8)],BigMemory [([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(0,4),(1,8)],SmallMemory [[2,4],[6,8]])]),([(1,17),(0,18)],BigMemory [([(0,13),(1,18)],SmallMemory [[11,13],[15,18]]),([(0,14),(1,17)],SmallMemory [[12,14],[16,17]])])]
 reduceBytestacksSinglePass :: [Bytestack] -> Int -> [Bytestack]
 reduceBytestacksSinglePass bytestacks bytesize = foldr acc [] (splitEvery bytesize bytestacks)
