@@ -44,6 +44,13 @@ there, but need to be tied together and made to look pretty =)
 
 ## Algorithms overview
 
+This README assumes some general knowledge of basic sorting algoritms. If you
+would like a refresher, I recommend 
+[this video](https://www.youtube.com/watch?v=kgBjXUE_Nwc) which touches on 
+Bubblesort, MergeSort, and Bogosort, and 
+[this video](https://www.youtube.com/watch?v=XE4VP_8Y0BU) which discusses
+Quicksort.
+
 Please note that we will discuss a few algorithms that I've either made up or 
 am just not familiar with by other names. If any of these algorithms have 
 previously been named, please let me know. Prior to this project I really 
@@ -353,7 +360,8 @@ multiple times. And, as mentioned above, the element that is most important to
 our sorting is the top (biggest) element, by a large degree.
 
 With these priorities in mind, the comparison algorithm we choose shall be a 
-Reverse Exchangesort.
+Reverse Exchangesort. If you're not familiar with this algorithm, I'd recommend
+checking out [this video](https://youtu.be/wqibJMG42Ik?feature=shared&t=143).
 
 Reverse Exchangesort will also make an average of 6 comparisons when sorting a
 3-element list.
