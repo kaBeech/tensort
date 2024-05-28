@@ -7,13 +7,13 @@ module Data.Robustsort.Utils.Bytes2
 where
 
 import Data.Robustsort.Subalgorithms.Bubblesort (bubblesortRecords)
-import Data.Robustsort.Utils.Bytes (createBytestack)
+import Data.Robustsort.Utils.Bytes (createBytestore)
 import Data.Robustsort.Utils.Types (Bytestack, Bytestore, Memory (..))
 
 -- | Compile a sorted list of Bits from a list of Bytestacks
 
 -- | ==== __Examples__
--- >>> getSortedBitsFromBytestacks [([(0,28),(1,38)],BigMemory [([(0,27),(1,28)],BigMemory [([(0,23),(1,27)],Memory [[21,23],[25,27]]),([(0,24),(1,28)],Memory [[22,24],[26,28]])]),([(1,37),(0,38)],BigMemory [([(0,33),(1,38)],Memory [[31,33],[35,38]]),([(0,34),(1,37)],Memory [[32,14],[36,37]])])])]
+-- >>> getSortedBitsFromBytestacks [([(0,28),(1,38)],BigMemory [([(0,27),(1,28)],BigMemory [([(0,23),(1,27)],SmallMemory [[21,23],[25,27]]),([(0,24),(1,28)],SmallMemory [[22,24],[26,28]])]),([(1,37),(0,38)],BigMemory [([(0,33),(1,38)],SmallMemory [[31,33],[35,38]]),([(0,34),(1,37)],SmallMemory [[32,14],[36,37]])])])]
 -- [14, 21, 22, 23, 24, 25, 26, 27, 28, 31, 32, 33, 35, 36, 37, 38]
 getSortedBitsFromBytestacks :: [Bytestack] -> [Int]
 getSortedBitsFromBytestacks bytestacksRaw = acc bytestacksRaw []
@@ -29,9 +29,9 @@ getSortedBitsFromBytestacks bytestacksRaw = acc bytestacksRaw []
 -- | Returns True if registers for all Bytestacks are empty and False otherwise
 
 -- | ==== __Examples__
--- >>> areAllEmpty [([(0,3),(1,7)],Memory [[1,3],[5,7]]),([(0,4),(1,8)],Memory [[2,4],[6,8]])]
+-- >>> areAllEmpty [([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(0,4),(1,8)],SmallMemory [[2,4],[6,8]])]
 -- False
--- >>> areAllEmpty [([],Memory [[1,3],[5,7]]),([],Memory [[2,4],[6,8]])]
+-- >>> areAllEmpty [([],SmallMemory [[1,3],[5,7]]),([],SmallMemory [[2,4],[6,8]])]
 -- True
 areAllEmpty :: [Bytestack] -> Bool
 areAllEmpty = all isEmpty
@@ -45,8 +45,8 @@ areAllEmpty = all isEmpty
 --   returns the removed Bit and the rebalanced Bytestacks
 
 -- | ==== __Examples__
--- >>> getNextBitFromBytestacks [([(0,3),(1,7)],Memory [[1,3],[5,7]]),([(1,4), (0,8)],Memory [[6,8],[2,4]])]
--- (8,[([(0,3),(1,7)],Memory [[1,3],[5,7]]),([(1,4),(0,6)],Memory [[2,4],[6]])])
+-- >>> getNextBitFromBytestacks [([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(1,4), (0,8)],SmallMemory [[6,8],[2,4]])]
+-- (8,[([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(1,4),(0,6)],SmallMemory [[2,4],[6]])])
 getNextBitFromBytestacks :: [Bytestack] -> (Int, [Bytestack])
 getNextBitFromBytestacks bytestacks = do
   let topRecords = bubblesortRecords (getTopRecordsFromBytestacks bytestacks)
@@ -65,14 +65,14 @@ getTopRecordsFromBytestacks = map (last . fst)
 --   the removed Bit along with the rebalanced Bytestore
 
 -- | ==== __Examples__
---   >>> removeTopBitFromBytestore  ([(0,5),(1,7)],Memory [[1,5],[3,7]])
---   (7,([(1,3),(0,5)],Memory [[1,5],[3]]))
+--   >>> removeTopBitFromBytestore  ([(0,5),(1,7)],SmallMemory [[1,5],[3,7]])
+--   (7,([(1,3),(0,5)],SmallMemory [[1,5],[3]]))
 removeTopBitFromBytestore :: Bytestore -> (Int, Bytestore)
 removeTopBitFromBytestore (register, memory) = do
   let topRecord = last register
   let topAddress = fst topRecord
   let (topBit, memory') = removeBitFromMemory memory topAddress
-  return (topBit, createBytestack memory')
+  (topBit, createBytestore memory')
 
 removeBitFromMemory :: Memory -> Int -> (Int, Memory)
 removeBitFromMemory (SmallMemory bytes) i = do

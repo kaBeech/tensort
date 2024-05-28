@@ -7,6 +7,7 @@ module Data.Robustsort.Utils.Bytes
     createBytestack,
     getRegisterFromMetabytes,
     getTopBitFromBytestack,
+    createBytestore,
   )
 where
 
@@ -34,7 +35,7 @@ convertRawBitsToBytes bits bytesize = foldr acc [] (splitEvery bytesize bits)
 
 -- | ==== __Examples__
 --  >>> getBytestacksFromBytes [[2,4],[6,8],[1,3],[5,7]] 2
---  [([(0,3),(1,7)],Memory [[1,3],[5,7]]),([(0,4),(1,8)],Memory [[2,4],[6,8]])]
+--  [([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(0,4),(1,8)],SmallMemory [[2,4],[6,8]])]
 getBytestacksFromBytes :: [Byte] -> Int -> [Bytestack]
 getBytestacksFromBytes bytes bytesize = foldr acc [] (splitEvery bytesize bytes)
   where
@@ -54,12 +55,12 @@ getBytestacksFromBytes bytes bytesize = foldr acc [] (splitEvery bytesize bytes)
 
 -- | ==== __Examples__
 --  >>> getBytestoreFromBytes [[2,4,6,8],[1,3,5,7]]
---  ([(1,7),(0,8)],Memory [[2,4,6,8],[1,3,5,7]])
+--  ([(1,7),(0,8)],SmallMemory [[2,4,6,8],[1,3,5,7]])
 getBytestoreFromBytes :: [Byte] -> Bytestore
 getBytestoreFromBytes bytes = do
   let register = acc bytes [] 0
   let register' = bubblesortRecords register
-  (register', Memory bytes)
+  (register', SmallMemory bytes)
   where
     acc :: [Byte] -> [Record] -> Int -> [Record]
     acc [] register _ = register
@@ -72,8 +73,8 @@ getBytestoreFromBytes bytes = do
 -- | The Registers of the new Bytestacks are bubblesorted, as usual
 
 -- | ==== __Examples__
--- >>> reduceBytestacks [([(0, 33), (1, 38)], Memory [[31, 33], [35, 38]]), ([(0, 34), (1, 37)], Memory [[32, 14], [36, 37]]), ([(0, 23), (1, 27)], Memory [[21, 23], [25, 27]]), ([(0, 24), (1, 28)], Memory [[22, 24], [26, 28]]),([(0,13),(1,18)],Memory [[11,13],[15,18]]),([(0,14),(1,17)],Memory [[12,14],[16,17]]),([(0,3),(1,7)],Memory [[1,3],[5,7]]),([(0,4),(1,8)],Memory [[2,4],[6,8]])] 2
--- [([(0,28),(1,38)],BigMemory [([(0,27),(1,28)],BigMemory [([(0,23),(1,27)],Memory [[21,23],[25,27]]),([(0,24),(1,28)],Memory [[22,24],[26,28]])]),([(1,37),(0,38)],BigMemory [([(0,33),(1,38)],Memory [[31,33],[35,38]]),([(0,34),(1,37)],Memory [[32,14],[36,37]])])]),([(0,8),(1,18)],BigMemory [([(0,7),(1,8)],BigMemory [([(0,3),(1,7)],Memory [[1,3],[5,7]]),([(0,4),(1,8)],Memory [[2,4],[6,8]])]),([(1,17),(0,18)],BigMemory [([(0,13),(1,18)],Memory [[11,13],[15,18]]),([(0,14),(1,17)],Memory [[12,14],[16,17]])])])]
+-- >>> reduceBytestacks [([(0, 33), (1, 38)], SmallMemory [[31, 33], [35, 38]]), ([(0, 34), (1, 37)], SmallMemory [[32, 14], [36, 37]]), ([(0, 23), (1, 27)], SmallMemory [[21, 23], [25, 27]]), ([(0, 24), (1, 28)], SmallMemory [[22, 24], [26, 28]]),([(0,13),(1,18)],SmallMemory [[11,13],[15,18]]),([(0,14),(1,17)],SmallMemory [[12,14],[16,17]]),([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(0,4),(1,8)],SmallMemory [[2,4],[6,8]])] 2
+-- [([(0,28),(1,38)],BigMemory [([(0,27),(1,28)],BigMemory [([(0,23),(1,27)],SmallMemory [[21,23],[25,27]]),([(0,24),(1,28)],SmallMemory [[22,24],[26,28]])]),([(1,37),(0,38)],BigMemory [([(0,33),(1,38)],SmallMemory [[31,33],[35,38]]),([(0,34),(1,37)],SmallMemory [[32,14],[36,37]])])]),([(0,8),(1,18)],BigMemory [([(0,7),(1,8)],BigMemory [([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(0,4),(1,8)],SmallMemory [[2,4],[6,8]])]),([(1,17),(0,18)],BigMemory [([(0,13),(1,18)],SmallMemory [[11,13],[15,18]]),([(0,14),(1,17)],SmallMemory [[12,14],[16,17]])])])]
 reduceBytestacks :: [Bytestack] -> Int -> [Bytestack]
 reduceBytestacks bytestacks bytesize = do
   let newBytestacks = reduceBytestacksSinglePass bytestacks bytesize
@@ -87,8 +88,8 @@ reduceBytestacks bytestacks bytesize = do
 -- | The Registers of the new Bytestacks are bubblesorted, as usual
 
 -- | ==== __Examples__
--- >>> reduceBytestacks [([(0,13),(1,18)],Memory [[11,13],[15,18]]),([(0,14),(1,17)],Memory [[12,14],[16,17]]),([(0,3),(1,7)],Memory [[1,3],[5,7]]),([(0,4),(1,8)],Memory [[2,4],[6,8]])] 2
--- [([(0,7),(1,8)],BigMemory [([(0,3),(1,7)],Memory [[1,3],[5,7]]),([(0,4),(1,8)],Memory [[2,4],[6,8]])]),([(1,17),(0,18)],BigMemory [([(0,13),(1,18)],Memory [[11,13],[15,18]]),([(0,14),(1,17)],Memory [[12,14],[16,17]])])]
+-- >>> reduceBytestacks [([(0,13),(1,18)],SmallMemory [[11,13],[15,18]]),([(0,14),(1,17)],SmallMemory [[12,14],[16,17]]),([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(0,4),(1,8)],SmallMemory [[2,4],[6,8]])] 2
+-- [([(0,7),(1,8)],BigMemory [([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(0,4),(1,8)],SmallMemory [[2,4],[6,8]])]),([(1,17),(0,18)],BigMemory [([(0,13),(1,18)],SmallMemory [[11,13],[15,18]]),([(0,14),(1,17)],SmallMemory [[12,14],[16,17]])])]
 reduceBytestacksSinglePass :: [Bytestack] -> Int -> [Bytestack]
 reduceBytestacksSinglePass bytestacks bytesize = foldr acc [] (splitEvery bytesize bytestacks)
   where
@@ -99,10 +100,19 @@ reduceBytestacksSinglePass bytestacks bytesize = foldr acc [] (splitEvery bytesi
 --   Metabytes as the Register and the original Metabytes as the data
 
 -- | ==== __Examples__
--- >>> createBytestack [([(0,13),(1,18)],Memory [[11,13],[15,18]]),([(1,14),(0,17)],Memory [[16,17],[12,14]])]
--- ([(1,17),(0,18)],BigMemory [([(0,13),(1,18)],Memory [[11,13],[15,18]]),([(1,14),(0,17)],Memory [[16,17],[12,14]])])
+-- >>> createBytestack [([(0,13),(1,18)],SmallMemory [[11,13],[15,18]]),([(1,14),(0,17)],SmallMemory [[16,17],[12,14]])]
+-- ([(1,17),(0,18)],BigMemory [([(0,13),(1,18)],SmallMemory [[11,13],[15,18]]),([(1,14),(0,17)],SmallMemory [[16,17],[12,14]])])
 createBytestack :: [Bytestore] -> Bytestack
 createBytestack metabytes = (bubblesortRecords (getRegisterFromMetabytes metabytes), BigMemory metabytes)
+
+-- | Create a Bytestore from a Memory
+--   Aliases to getBytestoreFromBytes for SmallMemory and createBytestack for
+--   BigMemory
+
+-- | I expect to refactor to simplify this before initial release
+createBytestore :: Memory -> Bytestore
+createBytestore (SmallMemory bytes) = getBytestoreFromBytes bytes
+createBytestore (BigMemory metabytes) = createBytestack metabytes
 
 -- | For each Bytestore, produces a Record by combining the top bit of the
 --  Bytestore with an index value for its Address
@@ -111,7 +121,7 @@ createBytestack metabytes = (bubblesortRecords (getRegisterFromMetabytes metabyt
 --   createBytestack function
 
 -- | ==== __Examples__
--- >>> getRegisterFromMetabytes [([(0,13),(1,18)],Memory [[11,13],[15,18]]),([(0,14),(1,17)],Memory [[12,14],[16,17]]),([(0,3),(1,7)],Memory [[1,3],[5,7]]),([(0,4),(1,8)],Memory [[2,4],[6,8]])]
+-- >>> getRegisterFromMetabytes [([(0,13),(1,18)],SmallMemory [[11,13],[15,18]]),([(0,14),(1,17)],SmallMemory [[12,14],[16,17]]),([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(0,4),(1,8)],SmallMemory [[2,4],[6,8]])]
 -- [(0,18),(1,17),(2,7),(3,8)]
 getRegisterFromMetabytes :: [Bytestore] -> [Record]
 getRegisterFromMetabytes metabytes = acc metabytes []
@@ -131,7 +141,7 @@ getRegisterFromMetabytes metabytes = acc metabytes []
 -- | This is also expected to be the highest value in the Bytestack
 
 -- | ==== __Examples__
--- >>> getTopBitFromBytestack (([(0,28),(1,38)],BigMemory [([(0,27),(1,28)],BigMemory [([(0,23),(1,27)],Memory [[21,23],[25,27]]),([(0,24),(1,28)],Memory [[22,24],[26,28]])]),([(1,37),(0,38)],BigMemory [([(0,33),(1,38)],Memory [[31,33],[35,38]]),([(0,34),(1,37)],Memory [[32,14],[36,37]])])]))
+-- >>> getTopBitFromBytestack (([(0,28),(1,38)],BigMemory [([(0,27),(1,28)],BigMemory [([(0,23),(1,27)],SmallMemory [[21,23],[25,27]]),([(0,24),(1,28)],SmallMemory [[22,24],[26,28]])]),([(1,37),(0,38)],BigMemory [([(0,33),(1,38)],SmallMemory [[31,33],[35,38]]),([(0,34),(1,37)],SmallMemory [[32,14],[36,37]])])]))
 -- 38
 getTopBitFromBytestack :: Bytestore -> Int
 getTopBitFromBytestack (register, _) = snd (last register)
