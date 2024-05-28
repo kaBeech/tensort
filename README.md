@@ -409,20 +409,83 @@ In these cases, 76.6% of the time the Top Bit will be in the correct position.
 Notably the least likely outcome is a reverse-sorted Byte and the other 
 possible incorrect outcomes are in even distribution with each other.
 
-...the most robust, most correct, and all-around best algorithm of all time: 
-Bogosort
+#### Supersort Adjudication
 
-...
+Supposing that our results from Bubblesort and Reverse Exchangesort disagree 
+and we now have our result from Permutationsort, how do we choose which to
+use?
 
-Well now that's pretty cool! But I wonder... can we make this more robust, if 
+First we check to see whether the result from Permutationsort agrees with
+the results from either Bubblesort or Reverse Exchangesort. To keep things 
+simple, let's just look at the raw chances that 
+Permutationsort will agree on results with Bubblesort or Reverse
+Exchangesort.
+
+Permutationsort and Bubblesort:
+~55.62% <- [1,2,3] (Correct)
+~0.69% <- [2,1,3] (Correct TopBit)
+~0.69% <- [1,3,2] (Incorrect)
+~0.08% <- [2,3,1] (Incorrect)
+
+Permutationsort and Reverse Exchangesort:
+
+~55.62% <- [1,2,3] (Correct)
+~0.69% <- [2,1,3] (Correct TopBit)
+~0.08% <- [3,1,2] (Incorrect)
+~0.08% <- [3,2,1] (Reverse)
+
+As we can see, it is very unlikely that Permutationsort will agree with
+either Bubblesort or Reverse Exchangesort incorrectly. It is even less likely
+that they will do so when the TopBit is incorrect. However, there are many 
+cases in which they do not agree, so let's handle those.
+
+If there is no agreed-upon result between these three algorithms, we will look 
+at the top bit only.
+
+First we check if the results from Bubblesort and Reverse
+Exchangesort agree on the TopBit. This is because the chance is very unlikely 
+(0.18%) that they will agree on an incorrect TopBit. If they do agree, we use 
+the result from Bubblesort (as it will not return a reverse-sorted list).
+
+If they do not agree, we will check the TopBit results from Bubblesort and 
+Permutationsort. This is because it is unlikely 
+(~0.92%) that they will agree on an incorrect TopBit, and the chance of them 
+incorrectly agreeing on the highest Bit as the TopBit is even lower (~0.16%). 
+If they do agree, we use the result from Bubblesort.
+
+If they do not agree, we will check the TopBit results from Reverse 
+Exchangesort and Permutationsort. The chance that they will agree on an 
+incorrect TopBit is about 1.55%, with the chances of them incorrectly agreeing
+on the highest Bit as the TopBit also around 0.16%. If they do agree, we use
+the result from Reverse Exchangesort.
+
+If after all this adjudication we still do not have an agreed-upon result, we
+will use the result from Bubblesort.
+
+Now obviously we have made some approximations in our analysis (and I may have
+made some mistakes in my calculations), but in general I think we can conclude 
+that it is very unlikely that this Supersort process will return an incorrect 
+result, and that if an incorrect result is returned, it is very likely to still 
+have a correct TopBit.
+
+We now have the basic form of Robustsort: a 3-bit Bytesort with a Supersort 
+adjudicating Bubblesort, Reverse Exchangesort, and Permutationsort as its
+SubAlgorithm.
+
+Well that's pretty cool! But I wonder... can we make this more robust, if 
 we relax the rules just a little more?
 
 <!-- (image3) -->
 
-Of course we can! And we will. To do so, we will simply replace ... with 
-another newly-named sorting algorithm: Magicsort!
+Of course we can! And we will. To do so, we will simply replace Permutationsort
+with another newly-named sorting algorithm: Magicsort!
 
 ### Magicsort
+
+...the most robust, most correct, and all-around best algorithm of all time: 
+Bogosort
+
+...
 
 ...
 
