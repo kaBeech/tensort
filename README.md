@@ -51,6 +51,10 @@ Bubblesort, MergeSort, and Bogosort, and
 [this video](https://www.youtube.com/watch?v=XE4VP_8Y0BU) which discusses
 Quicksort.
 
+It also assumes you've read 
+[Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by 
+David H. Ackley. Go read it!
+
 Please note that we will discuss a few algorithms that I've either made up or 
 am just not familiar with by other names. If any of these algorithms have 
 previously been named, please let me know. Prior to this project I really 
