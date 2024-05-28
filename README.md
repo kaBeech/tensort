@@ -539,6 +539,20 @@ TopBit, we will use the result from Bubblesort.
 If no agreement is reached at this point, we abandon all logic and just use
 Magicsort.
 
+### A note on Robustsort and Bogosort
+
+It is perfectly valid to use Bogosort in place of Permutationsort in Robustsort's 
+standard Supersort SubAlgorithm. It may be argued that doing so is even more 
+robust, since it barely even relies on logic. Here are some considerations to
+keep in mind:
+
+- Permutationsort uses additional space and may take slightly longer on average 
+due to computing all possible permutations of the input and storing them in a 
+list.
+
+- Bogosort could theoretically run forever without returning a result, even 
+when no errors occur.
+
 ## Comparing it all
 
 Now let's take a look at how everything compares. Here is a graph showing the 
