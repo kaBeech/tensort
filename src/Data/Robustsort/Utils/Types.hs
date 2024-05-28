@@ -45,17 +45,9 @@ type Register = [Record]
 -- | A Memory contains the data to be sorted, either in the form of Bytes or
 --   Metabytes
 data Memory
-  = Memory [Byte]
+  = SmallMemory [Byte]
   | BigMemory [Bytestore]
   deriving (Show, Eq, Ord)
-
-convertMemoryToBytes :: Memory -> [Byte]
-convertMemoryToBytes (Memory bytes) = bytes
-convertMemoryToBytes (BigMemory bytestores) = concatMap (convertMemoryToBytes . snd) bytestores
-
-convertMemoryToBytestores :: Memory -> [Bytestore]
-convertMemoryToBytestores (Memory bytes) = [(mempty, Memory bytes)]
-convertMemoryToBytestores (BigMemory bytestores) = bytestores
 
 -- | A Bytestore is a Metabytestore that only contains Bytes in its memory
 -- | The Memory is a list of the Bytes or Metabytes that the Metabytestore
