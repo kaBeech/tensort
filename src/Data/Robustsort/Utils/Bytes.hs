@@ -1,3 +1,5 @@
+{-# LANGUAGE GADTs #-}
+
 module Data.Robustsort.Utils.Bytes
   ( convertRawBitsToBytes,
     getBytestoreFromBytes,
@@ -9,13 +11,37 @@ module Data.Robustsort.Utils.Bytes
     getTopBitFromBytestack,
     createBytestore,
     getSortedBitsFromMetastack,
+    getMagicNumber,
   )
 where
 
+import Control.Monad.State
 import Data.Maybe (isNothing)
 import Data.Robustsort.Subalgorithms.Bubblesort (bubblesort)
 import Data.Robustsort.Utils.Split (splitEvery)
 import Data.Robustsort.Utils.Types (Byte, Bytestack, Bytestore, Memory (..), Record, Sortable (SortInt, SortRec), fromSortInt, fromSortRec)
+
+data BytesortState = BytesortState {magicNumber :: Int, subAlgoritm :: Sortable -> Sortable}
+
+initialBytesortState :: BytesortState
+initialBytesortState = BytesortState {magicNumber = 0, subAlgoritm = bubblesort}
+
+getMagicNumber :: State BytesortState Int
+getMagicNumber = do
+  bytesortState <- get
+  let magNum = magicNumber bytesortState
+  return magNum
+
+getSubAlgorithm :: State BytesortState (Sortable -> Sortable)
+getSubAlgorithm = do
+  bytesortState <- get
+  let subAlg = subAlgoritm bytesortState
+  return subAlg
+
+setSubAlgorithm :: (Sortable -> Sortable) -> State BytesortState ()
+setSubAlgorithm subAlg = do
+  bytesortState <- get
+  put bytesortState {subAlgoritm = subAlg}
 
 -- | Convert a list of Bits to a list of Bytes of given bytesize, bubblesorting
 --   each byte.
