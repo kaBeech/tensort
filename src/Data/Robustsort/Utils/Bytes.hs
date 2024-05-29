@@ -200,18 +200,22 @@ removeTopBitFromBytestore (register, memory) bsProps = do
 
 -- | ==== __Examples__
 removeBitFromMemory :: Memory -> Int -> BytesortProps -> (Int, Maybe Memory)
-removeBitFromMemory (SmallMemory bytes) i _ = do
+removeBitFromMemory (SmallMemory bytes) i bsProps = do
   let topByte = bytes !! i
   let topBit = last topByte
   let topByte' = init topByte
-  if null topByte'
-    then do
+  case length topByte' of
+    0 -> do
       let bytes' = take i bytes ++ drop (i + 1) bytes
       if null bytes'
         then (topBit, Nothing)
         else (topBit, Just (SmallMemory bytes'))
-    else do
+    1 -> do
       let bytes' = take i bytes ++ [topByte'] ++ drop (i + 1) bytes
+      (topBit, Just (SmallMemory bytes'))
+    _ -> do
+      let topByte'' = fromSortInt (subAlgorithm bsProps (SortInt topByte'))
+      let bytes' = take i bytes ++ [topByte''] ++ drop (i + 1) bytes
       (topBit, Just (SmallMemory bytes'))
 removeBitFromMemory (BigMemory bytestores) i bsProps = do
   let topBytestore = bytestores !! i
