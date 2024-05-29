@@ -64,6 +64,7 @@ getBytestoreFromBytes bytes = do
   where
     acc :: [Byte] -> [Record] -> Int -> [Record]
     acc [] register _ = register
+    acc ([] : remainingBytes) register i = acc remainingBytes register (i + 1)
     acc (byte : remainingBytes) register i = acc remainingBytes (register ++ [(i, last byte)]) (i + 1)
 
 -- | Take a list of Bytestacks (Metabytes) and group them together in new
@@ -127,10 +128,11 @@ getRegisterFromMetabytes :: [Bytestore] -> [Record]
 getRegisterFromMetabytes metabytes = acc metabytes []
   where
     acc :: [Bytestore] -> [Record] -> [Record]
-    acc [] refs = refs
-    acc (metabyte : remainingMetabytes) refs = acc remainingMetabytes (refs ++ [(i, getTopBitFromBytestack metabyte)])
+    acc [] records = records
+    acc (([], _) : remainingMetabytes) records = acc remainingMetabytes records
+    acc (metabyte : remainingMetabytes) records = acc remainingMetabytes (records ++ [(i, getTopBitFromBytestack metabyte)])
       where
-        i = length refs
+        i = length records
 
 -- | Get the top Bit from a Bytestack
 
