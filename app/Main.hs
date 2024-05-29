@@ -2,6 +2,7 @@
 
 module Main where
 
+import Data.Robustsort.Bytesort (bytesort4Bit)
 import Data.Robustsort.OtherSorts.Mergesort (mergesort)
 import Data.Robustsort.OtherSorts.Quicksort (quicksort)
 import Data.Robustsort.Subalgorithms.Bogosort (bogosort)
@@ -20,3 +21,4 @@ main = do
   putStrLn ("quicksort: " ++ show (quicksort unsortedArray))
   putStrLn ("permutationsort: " ++ show (permutationsort [3, 1, 2]))
   putStrLn ("bogosort: " ++ show (bogosort [3, 1, 2] 143))
+  putStrLn ("bytesort4Bit: " ++ show (bytesort4Bit unsortedArray))

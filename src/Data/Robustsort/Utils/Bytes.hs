@@ -11,37 +11,20 @@ module Data.Robustsort.Utils.Bytes
     getTopBitFromBytestack,
     createBytestore,
     getSortedBitsFromMetastack,
-    getMagicNumber,
+    mkBSProps,
+    BytesortProps,
   )
 where
 
-import Control.Monad.State
 import Data.Maybe (isNothing)
 import Data.Robustsort.Subalgorithms.Bubblesort (bubblesort)
 import Data.Robustsort.Utils.Split (splitEvery)
 import Data.Robustsort.Utils.Types (Byte, Bytestack, Bytestore, Memory (..), Record, Sortable (SortInt, SortRec), fromSortInt, fromSortRec)
 
-data BytesortState = BytesortState {magicNumber :: Int, subAlgoritm :: Sortable -> Sortable}
+data BytesortProps = BytesortProps {bytesize :: Int, subAlgorithm :: Sortable -> Sortable}
 
-initialBytesortState :: BytesortState
-initialBytesortState = BytesortState {magicNumber = 0, subAlgoritm = bubblesort}
-
-getMagicNumber :: State BytesortState Int
-getMagicNumber = do
-  bytesortState <- get
-  let magNum = magicNumber bytesortState
-  return magNum
-
-getSubAlgorithm :: State BytesortState (Sortable -> Sortable)
-getSubAlgorithm = do
-  bytesortState <- get
-  let subAlg = subAlgoritm bytesortState
-  return subAlg
-
-setSubAlgorithm :: (Sortable -> Sortable) -> State BytesortState ()
-setSubAlgorithm subAlg = do
-  bytesortState <- get
-  put bytesortState {subAlgoritm = subAlg}
+mkBSProps :: Int -> (Sortable -> Sortable) -> BytesortProps
+mkBSProps bSize subAlg = BytesortProps {bytesize = bSize, subAlgorithm = subAlg}
 
 -- | Convert a list of Bits to a list of Bytes of given bytesize, bubblesorting
 --   each byte.
@@ -49,8 +32,13 @@ setSubAlgorithm subAlg = do
 -- | ==== __Examples__
 --   >>> convertRawBitsToBytes [5,1,3,7,8,2,4,6] 4
 --   [[2,4,6,8],[1,3,5,7]]
-convertRawBitsToBytes :: [Int] -> Int -> [Byte]
-convertRawBitsToBytes bits bytesize = foldr acc [] (splitEvery bytesize bits)
+-- convertRawBitsToBytes :: [Int] -> Int -> [Byte]
+-- convertRawBitsToBytes bits bytesize = foldr acc [] (splitEvery bytesize bits)
+--   where
+--     acc :: [Int] -> [Byte] -> [Byte]
+--     acc byte bytes = bytes ++ [fromSortInt (bubblesort (SortInt byte))]
+convertRawBitsToBytes :: [Int] -> BytesortProps -> [Byte]
+convertRawBitsToBytes bits bsProps = foldr acc [] (splitEvery (bytesize bsProps) bits)
   where
     acc :: [Int] -> [Byte] -> [Byte]
     acc byte bytes = bytes ++ [fromSortInt (bubblesort (SortInt byte))]
@@ -64,8 +52,8 @@ convertRawBitsToBytes bits bytesize = foldr acc [] (splitEvery bytesize bits)
 -- | ==== __Examples__
 --  >>> getBytestacksFromBytes [[2,4],[6,8],[1,3],[5,7]] 2
 --  [([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(0,4),(1,8)],SmallMemory [[2,4],[6,8]])]
-getBytestacksFromBytes :: [Byte] -> Int -> [Bytestack]
-getBytestacksFromBytes bytes bytesize = foldr acc [] (splitEvery bytesize bytes)
+getBytestacksFromBytes :: [Byte] -> BytesortProps -> [Bytestack]
+getBytestacksFromBytes bytes bsProps = foldr acc [] (splitEvery (bytesize bsProps) bytes)
   where
     acc :: [Byte] -> [Bytestack] -> [Bytestack]
     acc byte bytestacks = bytestacks ++ [getBytestoreFromBytes byte]
@@ -104,12 +92,12 @@ getBytestoreFromBytes bytes = do
 -- | ==== __Examples__
 -- >>> reduceBytestacks [([(0, 33), (1, 38)], SmallMemory [[31, 33], [35, 38]]), ([(0, 34), (1, 37)], SmallMemory [[32, 14], [36, 37]]), ([(0, 23), (1, 27)], SmallMemory [[21, 23], [25, 27]]), ([(0, 24), (1, 28)], SmallMemory [[22, 24], [26, 28]]),([(0,13),(1,18)],SmallMemory [[11,13],[15,18]]),([(0,14),(1,17)],SmallMemory [[12,14],[16,17]]),([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(0,4),(1,8)],SmallMemory [[2,4],[6,8]])] 2
 -- ([(1,18),(0,38)],BigMemory [([(0,28),(1,38)],BigMemory [([(0,27),(1,28)],BigMemory [([(0,23),(1,27)],SmallMemory [[21,23],[25,27]]),([(0,24),(1,28)],SmallMemory [[22,24],[26,28]])]),([(1,37),(0,38)],BigMemory [([(0,33),(1,38)],SmallMemory [[31,33],[35,38]]),([(0,34),(1,37)],SmallMemory [[32,14],[36,37]])])]),([(0,8),(1,18)],BigMemory [([(0,7),(1,8)],BigMemory [([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(0,4),(1,8)],SmallMemory [[2,4],[6,8]])]),([(1,17),(0,18)],BigMemory [([(0,13),(1,18)],SmallMemory [[11,13],[15,18]]),([(0,14),(1,17)],SmallMemory [[12,14],[16,17]])])])])
-reduceBytestacks :: [Bytestack] -> Int -> Bytestack
-reduceBytestacks bytestacks bytesize = do
-  let newBytestacks = reduceBytestacksSinglePass bytestacks bytesize
-  if length newBytestacks <= bytesize
+reduceBytestacks :: [Bytestack] -> BytesortProps -> Bytestack
+reduceBytestacks bytestacks bsProps = do
+  let newBytestacks = reduceBytestacksSinglePass bytestacks bsProps
+  if length newBytestacks <= bytesize bsProps
     then createBytestack newBytestacks
-    else reduceBytestacks newBytestacks bytesize
+    else reduceBytestacks newBytestacks bsProps
 
 -- | Take a list of Bytestacks (Metabytes) and group them together in new
 --   Bytestacks each containing bytesize number of Metabytes (former Bytestacks)
@@ -119,8 +107,8 @@ reduceBytestacks bytestacks bytesize = do
 -- | ==== __Examples__
 -- >>> reduceBytestacksSinglePass [([(0,13),(1,18)],SmallMemory [[11,13],[15,18]]),([(0,14),(1,17)],SmallMemory [[12,14],[16,17]]),([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(0,4),(1,8)],SmallMemory [[2,4],[6,8]])] 2
 -- [([(0,7),(1,8)],BigMemory [([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(0,4),(1,8)],SmallMemory [[2,4],[6,8]])]),([(1,17),(0,18)],BigMemory [([(0,13),(1,18)],SmallMemory [[11,13],[15,18]]),([(0,14),(1,17)],SmallMemory [[12,14],[16,17]])])]
-reduceBytestacksSinglePass :: [Bytestack] -> Int -> [Bytestack]
-reduceBytestacksSinglePass bytestacks bytesize = foldr acc [] (splitEvery bytesize bytestacks)
+reduceBytestacksSinglePass :: [Bytestack] -> BytesortProps -> [Bytestack]
+reduceBytestacksSinglePass bytestacks bsProps = foldr acc [] (splitEvery (bytesize bsProps) bytestacks)
   where
     acc :: [Bytestack] -> [Bytestack] -> [Bytestack]
     acc bytestack newBytestacks = newBytestacks ++ [createBytestack bytestack]
