@@ -1,19 +1,44 @@
 module Data.Robustsort.OtherSorts.Mergesort (mergesort) where
 
-mergesort :: [Int] -> [Int]
-mergesort = mergeAll . map (: [])
-  where
-    mergeAll [] = []
-    mergeAll [x] = x
-    mergeAll [x, y] = merge x y
-    mergeAll remaningElements = mergeAll (mergePairs remaningElements)
+import Data.Robustsort.Utils.ComparisonFunctions (lessThanInt, lessThanRecord)
+import Data.Robustsort.Utils.Types (Record, Sortable (..))
 
-    mergePairs (x : y : remaningElements) = merge x y : mergePairs remaningElements
+mergesort :: Sortable -> Sortable
+mergesort (SortInt xs) = SortInt (mergesortInts xs)
+mergesort (SortRec xs) = SortRec (mergesortRecs xs)
+
+mergesortInts :: [Int] -> [Int]
+mergesortInts = mergeAllInts . map (: [])
+  where
+    mergeAllInts [] = []
+    mergeAllInts [x] = x
+    mergeAllInts [x, y] = mergeInts x y
+    mergeAllInts remaningElements = mergeAllInts (mergePairs remaningElements)
+
+    mergePairs (x : y : remaningElements) = mergeInts x y : mergePairs remaningElements
     mergePairs x = x
 
-merge :: [Int] -> [Int] -> [Int]
-merge [] y = y
-merge x [] = x
-merge (x : xs) (y : ys)
-  | x < y = x : merge xs (y : ys)
-  | otherwise = y : merge (x : xs) ys
+mergeInts :: [Int] -> [Int] -> [Int]
+mergeInts [] y = y
+mergeInts x [] = x
+mergeInts (x : xs) (y : ys)
+  | lessThanInt x y = x : mergeInts xs (y : ys)
+  | otherwise = y : mergeInts (x : xs) ys
+
+mergesortRecs :: [Record] -> [Record]
+mergesortRecs = mergeAllRecs . map (: [])
+  where
+    mergeAllRecs [] = []
+    mergeAllRecs [x] = x
+    mergeAllRecs [x, y] = mergeRecs x y
+    mergeAllRecs remaningElements = mergeAllRecs (mergePairs remaningElements)
+
+    mergePairs (x : y : remaningElements) = mergeRecs x y : mergePairs remaningElements
+    mergePairs x = x
+
+mergeRecs :: [Record] -> [Record] -> [Record]
+mergeRecs [] y = y
+mergeRecs x [] = x
+mergeRecs (x : xs) (y : ys)
+  | lessThanRecord x y = x : mergeRecs xs (y : ys)
+  | otherwise = y : mergeRecs (x : xs) ys

@@ -1,4 +1,12 @@
-module Data.Robustsort.Utils.ComparisonFunctions (lessThanInt, lessThanRecord) where
+module Data.Robustsort.Utils.ComparisonFunctions
+  ( lessThanInt,
+    lessThanRecord,
+    greaterThanInt,
+    greaterThanRecord,
+    lessThanOrEqualInt,
+    lessThanOrEqualRecord,
+  )
+where
 
 import Data.Robustsort.Utils.Types (Record)
 
@@ -7,3 +15,15 @@ lessThanInt x y = x < y
 
 lessThanRecord :: Record -> Record -> Bool
 lessThanRecord x y = snd x < snd y
+
+greaterThanInt :: Int -> Int -> Bool
+greaterThanInt x y = x > y
+
+greaterThanRecord :: Record -> Record -> Bool
+greaterThanRecord x y = snd x > snd y
+
+lessThanOrEqualInt :: Int -> Int -> Bool
+lessThanOrEqualInt x y = x <= y
+
+lessThanOrEqualRecord :: Record -> Record -> Bool
+lessThanOrEqualRecord x y = snd x <= snd y

@@ -61,6 +61,8 @@ fromSortRec (SortInt _) = error "This is for sorting Records - you gave me Integ
 
 type SortAlg = Sortable -> Sortable
 
+type SupersortProps = (SortAlg, SortAlg, SortAlg, SupersortStrat)
+
 type SupersortStrat = (Sortable, Sortable, Sortable) -> Sortable
 
 -- | A Memory contains the data to be sorted, either in the form of Bytes or
