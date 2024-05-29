@@ -1,7 +1,6 @@
 module Data.Robustsort.Bytesort (bytesort, bytesort4Bit) where
 
-import Data.Robustsort.Utils.Bytes (convertRawBitsToBytes, getBytestacksFromBytes, reduceBytestacks)
-import Data.Robustsort.Utils.Bytes2 (getSortedBitsFromMetastack)
+import Data.Robustsort.Utils.Bytes (convertRawBitsToBytes, getBytestacksFromBytes, getSortedBitsFromMetastack, reduceBytestacks)
 import Data.Robustsort.Utils.RandomizeList (randomizeList)
 
 bytesort4Bit :: [Int] -> [Int]

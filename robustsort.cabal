@@ -69,7 +69,6 @@ library
                       Data.Robustsort.Robustsort,
                       Data.Robustsort.Bytesort,
                       Data.Robustsort.Utils.Bytes,
-                      Data.Robustsort.Utils.Bytes2,
                       Data.Robustsort.Utils.Types,
                       Data.Robustsort.Utils.Split,
                       Data.Robustsort.Utils.ComparisonFunctions
