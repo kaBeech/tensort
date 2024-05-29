@@ -59,6 +59,10 @@ fromSortRec :: Sortable -> [Record]
 fromSortRec (SortRec recs) = recs
 fromSortRec (SortInt _) = error "This is for sorting Records - you gave me Integers"
 
+type SortAlg = Sortable -> Sortable
+
+type SupersortStrat = (Sortable, Sortable, Sortable) -> Sortable
+
 -- | A Memory contains the data to be sorted, either in the form of Bytes or
 --   Metabytes
 data Memory
