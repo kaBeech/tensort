@@ -13,9 +13,9 @@ module Data.Robustsort.Utils.Bytes
 where
 
 import Data.Maybe (isNothing)
-import Data.Robustsort.Subalgorithms.Bubblesort (bubblesort, bubblesortRecords)
+import Data.Robustsort.Subalgorithms.Bubblesort (bubblesort)
 import Data.Robustsort.Utils.Split (splitEvery)
-import Data.Robustsort.Utils.Types (Byte, Bytestack, Bytestore, Memory (..), Record)
+import Data.Robustsort.Utils.Types (Byte, Bytestack, Bytestore, Memory (..), Record, Sortable (SortInt, SortRec), fromSortInt, fromSortRec)
 
 -- | Convert a list of Bits to a list of Bytes of given bytesize, bubblesorting
 --   each byte.
@@ -27,7 +27,7 @@ convertRawBitsToBytes :: [Int] -> Int -> [Byte]
 convertRawBitsToBytes bits bytesize = foldr acc [] (splitEvery bytesize bits)
   where
     acc :: [Int] -> [Byte] -> [Byte]
-    acc byte bytes = bytes ++ [bubblesort byte]
+    acc byte bytes = bytes ++ [fromSortInt (bubblesort (SortInt byte))]
 
 -- | Convert a list of Bytes to a list of Bytestacks.
 
@@ -61,7 +61,7 @@ getBytestacksFromBytes bytes bytesize = foldr acc [] (splitEvery bytesize bytes)
 getBytestoreFromBytes :: [Byte] -> Bytestore
 getBytestoreFromBytes bytes = do
   let register = acc bytes [] 0
-  let register' = bubblesortRecords register
+  let register' = fromSortRec (bubblesort (SortRec register))
   (register', SmallMemory bytes)
   where
     acc :: [Byte] -> [Record] -> Int -> [Record]
@@ -106,7 +106,7 @@ reduceBytestacksSinglePass bytestacks bytesize = foldr acc [] (splitEvery bytesi
 -- >>> createBytestack [([(0,13),(1,18)],SmallMemory [[11,13],[15,18]]),([(1,14),(0,17)],SmallMemory [[16,17],[12,14]])]
 -- ([(1,17),(0,18)],BigMemory [([(0,13),(1,18)],SmallMemory [[11,13],[15,18]]),([(1,14),(0,17)],SmallMemory [[16,17],[12,14]])])
 createBytestack :: [Bytestore] -> Bytestack
-createBytestack metabytes = (bubblesortRecords (getRegisterFromMetabytes metabytes), BigMemory metabytes)
+createBytestack metabytes = (fromSortRec (bubblesort (SortRec (getRegisterFromMetabytes metabytes))), BigMemory metabytes)
 
 -- | Create a Bytestore from a Memory
 --   Aliases to getBytestoreFromBytes for SmallMemory and createBytestack for

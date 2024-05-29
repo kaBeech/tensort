@@ -1,16 +1,14 @@
-module Data.Robustsort.Subalgorithms.Bubblesort (bubblesort, bubblesortRecords) where
+module Data.Robustsort.Subalgorithms.Bubblesort (bubblesort) where
 
 import Data.Robustsort.Utils.ComparisonFunctions (lessThanInt, lessThanRecord)
-import Data.Robustsort.Utils.Types (Record)
+import Data.Robustsort.Utils.Types (Record, Sortable (..))
 
-bubblesort :: [Int] -> [Int]
-bubblesort = foldr acc []
+bubblesort :: Sortable -> Sortable
+bubblesort (SortInt ints) = SortInt (foldr acc [] ints)
   where
     acc :: Int -> [Int] -> [Int]
     acc x xs = bubblesortSinglePass x xs lessThanInt
-
-bubblesortRecords :: [Record] -> [Record]
-bubblesortRecords = foldr acc []
+bubblesort (SortRec recs) = SortRec (foldr acc [] recs)
   where
     acc :: Record -> [Record] -> [Record]
     acc x xs = bubblesortSinglePass x xs lessThanRecord

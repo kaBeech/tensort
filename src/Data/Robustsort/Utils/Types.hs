@@ -42,6 +42,23 @@ type Record = (Address, TopBit)
 --   Bytestore or Metabytestore's Memory
 type Register = [Record]
 
+-- | We use a Sortable type sort between Ints and Records
+
+-- | In the future this may be expanded to include other data types and allow
+--   for sorting other types of besides Ints
+data Sortable
+  = SortInt [Int]
+  | SortRec [Record]
+  deriving (Show, Eq, Ord)
+
+fromSortInt :: Sortable -> [Int]
+fromSortInt (SortInt ints) = ints
+fromSortInt (SortRec _) = error "This is for sorting Integers - you gave me Records"
+
+fromSortRec :: Sortable -> [Record]
+fromSortRec (SortRec recs) = recs
+fromSortRec (SortInt _) = error "This is for sorting Records - you gave me Integers"
+
 -- | A Memory contains the data to be sorted, either in the form of Bytes or
 --   Metabytes
 data Memory
