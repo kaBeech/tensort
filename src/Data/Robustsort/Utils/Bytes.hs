@@ -17,7 +17,6 @@ module Data.Robustsort.Utils.Bytes
 where
 
 import Data.Maybe (isNothing)
-import Data.Robustsort.Subalgorithms.Bubblesort (bubblesort)
 import Data.Robustsort.Utils.Split (splitEvery)
 import Data.Robustsort.Utils.Types (Byte, Bytestack, Bytestore, Memory (..), Record, Sortable (SortInt, SortRec), fromSortInt, fromSortRec)
 
@@ -41,7 +40,7 @@ convertRawBitsToBytes :: [Int] -> BytesortProps -> [Byte]
 convertRawBitsToBytes bits bsProps = foldr acc [] (splitEvery (bytesize bsProps) bits)
   where
     acc :: [Int] -> [Byte] -> [Byte]
-    acc byte bytes = bytes ++ [fromSortInt (bubblesort (SortInt byte))]
+    acc byte bytes = bytes ++ [fromSortInt (subAlgorithm bsProps (SortInt byte))]
 
 -- | Convert a list of Bytes to a list of Bytestacks.
 
@@ -56,7 +55,7 @@ getBytestacksFromBytes :: [Byte] -> BytesortProps -> [Bytestack]
 getBytestacksFromBytes bytes bsProps = foldr acc [] (splitEvery (bytesize bsProps) bytes)
   where
     acc :: [Byte] -> [Bytestack] -> [Bytestack]
-    acc byte bytestacks = bytestacks ++ [getBytestoreFromBytes byte]
+    acc byte bytestacks = bytestacks ++ [getBytestoreFromBytes byte bsProps]
 
 -- | Convert a list of Bytes to a Bytestore
 
@@ -72,10 +71,10 @@ getBytestacksFromBytes bytes bsProps = foldr acc [] (splitEvery (bytesize bsProp
 -- | ==== __Examples__
 --  >>> getBytestoreFromBytes [[2,4,6,8],[1,3,5,7]]
 --  ([(1,7),(0,8)],SmallMemory [[2,4,6,8],[1,3,5,7]])
-getBytestoreFromBytes :: [Byte] -> Bytestore
-getBytestoreFromBytes bytes = do
+getBytestoreFromBytes :: [Byte] -> BytesortProps -> Bytestore
+getBytestoreFromBytes bytes bsProps = do
   let register = acc bytes [] 0
-  let register' = fromSortRec (bubblesort (SortRec register))
+  let register' = fromSortRec (subAlgorithm bsProps (SortRec register))
   (register', SmallMemory bytes)
   where
     acc :: [Byte] -> [Record] -> Int -> [Record]
@@ -96,7 +95,7 @@ reduceBytestacks :: [Bytestack] -> BytesortProps -> Bytestack
 reduceBytestacks bytestacks bsProps = do
   let newBytestacks = reduceBytestacksSinglePass bytestacks bsProps
   if length newBytestacks <= bytesize bsProps
-    then createBytestack newBytestacks
+    then createBytestack newBytestacks bsProps
     else reduceBytestacks newBytestacks bsProps
 
 -- | Take a list of Bytestacks (Metabytes) and group them together in new
@@ -111,7 +110,7 @@ reduceBytestacksSinglePass :: [Bytestack] -> BytesortProps -> [Bytestack]
 reduceBytestacksSinglePass bytestacks bsProps = foldr acc [] (splitEvery (bytesize bsProps) bytestacks)
   where
     acc :: [Bytestack] -> [Bytestack] -> [Bytestack]
-    acc bytestack newBytestacks = newBytestacks ++ [createBytestack bytestack]
+    acc bytestack newBytestacks = newBytestacks ++ [createBytestack bytestack bsProps]
 
 -- | Create a Bytestack with the collated and bubblesorted References from the
 --   Metabytes as the Register and the original Metabytes as the data
@@ -119,17 +118,17 @@ reduceBytestacksSinglePass bytestacks bsProps = foldr acc [] (splitEvery (bytesi
 -- | ==== __Examples__
 -- >>> createBytestack [([(0,13),(1,18)],SmallMemory [[11,13],[15,18]]),([(1,14),(0,17)],SmallMemory [[16,17],[12,14]])]
 -- ([(1,17),(0,18)],BigMemory [([(0,13),(1,18)],SmallMemory [[11,13],[15,18]]),([(1,14),(0,17)],SmallMemory [[16,17],[12,14]])])
-createBytestack :: [Bytestore] -> Bytestack
-createBytestack metabytes = (fromSortRec (bubblesort (SortRec (getRegisterFromMetabytes metabytes))), BigMemory metabytes)
+createBytestack :: [Bytestore] -> BytesortProps -> Bytestack
+createBytestack metabytes bsProps = (fromSortRec (subAlgorithm bsProps (SortRec (getRegisterFromMetabytes metabytes))), BigMemory metabytes)
 
 -- | Create a Bytestore from a Memory
 --   Aliases to getBytestoreFromBytes for SmallMemory and createBytestack for
 --   BigMemory
 
 -- | I expect to refactor to simplify this before initial release
-createBytestore :: Memory -> Bytestore
-createBytestore (SmallMemory bytes) = getBytestoreFromBytes bytes
-createBytestore (BigMemory metabytes) = createBytestack metabytes
+createBytestore :: Memory -> BytesortProps -> Bytestore
+createBytestore (SmallMemory bytes) bsProps = getBytestoreFromBytes bytes bsProps
+createBytestore (BigMemory metabytes) bsProps = createBytestack metabytes bsProps
 
 -- | For each Bytestore, produces a Record by combining the top bit of the
 --  Bytestore with an index value for its Address
@@ -171,12 +170,12 @@ getTopBitFromBytestack (register, _) = snd (last register)
 --  [1,3,5,7]
 --  >>> getSortedBitsFromMetastack ([(0,8),(1,18)],BigMemory [([(0,7),(1,8)],BigMemory [([(0,3),(1,7)],SmallMemory [[1,3],[5,7]]),([(0,4),(1,8)],SmallMemory [[2,4],[6,8]])]),([(1,17),(0,18)],BigMemory [([(0,13),(1,18)],SmallMemory [[11,13],[15,18]]),([(0,14),(1,17)],SmallMemory [[12,14],[16,17]])])])
 --  [1,2,3,4,5,6,7,8,11,12,13,14,15,16,17,18]
-getSortedBitsFromMetastack :: Bytestack -> [Int]
-getSortedBitsFromMetastack metastackRaw = acc metastackRaw []
+getSortedBitsFromMetastack :: Bytestack -> BytesortProps -> [Int]
+getSortedBitsFromMetastack metastackRaw bsProps = acc metastackRaw []
   where
     acc :: Bytestack -> [Int] -> [Int]
     acc metastack sortedBits = do
-      let (nextBit, metastack') = removeTopBitFromBytestore metastack
+      let (nextBit, metastack') = removeTopBitFromBytestore metastack bsProps
       if isNothing metastack'
         then nextBit : sortedBits
         else do
@@ -190,18 +189,18 @@ getSortedBitsFromMetastack metastackRaw = acc metastackRaw []
 -- | ==== __Examples__
 --   >>> removeTopBitFromBytestore  ([(0,5),(1,7)],SmallMemory [[1,5],[3,7]])
 --   (7,Just ([(1,3),(0,5)],SmallMemory [[1,5],[3]]))
-removeTopBitFromBytestore :: Bytestore -> (Int, Maybe Bytestore)
-removeTopBitFromBytestore (register, memory) = do
+removeTopBitFromBytestore :: Bytestore -> BytesortProps -> (Int, Maybe Bytestore)
+removeTopBitFromBytestore (register, memory) bsProps = do
   let topRecord = last register
   let topAddress = fst topRecord
-  let (topBit, memory') = removeBitFromMemory memory topAddress
+  let (topBit, memory') = removeBitFromMemory memory topAddress bsProps
   if isNothing memory'
     then (topBit, Nothing)
-    else (topBit, Just (createBytestore (fromJust memory')))
+    else (topBit, Just (createBytestore (fromJust memory') bsProps))
 
 -- | ==== __Examples__
-removeBitFromMemory :: Memory -> Int -> (Int, Maybe Memory)
-removeBitFromMemory (SmallMemory bytes) i = do
+removeBitFromMemory :: Memory -> Int -> BytesortProps -> (Int, Maybe Memory)
+removeBitFromMemory (SmallMemory bytes) i _ = do
   let topByte = bytes !! i
   let topBit = last topByte
   let topByte' = init topByte
@@ -214,9 +213,9 @@ removeBitFromMemory (SmallMemory bytes) i = do
     else do
       let bytes' = take i bytes ++ [topByte'] ++ drop (i + 1) bytes
       (topBit, Just (SmallMemory bytes'))
-removeBitFromMemory (BigMemory bytestores) i = do
+removeBitFromMemory (BigMemory bytestores) i bsProps = do
   let topBytestore = bytestores !! i
-  let (topBit, topBytestore') = removeTopBitFromBytestore topBytestore
+  let (topBit, topBytestore') = removeTopBitFromBytestore topBytestore bsProps
   if isNothing topBytestore'
     then do
       let bytestores' = take i bytestores ++ drop (i + 1) bytestores

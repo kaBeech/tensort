@@ -24,4 +24,4 @@ bytesort xs bsProps = do
   let bytes = convertRawBitsToBytes bits bsProps
   let bytestacks = getBytestacksFromBytes bytes bsProps
   let metastack = reduceBytestacks bytestacks bsProps
-  getSortedBitsFromMetastack metastack
+  getSortedBitsFromMetastack metastack bsProps
