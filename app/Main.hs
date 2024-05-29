@@ -1,10 +1,9 @@
-{-# LANGUAGE ImportQualifiedPost #-}
-
 module Main where
 
 import Data.Robustsort.Bytesort (bytesort4Bit)
 import Data.Robustsort.OtherSorts.Mergesort (mergesort)
 import Data.Robustsort.OtherSorts.Quicksort (quicksort)
+import Data.Robustsort.Robustsort (robustsortP)
 import Data.Robustsort.Subalgorithms.Bogosort (bogosort)
 import Data.Robustsort.Subalgorithms.Bubblesort (bubblesort)
 import Data.Robustsort.Subalgorithms.Permutationsort (permutationsort)
@@ -17,8 +16,9 @@ main :: IO ()
 main = do
   putStrLn "Hello, Haskell!"
   putStrLn ("bubblesort: " ++ show (fromSortInt (bubblesort (SortInt unsortedArray))))
-  putStrLn ("mergesort: " ++ show (mergesort unsortedArray))
-  putStrLn ("quicksort: " ++ show (quicksort unsortedArray))
-  putStrLn ("permutationsort: " ++ show (permutationsort [3, 1, 2]))
-  putStrLn ("bogosort: " ++ show (bogosort [3, 1, 2] 143))
-  putStrLn ("bytesort4Bit: " ++ show (bytesort4Bit unsortedArray))
+  putStrLn ("mergesort: " ++ show (mergesort (SortInt unsortedArray)))
+  putStrLn ("quicksort: " ++ show (quicksort (SortInt unsortedArray)))
+  putStrLn ("permutationsort: " ++ show (permutationsort (SortInt [3, 1, 2])))
+  putStrLn ("bogosort: " ++ show (bogosort (SortInt [3, 1, 2])))
+  putStrLn ("bytesort4Bit: " ++ show (bytesort4Bit (SortInt unsortedArray)))
+  putStrLn ("robustsortP: " ++ show (robustsortP (SortInt unsortedArray)))

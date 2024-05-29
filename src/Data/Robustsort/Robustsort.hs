@@ -1,5 +1,15 @@
--- See `robustsort.ts` for (pseudo)code
-module Data.Robustsort.Robustsort (robustsort) where
+module Data.Robustsort.Robustsort (robustsortP) where
 
-robustsort :: [Int] -> [Int]
-robustsort xs = xs
+import Data.Robustsort.Bytesort (bytesort)
+import Data.Robustsort.Subalgorithms.Bogosort (bogosort)
+import Data.Robustsort.Subalgorithms.Bubblesort (bubblesort)
+import Data.Robustsort.Subalgorithms.Permutationsort (permutationsort)
+import Data.Robustsort.Subalgorithms.Supersort (mundaneSuperStrat, supersort)
+import Data.Robustsort.Utils.Bytes (mkBSProps)
+import Data.Robustsort.Utils.Types (Sortable)
+
+robustsortP :: Sortable -> Sortable
+robustsortP xs = bytesort xs (mkBSProps 3 supersortP)
+
+supersortP :: Sortable -> Sortable
+supersortP xs = supersort xs (bubblesort, bogosort, permutationsort, mundaneSuperStrat)
