@@ -3,7 +3,6 @@ module Main where
 import Data.Tensort.OtherSorts.Mergesort (mergesort)
 import Data.Tensort.OtherSorts.Quicksort (quicksort)
 import Data.Tensort.Robustsort (robustsortB, robustsortM, robustsortP)
-import Data.Tensort.Subalgorithms.Bogosort (bogosort)
 import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 import Data.Tensort.Tensort (tensortBasic2Bit, tensortBasic3Bit, tensortBasic4Bit)
 import Data.Tensort.Utils.RandomizeList (randomizeList)
@@ -36,7 +35,7 @@ printTime :: Sortable -> IO ()
 printTime l = do
   putStr " Algorithm   | Time         | n ="
   startTensort2Bit <- getCurrentTime
-  putStrLn ("    " ++ show (length (tensortBasic2Bit (fromSortInt l))))
+  putStrLn (" " ++ show (length (tensortBasic2Bit (fromSortInt l))))
   endTensort2Bit <- getCurrentTime
   putStr (" Tensort2Bit | " ++ show (diffUTCTime endTensort2Bit startTensort2Bit) ++ " | ")
   startTensort3Bit <- getCurrentTime
@@ -48,7 +47,7 @@ printTime l = do
   endTensort4Bit <- getCurrentTime
   putStr (" Tensort4Bit | " ++ show (diffUTCTime endTensort4Bit startTensort4Bit) ++ " | ")
   startRSortP <- getCurrentTime
-  putStrLn (" " ++ show (length (robustsortP (fromSortInt l))))
+  putStrLn ("    " ++ show (length (robustsortP (fromSortInt l))))
   endRSortP <- getCurrentTime
   putStr (" RobustsortP | " ++ show (diffUTCTime endRSortP startRSortP) ++ " | ")
   startRSortB <- getCurrentTime
