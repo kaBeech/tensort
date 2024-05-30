@@ -131,10 +131,10 @@ pointing to a Byte in memory and a copy of the TopBit in the referenced Byte.
 These Records are arranged in the order that the Bytes are sorted (this will be 
 clarified soon).
 
-A Tensorstack is a top-level Tensor along with all the Bits, Bytes, and 
+A TensorStack is a top-level Tensor along with all the Bits, Bytes, and 
 Tensors it contains. Once the Tensors are fully built, the total number 
-of Tensorstacks will equal the Bytesize, but before that point there will be many 
-more Tensorstacks.
+of TensorStacks will equal the Bytesize, but before that point there will be many 
+more TensorStacks.
 
 The sorting SubAlgorithm will be used any time we sort something within 
 Tensort. The choice of this SubAlgorithm is very important. For reasons that 
@@ -155,37 +155,37 @@ to make mistakes when the list is already nearly sorted.
     will do no more write operations on the Bits until the final steps. Instead, we 
     will make copies of the Bits and sort the copies alongside their pointers.
 
-    3. Assemble Tensorstacks by creating Tensors from the Bytes. Tensors are 
+    3. Assemble TensorStacks by creating Tensors from the Bytes. Tensors are 
     created by grouping Bytes together (setting them as the Tensor's 
     second element), making Records from their top bits, sorting the records, and 
     then recording the Pointers from the Records (after being sorted) as the 
     Tensor's first element.
 
-    4. Reduce the number of Tensorstacks by creating a new layer of Tensors from 
+    4. Reduce the number of TensorStacks by creating a new layer of Tensors from 
     the Tensors created in Step 3. These new Tensors are created by grouping 
     the first layer of Tensors together (setting them as the new Tensor's 
     second element), making Records from their top Bits, sorting the Records, and 
     then recording the Pointers from the Records 
     (after being sorted) as the Tensor's first element.
 
-    5. Continue in the same manner as in Step 4 until the number of Tensorstacks 
+    5. Continue in the same manner as in Step 4 until the number of TensorStacks 
     equals the Bytesize
 
     6. Assemble a top Register by Making Records from the Top Bits on each 
-    Tensorstack and sort the Records.
+    TensorStack and sort the Records.
 
-    7. Remove the Top Bit from the top Byte in the top Tensorstack and add it 
+    7. Remove the Top Bit from the top Byte in the top TensorStack and add it 
     to the final Sorted List. If the top Byte has more than one But in it stll, 
     Re-sort the Byte for good measure (technically this is 
     running the algorithm on different arguments - if anyone wants to me about 
     this I'll update this README)
 
-    8. If the top Byte in the top Tensorstack is empty, remove the Record that 
+    8. If the top Byte in the top TensorStack is empty, remove the Record that 
     points to it from its Tensor's Register. If the Tensor is empty, remove
     the Record that points to it from its Tensor's Register. Do this recursively 
-    until the Tensor is not empty or the top of the Tensorstack is reached. If the 
-    entire Tensorstack is empty of Bits, remove its Record from the top Register. If 
-    all Tensorstacks are empty of Bits, return the final Sorted List. Otherwise, 
+    until the Tensor is not empty or the top of the TensorStack is reached. If the 
+    entire TensorStack is empty of Bits, remove its Record from the top Register. If 
+    all TensorStacks are empty of Bits, return the final Sorted List. Otherwise, 
     re-sort the top Register
 
     9. Otherwise (the top Byte (or a Tensor that contains it) is not empty), 
@@ -193,13 +193,13 @@ to make mistakes when the list is already nearly sorted.
     new Top Bit and re-sort its Tensor's Register. Then jump up a level to 
     the Tensor that contains that Tensor and update the top Tensor's Record
     with its new Top Bit and re-sort its Register. Do this recursively until
-    the whole Tensorstack is rebalanced. Then update the Tensorstack's Record in the 
+    the whole TensorStack is rebalanced. Then update the TensorStack's Record in the 
     top Register with its new Top Bit and re-sort the top Register.
 
 Now that we know all the steps, it's easier to see why we randomize the list
 as the beginning step. This way, if the list is already nearly 
 sorted, values close to each other don't get stuck under each other in their 
-Byte. Ideally, we want the top Bits from all Tensorstacks to be close to 
+Byte. Ideally, we want the top Bits from all TensorStacks to be close to 
 each other. Say for example, the first three elements in a 1,000,000-element 
 list are 121, 122, 123, and 124. If we don't randomize the list, these 3 
 elements get grouped together in the first byte. That's all well and good if 
