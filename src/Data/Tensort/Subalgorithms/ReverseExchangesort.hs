@@ -1,10 +1,10 @@
 module Data.Tensort.Subalgorithms.ReverseExchangesort (reverseExchangesort) where
 
-import Data.Tensort.Utils.ComparisonFunctions (greaterThanInt, greaterThanRecord)
+import Data.Tensort.Utils.ComparisonFunctions (greaterThanBit, greaterThanRecord)
 import Data.Tensort.Utils.Types (Sortable (..))
 
 reverseExchangesort :: Sortable -> Sortable
-reverseExchangesort (SortInt ints) = SortInt (reverseExchangesortIterable ints (length ints - 1) (length ints - 2) greaterThanInt)
+reverseExchangesort (SortBit bits) = SortBit (reverseExchangesortIterable bits (length bits - 1) (length bits - 2) greaterThanBit)
 reverseExchangesort (SortRec recs) = SortRec (reverseExchangesortIterable recs (length recs - 1) (length recs - 2) greaterThanRecord)
 
 reverseExchangesortIterable :: [a] -> Int -> Int -> (a -> a -> Bool) -> [a]

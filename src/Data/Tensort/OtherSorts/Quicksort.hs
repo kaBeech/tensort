@@ -1,14 +1,14 @@
 module Data.Tensort.OtherSorts.Quicksort (quicksort) where
 
-import Data.Tensort.Utils.ComparisonFunctions (greaterThanInt, greaterThanRecord, lessThanOrEqualInt, lessThanOrEqualRecord)
-import Data.Tensort.Utils.Types (Sortable (..), fromSortInt, fromSortRec)
+import Data.Tensort.Utils.ComparisonFunctions (greaterThanBit, greaterThanRecord, lessThanOrEqualBit, lessThanOrEqualRecord)
+import Data.Tensort.Utils.Types (Sortable (..), fromSortBit, fromSortRec)
 
 quicksort :: Sortable -> Sortable
-quicksort (SortInt []) = SortInt []
-quicksort (SortInt (x : xs)) =
-  let lowerPartition = quicksort (SortInt [a | a <- xs, lessThanOrEqualInt a x])
-      upperPartition = quicksort (SortInt [a | a <- xs, greaterThanInt a x])
-   in SortInt (fromSortInt lowerPartition ++ [x] ++ fromSortInt upperPartition)
+quicksort (SortBit []) = SortBit []
+quicksort (SortBit (x : xs)) =
+  let lowerPartition = quicksort (SortBit [a | a <- xs, lessThanOrEqualBit a x])
+      upperPartition = quicksort (SortBit [a | a <- xs, greaterThanBit a x])
+   in SortBit (fromSortBit lowerPartition ++ [x] ++ fromSortBit upperPartition)
 quicksort (SortRec []) = SortRec []
 quicksort (SortRec (x : xs)) =
   let lowerPartition = quicksort (SortRec [a | a <- xs, lessThanOrEqualRecord a x])

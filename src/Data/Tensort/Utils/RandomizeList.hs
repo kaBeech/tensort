@@ -5,5 +5,5 @@ import System.Random (mkStdGen)
 import System.Random.Shuffle (shuffle')
 
 randomizeList :: Sortable -> Int -> Sortable
-randomizeList (SortInt xs) seed = SortInt (shuffle' xs (length xs) (mkStdGen seed))
+randomizeList (SortBit xs) seed = SortBit (shuffle' xs (length xs) (mkStdGen seed))
 randomizeList (SortRec xs) seed = SortRec (shuffle' xs (length xs) (mkStdGen seed))
