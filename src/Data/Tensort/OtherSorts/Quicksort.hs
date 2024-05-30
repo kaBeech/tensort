@@ -1,7 +1,7 @@
-module Data.Robustsort.OtherSorts.Quicksort (quicksort) where
+module Data.Tensort.OtherSorts.Quicksort (quicksort) where
 
-import Data.Robustsort.Utils.ComparisonFunctions (greaterThanInt, greaterThanRecord, lessThanOrEqualInt, lessThanOrEqualRecord)
-import Data.Robustsort.Utils.Types (Sortable (..), fromSortInt, fromSortRec)
+import Data.Tensort.Utils.ComparisonFunctions (greaterThanInt, greaterThanRecord, lessThanOrEqualInt, lessThanOrEqualRecord)
+import Data.Tensort.Utils.Types (Sortable (..), fromSortInt, fromSortRec)
 
 quicksort :: Sortable -> Sortable
 quicksort (SortInt []) = SortInt []

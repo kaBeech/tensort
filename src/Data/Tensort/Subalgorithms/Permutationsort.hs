@@ -1,8 +1,8 @@
-module Data.Robustsort.Subalgorithms.Permutationsort (permutationsort) where
+module Data.Tensort.Subalgorithms.Permutationsort (permutationsort) where
 
 import Data.List (permutations)
-import Data.Robustsort.Utils.Check (isSorted)
-import Data.Robustsort.Utils.Types (Record, Sortable (..), fromSortInt, fromSortRec)
+import Data.Tensort.Utils.Check (isSorted)
+import Data.Tensort.Utils.Types (Record, Sortable (..), fromSortInt, fromSortRec)
 
 permutationsort :: Sortable -> Sortable
 permutationsort (SortInt xs) = SortInt (acc (permutations x) [])

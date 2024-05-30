@@ -1,4 +1,4 @@
-module Data.Robustsort.Utils.ComparisonFunctions
+module Data.Tensort.Utils.ComparisonFunctions
   ( lessThanInt,
     lessThanRecord,
     greaterThanInt,
@@ -8,7 +8,7 @@ module Data.Robustsort.Utils.ComparisonFunctions
   )
 where
 
-import Data.Robustsort.Utils.Types (Record)
+import Data.Tensort.Utils.Types (Record)
 
 lessThanInt :: Int -> Int -> Bool
 lessThanInt x y = x < y

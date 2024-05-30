@@ -1,4 +1,4 @@
-module Data.Robustsort.Utils.Split (splitEvery) where
+module Data.Tensort.Utils.Split (splitEvery) where
 
 -- | Split a list into chunks of a given size.
 splitEvery :: Int -> [a] -> [[a]]
