@@ -1,7 +1,7 @@
 module Data.Tensort.Utils.Reduce (reduceTensorStacks) where
 
+import Data.Tensort.Utils.Compose (createTensor)
 import Data.Tensort.Utils.Split (splitEvery)
-import Data.Tensort.Utils.Tensor (createTensor)
 import Data.Tensort.Utils.Types (Memory (..), TensorStack, TensortProps (..))
 
 -- | Take a list of TensorStacks and group them together in new

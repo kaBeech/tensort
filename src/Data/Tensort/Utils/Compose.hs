@@ -1,4 +1,4 @@
-module Data.Tensort.Utils.Tensor
+module Data.Tensort.Utils.Compose
   ( createInitialTensors,
     createTensor,
   )

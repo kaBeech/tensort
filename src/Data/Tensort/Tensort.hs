@@ -8,11 +8,11 @@ module Data.Tensort.Tensort
 where
 
 import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
+import Data.Tensort.Utils.Compose (createInitialTensors)
 import Data.Tensort.Utils.Convert (rawBitsToBytes)
 import Data.Tensort.Utils.RandomizeList (randomizeList)
 import Data.Tensort.Utils.Reduce (reduceTensorStacks)
 import Data.Tensort.Utils.Render (getSortedBitsFromTensor)
-import Data.Tensort.Utils.Tensor (createInitialTensors)
 import Data.Tensort.Utils.Types (Sortable (..), TensortProps (..), fromSortBit)
 
 mkTSProps :: Int -> (Sortable -> Sortable) -> TensortProps

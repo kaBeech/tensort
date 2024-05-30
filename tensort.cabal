@@ -83,7 +83,7 @@ library
                       Data.Tensort.Utils.Split,
                       Data.Tensort.Utils.ComparisonFunctions,
                       Data.Tensort.Utils.Convert,
-                      Data.Tensort.Utils.Tensor,
+                      Data.Tensort.Utils.Compose,
                       Data.Tensort.Utils.Reduce,
                       Data.Tensort.Utils.Render,
 
