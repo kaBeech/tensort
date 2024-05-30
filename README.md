@@ -39,9 +39,9 @@ There's likely a lot of room for improvement in the code as well.
 
 ## Project structure
 
-  - `src/` contains the Tensort library
+- `src/` contains the Tensort library
     
-  - `app/` contains the suite for comparing different sorting algorithms in terms of robustness and time efficiency
+- `app/` contains the suite for comparing different sorting algorithms in terms of robustness and time efficiency
 
 ## Algorithms overview
 
@@ -99,27 +99,27 @@ fear not!
 
 #### Structure
 
-    Bit <- Element of the list to be sorted
+  - Bit <- Element of the list to be sorted
     
-    Byte <- List of Bits
+  - Byte <- List of Bits
     
-    Tensor <- Tuple of a Register list and a Memory list
+  - Tensor <- Tuple of a Register list and a Memory list
     
-    Memory <- List of Bytes or Tensors contained in the current Tensor.
+  - Memory <- List of Bytes or Tensors contained in the current Tensor.
               Technically this is a tensor field, but it seems less 
-              confusing to just call it `Memory`
+              confusing to just call it Memory
     
-    Register <- List of Records referencing each Byte or Tensor in Memory
+  - Register <- List of Records referencing each Byte or Tensor in Memory
     
-    Record <- Tuple of the Address and the TopBit of the referenced Byte or Tensor
+  - Record <- Tuple of the Address and the TopBit of the referenced Byte or Tensor
     
-    Address <- Pointer to a Byte or Tensor in Memory
+  - Address <- Pointer to a Byte or Tensor in Memory
     
-    TopBit <- Value of the Bit at the top of the stack in a Byte or Tensor
+  - TopBit <- Value of the Bit at the top of the stack in a Byte or Tensor
 
-    TensorStack <- A top-level Tensor along with all the Bits, Bytes, and Tensors it contains
+  - TensorStack <- A top-level Tensor along with all the Bits, Bytes, and Tensors it contains
     
-    SubAlgorithm <- The sorting sub-algorithm used at various stages
+  - SubAlgorithm <- The sorting sub-algorithm used at various stages
 
 In Tensort, the smallest unit of information is a Bit. Each Bit stores one 
 element of the list to be sorted. A group of Bits is known as a Byte. 
@@ -133,7 +133,7 @@ A Tensor is a tuple with two elements: Register and Memory.
 
 Memory is the second element in a Tensor tuple. It is a list of Bytes or 
 other Tensors. Technically, Memory is a tensor field, but it seems less 
-confusing to just call it `Memory` and talk about it in terms of being a list. 
+confusing to just call it Memory and talk about it in terms of being a list. 
 The length of this Memory list is equal to the Bytesize.
 
 A Register is the first element in a Tensor tuple. It is a list of Records, 
@@ -160,38 +160,38 @@ The first step in Tensort is to randomize the input list. I'll explain why we
 do this in more detail later - for now just know that it's easier for Tensort 
 to make mistakes when the list is already nearly sorted.
 
-    1. Randomize the input list of elements (Bits)
+  1. Randomize the input list of elements (Bits)
 
-    2. Assemble Bytes by sorting the Bits using the SubAlgorithm. After this, we 
+  2. Assemble Bytes by sorting the Bits using the SubAlgorithm. After this, we 
     will do no more write operations on the Bits until the final steps. Instead, we 
     will make copies of the Bits and sort the copies alongside their pointers.
 
-    3. Assemble TensorStacks by creating Tensors from the Bytes. Tensors are 
+  3. Assemble TensorStacks by creating Tensors from the Bytes. Tensors are 
     created by grouping Bytes together (setting them as the Tensor's 
     second element), making Records from their top bits, sorting the records, and 
     then recording the Pointers from the Records (after being sorted) as the 
     Tensor's first element.
 
-    4. Reduce the number of TensorStacks by creating a new layer of Tensors from 
+  4. Reduce the number of TensorStacks by creating a new layer of Tensors from 
     the Tensors created in Step 3. These new Tensors are created by grouping 
     the first layer of Tensors together (setting them as the new Tensor's 
     second element), making Records from their top Bits, sorting the Records, and 
     then recording the Pointers from the Records 
     (after being sorted) as the Tensor's first element.
 
-    5. Continue in the same manner as in Step 4 until the number of TensorStacks 
+  5. Continue in the same manner as in Step 4 until the number of TensorStacks 
     equals the Bytesize
 
-    6. Assemble a top Register by Making Records from the Top Bits on each 
+  6. Assemble a top Register by Making Records from the Top Bits on each 
     TensorStack and sort the Records.
 
-    7. Remove the Top Bit from the top Byte in the top TensorStack and add it 
+  7. Remove the Top Bit from the top Byte in the top TensorStack and add it 
     to the final Sorted List. If the top Byte has more than one But in it stll, 
     Re-sort the Byte for good measure (technically this is 
     running the algorithm on different arguments - if anyone wants to me about 
     this I'll update this README)
 
-    8. If the top Byte in the top TensorStack is empty, remove the Record that 
+  8. If the top Byte in the top TensorStack is empty, remove the Record that 
     points to it from its Tensor's Register. If the Tensor is empty, remove
     the Record that points to it from its Tensor's Register. Do this recursively 
     until the Tensor is not empty or the top of the TensorStack is reached. If the 
@@ -199,7 +199,7 @@ to make mistakes when the list is already nearly sorted.
     all TensorStacks are empty of Bits, return the final Sorted List. Otherwise, 
     re-sort the top Register
 
-    9. Otherwise (the top Byte (or a Tensor that contains it) is not empty), 
+  9. Otherwise (the top Byte (or a Tensor that contains it) is not empty), 
     update the top Byte's (or Tensor's) Record with its 
     new Top Bit and re-sort its Tensor's Register. Then jump up a level to 
     the Tensor that contains that Tensor and update the top Tensor's Record
@@ -265,22 +265,18 @@ they agree.
 Robustsort is my attempt to make the most robust sorting algorithm possible 
 utilizing some solution-checking on the (sub-)algorithmic level while still:
 
-    - Keeping runtime somewhat reasonable
+  - Keeping runtime somewhat reasonable
 
-    - Never re-running a sub-algorithm that is expected to act deterministicly 
+  - Never re-running a sub-algorithm that is expected to act deterministicly 
       on the same arguments looking for a non-deterministic result (i.e. expect 
       that if a components gives a wrong answer, running it again won't somehow 
       yield a right answer)
 
-    - Using a minimal number of different sub-algorithms (i.e. doesn't just 
+  - Using a minimal number of different sub-algorithms (i.e. doesn't just 
       use every O(n log n) sorting algorithm I can think of and compare all 
       their results)
 
 With those ground rules in place, let's get to Robustsort!
-
-<!-- Once we have Tensort in our toolbox, the road to Robustsort is pretty simple.  -->
-<!-- At its core, Robustsort is a 3-bit Tensort with some extra parallelism baked  -->
-<!-- in. Why 3-bit? It's because of the power of threes. -->
 
 #### Overview
 
@@ -639,11 +635,11 @@ standard Supersort SubAlgorithm. It may be argued that doing so is even more
 robust, since it barely even relies on logic. Here are some considerations to
 keep in mind:
 
-    - Permutationsort uses additional space and may take slightly longer on average 
+  - Permutationsort uses additional space and may take slightly longer on average 
       due to computing all possible permutations of the input and storing them in a 
       list.
 
-    - Bogosort could theoretically run forever without returning a result, even 
+  - Bogosort could theoretically run forever without returning a result, even 
       when no errors occur.
   
 ## Comparing it all
@@ -660,17 +656,17 @@ Robustsort (Bogo), Robustsort (Magic), and Bubblesort:
 This package contains implementations of each algorithm discussed above. 
 Notably, it provides the following:
 
-        - Customizable Tensort
+  - Customizable Tensort
 
-        - Standard Logarithmic Tensort
+  - Standard Logarithmic Tensort
 
-        - Standard Tensort with customizable Bytesize
+  - Standard Tensort with customizable Bytesize
 
-        - Standard Robustsort with Permutationsort adjudicator
+  - Standard Robustsort with Permutationsort adjudicator
 
-        - Standard Robustsort with Bogosort adjudicator
+  - Standard Robustsort with Bogosort adjudicator
 
-        - Magic Robustsort
+  - Magic Robustsort
 
 Check the code in `src/` or the documentation on Hackage/Hoogle (Coming Soon!) 
 for more details.
