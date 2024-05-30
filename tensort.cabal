@@ -28,6 +28,8 @@ synopsis:           Reasonably robust sorting in O(n log n) time
 -- A longer description of the package.
 description:        An exploration of robustness in algorithms for sorting integers, inspired by [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by David H. Ackley
 
+homepage: https://github.com/kaBeech/tensort
+
 -- The license under which the package is released.
 license:            MIT
 
