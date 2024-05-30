@@ -4,7 +4,7 @@ import Data.Tensort.OtherSorts.Mergesort (mergesort)
 import Data.Tensort.OtherSorts.Quicksort (quicksort)
 import Data.Tensort.Robustsort (robustsortB, robustsortM, robustsortP)
 import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
-import Data.Tensort.Tensort (tensortBasic2Bit, tensortBasic3Bit, tensortBasic4Bit)
+import Data.Tensort.Tensort (tensortB4, tensortBR)
 import Data.Tensort.Utils.RandomizeList (randomizeList)
 import Data.Tensort.Utils.Types (Sortable (..), fromSortBit)
 import Data.Time.Clock
@@ -12,40 +12,30 @@ import Data.Time.Clock
 unsortedBits :: [Int]
 unsortedBits = [2, 5, 10, 4, 15, 11, 7, 14, 16, 6, 13, 3, 8, 9, 12, 1]
 
-unsortedBits52 :: Sortable
-unsortedBits52 = randomizeList (SortBit [1 .. 52]) 143
-
-unsortedBits1000 :: Sortable
-unsortedBits1000 = randomizeList (SortBit [1 .. 1000]) 143
-
-unsortedBits10000 :: Sortable
-unsortedBits10000 = randomizeList (SortBit [1 .. 10000]) 143
-
-unsortedBits100000 :: Sortable
-unsortedBits100000 = randomizeList (SortBit [1 .. 100000]) 143
+genUnsortedBits :: Int -> Sortable
+genUnsortedBits n = randomizeList (SortBit [1 .. n]) 143
 
 main :: IO ()
 main = do
-  printTime unsortedBits52
-  printTime unsortedBits1000
-  printTime unsortedBits10000
-  printTime unsortedBits100000
+  printTimes (map genUnsortedBits [52, 1000, 10000, 50000, 100000])
+
+printTimes :: [Sortable] -> IO ()
+printTimes [] = return ()
+printTimes (x : xs) = do
+  printTime x
+  printTimes xs
 
 printTime :: Sortable -> IO ()
 printTime l = do
   putStr " Algorithm   | Time         | n ="
-  startTensort2Bit <- getCurrentTime
-  putStrLn (" " ++ show (length (tensortBasic2Bit (fromSortBit l))))
-  endTensort2Bit <- getCurrentTime
-  putStr (" Tensort2Bit | " ++ show (diffUTCTime endTensort2Bit startTensort2Bit) ++ " | ")
-  startTensort3Bit <- getCurrentTime
-  putStrLn ("    " ++ show (length (tensortBasic3Bit (fromSortBit l))))
-  endTensort3Bit <- getCurrentTime
-  putStr (" Tensort3Bit | " ++ show (diffUTCTime endTensort3Bit startTensort3Bit) ++ " | ")
-  startTensort4Bit <- getCurrentTime
-  putStrLn ("    " ++ show (length (tensortBasic4Bit (fromSortBit l))))
-  endTensort4Bit <- getCurrentTime
-  putStr (" Tensort4Bit | " ++ show (diffUTCTime endTensort4Bit startTensort4Bit) ++ " | ")
+  startTensortB4 <- getCurrentTime
+  putStrLn (" " ++ show (length (tensortB4 (fromSortBit l))))
+  endTensortB4 <- getCurrentTime
+  putStr (" Tensort4Bit | " ++ show (diffUTCTime endTensortB4 startTensortB4) ++ " | ")
+  startTensortBR <- getCurrentTime
+  putStrLn ("    " ++ show (length (tensortBR (fromSortBit l))))
+  endTensortBR <- getCurrentTime
+  putStr (" TensortBR   | " ++ show (diffUTCTime endTensortBR startTensortBR) ++ " | ")
   startRSortP <- getCurrentTime
   putStrLn ("    " ++ show (length (robustsortP (fromSortBit l))))
   endRSortP <- getCurrentTime
