@@ -662,7 +662,7 @@ Notably, it provides the following:
 
         - Customizable Tensort
 
-        - Standard Tensort with logarithmic Bytesize
+        - Standard Logarithmic Tensort
 
         - Standard Tensort with customizable Bytesize
 
