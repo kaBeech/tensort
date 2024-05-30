@@ -4,7 +4,7 @@ import Data.Tensort.OtherSorts.Mergesort (mergesort)
 import Data.Tensort.OtherSorts.Quicksort (quicksort)
 import Data.Tensort.Robustsort (robustsortB, robustsortM, robustsortP)
 import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
-import Data.Tensort.Tensort (tensortB4, tensortBR)
+import Data.Tensort.Tensort (tensortB4, tensortBL)
 import Data.Tensort.Utils.RandomizeList (randomizeList)
 import Data.Tensort.Utils.Types (Sortable (..), fromSortBit)
 import Data.Time.Clock
@@ -32,10 +32,10 @@ printTime l = do
   putStrLn (" " ++ show (length (tensortB4 (fromSortBit l))))
   endTensortB4 <- getCurrentTime
   putStr (" Tensort4Bit | " ++ show (diffUTCTime endTensortB4 startTensortB4) ++ " | ")
-  startTensortBR <- getCurrentTime
-  putStrLn ("    " ++ show (length (tensortBR (fromSortBit l))))
-  endTensortBR <- getCurrentTime
-  putStr (" TensortBR   | " ++ show (diffUTCTime endTensortBR startTensortBR) ++ " | ")
+  startTensortBL <- getCurrentTime
+  putStrLn ("    " ++ show (length (tensortBL (fromSortBit l))))
+  endTensortBL <- getCurrentTime
+  putStr (" tensortBL   | " ++ show (diffUTCTime endTensortBL startTensortBL) ++ " | ")
   startRSortP <- getCurrentTime
   putStrLn ("    " ++ show (length (robustsortP (fromSortBit l))))
   endRSortP <- getCurrentTime

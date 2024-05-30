@@ -2,7 +2,7 @@ module Data.Tensort.Tensort
   ( tensort,
     tensortB4,
     tensortBN,
-    tensortBR,
+    tensortBL,
     mkTSProps,
   )
 where
@@ -37,8 +37,8 @@ tensortB4 xs = tensort xs (mkTSProps 4 bubblesort)
 tensortBN :: Int -> [Int] -> [Int]
 tensortBN n xs = tensort xs (mkTSProps n bubblesort)
 
-tensortBR :: [Int] -> [Int]
-tensortBR xs = tensort xs (mkTSProps (calculateBytesize xs) bubblesort)
+tensortBL :: [Int] -> [Int]
+tensortBL xs = tensort xs (mkTSProps (calculateBytesize xs) bubblesort)
 
 calculateBytesize :: [Int] -> Int
 calculateBytesize xs = ceiling (log (fromIntegral (length xs)) :: Double)
