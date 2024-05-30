@@ -111,7 +111,7 @@ fear not!
     
     Record <- Tuple of the Address and the TopBit of the referenced Byte or Tensor
     
-    Address <- Pointer to a Byte in Memory
+    Address <- Pointer to a Byte or Tensor in Memory
     
     TopBit <- Value of the Bit at the top of the stack in a Byte or Tensor
     
