@@ -73,7 +73,7 @@ record, if you do actually want a real, professional approach to robust
 sorting, Demon Horde Sort is likely the place to look.
 
 The algorithms used here that I have made up or renamed are, in order of 
-appearance, Tensort, Robustsort, Permutaionsort, and Magicsort. Get ready!
+appearance, Tensort, Robustsort, Permutationsort, and Magicsort. Get ready!
 
 ### Tensort
 
