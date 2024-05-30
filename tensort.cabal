@@ -23,10 +23,10 @@ name:               tensort
 version:            0.1.0.0
 
 -- A short (one-line) description of the package.
-synopsis:           An exploration of robustness in sorting algorithms
+synopsis:           Reasonably robust sorting in O(n log n) time
 
 -- A longer description of the package.
--- description:
+description:        An exploration of robustness in algorithms for sorting integers, inspired by Beyond Efficiency by David H. Ackley
 
 -- The license under which the package is released.
 license:            MIT
@@ -41,7 +41,11 @@ author:             Kyle Beechly
 maintainer:         contact@kaBeech.com
 
 -- A copyright notice.
--- copyright:
+copyright:          2024 Kyle Beechly
+
+category:           Math,
+                    Data
+
 build-type:         Simple
 
 -- Extra doc files to be distributed with the package, such as a CHANGELOG or a README.
