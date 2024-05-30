@@ -1,12 +1,24 @@
-module Data.Tensort.Tensort (tensort, tensort4Bit) where
+module Data.Tensort.Tensort
+  ( tensort,
+    tensortBasic2Bit,
+    tensortBasic3Bit,
+    tensortBasic4Bit,
+  )
+where
 
 import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
-import Data.Tensort.Utils.Bytes (TensortProps, convertRawBitsToBytes, getTensorstacksFromBytes, getSortedBitsFromMetastack, mkTSProps, reduceTensorstacks)
+import Data.Tensort.Utils.Bytes (TensortProps, convertRawBitsToBytes, getSortedBitsFromMetastack, getTensorstacksFromBytes, mkTSProps, reduceTensorstacks)
 import Data.Tensort.Utils.RandomizeList (randomizeList)
 import Data.Tensort.Utils.Types (Sortable (..), fromSortInt)
 
-tensort4Bit :: Sortable -> Sortable
-tensort4Bit xs = tensort xs (mkTSProps 4 bubblesort)
+tensortBasic2Bit :: Sortable -> Sortable
+tensortBasic2Bit xs = tensort xs (mkTSProps 2 bubblesort)
+
+tensortBasic3Bit :: Sortable -> Sortable
+tensortBasic3Bit xs = tensort xs (mkTSProps 3 bubblesort)
+
+tensortBasic4Bit :: Sortable -> Sortable
+tensortBasic4Bit xs = tensort xs (mkTSProps 4 bubblesort)
 
 -- | Sort a list of Ints using the Tensort algorithm
 

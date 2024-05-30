@@ -1,6 +1,5 @@
 module Main where
 
-import Data.Tensort.Tensort (tensort4Bit)
 import Data.Tensort.OtherSorts.Mergesort (mergesort)
 import Data.Tensort.OtherSorts.Quicksort (quicksort)
 import Data.Tensort.Robustsort (robustsortB, robustsortM, robustsortP)
@@ -9,6 +8,7 @@ import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 import Data.Tensort.Subalgorithms.Magicsort (magicsort)
 import Data.Tensort.Subalgorithms.Permutationsort (permutationsort)
 import Data.Tensort.Subalgorithms.ReverseExchangesort (reverseExchangesort)
+import Data.Tensort.Tensort (tensortBasic4Bit)
 import Data.Tensort.Utils.RandomizeList (randomizeList)
 import Data.Tensort.Utils.Types (SortAlg, Sortable (..), fromSortInt)
 import Data.Time.Clock
@@ -38,7 +38,7 @@ main = do
   putStrLn ("permutationsort: " ++ show (permutationsort (SortInt [3, 1, 2])))
   putStrLn ("bogosort: " ++ show (bogosort (SortInt [3, 1, 2])))
   putStrLn ("magicsort: " ++ show (magicsort (SortInt [3, 1, 2])))
-  putStrLn ("tensort4Bit: " ++ show (tensort4Bit (SortInt unsortedInts)))
+  putStrLn ("tensortBasic4Bit: " ++ show (tensortBasic4Bit (SortInt unsortedInts)))
   putStrLn ("robustsortP: " ++ show (robustsortP (SortInt unsortedInts)))
   putStrLn ("robustsortB: " ++ show (robustsortB (SortInt unsortedInts)))
   putStrLn ("robustsortM: " ++ show (robustsortM (SortInt unsortedInts)))
