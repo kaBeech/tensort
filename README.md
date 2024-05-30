@@ -220,11 +220,14 @@ position of a list, and B) at each step of Tensort the only element we
 *really* care about is the last element (TopBit) of a given list 
 (Byte/Tensor).
 
-As the Bytesize approaches the square root of the number of elements in the 
-input list, its time efficiency approaches O(n^2), but its robustness 
-increases (if I'm thinking about that correctly at least - benchmarks to 
-come!). I speculate that Tensort will tend to be most useful with Bytesizes 
-between 2 and 4.
+When using standard Tensort (i.e. using Bubblesort as the SubAlg), as the 
+Bytesize approaches the square root of the number of elements in the 
+input list, its time efficiency approaches O(n^2) (though the robustness may
+increase).
+
+Standard Tensort is most time efficient when the Bytesize is close 
+to the natural log of the number of elements in the input list. A logarithmic 
+Bytesize is likely to be ideal for most use cases of standard Tensort.
 
 Alright! Now we have a simple sorting algorithm absent of cheap hacks that is 
 both relatively fast and relatively robust. I'm pretty happy with that!
@@ -644,6 +647,20 @@ Robustsort (Bogo), Robustsort (Magic), and Bubblesort:
 
 ## Library
 
-This package contains implementations of each algorithm discussed above. Check 
-the code in `src/` or the documentation on Hackage/Hoogle (Coming Soon!) for 
-details.
+This package contains implementations of each algorithm discussed above. 
+Notably, it provides the following:
+
+        - Customizable Tensort
+
+        - Standard Tensort with logarithmic Bytesize
+
+        - Standard Tensort with customizable Bytesize
+
+        - Standard Robustsort with Permutationsort adjudicator
+
+        - Standard Robustsort with Bogosort adjudicator
+
+        - Magic Robustsort
+
+Check the code in `src/` or the documentation on Hackage/Hoogle (Coming Soon!) 
+for more details.
