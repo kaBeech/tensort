@@ -58,26 +58,25 @@ library
     import:           warnings
 
     -- Modules exported by the library.
-    exposed-modules:  Data.Tensort.Utils.Check,
-                      Data.Tensort.Utils.RandomizeList,
+    exposed-modules:  Data.Tensort,
+                      Data.Tensort.Tensort,
+                      Data.Tensort.Robustsort,
+                      Data.Tensort.Utils.Types,
                       Data.Tensort.Subalgorithms.Bubblesort,
                       Data.Tensort.Subalgorithms.ReverseExchangesort,
-                      Data.Tensort.OtherSorts.Mergesort,
-                      Data.Tensort.OtherSorts.Quicksort,
                       Data.Tensort.Subalgorithms.Permutationsort,
                       Data.Tensort.Subalgorithms.Bogosort,
                       Data.Tensort.Subalgorithms.Supersort,
                       Data.Tensort.Subalgorithms.Magicsort,
-                      Data.Tensort,
-                      Data.Tensort.Robustsort,
-                      Data.Tensort.Tensort,
-                      Data.Tensort.Utils.Bytes,
-                      Data.Tensort.Utils.Types,
-                      Data.Tensort.Utils.Split,
-                      Data.Tensort.Utils.ComparisonFunctions
 
     -- Modules included in this library but not exported.
-    -- other-modules:
+    other-modules:    Data.Tensort.Utils.Check,
+                      Data.Tensort.Utils.RandomizeList,
+                      Data.Tensort.OtherSorts.Mergesort,
+                      Data.Tensort.OtherSorts.Quicksort,
+                      Data.Tensort.Utils.Bytes,
+                      Data.Tensort.Utils.Split,
+                      Data.Tensort.Utils.ComparisonFunctions
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
