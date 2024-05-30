@@ -67,6 +67,7 @@ library
                       Data.Robustsort.Subalgorithms.Permutationsort,
                       Data.Robustsort.Subalgorithms.Bogosort,
                       Data.Robustsort.Subalgorithms.Supersort,
+                      Data.Robustsort.Subalgorithms.Magicsort,
                       Data.Bytesort,
                       Data.Robustsort.Robustsort,
                       Data.Robustsort.Bytesort,
