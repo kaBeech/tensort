@@ -2,16 +2,16 @@ module Data.Tensort.Subalgorithms.Permutationsort (permutationsort) where
 
 import Data.List (permutations)
 import Data.Tensort.Utils.Check (isSorted)
-import Data.Tensort.Utils.Types (Record, Sortable (..), fromSortInt, fromSortRec)
+import Data.Tensort.Utils.Types (Record, Sortable (..), fromSortBit, fromSortRec)
 
 permutationsort :: Sortable -> Sortable
-permutationsort (SortInt xs) = SortInt (acc (permutations x) [])
+permutationsort (SortBit xs) = SortBit (acc (permutations x) [])
   where
     x = xs
     acc :: [[Int]] -> [Int] -> [Int]
-    acc [] unsortedPermutations = fromSortInt (permutationsort (SortInt unsortedPermutations))
+    acc [] unsortedPermutations = fromSortBit (permutationsort (SortBit unsortedPermutations))
     acc (permutation : remainingPermutations) unsortedPermutations
-      | isSorted (SortInt permutation) = permutation
+      | isSorted (SortBit permutation) = permutation
       | otherwise = acc remainingPermutations unsortedPermutations
 permutationsort (SortRec xs) = SortRec (acc (permutations x) [])
   where

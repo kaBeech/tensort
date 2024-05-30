@@ -15,6 +15,10 @@ data TensortProps = TensortProps {bytesize :: Int, subAlgorithm :: SortAlg}
 
 -- | A Bit is a single element of the list to be sorted. For
 --   our current purposes that means it is an Int
+
+-- | NOTE: To Self: at this point it's likely simple enough to refactor this
+--   to sort any Ord, not just Ints. Consider using the `Bit` type synonym
+--   in the code, then changing this to alias `Bit` to `Ord` or `a`
 type Bit = Int
 
 -- | A Byte is a list of Bits standardized to a fixed maximum length (Bytesize)
@@ -44,22 +48,22 @@ type Record = (Address, TopBit)
 --   Tensor or Metatensor's Memory
 type Register = [Record]
 
--- | We use a Sortable type sort between Ints and Records
+-- | We use a Sortable type sort between Bits and Records
 
 -- | In the future this may be expanded to include other data types and allow
 --   for sorting other types of besides Ints
 data Sortable
-  = SortInt [Int]
+  = SortBit [Int]
   | SortRec [Record]
   deriving (Show, Eq, Ord)
 
-fromSortInt :: Sortable -> [Int]
-fromSortInt (SortInt ints) = ints
-fromSortInt (SortRec _) = error "This is for sorting Integers - you gave me Records"
+fromSortBit :: Sortable -> [Int]
+fromSortBit (SortBit bits) = bits
+fromSortBit (SortRec _) = error "This is for sorting Bits - you gave me Records"
 
 fromSortRec :: Sortable -> [Record]
 fromSortRec (SortRec recs) = recs
-fromSortRec (SortInt _) = error "This is for sorting Records - you gave me Integers"
+fromSortRec (SortBit _) = error "This is for sorting Records - you gave me Bits"
 
 type SortAlg = Sortable -> Sortable
 

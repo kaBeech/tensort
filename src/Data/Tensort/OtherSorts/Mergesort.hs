@@ -1,29 +1,29 @@
 module Data.Tensort.OtherSorts.Mergesort (mergesort) where
 
-import Data.Tensort.Utils.ComparisonFunctions (lessThanInt, lessThanRecord)
+import Data.Tensort.Utils.ComparisonFunctions (lessThanBit, lessThanRecord)
 import Data.Tensort.Utils.Types (Record, Sortable (..))
 
 mergesort :: Sortable -> Sortable
-mergesort (SortInt xs) = SortInt (mergesortInts xs)
+mergesort (SortBit xs) = SortBit (mergesortBits xs)
 mergesort (SortRec xs) = SortRec (mergesortRecs xs)
 
-mergesortInts :: [Int] -> [Int]
-mergesortInts = mergeAllInts . map (: [])
+mergesortBits :: [Int] -> [Int]
+mergesortBits = mergeAllBits . map (: [])
   where
-    mergeAllInts [] = []
-    mergeAllInts [x] = x
-    mergeAllInts [x, y] = mergeInts x y
-    mergeAllInts remaningElements = mergeAllInts (mergePairs remaningElements)
+    mergeAllBits [] = []
+    mergeAllBits [x] = x
+    mergeAllBits [x, y] = mergeBits x y
+    mergeAllBits remaningElements = mergeAllBits (mergePairs remaningElements)
 
-    mergePairs (x : y : remaningElements) = mergeInts x y : mergePairs remaningElements
+    mergePairs (x : y : remaningElements) = mergeBits x y : mergePairs remaningElements
     mergePairs x = x
 
-mergeInts :: [Int] -> [Int] -> [Int]
-mergeInts [] y = y
-mergeInts x [] = x
-mergeInts (x : xs) (y : ys)
-  | lessThanInt x y = x : mergeInts xs (y : ys)
-  | otherwise = y : mergeInts (x : xs) ys
+mergeBits :: [Int] -> [Int] -> [Int]
+mergeBits [] y = y
+mergeBits x [] = x
+mergeBits (x : xs) (y : ys)
+  | lessThanBit x y = x : mergeBits xs (y : ys)
+  | otherwise = y : mergeBits (x : xs) ys
 
 mergesortRecs :: [Record] -> [Record]
 mergesortRecs = mergeAllRecs . map (: [])

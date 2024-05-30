@@ -1,7 +1,7 @@
 module Data.Tensort.Utils.Convert (rawBitsToBytes) where
 
 import Data.Tensort.Utils.Split (splitEvery)
-import Data.Tensort.Utils.Types (Byte, Sortable (..), TensortProps (..), fromSortInt)
+import Data.Tensort.Utils.Types (Byte, Sortable (..), TensortProps (..), fromSortBit)
 
 -- | Convert a list of Bits to a list of Bytes of given bytesize, bubblesorting
 --   each byte.
@@ -13,9 +13,9 @@ import Data.Tensort.Utils.Types (Byte, Sortable (..), TensortProps (..), fromSor
 -- rawBitsToBytes bits bytesize = foldr acc [] (splitEvery bytesize bits)
 --   where
 --     acc :: [Int] -> [Byte] -> [Byte]
---     acc byte bytes = bytes ++ [fromSortInt (bubblesort (SortInt byte))]
+--     acc byte bytes = bytes ++ [fromSortBit (bubblesort (SortBit byte))]
 rawBitsToBytes :: [Int] -> TensortProps -> [Byte]
 rawBitsToBytes bits tsProps = foldr acc [] (splitEvery (bytesize tsProps) bits)
   where
     acc :: [Int] -> [Byte] -> [Byte]
-    acc byte bytes = bytes ++ [fromSortInt (subAlgorithm tsProps (SortInt byte))]
+    acc byte bytes = bytes ++ [fromSortBit (subAlgorithm tsProps (SortBit byte))]

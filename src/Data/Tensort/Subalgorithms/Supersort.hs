@@ -16,16 +16,16 @@ supersort xs (subAlg1, subAlg2, subAlg3, superStrat) = do
     else superStrat (result1, result2, subAlg3 xs)
 
 mundaneSuperStrat :: SupersortStrat
-mundaneSuperStrat (SortInt result1, SortInt result2, SortInt result3) = do
+mundaneSuperStrat (SortBit result1, SortBit result2, SortBit result3) = do
   if result1 == result3 || result2 == result3
-    then SortInt result3
+    then SortBit result3
     else
       if last result1 == last result2 || last result1 == last result3
-        then SortInt result1
+        then SortBit result1
         else
           if last result2 == last result3
-            then SortInt result2
-            else SortInt result1
+            then SortBit result2
+            else SortBit result1
 mundaneSuperStrat (SortRec result1, SortRec result2, SortRec result3) = do
   if result1 == result3 || result2 == result3
     then SortRec result3
@@ -39,13 +39,13 @@ mundaneSuperStrat (SortRec result1, SortRec result2, SortRec result3) = do
 mundaneSuperStrat (_, _, _) = error "All three inputs must be of the same type."
 
 magicSuperStrat :: SupersortStrat
-magicSuperStrat (SortInt result1, SortInt result2, SortInt result3) = do
+magicSuperStrat (SortBit result1, SortBit result2, SortBit result3) = do
   if last result1 == last result3 || last result2 == last result3
-    then SortInt result3
+    then SortBit result3
     else
       if last result1 == last result2
-        then SortInt result1
-        else SortInt result3
+        then SortBit result1
+        else SortBit result3
 magicSuperStrat (SortRec result1, SortRec result2, SortRec result3) = do
   if last result1 == last result3 || last result2 == last result3
     then SortRec result3

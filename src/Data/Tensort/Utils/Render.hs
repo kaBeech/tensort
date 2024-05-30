@@ -2,7 +2,7 @@ module Data.Tensort.Utils.Render (getSortedBitsFromMetastack) where
 
 import Data.Maybe (isNothing)
 import Data.Tensort.Utils.Tensor (createTensor)
-import Data.Tensort.Utils.Types (Memory (..), SortAlg, Sortable (..), Tensor, TensorStack, fromJust, fromSortInt)
+import Data.Tensort.Utils.Types (Memory (..), SortAlg, Sortable (..), Tensor, TensorStack, fromJust, fromSortBit)
 
 -- | Compile a sorted list of Bits from a list of TensorStacks
 
@@ -54,7 +54,7 @@ removeBitFromMemory (ByteMem bytes) i subAlg = do
       let bytes' = take i bytes ++ [topByte'] ++ drop (i + 1) bytes
       (topBit, Just (ByteMem bytes'))
     _ -> do
-      let topByte'' = fromSortInt (subAlg (SortInt topByte'))
+      let topByte'' = fromSortBit (subAlg (SortBit topByte'))
       let bytes' = take i bytes ++ [topByte''] ++ drop (i + 1) bytes
       (topBit, Just (ByteMem bytes'))
 removeBitFromMemory (TensorMem tensors) i subAlg = do
