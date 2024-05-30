@@ -105,7 +105,9 @@ fear not!
     
     Tensor <- Tuple of a Register list and a Memory list
     
-    Memory <- List of Bytes or Tensors contained in the current Tensor
+    Memory <- List of Bytes or Tensors contained in the current Tensor.
+              Technically this is a tensor field, but it seems less 
+              confusing to just call it `Memory`
     
     Register <- List of Records referencing each Byte or Tensor in Memory
     
@@ -114,6 +116,8 @@ fear not!
     Address <- Pointer to a Byte or Tensor in Memory
     
     TopBit <- Value of the Bit at the top of the stack in a Byte or Tensor
+
+    TensorStack <- A top-level Tensor along with all the Bits, Bytes, and Tensors it contains
     
     SubAlgorithm <- The sorting sub-algorithm used at various stages
 
@@ -125,17 +129,23 @@ argument passed to Tensort. In practice, almost all Bytes will be of maximum
 length until the final steps of Tensort. Several Bytes are grouped together 
 in a Tensor.
 
-A Tensor is a tuple with two elements. The second element is a list of 
-Bytes known as Memory. The length of this Memory list is equal to the Bytesize.
-The first element is a Register of Records, each of which has an Address 
-pointing to a Byte in memory and a copy of the TopBit in the referenced Byte. 
-These Records are arranged in the order that the Bytes are sorted (this will be 
+A Tensor is a tuple with two elements: Register and Memory.
+
+Memory is the second element in a Tensor tuple. It is a list of Bytes or 
+other Tensors. Technically, Memory is a Tensor field, but it seems less 
+confusing to just call it `Memory` and talk about it in terms of being a list. 
+The length of this Memory list is equal to the Bytesize.
+
+A Register is the first element in a Tensor tuple. It is a list of Records, 
+each of which has an Address pointing to an element in its Tensor's Memory 
+and a copy of the TopBit in the referenced element. These Records are arranged 
+in the order that the elements of the Tensor's Memory are sorted (this will be 
 clarified soon).
 
 A TensorStack is a top-level Tensor along with all the Bits, Bytes, and 
 Tensors it contains. Once the Tensors are fully built, the total number 
-of TensorStacks will equal the Bytesize, but before that point there will be many 
-more TensorStacks.
+of TensorStacks will equal the Bytesize, but before that point there will 
+be many more TensorStacks.
 
 The sorting SubAlgorithm will be used any time we sort something within 
 Tensort. The choice of this SubAlgorithm is very important. For reasons that 
