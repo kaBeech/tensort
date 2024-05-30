@@ -68,12 +68,12 @@ library
                       Data.Tensort.Subalgorithms.Bogosort,
                       Data.Tensort.Subalgorithms.Supersort,
                       Data.Tensort.Subalgorithms.Magicsort,
+                      Data.Tensort.OtherSorts.Mergesort,
+                      Data.Tensort.OtherSorts.Quicksort,
+                      Data.Tensort.Utils.RandomizeList,
 
     -- Modules included in this library but not exported.
     other-modules:    Data.Tensort.Utils.Check,
-                      Data.Tensort.Utils.RandomizeList,
-                      Data.Tensort.OtherSorts.Mergesort,
-                      Data.Tensort.OtherSorts.Quicksort,
                       Data.Tensort.Utils.Bytes,
                       Data.Tensort.Utils.Split,
                       Data.Tensort.Utils.ComparisonFunctions
