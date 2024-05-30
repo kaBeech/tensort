@@ -646,7 +646,7 @@ keep in mind:
 
 Now let's take a look at how everything compares. Here is a graph showing the 
 benchmarking results in both in both robustness and time efficiency for 
-Quicksort, Mergesort, 2-Bit Tensort, 4-Bit Tensort, Robustsort (Permutations), 
+Quicksort, Mergesort, Standard Logarithmic Tensort, Robustsort (Permutations), 
 Robustsort (Bogo), Robustsort (Magic), and Bubblesort:
 
 ...Coming Soon!
