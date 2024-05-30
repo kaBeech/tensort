@@ -86,7 +86,7 @@ library
     build-depends:    base ^>=4.18.2.0,
                       mtl,
                       random,
-                      random-shuffle
+                      random-shuffle,
 
     -- Directories containing source files.
     hs-source-dirs:   src
@@ -110,7 +110,8 @@ executable robustsort
     -- Other library packages from which modules are imported.
     build-depends:
         base ^>=4.18.2.0,
-        robustsort
+        robustsort,
+        time,
 
     -- Directories containing source files.
     hs-source-dirs:   app
