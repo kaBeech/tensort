@@ -15,7 +15,7 @@ bubblesort (SortRec recs) = SortRec (foldr acc [] recs)
 
 bubblesortSinglePass :: a -> [a] -> (a -> a -> Bool) -> [a]
 bubblesortSinglePass x [] _ = [x]
-bubblesortSinglePass x (y : remaningElements) comparisonFunction = do
-  if comparisonFunction x y
-    then x : bubblesortSinglePass y remaningElements comparisonFunction
-    else y : bubblesortSinglePass x remaningElements comparisonFunction
+bubblesortSinglePass x (y : remaningElements) lessThan = do
+  if lessThan x y
+    then x : bubblesortSinglePass y remaningElements lessThan
+    else y : bubblesortSinglePass x remaningElements lessThan
