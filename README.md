@@ -12,7 +12,7 @@ There's likely a lot of room for improvement in the code as well.
 - [Inspiration](#inspiration)
 - [Project structure](#project-structure)
 - [Algorithms overview](#algorithms-overview)
-  - [Tensort](#tensort)
+  - [Tensort](#tensort-1)
     - [Introduction](#introduction)
     - [Structure](#structure)
     - [Algorithm](#algorithm)
