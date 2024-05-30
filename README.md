@@ -1,11 +1,11 @@
 # Tensort
 
 The goal of this project is to explore what a sorting algorithm that 
-prioritizes robustness would look like
+prioritizes robustness would look like.
 
 DISCLAIMER: This project is still under construction. The Library is 
-functional but I have yet to add documentation and benchmarking 
-and there is likely some cleanup to do before releasing the package
+functional but I have yet to add documentation and benchmarking.
+There's likely a lot of room for improvement in the code as well.
 
 ## Table of Contents
 
@@ -61,15 +61,16 @@ am just not familiar with by other names. If any of these algorithms have
 previously been named, please let me know. Prior to this project I really 
 only had a rudimentary understanding of insertionsort, quicksort, mergesort, 
 and bogosort, so it's entirely possible that I've reinvented a few things 
-that already exist
+that already exist.
 
 It also may be helpful to note that this project was undertaken in an 
 endeavor to come up with a solution naively, for the practice, before 
 researching other algorithms built to tackle the same problem. I did very 
 briefly check out [Demon Horde Sort](https://www.youtube.com/watch?v=helScS3coAE&t=260s), 
-but only enough to verify that it is different from this algorithm. For the 
+but only enough (about 5 seconds of that video) to verify that it is different 
+from this algorithm. For the 
 record, if you do actually want a real, professional approach to robust 
-sorting, Demon Horde Sort is the place to look
+sorting, Demon Horde Sort is likely the place to look.
 
 The algorithms used here that I have made up or renamed are, in order of 
 appearance, Tensort, Robustsort, Permutaionsort, and Magicsort. Get ready!
@@ -131,10 +132,10 @@ pointing to a Byte in memory and a copy of the TopBit in the referenced Byte.
 These Records are arranged in the order that the Bytes are sorted (this will be 
 clarified soon).
 
-A Tensorstack is a top-level Tensor along with all the Bits, Bytes, and 
+A TensorStack is a top-level Tensor along with all the Bits, Bytes, and 
 Tensors it contains. Once the Tensors are fully built, the total number 
-of Tensorstacks will equal the Bytesize, but before that point there will be many 
-more Tensorstacks.
+of TensorStacks will equal the Bytesize, but before that point there will be many 
+more TensorStacks.
 
 The sorting SubAlgorithm will be used any time we sort something within 
 Tensort. The choice of this SubAlgorithm is very important. For reasons that 
@@ -155,34 +156,37 @@ to make mistakes when the list is already nearly sorted.
     will do no more write operations on the Bits until the final steps. Instead, we 
     will make copies of the Bits and sort the copies alongside their pointers.
 
-    3. Assemble Tensorstacks by creating Tensors from the Bytes. Tensors are 
+    3. Assemble TensorStacks by creating Tensors from the Bytes. Tensors are 
     created by grouping Bytes together (setting them as the Tensor's 
     second element), making Records from their top bits, sorting the records, and 
     then recording the Pointers from the Records (after being sorted) as the 
     Tensor's first element.
 
-    4. Reduce the number of Tensorstacks by creating a new layer of Tensors from 
+    4. Reduce the number of TensorStacks by creating a new layer of Tensors from 
     the Tensors created in Step 3. These new Tensors are created by grouping 
     the first layer of Tensors together (setting them as the new Tensor's 
     second element), making Records from their top Bits, sorting the Records, and 
     then recording the Pointers from the Records 
     (after being sorted) as the Tensor's first element.
 
-    5. Continue in the same manner as in Step 4 until the number of Tensorstacks 
+    5. Continue in the same manner as in Step 4 until the number of TensorStacks 
     equals the Bytesize
 
     6. Assemble a top Register by Making Records from the Top Bits on each 
-    Tensorstack and sort the Records.
+    TensorStack and sort the Records.
 
-    7. Remove the Top Bit from the top Byte in the top Tensorstack and add it to the 
-    final Sorted List.
+    7. Remove the Top Bit from the top Byte in the top TensorStack and add it 
+    to the final Sorted List. If the top Byte has more than one But in it stll, 
+    Re-sort the Byte for good measure (technically this is 
+    running the algorithm on different arguments - if anyone wants to me about 
+    this I'll update this README)
 
-    8. If the top Byte in the top Tensorstack is empty, remove the Record that 
+    8. If the top Byte in the top TensorStack is empty, remove the Record that 
     points to it from its Tensor's Register. If the Tensor is empty, remove
     the Record that points to it from its Tensor's Register. Do this recursively 
-    until the Tensor is not empty or the top of the Tensorstack is reached. If the 
-    entire Tensorstack is empty of Bits, remove its Record from the top Register. If 
-    all Tensorstacks are empty of Bits, return the final Sorted List. Otherwise, 
+    until the Tensor is not empty or the top of the TensorStack is reached. If the 
+    entire TensorStack is empty of Bits, remove its Record from the top Register. If 
+    all TensorStacks are empty of Bits, return the final Sorted List. Otherwise, 
     re-sort the top Register
 
     9. Otherwise (the top Byte (or a Tensor that contains it) is not empty), 
@@ -190,21 +194,13 @@ to make mistakes when the list is already nearly sorted.
     new Top Bit and re-sort its Tensor's Register. Then jump up a level to 
     the Tensor that contains that Tensor and update the top Tensor's Record
     with its new Top Bit and re-sort its Register. Do this recursively until
-    the whole Tensorstack is rebalanced. Then update the Tensorstack's Record in the 
+    the whole TensorStack is rebalanced. Then update the TensorStack's Record in the 
     top Register with its new Top Bit and re-sort the top Register.
-
-<!-- It seems to me that ... is more time  -->
-<!-- efficient than... , though it is less space-efficient. It also seems more  -->
-<!-- efficient than ... . It's worth noting though that I'm not 100%  -->
-<!-- sure about any of this - I used intuition more than anything to make these  -->
-<!-- determinations. It's entirely possible that this method could be improved  -->
-<!-- (perhaps by using an [in-place data structure] and some clever swaperations).  -->
-<!-- As always, constructive feedback is welcome! -->
 
 Now that we know all the steps, it's easier to see why we randomize the list
 as the beginning step. This way, if the list is already nearly 
 sorted, values close to each other don't get stuck under each other in their 
-Byte. Ideally, we want the top Bits from all Tensorstacks to be close to 
+Byte. Ideally, we want the top Bits from all TensorStacks to be close to 
 each other. Say for example, the first three elements in a 1,000,000-element 
 list are 121, 122, 123, and 124. If we don't randomize the list, these 3 
 elements get grouped together in the first byte. That's all well and good if 
@@ -259,8 +255,9 @@ utilizing some solution-checking on the (sub-)algorithmic level while still:
     - Keeping runtime somewhat reasonable
 
     - Never re-running a sub-algorithm that is expected to act deterministicly 
-      looking for a non-deterministic result (i.e. expect that if a components 
-      gives a wrong answer, running it again won't somehow yield a right answer)
+      on the same arguments looking for a non-deterministic result (i.e. expect 
+      that if a components gives a wrong answer, running it again won't somehow 
+      yield a right answer)
 
     - Using a minimal number of different sub-algorithms (i.e. doesn't just 
       use every O(n log n) sorting algorithm I can think of and compare all 
@@ -348,7 +345,7 @@ faulty comparator that gives a random result 10% of the time:
 
 In these cases, 90% of the time the Top Bit will be in the correct position, 
 and in the other cases it will be off by one position, and in no case will the 
-Byte be reverse sorted
+Byte be reverse sorted.
 
 #### Reverse Exchangesort
 
@@ -442,7 +439,7 @@ The first thing that might stand out is that around 34% of the time, these
 sub-algorithms will disagree with each other. What happens then?
 
 Well, in that case we run a third sub-algorithm to compare the results with: 
-Permutationsort
+Permutationsort.
 
 #### Permutationsort
 
@@ -452,7 +449,7 @@ list. Then we loop over this list of permutations until we find one that is in
 the right order. We check if a permutation is in the right order by comparing
 the first two elements, if they are in the right order comparing the next two
 elements, and so on until we either find two elements that are out of order or
-we confirm that the list is in order
+we confirm that the list is in order.
 
 Permutationsort will also make an average of 7 comparisons when sorting a 
 3-element list. This is slightly more than the other algorithms examined but
@@ -568,7 +565,7 @@ against logic itself...
 
 <!-- (image4) -->
 
-Bogosort
+Bogosort!
 
 <!-- (image5) -->
 

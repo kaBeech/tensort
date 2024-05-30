@@ -23,10 +23,10 @@ name:               tensort
 version:            0.1.0.0
 
 -- A short (one-line) description of the package.
-synopsis:           An exploration of robustness in sorting algorithms
+synopsis:           Reasonably robust sorting in O(n log n) time
 
 -- A longer description of the package.
--- description:
+description:        An exploration of robustness in algorithms for sorting integers, inspired by [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by David H. Ackley
 
 -- The license under which the package is released.
 license:            MIT
@@ -41,7 +41,11 @@ author:             Kyle Beechly
 maintainer:         contact@kaBeech.com
 
 -- A copyright notice.
--- copyright:
+copyright:          2024 Kyle Beechly
+
+category:           Math,
+                    Data
+
 build-type:         Simple
 
 -- Extra doc files to be distributed with the package, such as a CHANGELOG or a README.
@@ -58,26 +62,28 @@ library
     import:           warnings
 
     -- Modules exported by the library.
-    exposed-modules:  Data.Tensort.Utils.Check,
-                      Data.Tensort.Utils.RandomizeList,
+    exposed-modules:  Data.Tensort,
+                      Data.Tensort.Tensort,
+                      Data.Tensort.Robustsort,
+                      Data.Tensort.Utils.Types,
                       Data.Tensort.Subalgorithms.Bubblesort,
                       Data.Tensort.Subalgorithms.ReverseExchangesort,
-                      Data.Tensort.OtherSorts.Mergesort,
-                      Data.Tensort.OtherSorts.Quicksort,
                       Data.Tensort.Subalgorithms.Permutationsort,
                       Data.Tensort.Subalgorithms.Bogosort,
                       Data.Tensort.Subalgorithms.Supersort,
                       Data.Tensort.Subalgorithms.Magicsort,
-                      Data.Tensort,
-                      Data.Tensort.Robustsort,
-                      Data.Tensort.Tensort,
-                      Data.Tensort.Utils.Bytes,
-                      Data.Tensort.Utils.Types,
-                      Data.Tensort.Utils.Split,
-                      Data.Tensort.Utils.ComparisonFunctions
+                      Data.Tensort.OtherSorts.Mergesort,
+                      Data.Tensort.OtherSorts.Quicksort,
+                      Data.Tensort.Utils.RandomizeList,
 
     -- Modules included in this library but not exported.
-    -- other-modules:
+    other-modules:    Data.Tensort.Utils.Check,
+                      Data.Tensort.Utils.Split,
+                      Data.Tensort.Utils.ComparisonFunctions,
+                      Data.Tensort.Utils.Convert,
+                      Data.Tensort.Utils.Tensor,
+                      Data.Tensort.Utils.Reduce,
+                      Data.Tensort.Utils.Render,
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
