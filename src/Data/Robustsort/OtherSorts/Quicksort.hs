@@ -1,8 +1,16 @@
 module Data.Robustsort.OtherSorts.Quicksort (quicksort) where
 
-quicksort :: [Int] -> [Int]
-quicksort [] = []
-quicksort (x : xs) =
-  let lowerPartition = quicksort [a | a <- xs, a <= x]
-      upperPartition = quicksort [a | a <- xs, a > x]
-   in lowerPartition ++ [x] ++ upperPartition
+import Data.Robustsort.Utils.ComparisonFunctions (greaterThanInt, greaterThanRecord, lessThanOrEqualInt, lessThanOrEqualRecord)
+import Data.Robustsort.Utils.Types (Sortable (..), fromSortInt, fromSortRec)
+
+quicksort :: Sortable -> Sortable
+quicksort (SortInt []) = SortInt []
+quicksort (SortInt (x : xs)) =
+  let lowerPartition = quicksort (SortInt [a | a <- xs, lessThanOrEqualInt a x])
+      upperPartition = quicksort (SortInt [a | a <- xs, greaterThanInt a x])
+   in SortInt (fromSortInt lowerPartition ++ [x] ++ fromSortInt upperPartition)
+quicksort (SortRec []) = SortRec []
+quicksort (SortRec (x : xs)) =
+  let lowerPartition = quicksort (SortRec [a | a <- xs, lessThanOrEqualRecord a x])
+      upperPartition = quicksort (SortRec [a | a <- xs, greaterThanRecord a x])
+   in SortRec (fromSortRec lowerPartition ++ [x] ++ fromSortRec upperPartition)

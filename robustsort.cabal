@@ -61,10 +61,13 @@ library
     exposed-modules:  Data.Robustsort.Utils.Check,
                       Data.Robustsort.Utils.RandomizeList,
                       Data.Robustsort.Subalgorithms.Bubblesort,
+                      Data.Robustsort.Subalgorithms.ReverseExchangesort,
                       Data.Robustsort.OtherSorts.Mergesort,
                       Data.Robustsort.OtherSorts.Quicksort,
                       Data.Robustsort.Subalgorithms.Permutationsort,
                       Data.Robustsort.Subalgorithms.Bogosort,
+                      Data.Robustsort.Subalgorithms.Supersort,
+                      Data.Robustsort.Subalgorithms.Magicsort,
                       Data.Bytesort,
                       Data.Robustsort.Robustsort,
                       Data.Robustsort.Bytesort,
@@ -83,7 +86,7 @@ library
     build-depends:    base ^>=4.18.2.0,
                       mtl,
                       random,
-                      random-shuffle
+                      random-shuffle,
 
     -- Directories containing source files.
     hs-source-dirs:   src
@@ -107,7 +110,8 @@ executable robustsort
     -- Other library packages from which modules are imported.
     build-depends:
         base ^>=4.18.2.0,
-        robustsort
+        robustsort,
+        time,
 
     -- Directories containing source files.
     hs-source-dirs:   app
