@@ -132,7 +132,7 @@ in a Tensor.
 A Tensor is a tuple with two elements: Register and Memory.
 
 Memory is the second element in a Tensor tuple. It is a list of Bytes or 
-other Tensors. Technically, Memory is a Tensor field, but it seems less 
+other Tensors. Technically, Memory is a tensor field, but it seems less 
 confusing to just call it `Memory` and talk about it in terms of being a list. 
 The length of this Memory list is equal to the Bytesize.
 
