@@ -1,13 +1,11 @@
 module Data.Tensort.Utils.Tensor
-  ( getTensorStacksFromBytes,
+  ( createInitialTensors,
     createTensor,
-    getTensorFromBytes,
-    createTensorStack,
   )
 where
 
 import Data.Tensort.Utils.Split (splitEvery)
-import Data.Tensort.Utils.Types (Byte, Memory (..), Record, SortAlg, Sortable (..), Tensor, TensorStack, TensortProps (..), fromSortRec)
+import Data.Tensort.Utils.Types (Byte, Memory (..), Record, SortAlg, Sortable (..), Tensor, TensortProps (..), fromSortRec)
 
 -- | Convert a list of Bytes to a list of TensorStacks.
 
@@ -16,22 +14,20 @@ import Data.Tensort.Utils.Types (Byte, Memory (..), Record, SortAlg, Sortable (.
 --   definitions for more info) and collating the TensorStacks into a list
 
 -- | ==== __Examples__
---  >>> getTensorStacksFromBytes [[2,4],[6,8],[1,3],[5,7]] 2
+--  >>> createInitialTensors [[2,4],[6,8],[1,3],[5,7]] 2
 --  [([(0,3),(1,7)],ByteMem [[1,3],[5,7]]),([(0,4),(1,8)],ByteMem [[2,4],[6,8]])]
-getTensorStacksFromBytes :: [Byte] -> TensortProps -> [TensorStack]
-getTensorStacksFromBytes bytes tsProps = foldr acc [] (splitEvery (bytesize tsProps) bytes)
+createInitialTensors :: [Byte] -> TensortProps -> [Tensor]
+createInitialTensors bytes tsProps = foldr acc [] (splitEvery (bytesize tsProps) bytes)
   where
-    acc :: [Byte] -> [TensorStack] -> [TensorStack]
+    acc :: [Byte] -> [Tensor] -> [Tensor]
     acc byte tensorStacks = tensorStacks ++ [getTensorFromBytes byte (subAlgorithm tsProps)]
 
 -- | Create a Tensor from a Memory
---   Aliases to getTensorFromBytes for ByteMem and createTensorStack for
+--   Aliases to getTensorFromBytes for ByteMem and getTensorFromTensors for
 --   TensorMem
-
--- | I expect to refactor to simplify this before initial release
 createTensor :: Memory -> SortAlg -> Tensor
 createTensor (ByteMem bytes) subAlg = getTensorFromBytes bytes subAlg
-createTensor (TensorMem tensors) subAlg = createTensorStack tensors subAlg
+createTensor (TensorMem tensors) subAlg = getTensorFromTensors tensors subAlg
 
 -- | Convert a list of Bytes to a Tensor
 
@@ -42,7 +38,7 @@ createTensor (TensorMem tensors) subAlg = createTensorStack tensors subAlg
 --   Byte and a TopBit containing the value of the last (i.e. highest) Bit in
 --   the referenced Byte
 
--- | The Register is bubblesorted by the TopBits of each Record
+-- | The Register is sorted by the TopBits of each Record
 
 -- | ==== __Examples__
 --  >>> getTensorFromBytes [[2,4,6,8],[1,3,5,7]]
@@ -58,20 +54,20 @@ getTensorFromBytes bytes subAlg = do
     acc ([] : remainingBytes) register i = acc remainingBytes register (i + 1)
     acc (byte : remainingBytes) register i = acc remainingBytes (register ++ [(i, last byte)]) (i + 1)
 
--- | Create a TensorStack with the collated and bubblesorted References from the
+-- | Create a TensorStack with the collated and sorted References from the
 --   Tensors as the Register and the original Tensors as the data
 
 -- | ==== __Examples__
--- >>> createTensorStack [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(1,14),(0,17)],ByteMem [[16,17],[12,14]])]
+-- >>> getTensorFromTensors [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(1,14),(0,17)],ByteMem [[16,17],[12,14]])]
 -- ([(1,17),(0,18)],TensorMem [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(1,14),(0,17)],ByteMem [[16,17],[12,14]])])
-createTensorStack :: [Tensor] -> SortAlg -> TensorStack
-createTensorStack tensors subAlg = (fromSortRec (subAlg (SortRec (getRegisterFromTensors tensors))), TensorMem tensors)
+getTensorFromTensors :: [Tensor] -> SortAlg -> Tensor
+getTensorFromTensors tensors subAlg = (fromSortRec (subAlg (SortRec (getRegisterFromTensors tensors))), TensorMem tensors)
 
 -- | For each Tensor, produces a Record by combining the top bit of the
 --  Tensor with an index value for its Address
 
 -- | Note that this output is not sorted. Sorting is done in the
---   createTensorStack function
+--   getTensorFromTensors function
 
 -- | ==== __Examples__
 -- >>> getRegisterFromTensors [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(0,14),(1,17)],ByteMem [[12,14],[16,17]]),([(0,3),(1,7)],ByteMem [[1,3],[5,7]]),([(0,4),(1,8)],ByteMem [[2,4],[6,8]])]

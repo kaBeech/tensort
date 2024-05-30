@@ -1,8 +1,8 @@
 module Data.Tensort.Utils.Reduce (reduceTensorStacks) where
 
 import Data.Tensort.Utils.Split (splitEvery)
-import Data.Tensort.Utils.Tensor (createTensorStack)
-import Data.Tensort.Utils.Types (TensorStack, TensortProps (..))
+import Data.Tensort.Utils.Tensor (createTensor)
+import Data.Tensort.Utils.Types (Memory (..), TensorStack, TensortProps (..))
 
 -- | Take a list of TensorStacks and group them together in new
 --   TensorStacks, each containing bytesize number of Tensors (former
@@ -17,7 +17,7 @@ reduceTensorStacks :: [TensorStack] -> TensortProps -> TensorStack
 reduceTensorStacks tensorStacks tsProps = do
   let newTensorStacks = reduceTensorStacksSinglePass tensorStacks tsProps
   if length newTensorStacks <= bytesize tsProps
-    then createTensorStack newTensorStacks (subAlgorithm tsProps)
+    then createTensor (TensorMem newTensorStacks) (subAlgorithm tsProps)
     else reduceTensorStacks newTensorStacks tsProps
 
 -- | Take a list of TensorStacks  and group them together in new
@@ -32,4 +32,4 @@ reduceTensorStacksSinglePass :: [TensorStack] -> TensortProps -> [TensorStack]
 reduceTensorStacksSinglePass tensorStacks tsProps = foldr acc [] (splitEvery (bytesize tsProps) tensorStacks)
   where
     acc :: [TensorStack] -> [TensorStack] -> [TensorStack]
-    acc tensorStack newTensorStacks = newTensorStacks ++ [createTensorStack tensorStack (subAlgorithm tsProps)]
+    acc tensorStack newTensorStacks = newTensorStacks ++ [createTensor (TensorMem tensorStack) (subAlgorithm tsProps)]
