@@ -3,8 +3,9 @@
 The goal of this project is to explore what a sorting algorithm that 
 prioritizes robustness would look like
 
-DISCLAIMER: This project is still under construction. The basic ideas are all 
-there, but need to be tied together and made to look pretty =)
+DISCLAIMER: This project is still under construction. The Library is 
+functional but I have yet to add documentation and benchmarking 
+and there is likely some cleanup to do before releasing the package
 
 ## Table of Contents
 
