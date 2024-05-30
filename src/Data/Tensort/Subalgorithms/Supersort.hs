@@ -1,11 +1,11 @@
-module Data.Robustsort.Subalgorithms.Supersort
+module Data.Tensort.Subalgorithms.Supersort
   ( supersort,
     mundaneSuperStrat,
     magicSuperStrat,
   )
 where
 
-import Data.Robustsort.Utils.Types (SortAlg, Sortable (..), SupersortStrat)
+import Data.Tensort.Utils.Types (SortAlg, Sortable (..), SupersortStrat)
 
 supersort :: Sortable -> (SortAlg, SortAlg, SortAlg, SupersortStrat) -> Sortable
 supersort xs (subAlg1, subAlg2, subAlg3, superStrat) = do

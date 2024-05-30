@@ -1,6 +1,6 @@
-module Data.Robustsort.Utils.RandomizeList (randomizeList) where
+module Data.Tensort.Utils.RandomizeList (randomizeList) where
 
-import Data.Robustsort.Utils.Types (Sortable (..))
+import Data.Tensort.Utils.Types (Sortable (..))
 import System.Random (mkStdGen)
 import System.Random.Shuffle (shuffle')
 

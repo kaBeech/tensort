@@ -1,7 +1,7 @@
-module Data.Robustsort.Subalgorithms.Bubblesort (bubblesort) where
+module Data.Tensort.Subalgorithms.Bubblesort (bubblesort) where
 
-import Data.Robustsort.Utils.ComparisonFunctions (lessThanInt, lessThanRecord)
-import Data.Robustsort.Utils.Types (Record, Sortable (..))
+import Data.Tensort.Utils.ComparisonFunctions (lessThanInt, lessThanRecord)
+import Data.Tensort.Utils.Types (Record, Sortable (..))
 
 bubblesort :: Sortable -> Sortable
 bubblesort (SortInt ints) = SortInt (foldr acc [] ints)

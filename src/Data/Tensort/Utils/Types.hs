@@ -1,8 +1,8 @@
 {-# LANGUAGE GADTs #-}
 
-module Data.Robustsort.Utils.Types where
+module Data.Tensort.Utils.Types where
 
---   All the data types used in the Bytesort and Robustsort algorithms are
+--   All the data types used in the Tensort and Tensort algorithms are
 --   defined here. Since these packages are only for sorting Ints currently,
 --   every data type is a structure of Ints
 
@@ -25,21 +25,21 @@ type Byte = [Bit]
 type Address = Int
 
 -- | A TopBit contains a copy of the last (i.e. highest) Bit in a Byte or
---   Metabyte
+--   Tensor
 type TopBit = Bit
 
--- | A Record is an element in a Bytestore or Metabytestore's Register
+-- | A Record is an element in a Tensor or Metatensor's Register
 --   containing an Address pointer and a TopBit value
 
--- | A Record's Address is an index number pointing to a Byte or Metabyte in
---   the Bytestore/Metabytestore's Memory
+-- | A Record's Address is an index number pointing to a Byte or Tensor in
+--   the Tensor/Metatensor's Memory
 
 -- | A Record's TopBit is a copy of the last (i.e. highest) Bit in the Byte or
---   Metabyte that the Record references
+--   Tensor that the Record references
 type Record = (Address, TopBit)
 
 -- | A Register is a list of Records allowing for easy access to data in a
---   Bytestore or Metabytestore's Memory
+--   Tensor or Metatensor's Memory
 type Register = [Record]
 
 -- | We use a Sortable type sort between Ints and Records
@@ -66,40 +66,20 @@ type SupersortProps = (SortAlg, SortAlg, SortAlg, SupersortStrat)
 type SupersortStrat = (Sortable, Sortable, Sortable) -> Sortable
 
 -- | A Memory contains the data to be sorted, either in the form of Bytes or
---   Metabytes
+--   Tensors
 data Memory
-  = SmallMemory [Byte]
-  | BigMemory [Bytestore]
+  = ByteMem [Byte]
+  | TensorMem [Tensor]
   deriving (Show, Eq, Ord)
 
--- | A Bytestore is a Metabytestore that only contains Bytes in its memory
--- | The Memory is a list of the Bytes or Metabytes that the Metabytestore
+-- | A Tensor is a Metatensor that only contains Bytes in its memory
+-- | The Memory is a list of the Bytes or Tensors that the Tensor
 --   contains.
 
 -- | The Register is a list of Records referencing the top Bits in Memory
-type Bytestore = (Register, Memory)
+type Tensor = (Register, Memory)
 
--- | A Metabyte is either a Bytestore or a Metabytestore
-
--- | I know this might sound confusing, but in a recursive algorithm like this
---   it's helpful to have different names for the same type of data depending
---   on how it's being used, while still being able to use the same data in
---   multiple contexts
--- data Metabyte
---   = Metabyte Bytestore
---   | BigMetabyte Metabytestore
---   deriving (Show)
-
--- | A Metabytestore contains data to be sorted in a structure allowing for
---   easy access
-
--- | The Memory is a list of the Bytes or Metabytes that the Metabytestore
---   contains
-
--- | The Register is a list of Records referencing the top Bits in Memory
--- type Metabytestore = (Register, Memory)
-
--- | A Bytestack is a top-level Metabyte. In the final stages of Bytesort, the
---   number of Bytestacks will equal the bytesize, but before that time there
---   are expected to be many more Bytestacks
-type Bytestack = Bytestore
+-- | A Tensorstack is a top-level Tensor. In the final stages of Tensort, the
+--   number of Tensorstacks will equal the bytesize, but before that time there
+--   are expected to be many more Tensorstacks
+type Tensorstack = Tensor

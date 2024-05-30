@@ -1,4 +1,4 @@
-# Revision history for robustsort
+# Revision history for tensort
 
 ## 0.1.0.0 -- YYYY-mm-dd
 

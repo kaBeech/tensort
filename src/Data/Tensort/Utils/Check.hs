@@ -1,7 +1,7 @@
-module Data.Robustsort.Utils.Check (isSorted) where
+module Data.Tensort.Utils.Check (isSorted) where
 
-import Data.Robustsort.Utils.ComparisonFunctions (lessThanInt, lessThanRecord)
-import Data.Robustsort.Utils.Types (Sortable (..))
+import Data.Tensort.Utils.ComparisonFunctions (lessThanInt, lessThanRecord)
+import Data.Tensort.Utils.Types (Sortable (..))
 
 isSorted :: Sortable -> Bool
 isSorted (SortInt []) = True

@@ -1,7 +1,7 @@
-module Data.Robustsort.OtherSorts.Mergesort (mergesort) where
+module Data.Tensort.OtherSorts.Mergesort (mergesort) where
 
-import Data.Robustsort.Utils.ComparisonFunctions (lessThanInt, lessThanRecord)
-import Data.Robustsort.Utils.Types (Record, Sortable (..))
+import Data.Tensort.Utils.ComparisonFunctions (lessThanInt, lessThanRecord)
+import Data.Tensort.Utils.Types (Record, Sortable (..))
 
 mergesort :: Sortable -> Sortable
 mergesort (SortInt xs) = SortInt (mergesortInts xs)

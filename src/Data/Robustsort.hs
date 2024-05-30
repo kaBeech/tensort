@@ -1,6 +1,6 @@
 module Data.Robustsort
-  ( module Data.Robustsort.Robustsort,
+  ( module Data.Tensort.Robustsort,
   )
 where
 
-import Data.Robustsort.Robustsort
+import Data.Tensort.Robustsort

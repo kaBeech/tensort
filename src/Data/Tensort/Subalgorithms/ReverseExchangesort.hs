@@ -1,7 +1,7 @@
-module Data.Robustsort.Subalgorithms.ReverseExchangesort (reverseExchangesort) where
+module Data.Tensort.Subalgorithms.ReverseExchangesort (reverseExchangesort) where
 
-import Data.Robustsort.Utils.ComparisonFunctions (greaterThanInt, greaterThanRecord, lessThanInt, lessThanRecord)
-import Data.Robustsort.Utils.Types (Record, Sortable (..))
+import Data.Tensort.Utils.ComparisonFunctions (greaterThanInt, greaterThanRecord, lessThanInt, lessThanRecord)
+import Data.Tensort.Utils.Types (Record, Sortable (..))
 
 reverseExchangesort :: Sortable -> Sortable
 reverseExchangesort (SortInt ints) = SortInt (reverseExchangesortIterable ints (length ints - 1) (length ints - 2) greaterThanInt)

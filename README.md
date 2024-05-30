@@ -1,4 +1,4 @@
-# Robustsort
+# Tensort
 
 The goal of this project is to explore what a sorting algorithm that 
 prioritizes robustness would look like
@@ -12,7 +12,7 @@ and there is likely some cleanup to do before releasing the package
 - [Inspiration](#inspiration)
 - [Project structure](#project-structure)
 - [Algorithms overview](#algorithms-overview)
-  - [Bytesort](#bytesort)
+  - [Tensort](#tensort)
     - [Introduction](#introduction)
     - [Structure](#structure)
     - [Algorithm](#algorithm)
@@ -39,7 +39,7 @@ and there is likely some cleanup to do before releasing the package
 
 ## Project structure
 
-  - `src/` contains the Robustsort library
+  - `src/` contains the Tensort library
     
   - `app/` contains the suite for comparing different sorting algorithms in terms of robustness and time efficiency
 
@@ -72,13 +72,13 @@ record, if you do actually want a real, professional approach to robust
 sorting, Demon Horde Sort is the place to look
 
 The algorithms used here that I have made up or renamed are, in order of 
-appearance, Bytesort, Robustsort, Permutaionsort, and Magicsort. Get ready!
+appearance, Tensort, Robustsort, Permutaionsort, and Magicsort. Get ready!
 
-### Bytesort
+### Tensort
 
 #### Introduction
 
-Bytesort is my attempt to write the most robust O(n log n) sorting algorithm 
+Tensort is my attempt to write the most robust O(n log n) sorting algorithm 
 possible while avoiding anything that Ackley might consider a "cheap hack." 
 My hope is that it will be, if not competitive with Bubblesort in robustness, 
 at least a major improvement over Quicksort and Mergesort. 
@@ -90,7 +90,7 @@ are similar - significantly Blocksort, Bucketsort, and Patiencesort. If you are
 familiar with these algorithms, you may recognize that they each have a 
 structure that aids in understanding them.
 
-Bytesort uses an underlying structure as well. We will discuss this structure 
+Tensort uses an underlying structure as well. We will discuss this structure 
 before going over the algorithm's actual steps. If this doesn't make sense yet,
 fear not!
 
@@ -102,48 +102,42 @@ fear not!
     
     Byte <- List of Bits
     
-    Bytestore <- Tuple of a Register list and a Memory list
+    Tensor <- Tuple of a Register list and a Memory list
     
-    Memory <- List of Bytes or Bytestores contained in the current Bytestore
+    Memory <- List of Bytes or Tensors contained in the current Tensor
     
-    Register <- List of Records referencing each Byte or Bytestore in Memory
+    Register <- List of Records referencing each Byte or Tensor in Memory
     
-    Record <- Tuple of the Address and the TopBit of the referenced Byte or Bytestore
+    Record <- Tuple of the Address and the TopBit of the referenced Byte or Tensor
     
     Address <- Pointer to a Byte in Memory
     
-    TopBit <- Value of the Bit at the top of the stack in a Byte or Bytestore
+    TopBit <- Value of the Bit at the top of the stack in a Byte or Tensor
     
     SubAlgorithm <- The sorting sub-algorithm used at various stages
 
-In Bytesort, the smallest unit of information is a Bit. Each Bit stores one 
+In Tensort, the smallest unit of information is a Bit. Each Bit stores one 
 element of the list to be sorted. A group of Bits is known as a Byte. 
 
 A Byte is a list of Bits. The maximum length of a Byte is set according to an 
-argument passed to Bytesort. In practice, almost all Bytes will be of maximum 
-length until the final steps of Bytesort. Several Bytes are grouped together 
-in a Bytestore.
+argument passed to Tensort. In practice, almost all Bytes will be of maximum 
+length until the final steps of Tensort. Several Bytes are grouped together 
+in a Tensor.
 
-A Bytestore is a tuple with two elements. The second element is a list of 
+A Tensor is a tuple with two elements. The second element is a list of 
 Bytes known as Memory. The length of this Memory list is equal to the Bytesize.
 The first element is a Register of Records, each of which has an Address 
 pointing to a Byte in memory and a copy of the TopBit in the referenced Byte. 
 These Records are arranged in the order that the Bytes are sorted (this will be 
 clarified soon).
 
-<!-- A Metabyte is an array with two elements. The second element is an array of  -->
-<!-- either Bytestores or other Metabytes. The length of this array is equal to the  -->
-<!-- Bytesize. Similar to as in a Bytestore, the first  -->
-<!-- element in a Metabyte is an array of integer pointers representing the indices  -->
-<!-- of the Bytestores/Metabytes appearing in the second element. -->
-
-A Bytestack is a top-level Bytestore along with all the Bits, Bytes, and 
-Bytestores it contains. Once the Bytestores are fully built, the total number 
-of Bytestacks will equal the Bytesize, but before that point there will be many 
-more Bytestacks.
+A Tensorstack is a top-level Tensor along with all the Bits, Bytes, and 
+Tensors it contains. Once the Tensors are fully built, the total number 
+of Tensorstacks will equal the Bytesize, but before that point there will be many 
+more Tensorstacks.
 
 The sorting SubAlgorithm will be used any time we sort something within 
-Bytesort. The choice of this SubAlgorithm is very important. For reasons that 
+Tensort. The choice of this SubAlgorithm is very important. For reasons that 
 will become clear soon, the SubAlgorithm will canonically be Bubblesort, but 
 it is sometimes useful to substitute another sorting algorithm.
 
@@ -151,8 +145,8 @@ Now, on to the algorithm!
 
 #### Algorithm
 
-The first step in Bytesort is to randomize the input list. I'll explain why we 
-do this in more detail later - for now just know that it's easier for Bytesort 
+The first step in Tensort is to randomize the input list. I'll explain why we 
+do this in more detail later - for now just know that it's easier for Tensort 
 to make mistakes when the list is already nearly sorted.
 
     1. Randomize the input list of elements (Bits)
@@ -161,42 +155,42 @@ to make mistakes when the list is already nearly sorted.
     will do no more write operations on the Bits until the final steps. Instead, we 
     will make copies of the Bits and sort the copies alongside their pointers.
 
-    3. Assemble Bytestacks by creating Bytestores from the Bytes. Bytestores are 
-    created by grouping Bytes together (setting them as the Bytestore's 
+    3. Assemble Tensorstacks by creating Tensors from the Bytes. Tensors are 
+    created by grouping Bytes together (setting them as the Tensor's 
     second element), making Records from their top bits, sorting the records, and 
     then recording the Pointers from the Records (after being sorted) as the 
-    Bytestore's first element.
+    Tensor's first element.
 
-    4. Reduce the number of Bytestacks by creating a new layer of Bytestores from 
-    the Bytestores created in Step 3. These new Bytestores are created by grouping 
-    the first layer of Bytestores together (setting them as the new Bytestore's 
+    4. Reduce the number of Tensorstacks by creating a new layer of Tensors from 
+    the Tensors created in Step 3. These new Tensors are created by grouping 
+    the first layer of Tensors together (setting them as the new Tensor's 
     second element), making Records from their top Bits, sorting the Records, and 
     then recording the Pointers from the Records 
-    (after being sorted) as the Bytestore's first element.
+    (after being sorted) as the Tensor's first element.
 
-    5. Continue in the same manner as in Step 4 until the number of Bytestacks 
+    5. Continue in the same manner as in Step 4 until the number of Tensorstacks 
     equals the Bytesize
 
     6. Assemble a top Register by Making Records from the Top Bits on each 
-    Bytestack and sort the Records.
+    Tensorstack and sort the Records.
 
-    7. Remove the Top Bit from the top Byte in the top Bytestack and add it to the 
+    7. Remove the Top Bit from the top Byte in the top Tensorstack and add it to the 
     final Sorted List.
 
-    8. If the top Byte in the top Bytestack is empty, remove the Record that 
-    points to it from its Bytestore's Register. If the Bytestore is empty, remove
-    the Record that points to it from its Bytestore's Register. Do this recursively 
-    until the Bytestore is not empty or the top of the Bytestack is reached. If the 
-    entire Bytestack is empty of Bits, remove its Record from the top Register. If 
-    all Bytestacks are empty of Bits, return the final Sorted List. Otherwise, 
+    8. If the top Byte in the top Tensorstack is empty, remove the Record that 
+    points to it from its Tensor's Register. If the Tensor is empty, remove
+    the Record that points to it from its Tensor's Register. Do this recursively 
+    until the Tensor is not empty or the top of the Tensorstack is reached. If the 
+    entire Tensorstack is empty of Bits, remove its Record from the top Register. If 
+    all Tensorstacks are empty of Bits, return the final Sorted List. Otherwise, 
     re-sort the top Register
 
-    9. Otherwise (the top Byte (or a Bytestore that contains it) is not empty), 
-    update the top Byte's (or Bytestore's) Record with its 
-    new Top Bit and re-sort its Bytestore's Register. Then jump up a level to 
-    the Bytestore that contains that Bytestore and update the top Bytestore's Record
+    9. Otherwise (the top Byte (or a Tensor that contains it) is not empty), 
+    update the top Byte's (or Tensor's) Record with its 
+    new Top Bit and re-sort its Tensor's Register. Then jump up a level to 
+    the Tensor that contains that Tensor and update the top Tensor's Record
     with its new Top Bit and re-sort its Register. Do this recursively until
-    the whole Bytestack is rebalanced. Then update the Bytestack's Record in the 
+    the whole Tensorstack is rebalanced. Then update the Tensorstack's Record in the 
     top Register with its new Top Bit and re-sort the top Register.
 
 <!-- It seems to me that ... is more time  -->
@@ -210,7 +204,7 @@ to make mistakes when the list is already nearly sorted.
 Now that we know all the steps, it's easier to see why we randomize the list
 as the beginning step. This way, if the list is already nearly 
 sorted, values close to each other don't get stuck under each other in their 
-Byte. Ideally, we want the top Bits from all Bytestacks to be close to 
+Byte. Ideally, we want the top Bits from all Tensorstacks to be close to 
 each other. Say for example, the first three elements in a 1,000,000-element 
 list are 121, 122, 123, and 124. If we don't randomize the list, these 3 
 elements get grouped together in the first byte. That's all well and good if 
@@ -226,14 +220,14 @@ required by never Bubblesorting the entire input.
 
 We are able to do this because A) Bubblesort is really good at making sure the 
 last element is in the final 
-position of a list, and B) at each step of Bytesort the only element we 
+position of a list, and B) at each step of Tensort the only element we 
 *really* care about is the last element (TopBit) of a given list 
-(Byte/Bytestore).
+(Byte/Tensor).
 
 As the Bytesize approaches the square root of the number of elements in the 
 input list, its time efficiency approaches O(n^2), but its robustness 
 increases (if I'm thinking about that correctly at least - benchmarks to 
-come!). I speculate that Bytesort will tend to be most useful with Bytesizes 
+come!). I speculate that Tensort will tend to be most useful with Bytesizes 
 between 2 and 4.
 
 Alright! Now we have a simple sorting algorithm absent of cheap hacks that is 
@@ -274,16 +268,16 @@ utilizing some solution-checking on the (sub-)algorithmic level while still:
 
 With those ground rules in place, let's get to Robustsort!
 
-<!-- Once we have Bytesort in our toolbox, the road to Robustsort is pretty simple.  -->
-<!-- At its core, Robustsort is a 3-bit Bytesort with some extra parallelism baked  -->
+<!-- Once we have Tensort in our toolbox, the road to Robustsort is pretty simple.  -->
+<!-- At its core, Robustsort is a 3-bit Tensort with some extra parallelism baked  -->
 <!-- in. Why 3-bit? It's because of the power of threes. -->
 
 #### Overview
 
-Once we have Bytesort in our toolbox, the road to Robustsort is pretty simple. 
-Robustsort is a 3-bit Bytesort with a custom SubAlgorithm that compares other 
+Once we have Tensort in our toolbox, the road to Robustsort is pretty simple. 
+Robustsort is a 3-bit Tensort with a custom SubAlgorithm that compares other 
 sub-algorithms. For convenience, we will call this custom SubAlgorithm 
-Supersort. We use a 3-bit Bytesort here because there's something 
+Supersort. We use a 3-bit Tensort here because there's something 
 magical that happens around these numbers.
 
 Robust sorting algorithms tend to be 
@@ -295,7 +289,7 @@ is minimal. For example, when n=4, Mergesort will make 6 comparisons, while
 Bubblesort will make 12. A Byte holding 4 Bites is both small enough to run 
 the Bubblesort quickly and large enough to allow multiple opportunities for a 
 mistake to be corrected. Since we don't as much built-in parallelism in 
-Bytesort, it can make sense to weight more heavily on the side of making more 
+Tensort, it can make sense to weight more heavily on the side of making more 
 checks.
 
 In Robustsort, however, we have parallelism built into the Supersort 
@@ -552,7 +546,7 @@ that it is very unlikely that this Supersort process will return an incorrect
 result, and that if an incorrect result is returned, it is very likely to still 
 have a correct TopBit.
 
-We now have the basic form of Robustsort: a 3-bit Bytesort with a Supersort 
+We now have the basic form of Robustsort: a 3-bit Tensort with a Supersort 
 adjudicating Bubblesort, Reverse Exchangesort, and Permutationsort as its
 SubAlgorithm.
 
@@ -646,7 +640,7 @@ keep in mind:
 
 Now let's take a look at how everything compares. Here is a graph showing the 
 benchmarking results in both in both robustness and time efficiency for 
-Quicksort, Mergesort, 2-Bit Bytesort, 4-Bit Bytesort, Robustsort (Permutations), 
+Quicksort, Mergesort, 2-Bit Tensort, 4-Bit Tensort, Robustsort (Permutations), 
 Robustsort (Bogo), Robustsort (Magic), and Bubblesort:
 
 ...Coming Soon!
