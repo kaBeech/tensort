@@ -1,11 +1,11 @@
 # Tensort
 
 The goal of this project is to explore what a sorting algorithm that 
-prioritizes robustness would look like
+prioritizes robustness would look like.
 
 DISCLAIMER: This project is still under construction. The Library is 
-functional but I have yet to add documentation and benchmarking 
-and there is likely some cleanup to do before releasing the package
+functional but I have yet to add documentation and benchmarking.
+There's likely a lot of room for improvement in the code as well.
 
 ## Table of Contents
 
@@ -61,15 +61,16 @@ am just not familiar with by other names. If any of these algorithms have
 previously been named, please let me know. Prior to this project I really 
 only had a rudimentary understanding of insertionsort, quicksort, mergesort, 
 and bogosort, so it's entirely possible that I've reinvented a few things 
-that already exist
+that already exist.
 
 It also may be helpful to note that this project was undertaken in an 
 endeavor to come up with a solution naively, for the practice, before 
 researching other algorithms built to tackle the same problem. I did very 
 briefly check out [Demon Horde Sort](https://www.youtube.com/watch?v=helScS3coAE&t=260s), 
-but only enough to verify that it is different from this algorithm. For the 
+but only enough (about 5 seconds of that video) to verify that it is different 
+from this algorithm. For the 
 record, if you do actually want a real, professional approach to robust 
-sorting, Demon Horde Sort is the place to look
+sorting, Demon Horde Sort is likely the place to look.
 
 The algorithms used here that I have made up or renamed are, in order of 
 appearance, Tensort, Robustsort, Permutaionsort, and Magicsort. Get ready!
@@ -344,7 +345,7 @@ faulty comparator that gives a random result 10% of the time:
 
 In these cases, 90% of the time the Top Bit will be in the correct position, 
 and in the other cases it will be off by one position, and in no case will the 
-Byte be reverse sorted
+Byte be reverse sorted.
 
 #### Reverse Exchangesort
 
@@ -438,7 +439,7 @@ The first thing that might stand out is that around 34% of the time, these
 sub-algorithms will disagree with each other. What happens then?
 
 Well, in that case we run a third sub-algorithm to compare the results with: 
-Permutationsort
+Permutationsort.
 
 #### Permutationsort
 
@@ -448,7 +449,7 @@ list. Then we loop over this list of permutations until we find one that is in
 the right order. We check if a permutation is in the right order by comparing
 the first two elements, if they are in the right order comparing the next two
 elements, and so on until we either find two elements that are out of order or
-we confirm that the list is in order
+we confirm that the list is in order.
 
 Permutationsort will also make an average of 7 comparisons when sorting a 
 3-element list. This is slightly more than the other algorithms examined but
@@ -564,7 +565,7 @@ against logic itself...
 
 <!-- (image4) -->
 
-Bogosort
+Bogosort!
 
 <!-- (image5) -->
 
