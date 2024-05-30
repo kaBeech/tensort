@@ -2,6 +2,8 @@
 
 module Data.Tensort.Utils.Types where
 
+data TensortProps = TensortProps {bytesize :: Int, subAlgorithm :: SortAlg}
+
 --   All the data types used in the Tensort and Tensort algorithms are
 --   defined here. Since these packages are only for sorting Ints currently,
 --   every data type is a structure of Ints
@@ -79,7 +81,11 @@ data Memory
 -- | The Register is a list of Records referencing the top Bits in Memory
 type Tensor = (Register, Memory)
 
--- | A Tensorstack is a top-level Tensor. In the final stages of Tensort, the
---   number of Tensorstacks will equal the bytesize, but before that time there
---   are expected to be many more Tensorstacks
-type Tensorstack = Tensor
+-- | A TensorStack is a top-level Tensor. In the final stages of Tensort, the
+--   number of TensorStacks will equal the bytesize, but before that time there
+--   are expected to be many more TensorStacks
+type TensorStack = Tensor
+
+fromJust :: Maybe a -> a
+fromJust (Just x) = x
+fromJust Nothing = error "fromJust: Nothing"

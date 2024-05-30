@@ -3,13 +3,20 @@ module Data.Tensort.Tensort
     tensortBasic2Bit,
     tensortBasic3Bit,
     tensortBasic4Bit,
+    mkTSProps,
   )
 where
 
 import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
-import Data.Tensort.Utils.Bytes (TensortProps, convertRawBitsToBytes, getSortedBitsFromMetastack, getTensorstacksFromBytes, mkTSProps, reduceTensorstacks)
+import Data.Tensort.Utils.Convert (rawBitsToBytes)
 import Data.Tensort.Utils.RandomizeList (randomizeList)
-import Data.Tensort.Utils.Types (Sortable (..), fromSortInt)
+import Data.Tensort.Utils.Reduce (reduceTensorStacks)
+import Data.Tensort.Utils.Render (getSortedBitsFromMetastack)
+import Data.Tensort.Utils.Tensor (getTensorStacksFromBytes)
+import Data.Tensort.Utils.Types (Sortable (..), TensortProps (..), fromSortInt)
+
+mkTSProps :: Int -> (Sortable -> Sortable) -> TensortProps
+mkTSProps bSize subAlg = TensortProps {bytesize = bSize, subAlgorithm = subAlg}
 
 tensortBasic2Bit :: [Int] -> [Int]
 tensortBasic2Bit xs = tensort xs (mkTSProps 2 bubblesort)
@@ -28,7 +35,7 @@ tensortBasic4Bit xs = tensort xs (mkTSProps 4 bubblesort)
 tensort :: [Int] -> TensortProps -> [Int]
 tensort xs tsProps = do
   let bits = randomizeList (SortInt xs) 143
-  let bytes = convertRawBitsToBytes (fromSortInt bits) tsProps
-  let tensorstacks = getTensorstacksFromBytes bytes tsProps
-  let metastack = reduceTensorstacks tensorstacks tsProps
-  getSortedBitsFromMetastack metastack tsProps
+  let bytes = rawBitsToBytes (fromSortInt bits) tsProps
+  let tensorStacks = getTensorStacksFromBytes bytes tsProps
+  let metastack = reduceTensorStacks tensorStacks tsProps
+  getSortedBitsFromMetastack metastack (subAlgorithm tsProps)

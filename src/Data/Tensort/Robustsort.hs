@@ -11,8 +11,7 @@ import Data.Tensort.Subalgorithms.Magicsort (magicsort)
 import Data.Tensort.Subalgorithms.Permutationsort (permutationsort)
 import Data.Tensort.Subalgorithms.ReverseExchangesort (reverseExchangesort)
 import Data.Tensort.Subalgorithms.Supersort (magicSuperStrat, mundaneSuperStrat, supersort)
-import Data.Tensort.Tensort (tensort)
-import Data.Tensort.Utils.Bytes (mkTSProps)
+import Data.Tensort.Tensort (mkTSProps, tensort)
 import Data.Tensort.Utils.Types (Sortable)
 
 robustsortP :: [Int] -> [Int]

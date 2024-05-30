@@ -74,9 +74,12 @@ library
 
     -- Modules included in this library but not exported.
     other-modules:    Data.Tensort.Utils.Check,
-                      Data.Tensort.Utils.Bytes,
                       Data.Tensort.Utils.Split,
-                      Data.Tensort.Utils.ComparisonFunctions
+                      Data.Tensort.Utils.ComparisonFunctions,
+                      Data.Tensort.Utils.Convert,
+                      Data.Tensort.Utils.Tensor,
+                      Data.Tensort.Utils.Reduce,
+                      Data.Tensort.Utils.Render,
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
