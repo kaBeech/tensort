@@ -7,6 +7,7 @@ import Data.Robustsort.Robustsort (robustsortP)
 import Data.Robustsort.Subalgorithms.Bogosort (bogosort)
 import Data.Robustsort.Subalgorithms.Bubblesort (bubblesort)
 import Data.Robustsort.Subalgorithms.Permutationsort (permutationsort)
+import Data.Robustsort.Subalgorithms.ReverseExchangesort (reverseExchangesort)
 import Data.Robustsort.Utils.Types (Sortable (..), fromSortInt)
 
 unsortedArray :: [Int]
@@ -16,6 +17,7 @@ main :: IO ()
 main = do
   putStrLn "Hello, Haskell!"
   putStrLn ("bubblesort: " ++ show (fromSortInt (bubblesort (SortInt unsortedArray))))
+  putStrLn ("reverseExchangesort: " ++ show (fromSortInt (reverseExchangesort (SortInt unsortedArray))))
   putStrLn ("mergesort: " ++ show (mergesort (SortInt unsortedArray)))
   putStrLn ("quicksort: " ++ show (quicksort (SortInt unsortedArray)))
   putStrLn ("permutationsort: " ++ show (permutationsort (SortInt [3, 1, 2])))

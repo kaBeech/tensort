@@ -61,6 +61,7 @@ library
     exposed-modules:  Data.Robustsort.Utils.Check,
                       Data.Robustsort.Utils.RandomizeList,
                       Data.Robustsort.Subalgorithms.Bubblesort,
+                      Data.Robustsort.Subalgorithms.ReverseExchangesort,
                       Data.Robustsort.OtherSorts.Mergesort,
                       Data.Robustsort.OtherSorts.Quicksort,
                       Data.Robustsort.Subalgorithms.Permutationsort,
