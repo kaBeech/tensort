@@ -77,10 +77,10 @@ library
                       Data.Tensort.OtherSorts.Mergesort,
                       Data.Tensort.OtherSorts.Quicksort,
                       Data.Tensort.Utils.RandomizeList,
+                      Data.Tensort.Utils.Check,
 
     -- Modules included in this library but not exported.
-    other-modules:    Data.Tensort.Utils.Check,
-                      Data.Tensort.Utils.Split,
+    other-modules:    Data.Tensort.Utils.Split,
                       Data.Tensort.Utils.ComparisonFunctions,
                       Data.Tensort.Utils.Convert,
                       Data.Tensort.Utils.Compose,
@@ -135,7 +135,21 @@ test-suite tensort-test
     default-language: Haskell2010
 
     -- Modules included in this executable, other than Main.
-    -- other-modules:
+    other-modules:    TestCheck,
+                      SortSpec,
+                      -- Data.Tensort.TensortSpec,
+                      -- Data.Tensort.RobustsortSpec,
+                      -- Data.Tensort.Utils.TypesSpec,
+                      -- Data.Tensort.Subalgorithms.BubblesortSpec,
+                      -- Data.Tensort.Subalgorithms.ExchangesortSpec,
+                      -- Data.Tensort.Subalgorithms.PermutationsortSpec,
+                      -- Data.Tensort.Subalgorithms.BogosortSpec,
+                      -- Data.Tensort.Subalgorithms.SupersortSpec,
+                      -- Data.Tensort.Subalgorithms.MagicsortSpec,
+                      -- Data.Tensort.OtherSorts.MergesortSpec,
+                      -- Data.Tensort.OtherSorts.QuicksortSpec,
+                      -- Data.Tensort.Utils.RandomizeListSpec,
+                      
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
@@ -152,4 +166,6 @@ test-suite tensort-test
     -- Test dependencies.
     build-depends:
         base >=4.16.0.0 && <= 4.19.1.0,
-        tensort
+        tensort,
+        mtl,
+        QuickCheck >= 2.15 && < 2.16,
