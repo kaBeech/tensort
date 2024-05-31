@@ -47,15 +47,17 @@ There's likely a lot of room for improvement in the code as well.
 ### Inspiration
 
   - [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by 
-  David H. Ackley
+  [David H. Ackley](https://github.com/DaveAckley)
     
   - [Beyond Efficiency by Dave Ackley](https://futureofcoding.org/episodes/070) 
-  by Future of Coding
+  by Future of Coding ([Lu Wilson](https://github.com/TodePond),
+  [Jimmy Miller](https://github.com/jimmyhmiller),
+  [Ivan Reese](https://github.com/ivanreese))
 
 ### Why?
 
 Because near the end of [that podcast episode](https://futureofcoding.org/episodes/070), 
-[Ivan Reese](https://github.com/ivanreese) said "Why are we comparing Bubblesort 
+[Ivan](https://github.com/ivanreese) said "Why are we comparing Bubblesort 
 versus Quicksort and Mergesort? Well, because no one's made Robustsort yet."
 
 And I thought, "Why not?"
