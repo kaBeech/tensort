@@ -115,9 +115,9 @@ library
     -- other-extensions:
 
     -- Other library packages from which modules are imported.
-    build-depends:    base >=4.9.0.0 && <= 4.19.1.0,
-                      mtl >= 2.0.0  && < 2.4,
-                      random >= 1.0.0 && < 1.3,
+    build-depends:    base >=4.0.0.0 && <= 4.19.1.0,
+                      mtl >= 2.2.2  && < 2.4,
+                      random >= 1.2.1.2 && < 1.3,
                       random-shuffle >= 0.0.4 && < 0.1,
 
     -- Directories containing source files.
@@ -143,7 +143,7 @@ executable tensort
     build-depends:
         base,
         tensort,
-        time >= 1 && < 1.13,
+        time >= 1.6.0.1 && < 1.13,
 
     -- Directories containing source files.
     hs-source-dirs:   app
@@ -180,4 +180,4 @@ test-suite tensort-test
         base,
         tensort,
         mtl,
-        QuickCheck >= 2.0 && < 2.16,
+        QuickCheck >= 2.15 && < 2.16,
