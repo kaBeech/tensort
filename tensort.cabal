@@ -69,7 +69,7 @@ library
                       Data.Tensort.Robustsort,
                       Data.Tensort.Utils.Types,
                       Data.Tensort.Subalgorithms.Bubblesort,
-                      Data.Tensort.Subalgorithms.ReverseExchangesort,
+                      Data.Tensort.Subalgorithms.Exchangesort,
                       Data.Tensort.Subalgorithms.Permutationsort,
                       Data.Tensort.Subalgorithms.Bogosort,
                       Data.Tensort.Subalgorithms.Supersort,
