@@ -14,7 +14,6 @@
 #
 name: Haskell-CI
 on:
-  - push
   - pull_request
 jobs:
   linux:
@@ -93,11 +92,6 @@ jobs:
             compilerVersion: 7.10.3
             setup-method: hvr-ppa
             allow-failure: false
-          - compiler: ghc-7.8.1
-            compilerKind: ghc
-            compilerVersion: 7.8.1
-            setup-method: hvr-ppa
-            allow-failure: false
           - compiler: ghc-7.6.3
             compilerKind: ghc
             compilerVersion: 7.6.3
@@ -106,11 +100,6 @@ jobs:
           - compiler: ghc-7.4.2
             compilerKind: ghc
             compilerVersion: 7.4.2
-            setup-method: hvr-ppa
-            allow-failure: false
-          - compiler: ghc-7.2.1
-            compilerKind: ghc
-            compilerVersion: 7.2.1
             setup-method: hvr-ppa
             allow-failure: false
           - compiler: ghc-7.0.4
