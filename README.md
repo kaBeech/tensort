@@ -49,8 +49,8 @@ There's likely a lot of room for improvement in the code as well.
   - [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by 
   David H. Ackley
     
-  - Future of Coding's 
-  [podcast episode](https://futureofcoding.org/episodes/070) on the same paper
+  - [Beyond Efficiency by Dave Ackley](https://futureofcoding.org/episodes/070) 
+  by Future of Coding
 
 ### Why?
 
@@ -77,7 +77,7 @@ like [Dyson Spheres](https://en.wikipedia.org/wiki/Dyson_sphere). Doing so will
 likely involve massively distributed systems being constantly pelted by 
 radiation. In circumstances like that, robustnesss is key.
 
-Another other example I like to consider is artificial cognition. When working 
+Another example I like to consider is artificial cognition. When working 
 in a non-determinative system (or a system so complex as to be considered
 non-determinative), it can be helpful to have systems in place to make sure 
 that the answer we come to is really valid.
