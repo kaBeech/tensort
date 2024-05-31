@@ -1,27 +1,37 @@
 # Tensort
 
-The goal of this project is to explore what a sorting algorithm that 
-prioritizes robustness would look like.
+Tensort is a tensor-based sorting algorithm that is tunable to adjust to 
+the priorities of the task at hand.
 
-DISCLAIMER: This project is still under construction. The Library is 
+This project started as an exploration of what a sorting algorithm that 
+prioritizes robustness would look like. As such it also describes and provides
+implementations of Robustsort, a group of Tensort variants designed to 
+prioritize Robustness in conditions defined in David H. Ackley's
+[Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf).
+
+Note: This project is still under construction. The Library is 
 functional but I have yet to add documentation and benchmarking.
 There's likely a lot of room for improvement in the code as well.
 
 ## Table of Contents
 
-- [Inspiration](#inspiration)
+- [Introduction](#introduction)
+  - [Inspiration](#inspiration)
+  - [Why?](#why)
+  - [Why Haskell?](#why-haskell)
 - [Project structure](#project-structure)
 - [Algorithms overview](#algorithms-overview)
   - [Tensort](#tensort-1)
-    - [Introduction](#introduction)
+    - [Preface](#preface)
     - [Structure](#structure)
     - [Algorithm](#algorithm)
-    - [How does this work?](#how-does-this-work)
+    - [What are the benefits?](#what-are-the-benefits)
+    - [Logarithmic Tensort](#logarithmic-tensort)
   - [Robustsort](#robustsort)
-    - [Introduction](#introduction-1)
+    - [Preface](#preface-1)
     - [Overview](#overview)
     - [Examining Bubblesort](#examining-bubblesort)
-    - [Reverse Exchangesort](#reverse-exchangesort)
+    - [Exchangesort](#exchangesort)
     - [Introducing Supersort](#introducing-supersort)
     - [Permutationsort](#permutationsort)
     - [Supersort Adjudication](#supersort-adjudication)
@@ -31,11 +41,57 @@ There's likely a lot of room for improvement in the code as well.
 - [Comparing it all](#comparing-it-all)
 - [Library](#library)
 
-## Inspiration
+## Introduction
 
-  - [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by David H. Ackley
+### Inspiration
+
+  - [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by 
+  David H. Ackley
     
-  - Future of Coding's [podcast episode](https://futureofcoding.org/episodes/070) on the same paper
+  - Future of Coding's 
+  [podcast episode](https://futureofcoding.org/episodes/070) on the same paper
+
+### Why?
+
+Because near the end of ^that podcast episode, 
+[Ivan Reese](https://github.com/ivanreese) said "Why are we 
+comparing Bubblesort versus Quicksort and Mergesort? Well, because no one's 
+made Robustsort yet." And I thought, "Why not?"
+
+### But why would anyone care about this in the first place?
+
+[Ackley](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) has some really 
+compelling things to say about this, and I'd highly recommend you read that 
+paper!
+
+Or listen to [this podcast](https://futureofcoding.org/episodes/070)!
+
+If you want my elevator pitch, it's because we eventually want to build
+[Dyson Spheres](https://en.wikipedia.org/wiki/Dyson_sphere). Doing so will 
+likely involve massively distributed systems being constantly pelted by 
+radiation. In circumstances like that, robustnesss is key.
+
+Another other example I like to consider is artificial cognition. When working 
+in a non-determinative system (or a system so complex as to be considered
+non-determinative), it can be helpful to have systems in place to make sure 
+that the answer we come to is really valid.
+
+Incidentally, while I was preparing for this project, we experienced 
+[the strongest solar storm to reach Earth in 2 decades](https://science.nasa.gov/science-research/heliophysics/how-nasa-tracked-the-most-intense-solar-storm-in-decades/). 
+I don't know for certain whether the solar activity caused any computer errors, 
+but we had some anomalies at work and certainly joked about them being caused by
+the Sun.
+
+Also during the same period, 
+[one of the Internet's root-servers glitched out for unexplained reasons](https://arstechnica.com/security/2024/05/dns-glitch-that-threatened-internet-stability-fixed-cause-remains-unclear/).
+
+As Ackley mentions, as a culture we have tended to prioritize correctness and 
+efficiency to the exclusion of robustness. The rate of our technological 
+progression precludes us from continuing to do so.
+
+### Why Haskell?
+
+[Obviously](https://www.youtube.com/shorts/LGZKXZQeEBg).
 
 ## Project structure
 
@@ -59,25 +115,27 @@ David H. Ackley. Go read it!
 Please note that we will discuss a few algorithms that I've either made up or 
 am just not familiar with by other names. If any of these algorithms have 
 previously been named, please let me know. Prior to this project I really 
-only had a rudimentary understanding of insertionsort, quicksort, mergesort, 
-and bogosort, so it's entirely possible that I've reinvented a few things 
-that already exist.
+only had a rudimentary understanding of Insertionsort, Quicksort, Mergesort,
+Bubblesort and Bogosort, so it's entirely possible that I've reinvented a few 
+things that already exist.
 
-It also may be helpful to note that this project was undertaken in an 
-endeavor to come up with a solution naively, for the practice, before 
+It also may be helpful to note that this project was originally undertaken in
+an endeavor to come up with a solution naively, for the practice, before 
 researching other algorithms built to tackle the same problem. I did very 
-briefly check out [Demon Horde Sort](https://www.youtube.com/watch?v=helScS3coAE&t=260s), 
+briefly check out Ackley's 
+[Demon Horde Sort](https://www.youtube.com/watch?v=helScS3coAE&t=260s), 
 but only enough (about 5 seconds of that video) to verify that it is different 
-from this algorithm. For the 
-record, if you do actually want a real, professional approach to robust 
-sorting, Demon Horde Sort is likely the place to look.
+from this algorithm. I've been purposefully avoiding learning much about Demon 
+Horde Sort before publishing v1.0.0.0 of this package, but Ackley is way 
+smarter than me so if you do actually want a real, professional approach to 
+robust sorting, Demon Horde Sort is likely the place to look.
 
 The algorithms used here that I have made up or renamed are, in order of 
-appearance, Tensort, Robustsort, Permutationsort, and Magicsort. Get ready!
+introduction, Tensort, Robustsort, Permutationsort, and Magicsort. Get ready!
 
 ### Tensort
 
-#### Introduction
+#### Preface
 
 Tensort is my attempt to write the most robust O(n log n) sorting algorithm 
 possible while avoiding anything that Ackley might consider a "cheap hack." 
@@ -102,12 +160,12 @@ fear not!
   - Bit <- Element of the list to be sorted
     
   - Byte <- List of Bits
+
+  - Bytesize <- Maximum length of a Byte
     
   - Tensor <- Tuple of a Register list and a Memory list
     
   - Memory <- List of Bytes or Tensors contained in the current Tensor.
-              Technically this is a tensor field, but it seems less 
-              confusing to just call it Memory
     
   - Register <- List of Records referencing each Byte or Tensor in Memory
     
@@ -132,9 +190,7 @@ in a Tensor.
 A Tensor is a tuple with two elements: Register and Memory.
 
 Memory is the second element in a Tensor tuple. It is a list of Bytes or 
-other Tensors. Technically, Memory is a tensor field, but it seems less 
-confusing to just call it Memory and talk about it in terms of being a list. 
-The length of this Memory list is equal to the Bytesize.
+other Tensors. The length of this Memory list is equal to the Bytesize.
 
 A Register is the first element in a Tensor tuple. It is a list of Records, 
 each of which has an Address pointing to an element in its Tensor's Memory 
@@ -149,8 +205,9 @@ be many more TensorStacks.
 
 The sorting SubAlgorithm will be used any time we sort something within 
 Tensort. The choice of this SubAlgorithm is very important. For reasons that 
-will become clear soon, the SubAlgorithm will canonically be Bubblesort, but 
-it is sometimes useful to substitute another sorting algorithm.
+will become clear soon, the SubAlgorithm for Standard Tensort will be 
+Bubblesort, but the major part of Tensort's tunability is  the ability to 
+substitute another sorting algorithm based on current priorities.
 
 Now, on to the algorithm!
 
@@ -219,21 +276,26 @@ during an operation where we intend to add 124 to the final list
 and we add a different element instead, three of the best-case elements to have
 mistakenly added (121, 122, and 123) are impossible to have been selected.
 
-#### How does this work?
+#### What are the benefits?
 
-Bubblesort leverages the robustness of Bubblesort while reducing the time 
+The core idea of Tensort is breaking the input into smaller pieces along an 
+ever-expanding rank, and sorting the smaller pieces. Once we understand the
+overall structure, we can design the SubAlgorithm (and Bytesize) to suit our 
+needs.
+
+Standard Tensort leverages the robustness of Bubblesort while reducing the time 
 required by never Bubblesorting the entire input. 
 
 We are able to do this because A) Bubblesort is really good at making sure the 
-last element is in the final 
-position of a list, and B) at each step of Tensort the only element we 
-*really* care about is the last element (TopBit) of a given list 
-(Byte/Tensor).
+last element is in the final position of a list, and B) at each step of Tensort 
+the only element we *really* care about is the last element in a given list 
+(or to look at it another way, the TopBit of a given Tensor).
 
-When using standard Tensort (i.e. using Bubblesort as the SubAlg), as the 
+#### Logarithmic Tensort
+
+When using standard Tensort (i.e. using Bubblesort as the SubAlgoritm), as the 
 Bytesize approaches the square root of the number of elements in the 
-input list, its time efficiency approaches O(n^2) (though the robustness may
-increase).
+input list, its time efficiency approaches O(n^2).
 
 Standard Tensort is most time efficient when the Bytesize is close 
 to the natural log of the number of elements in the input list. A logarithmic 
@@ -248,7 +310,7 @@ Now for some cheap hacks!
 
 ### Robustsort
 
-#### Introduction
+#### Preface
 
 In Beyond Efficiency, Ackley augmented Mergesort and Quicksort with what he 
 called "cheap hacks" in order to give them a boost in robustness to get them to 
@@ -356,7 +418,7 @@ In these cases, 90% of the time the Top Bit will be in the correct position,
 and in the other cases it will be off by one position, and in no case will the 
 Byte be reverse sorted.
 
-#### Reverse Exchangesort
+#### Exchangesort
 
 When choosing an algorithm to compare with Bubblesort, we want something with 
 substantially different logic, for the sake of robustness. We do, 
@@ -364,11 +426,24 @@ however, want something similar to Bubblesort in that it compares our elements
 multiple times. And, as mentioned above, the element that is most important to 
 our sorting is the top (biggest) element, by a large degree.
 
-With these priorities in mind, the comparison algorithm we choose shall be a 
-Reverse Exchangesort. If you're not familiar with this algorithm, I'd recommend
-checking out [this video](https://youtu.be/wqibJMG42Ik?feature=shared&t=143).
+With these priorities in mind, the comparison algorithm we choose shall be 
+Exchangesort. If you're not familiar with this algorithm, I'd recommend
+checking out [this video](https://youtu.be/wqibJMG42Ik?feature=shared&t=143). 
 
-Reverse Exchangesort will also make an average of 6 comparisons when sorting a
+The Exchangesort we use is notable in two ways. Firstly, it is a Reverse 
+Exchangesort, as explained in that video.
+
+Secondly, the algorithm as described in the video only compares selected element 
+with elements that appear after (or before, as in Reverse Exchangesort) it in 
+the list, swapping them if the compared element is larger. This functions 
+similarly to an optimized Bubblesort where after the each round the last 
+element compared that round is no longer compared in following rounds. Our 
+implementation will compare the selected element with all other elements in the 
+list, swapping them if the element that appears later is larger. Ackley 
+uses an unoptimized Bubblesort in Beyond Efficiency, so I feel comfortable 
+using this variation for our Exchangesort.
+
+Exchangesort will also make an average of 6 comparisons when sorting a
 3-element list.
 
 As with Bubblesort, Exchangesort will perform three iterations over a 3-element
@@ -395,10 +470,10 @@ value.
 #### Introducing Supersort
 
 Supersort is a SubAlgorithm that compares the results of two different
-sorting algorithms, in our case Bubblesort and Reverse Exchangesort. If both 
+sorting algorithms, in our case Bubblesort and Exchangesort. If both 
 algorithms agree on the result, that result is used. 
 
-Looking at our analysis on Bubblesort and Reverse Exchangesort, we can 
+Looking at our analysis on Bubblesort and Exchangesort, we can 
 approximate the chances of various outcomes when comparing the results of 
 running these two algorithms in similar conditions:
 
@@ -463,8 +538,8 @@ we confirm that the list is in order.
 Permutationsort will also make an average of 7 comparisons when sorting a 
 3-element list. This is slightly more than the other algorithms examined but
 it's worth it because A) the spread of outcomes is favorable for our needs, and 
-B) it uses logic that is completely different from Bubblesort and Reverse
-Exchangesort. Using different manners of reasoning to reach an agreed-upon answer greatly 
+B) it uses logic that is completely different from Bubblesort and Exchangesort. 
+Using different manners of reasoning to reach an agreed-upon answer greatly 
 increases the robustness of the system.
 
 Given a Byte of [1,2,3], here are the chances of various outcomes from using a
@@ -488,15 +563,14 @@ possible incorrect outcomes are in even distribution with each other.
 
 #### Supersort Adjudication
 
-Supposing that our results from Bubblesort and Reverse Exchangesort disagree 
+Supposing that our results from Bubblesort and Exchangesort disagree 
 and we now have our result from Permutationsort, how do we choose which to
 use?
 
 First we check to see whether the result from Permutationsort agrees with
-the results from either Bubblesort or Reverse Exchangesort. To keep things 
+the results from either Bubblesort or Exchangesort. To keep things 
 simple, let's just look at the raw chances that 
-Permutationsort will agree on results with Bubblesort or Reverse
-Exchangesort.
+Permutationsort will agree on results with Bubblesort or Exchangesort.
 
 Permutationsort and Bubblesort:
 
@@ -508,7 +582,7 @@ Permutationsort and Bubblesort:
 
     ~0.08% <- [2,3,1] (Incorrect)
 
-Permutationsort and Reverse Exchangesort:
+Permutationsort and Exchangesort:
 
     ~55.62% <- [1,2,3] (Correct)
 
@@ -519,15 +593,15 @@ Permutationsort and Reverse Exchangesort:
     ~0.08% <- [3,2,1] (Reverse)
 
 As we can see, it is very unlikely that Permutationsort will agree with
-either Bubblesort or Reverse Exchangesort incorrectly. It is even less likely
+either Bubblesort or Exchangesort incorrectly. It is even less likely
 that they will do so when the TopBit is incorrect. However, there are many 
 cases in which they do not agree, so let's handle those.
 
 If there is no agreed-upon result between these three algorithms, we will look 
 at the top bit only.
 
-First we check if the results from Bubblesort and Reverse
-Exchangesort agree on the TopBit. This is because the chance is very unlikely 
+First we check if the results from Bubblesort and Exchangesort agree on the 
+TopBit. This is because the chance is very unlikely 
 (0.18%) that they will agree on an incorrect TopBit. If they do agree, we use 
 the result from Bubblesort (as it will not return a reverse-sorted list).
 
@@ -537,11 +611,11 @@ Permutationsort. This is because it is unlikely
 incorrectly agreeing on the highest Bit as the TopBit is even lower (~0.16%). 
 If they do agree, we use the result from Bubblesort.
 
-If they do not agree, we will check the TopBit results from Reverse 
-Exchangesort and Permutationsort. The chance that they will agree on an 
+If they do not agree, we will check the TopBit results from Exchangesort 
+and Permutationsort. The chance that they will agree on an 
 incorrect TopBit is about 1.55%, with the chances of them incorrectly agreeing
 on the highest Bit as the TopBit also around 0.16%. If they do agree, we use
-the result from Reverse Exchangesort.
+the result from Exchangesort.
 
 If after all this adjudication we still do not have an agreed-upon result, we
 will use the result from Bubblesort.
@@ -553,7 +627,7 @@ result, and that if an incorrect result is returned, it is very likely to still
 have a correct TopBit.
 
 We now have the basic form of Robustsort: a 3-bit Tensort with a Supersort 
-adjudicating Bubblesort, Reverse Exchangesort, and Permutationsort as its
+adjudicating Bubblesort, Exchangesort, and Permutationsort as its
 SubAlgorithm.
 
 Well that's pretty cool! But I wonder... can we make this more robust, if 
@@ -608,21 +682,21 @@ time:
 The downside here is that Magisort can take a long time to run. I don't know 
 how many comparisons are made on average, but it's well over 14.
 
-Thankfully, Magicsort will only be run in our algorithm if Bubblesort and Reverse
+Thankfully, Magicsort will only be run in our algorithm if Bubblesort and
 Exchangesort disagree on an answer. Overall the Robustsort we're building that 
 uses Magicsort will still have an average of O(n log n) time efficiency.
 
 #### Supersort adjudication with Magic
 
 Since we have replaced Permutationsort with Magicsort (which is far more robust 
-than Bubblesort or Reverse Exchangesort), we will adjust our adjudication
+than Bubblesort or Exchangesort), we will adjust our adjudication
 within the Supersort SubAlgorithm.
 
-If Bubblesort and Reverse Exchangesort disagree, we will run Magicsort on the
-input. If Magicsort agrees with either Bubblesort or Reverse Exchangesort, we
+If Bubblesort and Exchangesort disagree, we will run Magicsort on the
+input. If Magicsort agrees with either Bubblesort or Exchangesort, we
 will use the result from Magicsort. Otherwise, if Magicsort agrees on the 
-TopBit with either Bubblesort or Reverse Exchangesort, we will use the result
-from Magicsort. Otherwise, if Bubblesort and Reverse Exchangesort agree on the
+TopBit with either Bubblesort or Exchangesort, we will use the result
+from Magicsort. Otherwise, if Bubblesort and Exchangesort agree on the
 TopBit, we will use the result from Bubblesort.
 
 If no agreement is reached at this point, we abandon all logic and just use
@@ -662,9 +736,9 @@ Notably, it provides the following:
 
   - Standard Tensort with customizable Bytesize
 
-  - Standard Robustsort with Permutationsort adjudicator
+  - Mundane Robustsort with Permutationsort adjudicator
 
-  - Standard Robustsort with Bogosort adjudicator
+  - Mundane Robustsort with Bogosort adjudicator
 
   - Magic Robustsort
 

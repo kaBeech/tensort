@@ -2,13 +2,13 @@ module Data.Tensort.Subalgorithms.Permutationsort (permutationsort) where
 
 import Data.List (permutations)
 import Data.Tensort.Utils.Check (isSorted)
-import Data.Tensort.Utils.Types (Record, Sortable (..), fromSortBit, fromSortRec)
+import Data.Tensort.Utils.Types (Record, Sortable (..), fromSortBit, fromSortRec, Bit)
 
 permutationsort :: Sortable -> Sortable
 permutationsort (SortBit xs) = SortBit (acc (permutations x) [])
   where
     x = xs
-    acc :: [[Int]] -> [Int] -> [Int]
+    acc :: [[Bit]] -> [Bit] -> [Bit]
     acc [] unsortedPermutations = fromSortBit (permutationsort (SortBit unsortedPermutations))
     acc (permutation : remainingPermutations) unsortedPermutations
       | isSorted (SortBit permutation) = permutation

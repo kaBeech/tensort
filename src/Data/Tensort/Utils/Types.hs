@@ -48,11 +48,11 @@ type Register = [Record]
 -- | In the future this may be expanded to include other data types and allow
 --   for sorting other types of besides Ints.
 data Sortable
-  = SortBit [Int]
+  = SortBit [Bit]
   | SortRec [Record]
   deriving (Show, Eq, Ord)
 
-fromSortBit :: Sortable -> [Int]
+fromSortBit :: Sortable -> [Bit]
 fromSortBit (SortBit bits) = bits
 fromSortBit (SortRec _) = error "This is for sorting Bits - you gave me Records"
 
