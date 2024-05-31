@@ -1,13 +1,13 @@
 module Data.Tensort.OtherSorts.Mergesort (mergesort) where
 
 import Data.Tensort.Utils.ComparisonFunctions (lessThanBit, lessThanRecord)
-import Data.Tensort.Utils.Types (Record, Sortable (..))
+import Data.Tensort.Utils.Types (Record, Sortable (..), Bit)
 
 mergesort :: Sortable -> Sortable
 mergesort (SortBit xs) = SortBit (mergesortBits xs)
 mergesort (SortRec xs) = SortRec (mergesortRecs xs)
 
-mergesortBits :: [Int] -> [Int]
+mergesortBits :: [Bit] -> [Bit]
 mergesortBits = mergeAllBits . map (: [])
   where
     mergeAllBits [] = []
@@ -18,7 +18,7 @@ mergesortBits = mergeAllBits . map (: [])
     mergePairs (x : y : remaningElements) = mergeBits x y : mergePairs remaningElements
     mergePairs x = x
 
-mergeBits :: [Int] -> [Int] -> [Int]
+mergeBits :: [Bit] -> [Bit] -> [Bit]
 mergeBits [] y = y
 mergeBits x [] = x
 mergeBits (x : xs) (y : ys)

@@ -5,7 +5,7 @@ module Data.Tensort.Utils.Compose
 where
 
 import Data.Tensort.Utils.Split (splitEvery)
-import Data.Tensort.Utils.Types (Byte, Memory (..), Record, SortAlg, Sortable (..), Tensor, TensortProps (..), fromSortRec)
+import Data.Tensort.Utils.Types (Byte, Memory (..), Record, SortAlg, Sortable (..), Tensor, TensortProps (..), fromSortRec, Bit)
 
 -- | Convert a list of Bytes to a list of TensorStacks.
 
@@ -93,5 +93,5 @@ getRegisterFromTensors tensors = acc tensors []
 -- | ==== __Examples__
 -- >>> getTopBitFromTensorStack (([(0,28),(1,38)],TensorMem [([(0,27),(1,28)],TensorMem [([(0,23),(1,27)],ByteMem [[21,23],[25,27]]),([(0,24),(1,28)],ByteMem [[22,24],[26,28]])]),([(1,37),(0,38)],TensorMem [([(0,33),(1,38)],ByteMem [[31,33],[35,38]]),([(0,34),(1,37)],ByteMem [[32,14],[36,37]])])]))
 -- 38
-getTopBitFromTensorStack :: Tensor -> Int
+getTopBitFromTensorStack :: Tensor -> Bit
 getTopBitFromTensorStack (register, _) = snd (last register)

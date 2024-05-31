@@ -1,12 +1,12 @@
 module Data.Tensort.Subalgorithms.Bubblesort (bubblesort) where
 
 import Data.Tensort.Utils.ComparisonFunctions (lessThanBit, lessThanRecord)
-import Data.Tensort.Utils.Types (Record, Sortable (..))
+import Data.Tensort.Utils.Types (Record, Sortable (..), Bit)
 
 bubblesort :: Sortable -> Sortable
 bubblesort (SortBit bits) = SortBit (foldr acc [] bits)
   where
-    acc :: Int -> [Int] -> [Int]
+    acc :: Bit -> [Bit] -> [Bit]
     acc x xs = bubblesortSinglePass x xs lessThanBit
 bubblesort (SortRec recs) = SortRec (foldr acc [] recs)
   where
