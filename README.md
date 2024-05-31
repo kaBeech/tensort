@@ -72,8 +72,8 @@ useful, and I'd highly recommend you read that paper!
 
 Or listen to [this podcast](https://futureofcoding.org/episodes/070)!
 
-If you want my elevator pitch, it's because we eventually want to build
-[Dyson Spheres](https://en.wikipedia.org/wiki/Dyson_sphere). Doing so will 
+If you want my elevator pitch, it's because we eventually want to build things
+like [Dyson Spheres](https://en.wikipedia.org/wiki/Dyson_sphere). Doing so will 
 likely involve massively distributed systems being constantly pelted by 
 radiation. In circumstances like that, robustnesss is key.
 
