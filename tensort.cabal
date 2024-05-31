@@ -20,13 +20,38 @@ name:               tensort
 -- PVP summary:     +-+------- breaking API changes
 --                  | | +----- non-breaking API additions
 --                  | | | +--- code changes with no API change
-version:            0.1.0.0
+version:            0.2.0.0
+
+tested-with:        GHC==9.8.2, 
+                    GHC==9.6.4, 
+                    GHC==9.4.8,
+                    GHC==9.2.8,
+                    GHC==9.2.1,
+                    GHC==9.0.2,
+                    GHC==8.10.7,
+                    GHC==8.8.4,
+                    GHC==8.6.5,
+                    GHC==8.4.4,
+                    GHC==8.2.2,
+                    GHC==8.0.2,
+                    GHC==7.10.3,
+                    GHC==7.6.3,
+                    GHC==7.4.2,
+                    GHC==7.0.4,
+                    GHC==7.0.1,
 
 -- A short (one-line) description of the package.
-synopsis:           Reasonably robust sorting in O(n log n) time
+synopsis:           Tunable sorting for responsive robustness and beyond!
 
 -- A longer description of the package.
-description:        An exploration of robustness in algorithms for sorting integers, inspired by [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by David H. Ackley
+description:        A tunable tensor-based structure for sorting algorithms 
+                    along with various sample configurations. Birthed from an 
+                    exploration of robustness in algorithms for sorting 
+                    integers, inspired by 
+                    [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) 
+                    by David H. Ackley and 
+                    [Beyond Efficiency by Dave Ackley](https://futureofcoding.org/episodes/070) 
+                    by Future of Coding.
 
 homepage: https://github.com/kaBeech/tensort
 
@@ -51,10 +76,15 @@ category:           Math,
 build-type:         Simple
 
 -- Extra doc files to be distributed with the package, such as a CHANGELOG or a README.
-extra-doc-files:    CHANGELOG.md
+extra-doc-files:    README.md,
+                    CHANGELOG.md
 
 -- Extra source files to be distributed with the package, such as examples, or a tutorial module.
 -- extra-source-files:
+
+source-repository head
+    type:           git
+    location:       https://github.com/kaBeech/tensort
 
 common warnings
     ghc-options: -Wall
@@ -91,9 +121,9 @@ library
     -- other-extensions:
 
     -- Other library packages from which modules are imported.
-    build-depends:    base >=4.16.0.0 && <= 4.19.1.0,
+    build-depends:    base >=4.3.0.0 && <= 4.19.1.0,
                       mtl >= 2.2.2  && < 2.4,
-                      random >= 1.2.1 && < 1.3,
+                      random >= 1.0.0.3 && < 1.3,
                       random-shuffle >= 0.0.4 && < 0.1,
 
     -- Directories containing source files.
@@ -117,9 +147,9 @@ executable tensort
 
     -- Other library packages from which modules are imported.
     build-depends:
-        base >=4.16.0.0 && <= 4.19.1.0,
+        base,
         tensort,
-        time >= 1.12.2 && < 1.13,
+        time >= 1.2.0.3 && < 1.13,
 
     -- Directories containing source files.
     hs-source-dirs:   app
@@ -137,18 +167,6 @@ test-suite tensort-test
     -- Modules included in this executable, other than Main.
     other-modules:    TestCheck,
                       SortSpec,
-                      -- Data.Tensort.TensortSpec,
-                      -- Data.Tensort.RobustsortSpec,
-                      -- Data.Tensort.Utils.TypesSpec,
-                      -- Data.Tensort.Subalgorithms.BubblesortSpec,
-                      -- Data.Tensort.Subalgorithms.ExchangesortSpec,
-                      -- Data.Tensort.Subalgorithms.PermutationsortSpec,
-                      -- Data.Tensort.Subalgorithms.BogosortSpec,
-                      -- Data.Tensort.Subalgorithms.SupersortSpec,
-                      -- Data.Tensort.Subalgorithms.MagicsortSpec,
-                      -- Data.Tensort.OtherSorts.MergesortSpec,
-                      -- Data.Tensort.OtherSorts.QuicksortSpec,
-                      -- Data.Tensort.Utils.RandomizeListSpec,
                       
 
     -- LANGUAGE extensions used by modules in this package.
@@ -165,7 +183,7 @@ test-suite tensort-test
 
     -- Test dependencies.
     build-depends:
-        base >=4.16.0.0 && <= 4.19.1.0,
+        base,
         tensort,
         mtl,
         QuickCheck >= 2.15 && < 2.16,

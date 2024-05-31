@@ -1,6 +1,3 @@
-{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
-
-{-# HLINT ignore "Use camelCase" #-}
 module SortSpec (result_is_sorted_bits, result_is_sorted_records, result_is_sorted_records_short) where
 
 import Data.Tensort.Utils.Check (isSorted)

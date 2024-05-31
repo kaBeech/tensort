@@ -4,7 +4,7 @@
 
 * First version. Released to an eager world!
 
-## 0.2.0.0 -- yyyy-mm-dd
+## 0.2.0.0 -- 2024-05-31
 
 * Add Logarithmic Tensort
 
@@ -17,5 +17,9 @@
 * Cleanup Types
 
 * Improve documentation
+
+* Add to package file
+
+* Expand supported dependency versions
 
 * Add tests
