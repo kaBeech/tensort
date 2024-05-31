@@ -49,8 +49,8 @@ There's likely a lot of room for improvement in the code as well.
   - [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by 
   David H. Ackley
     
-  - Future of Coding's 
-  [podcast episode](https://futureofcoding.org/episodes/070) on the same paper
+  - [Beyond Efficiency by Dave Ackley](https://futureofcoding.org/episodes/070) 
+  by Future of Coding
 
 ### Why?
 
