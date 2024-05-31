@@ -68,9 +68,6 @@ type SupersortStrat = (Sortable, Sortable, Sortable) -> Sortable
 
 -- | A Memory contains the data to be sorted, either in the form of Bytes or
 --   Tensors.
-
--- | Technically the Memory is a tensor field, but it seems 
---   less confusing to just call it Memory
 data Memory
   = ByteMem [Byte]
   | TensorMem [Tensor]
@@ -80,11 +77,9 @@ data Memory
 --   easy access. It consists of a Register and its Memory.
 
 -- | The Memory is a list of the Bytes or other Tensors that this Tensor
---   contains. Technically the Memory is a tensor field, but it seems 
---   less confusing to just call it Memory.
+--   contains.
 
 -- | The Register is a list of Records referencing the top Bits in Memory.
-
 type Tensor = (Register, Memory)
 
 -- | A TensorStack is a top-level Tensor. In the final stages of Tensort, the
