@@ -10,7 +10,7 @@ prioritize Robustness in conditions defined in David H. Ackley's
 [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf).
 
 Note: This project is still under construction. The Library is 
-functional but I have yet to add documentation and benchmarking.
+functional but I have yet to add much documentation and benchmarking.
 There's likely a lot of room for improvement in the code as well.
 
 ## Table of Contents
