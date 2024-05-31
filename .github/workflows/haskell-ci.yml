@@ -67,6 +67,11 @@ jobs:
             compilerVersion: 7.0.4
             setup-method: hvr-ppa
             allow-failure: false
+          - compiler: ghc-7.0.1
+            compilerKind: ghc
+            compilerVersion: 7.0.1
+            setup-method: hvr-ppa
+            allow-failure: false
       fail-fast: false
     steps:
       - name: apt

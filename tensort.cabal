@@ -39,7 +39,8 @@ tested-with:        GHC==9.8.2,
                     GHC==7.6.3,
                     GHC==7.4.2,
                     GHC==7.2.2,
-                    GHC==7.0.4
+                    GHC==7.0.4,
+                    GHC==7.0.1,
 
 -- A short (one-line) description of the package.
 synopsis:           Tunable sorting for responsive robustness and beyond
@@ -118,7 +119,7 @@ library
     build-depends:    base >=4.0.0.0 && <= 4.19.1.0,
                       mtl >= 2.0.0  && < 2.4,
                       random >= 1.0.0.0 && < 1.3,
-                      random-shuffle >= 0.0.4 && < 0.1,
+                      random-shuffle >= 0.0.1 && < 0.1,
 
     -- Directories containing source files.
     hs-source-dirs:   src
