@@ -1,24 +1,34 @@
 # Tensort
 
-The goal of this project is to explore what a sorting algorithm that 
-prioritizes robustness would look like.
+Tensort is a tensor-based sorting algorithm that is tunable to adjust to 
+the priorities of the task at hand.
 
-DISCLAIMER: This project is still under construction. The Library is 
+This project started as an exploration of what a sorting algorithm that 
+prioritizes robustness would look like. As such it also describes and provides
+implementations of Robustsort, a group of Tensort variants designed to 
+prioritize Robustness in conditions defined in David H. Ackley's
+[Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf).
+
+Note: This project is still under construction. The Library is 
 functional but I have yet to add documentation and benchmarking.
 There's likely a lot of room for improvement in the code as well.
 
 ## Table of Contents
 
-- [Inspiration](#inspiration)
+- [Introduction](#introduction)
+  - [Inspiration](#inspiration)
+  - [Why?](#why)
+  - [Why Haskell?](#why-haskell)
 - [Project structure](#project-structure)
 - [Algorithms overview](#algorithms-overview)
   - [Tensort](#tensort-1)
-    - [Introduction](#introduction)
+    - [Preface](#preface)
     - [Structure](#structure)
     - [Algorithm](#algorithm)
-    - [How does this work?](#how-does-this-work)
+    - [What are the benefits?](#what-are-the-benefits)
+    - [Logarithmic Tensort](#logarithmic-tensort)
   - [Robustsort](#robustsort)
-    - [Introduction](#introduction-1)
+    - [Preface](#preface-1)
     - [Overview](#overview)
     - [Examining Bubblesort](#examining-bubblesort)
     - [Exchangesort](#exchangesort)
@@ -31,11 +41,57 @@ There's likely a lot of room for improvement in the code as well.
 - [Comparing it all](#comparing-it-all)
 - [Library](#library)
 
-## Inspiration
+## Introduction
 
-  - [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by David H. Ackley
+### Inspiration
+
+  - [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by 
+  David H. Ackley
     
-  - Future of Coding's [podcast episode](https://futureofcoding.org/episodes/070) on the same paper
+  - Future of Coding's 
+  [podcast episode](https://futureofcoding.org/episodes/070) on the same paper
+
+### Why?
+
+Because near the end of ^that podcast episode, 
+[Ivan Reese](https://github.com/ivanreese) said "Why are we 
+comparing Bubblesort versus Quicksort and Mergesort? Well, because no one's 
+made Robustsort yet." And I thought, "Why not?"
+
+### But why would anyone care about this in the first place?
+
+[Ackley](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) has some really 
+compelling things to say about this, and I'd highly recommend you read that 
+paper!
+
+Or listen to [this podcast](https://futureofcoding.org/episodes/070)!
+
+If you want my elevator pitch, it's because we eventually want to build
+[Dyson Spheres](https://en.wikipedia.org/wiki/Dyson_sphere). Doing so will 
+likely involve massively distributed systems being constantly pelted by 
+radiation. In circumstances like that, robustnesss is key.
+
+Another other example I like to consider is artificial cognition. When working 
+in a non-determinative system (or a system so complex as to be considered
+non-determinative), it can be helpful to have systems in place to make sure 
+that the answer we come to is really valid.
+
+Incidentally, while I was preparing for this project, we experienced 
+[the strongest solar storm to reach Earth in 2 decades](https://science.nasa.gov/science-research/heliophysics/how-nasa-tracked-the-most-intense-solar-storm-in-decades/). 
+I don't know for certain whether the solar activity caused any computer errors, 
+but we had some anomalies at work and certainly joked about them being caused by
+the Sun.
+
+Also during the same period, 
+[one of the Internet's root-servers glitched out for unexplained reasons](https://arstechnica.com/security/2024/05/dns-glitch-that-threatened-internet-stability-fixed-cause-remains-unclear/).
+
+As Ackley mentions, as a culture we have tended to prioritize correctness and 
+efficiency to the exclusion of robustness. The rate of our technological 
+progression precludes us from continuing to do so.
+
+### Why Haskell?
+
+[Obviously](https://www.youtube.com/shorts/LGZKXZQeEBg).
 
 ## Project structure
 
@@ -59,25 +115,27 @@ David H. Ackley. Go read it!
 Please note that we will discuss a few algorithms that I've either made up or 
 am just not familiar with by other names. If any of these algorithms have 
 previously been named, please let me know. Prior to this project I really 
-only had a rudimentary understanding of insertionsort, quicksort, mergesort, 
-and bogosort, so it's entirely possible that I've reinvented a few things 
-that already exist.
+only had a rudimentary understanding of Insertionsort, Quicksort, Mergesort,
+Bubblesort and Bogosort, so it's entirely possible that I've reinvented a few 
+things that already exist.
 
-It also may be helpful to note that this project was undertaken in an 
-endeavor to come up with a solution naively, for the practice, before 
+It also may be helpful to note that this project was originally undertaken in
+an endeavor to come up with a solution naively, for the practice, before 
 researching other algorithms built to tackle the same problem. I did very 
-briefly check out [Demon Horde Sort](https://www.youtube.com/watch?v=helScS3coAE&t=260s), 
+briefly check out Ackley's 
+[Demon Horde Sort](https://www.youtube.com/watch?v=helScS3coAE&t=260s), 
 but only enough (about 5 seconds of that video) to verify that it is different 
-from this algorithm. For the 
-record, if you do actually want a real, professional approach to robust 
-sorting, Demon Horde Sort is likely the place to look.
+from this algorithm. I've been purposefully avoiding learning much about Demon 
+Horde Sort before publishing v1.0.0.0 of this package, but Ackley is way 
+smarter than me so if you do actually want a real, professional approach to 
+robust sorting, Demon Horde Sort is likely the place to look.
 
 The algorithms used here that I have made up or renamed are, in order of 
-appearance, Tensort, Robustsort, Permutationsort, and Magicsort. Get ready!
+introduction, Tensort, Robustsort, Permutationsort, and Magicsort. Get ready!
 
 ### Tensort
 
-#### Introduction
+#### Preface
 
 Tensort is my attempt to write the most robust O(n log n) sorting algorithm 
 possible while avoiding anything that Ackley might consider a "cheap hack." 
@@ -102,12 +160,12 @@ fear not!
   - Bit <- Element of the list to be sorted
     
   - Byte <- List of Bits
+
+  - Bytesize <- Maximum length of a Byte
     
   - Tensor <- Tuple of a Register list and a Memory list
     
   - Memory <- List of Bytes or Tensors contained in the current Tensor.
-              Technically this is a tensor field, but it seems less 
-              confusing to just call it Memory
     
   - Register <- List of Records referencing each Byte or Tensor in Memory
     
@@ -132,9 +190,7 @@ in a Tensor.
 A Tensor is a tuple with two elements: Register and Memory.
 
 Memory is the second element in a Tensor tuple. It is a list of Bytes or 
-other Tensors. Technically, Memory is a tensor field, but it seems less 
-confusing to just call it Memory and talk about it in terms of being a list. 
-The length of this Memory list is equal to the Bytesize.
+other Tensors. The length of this Memory list is equal to the Bytesize.
 
 A Register is the first element in a Tensor tuple. It is a list of Records, 
 each of which has an Address pointing to an element in its Tensor's Memory 
@@ -149,8 +205,9 @@ be many more TensorStacks.
 
 The sorting SubAlgorithm will be used any time we sort something within 
 Tensort. The choice of this SubAlgorithm is very important. For reasons that 
-will become clear soon, the SubAlgorithm will canonically be Bubblesort, but 
-it is sometimes useful to substitute another sorting algorithm.
+will become clear soon, the SubAlgorithm for Standard Tensort will be 
+Bubblesort, but the major part of Tensort's tunability is  the ability to 
+substitute another sorting algorithm based on current priorities.
 
 Now, on to the algorithm!
 
@@ -219,21 +276,26 @@ during an operation where we intend to add 124 to the final list
 and we add a different element instead, three of the best-case elements to have
 mistakenly added (121, 122, and 123) are impossible to have been selected.
 
-#### How does this work?
+#### What are the benefits?
 
-Bubblesort leverages the robustness of Bubblesort while reducing the time 
+The core idea of Tensort is breaking the input into smaller pieces along an 
+ever-expanding rank, and sorting the smaller pieces. Once we understand the
+overall structure, we can design the SubAlgorithm (and Bytesize) to suit our 
+needs.
+
+Standard Tensort leverages the robustness of Bubblesort while reducing the time 
 required by never Bubblesorting the entire input. 
 
 We are able to do this because A) Bubblesort is really good at making sure the 
-last element is in the final 
-position of a list, and B) at each step of Tensort the only element we 
-*really* care about is the last element (TopBit) of a given list 
-(Byte/Tensor).
+last element is in the final position of a list, and B) at each step of Tensort 
+the only element we *really* care about is the last element in a given list 
+(or to look at it another way, the TopBit of a given Tensor).
 
-When using standard Tensort (i.e. using Bubblesort as the SubAlg), as the 
+#### Logarithmic Tensort
+
+When using standard Tensort (i.e. using Bubblesort as the SubAlgoritm), as the 
 Bytesize approaches the square root of the number of elements in the 
-input list, its time efficiency approaches O(n^2) (though the robustness may
-increase).
+input list, its time efficiency approaches O(n^2).
 
 Standard Tensort is most time efficient when the Bytesize is close 
 to the natural log of the number of elements in the input list. A logarithmic 
@@ -248,7 +310,7 @@ Now for some cheap hacks!
 
 ### Robustsort
 
-#### Introduction
+#### Preface
 
 In Beyond Efficiency, Ackley augmented Mergesort and Quicksort with what he 
 called "cheap hacks" in order to give them a boost in robustness to get them to 
@@ -674,9 +736,9 @@ Notably, it provides the following:
 
   - Standard Tensort with customizable Bytesize
 
-  - Standard Robustsort with Permutationsort adjudicator
+  - Mundane Robustsort with Permutationsort adjudicator
 
-  - Standard Robustsort with Bogosort adjudicator
+  - Mundane Robustsort with Bogosort adjudicator
 
   - Magic Robustsort
 
