@@ -18,4 +18,8 @@
 
 * Improve documentation
 
+* Add to package file
+
+* Expand supported dependency versions
+
 * Add tests
