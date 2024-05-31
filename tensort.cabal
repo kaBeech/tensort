@@ -131,7 +131,7 @@ executable tensort
     build-depends:
         base,
         tensort,
-        time >= 1.12.2 && < 1.13,
+        time >= 1.11 && < 1.13,
 
     -- Directories containing source files.
     hs-source-dirs:   app
