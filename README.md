@@ -18,7 +18,7 @@ There's likely a lot of room for improvement in the code as well.
 - [Introduction](#introduction)
   - [Inspiration](#inspiration)
   - [Why?](#why)
-  - [But why would anyone care about this in the first place?](but-why-would-anyone-care-about-this-in-the-first-place)
+  - [But why would anyone care about this in the first place?](#but-why-would-anyone-care-about-this-in-the-first-place)
   - [Why Haskell?](#why-haskell)
 - [Project structure](#project-structure)
 - [Algorithms overview](#algorithms-overview)
