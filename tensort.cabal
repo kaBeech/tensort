@@ -41,10 +41,17 @@ tested-with:        GHC==9.8.2,
                     GHC==7.0.1,
 
 -- A short (one-line) description of the package.
-synopsis:           Tunable sorting for responsive robustness and beyond
+synopsis:           Tunable sorting for responsive robustness and beyond!
 
 -- A longer description of the package.
-description:        A tunable tensor-based structure for sorting algorithms along with various sample configurations. Birthed from an exploration of robustness in algorithms for sorting integers, inspired by [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by David H. Ackley and [Beyond Efficiency by Dave Ackley](https://futureofcoding.org/episodes/070) by Future of Coding.
+description:        A tunable tensor-based structure for sorting algorithms 
+                    along with various sample configurations. Birthed from an 
+                    exploration of robustness in algorithms for sorting 
+                    integers, inspired by 
+                    [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) 
+                    by David H. Ackley and 
+                    [Beyond Efficiency by Dave Ackley](https://futureofcoding.org/episodes/070) 
+                    by Future of Coding.
 
 homepage: https://github.com/kaBeech/tensort
 
