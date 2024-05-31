@@ -9,13 +9,13 @@ reverseExchangesort (SortRec recs) = SortRec (reverseExchangesortIterable recs (
 
 reverseExchangesortIterable :: [a] -> Int -> Int -> (a -> a -> Bool) -> [a]
 reverseExchangesortIterable xs i j greaterThan = do
-  if i < 1
+  if i < 0
     then xs
     else
       if j < 0
-        then reverseExchangesortIterable xs (i - 1) (i - 2) greaterThan
+        then reverseExchangesortIterable xs (i - 1) (length xs - 1) greaterThan
         else
-          if greaterThan (xs !! j) (xs !! i)
+          if ((i > j) && greaterThan (xs !! j) (xs !! i)) || ((i < j) && greaterThan (xs !! i) (xs !! j))
             then reverseExchangesortIterable (swap xs i j) i (j - 1) greaterThan
             else reverseExchangesortIterable xs i (j - 1) greaterThan
 
