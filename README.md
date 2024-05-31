@@ -18,6 +18,7 @@ There's likely a lot of room for improvement in the code as well.
 - [Introduction](#introduction)
   - [Inspiration](#inspiration)
   - [Why?](#why)
+  - [But why would anyone care about this in the first place?](but-why-would-anyone-care-about-this-in-the-first-place)
   - [Why Haskell?](#why-haskell)
 - [Project structure](#project-structure)
 - [Algorithms overview](#algorithms-overview)
@@ -53,16 +54,21 @@ There's likely a lot of room for improvement in the code as well.
 
 ### Why?
 
-Because near the end of ^that podcast episode, 
-[Ivan Reese](https://github.com/ivanreese) said "Why are we 
-comparing Bubblesort versus Quicksort and Mergesort? Well, because no one's 
-made Robustsort yet." And I thought, "Why not?"
+Because near the end of [that podcast episode](https://futureofcoding.org/episodes/070), 
+[Ivan Reese](https://github.com/ivanreese) said "Why are we comparing Bubblesort 
+versus Quicksort and Mergesort? Well, because no one's made Robustsort yet."
+
+And I thought, "Why not?"
 
 ### But why would anyone care about this in the first place?
 
+Well, a tunable sorting algorithm is a really cool thing to have!
+
+This can have many different uses, one of which is prioritizing robustness.
+
 [Ackley](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) has some really 
-compelling things to say about this, and I'd highly recommend you read that 
-paper!
+compelling things to say about why prioritizing robustness is important and 
+useful, and I'd highly recommend you read that paper!
 
 Or listen to [this podcast](https://futureofcoding.org/episodes/070)!
 
