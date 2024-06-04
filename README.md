@@ -6,7 +6,7 @@ the priorities of the task at hand.
 This project started as an exploration of what a sorting algorithm that 
 prioritizes robustness would look like. As such it also describes and provides
 implementations of Robustsort, a group of Tensort variants designed to 
-prioritize Robustness in conditions defined in David H. Ackley's
+prioritize robustness in conditions defined in David H. Ackley's
 [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf).
 
 Note: This project is still under construction. The Library is 
@@ -80,8 +80,8 @@ likely involve massively distributed systems being constantly pelted by
 radiation. In circumstances like that, robustnesss is key.
 
 Another example I like to consider is artificial cognition. When working 
-in a non-determinative system (or a system so complex as to be considered
-non-determinative), it can be helpful to have systems in place to make sure 
+in a non-deterministic system (or a system so complex as to be considered
+non-deterministic), it can be helpful to have systems in place to make sure 
 that the answer we come to is really valid.
 
 Incidentally, while I was preparing for this project, we experienced 
