@@ -1,4 +1,4 @@
-# Tensort
+# Tensort [![Hackage](https://img.shields.io/hackage/v/tensort.svg)](https://hackage.haskell.org/package/tensort)
 
 Tensort is a tensor-based sorting algorithm that is tunable to adjust to 
 the priorities of the task at hand.
