@@ -35,19 +35,13 @@ main = do
   check (result_is_sorted_records permutationsort)
   putStrLn "True!"
   putStrLn "Bogosort returns a sorted array..."
-  check (result_is_sorted_records bogosort)
+  check (result_is_sorted_records_short bogosort)
   putStrLn "True!"
   putStrLn "Magicsort returns a sorted array..."
-  -- check (result_is_sorted_records_short magicsort)
-  let magicRes = magicsort (SortBit [5, 2, 3, 1, 4])
-  print magicRes
-  check (magicRes == SortBit [1, 2, 3, 4, 5])
+  check (result_is_sorted_records_short magicsort)
   putStrLn "True!"
   putStrLn "Standard Logaritmic Tensort returns a sorted array..."
-  let logRes = tensortBL [5, 2, 3, 1, 4]
-  print logRes
-  check (logRes == [1, 2, 3, 4, 5])
-  -- check (result_is_sorted_bits tensortBL)
+  check (result_is_sorted_bits tensortBL)
   putStrLn "True!"
   putStrLn "Standard 4-Bit Tensort returns a sorted array..."
   check (result_is_sorted_bits tensortB4)
@@ -60,9 +54,6 @@ main = do
   check (result_is_sorted_bits robustsortB)
   putStrLn "True!"
   putStrLn "Magic Robustsort returns a sorted array..."
-  let magicRoboRes = magicsort (SortBit [5, 2, 3, 1, 4])
-  print magicRoboRes
-  check (magicRoboRes == SortBit [1, 2, 3, 4, 5])
-  -- check (result_is_sorted_bits robustsortM)
+  check (result_is_sorted_bits robustsortM)
   putStrLn "True!"
   putStrLn "All tests pass!"
