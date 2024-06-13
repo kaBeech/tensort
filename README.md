@@ -9,9 +9,11 @@ implementations of Robustsort, a group of Tensort variants designed to
 prioritize robustness in conditions defined in David H. Ackley's
 [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf).
 
-Note: This project is still under construction. The Library is 
-functional but I have yet to add much documentation and benchmarking.
-There's likely a lot of room for improvement in the code as well.
+Note: This project is still under construction. Everything works and according
+to my calculations will perform excellently under Ackley's testing conditions.
+Still to add: benchmarking to prove how cool it is, documentation 
+additions/revisions, memes. There's likely a lot of room for improvement in the
+code as well.
 
 ## Table of Contents
 
@@ -22,7 +24,7 @@ There's likely a lot of room for improvement in the code as well.
   - [Why Haskell?](#why-haskell)
 - [Project structure](#project-structure)
 - [Algorithms overview](#algorithms-overview)
-  - [Tensort](#tensort-1)
+  - [Tensort](#tensort)
     - [Preface](#preface)
     - [Structure](#structure)
     - [Algorithm](#algorithm)
