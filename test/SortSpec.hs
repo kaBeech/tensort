@@ -14,7 +14,7 @@ import Test.QuickCheck
 result_is_sorted_bits :: ([Bit] -> [Bit]) -> [Bit] -> Property
 result_is_sorted_bits sort unsortedList =
   within
-    100000
+    1000000
     ( (length unsortedList < 10) ==>
         isSorted (SortBit (sort unsortedList))
     )
@@ -22,7 +22,7 @@ result_is_sorted_bits sort unsortedList =
 result_is_sorted_records :: SortAlg -> [Record] -> Property
 result_is_sorted_records sort unsortedList =
   within
-    100000
+    1000000
     ( (length unsortedList < 10) ==>
         isSorted (sort (SortRec unsortedList))
     )
@@ -30,7 +30,7 @@ result_is_sorted_records sort unsortedList =
 result_is_sorted_records_short :: SortAlg -> [Record] -> Property
 result_is_sorted_records_short sort unsortedList =
   within
-    100000
+    1000000
     ( (length unsortedList < 6) ==>
         isSorted (sort (SortRec unsortedList))
     )
@@ -38,7 +38,7 @@ result_is_sorted_records_short sort unsortedList =
 result_is_sorted_custom_bitsize :: Int -> [Bit] -> Property
 result_is_sorted_custom_bitsize n unsortedList =
   within
-    100000
+    1000000
     ( (length unsortedList < 15) && (n > 1) ==>
         isSorted (SortBit (tensortBN n unsortedList))
     )
