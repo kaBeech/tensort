@@ -750,5 +750,5 @@ Notably, it provides the following:
 
   - Magic Robustsort
 
-Check the code in `src/` or the documentation on Hackage/Hoogle (Coming Soon!) 
+Check the code in `src/` or the documentation on Hackage/Hoogle
 for more details.

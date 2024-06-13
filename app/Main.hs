@@ -9,15 +9,13 @@ import Data.Tensort.Utils.RandomizeList (randomizeList)
 import Data.Tensort.Utils.Types (Sortable (..), fromSortBit)
 import Data.Time.Clock
 
-unsortedBits :: [Int]
-unsortedBits = [2, 5, 10, 4, 15, 11, 7, 14, 16, 6, 13, 3, 8, 9, 12, 1]
-
 genUnsortedBits :: Int -> Sortable
 genUnsortedBits n = randomizeList (SortBit [1 .. n]) 143
 
 main :: IO ()
 main = do
-  printTimes (map genUnsortedBits [52, 1000, 10000, 50000, 100000])
+  -- Eventually I hope to turn that 14 into a 20
+  printTimes (map (genUnsortedBits . (2 ^)) [3 .. 14])
 
 printTimes :: [Sortable] -> IO ()
 printTimes [] = return ()
@@ -35,7 +33,7 @@ printTime l = do
   startTensortBL <- getCurrentTime
   putStrLn ("    " ++ show (length (tensortBL (fromSortBit l))))
   endTensortBL <- getCurrentTime
-  putStr (" tensortBL   | " ++ show (diffUTCTime endTensortBL startTensortBL) ++ " | ")
+  putStr (" TensortBL   | " ++ show (diffUTCTime endTensortBL startTensortBL) ++ " | ")
   startRSortP <- getCurrentTime
   putStrLn ("    " ++ show (length (robustsortP (fromSortBit l))))
   endRSortP <- getCurrentTime
@@ -57,8 +55,8 @@ printTime l = do
   endQuicksort <- getCurrentTime
   putStr (" Quicksort   | " ++ show (diffUTCTime endQuicksort startQuicksort) ++ " | ")
   startBubblesort <- getCurrentTime
-  putStrLn ("    " ++ show (length (fromSortBit (bubblesort l))))
+  putStrLn ("     " ++ show (length (fromSortBit (bubblesort l))))
   endBubblesort <- getCurrentTime
   putStr (" Bubblesort  | " ++ show (diffUTCTime endBubblesort startBubblesort) ++ " | ")
-  putStrLn ("    " ++ show (length (fromSortBit (bubblesort l))))
+  putStrLn ("    " ++ show (length (fromSortBit l)))
   putStrLn "----------------------------------------------------------"
