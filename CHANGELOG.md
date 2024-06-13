@@ -23,3 +23,11 @@
 * Expand supported dependency versions
 
 * Add tests
+
+## 0.2.0.1 -- DATE
+
+* Add guards for short lists in input
+
+* Improve testing
+
+* Improve documentation
