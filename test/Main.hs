@@ -10,7 +10,7 @@ import Data.Tensort.Subalgorithms.Magicsort (magicsort)
 import Data.Tensort.Subalgorithms.Permutationsort (permutationsort)
 import Data.Tensort.Subalgorithms.Supersort (magicSuperStrat, mundaneSuperStrat, supersort)
 import Data.Tensort.Tensort (mkTSProps, tensort, tensortB4, tensortBL)
-import Data.Tensort.Utils.Types (Bit)
+import Data.Tensort.Utils.Types (Bit, Sortable)
 import SortSpec (result_is_sorted_bits, result_is_sorted_custom_bitsize, result_is_sorted_records, result_is_sorted_records_short)
 import TestCheck (check)
 
@@ -49,7 +49,6 @@ main = do
   putStrLn "Standard Custom Bitsize Tensort returns a sorted array..."
   check result_is_sorted_custom_bitsize
   putStrLn "True!"
-  -- TBA
   putStrLn "Standard Mundane Robustsort with Permutationsort adjudicator returns a sorted array..."
   check (result_is_sorted_bits robustsortP)
   putStrLn "True!"
@@ -60,9 +59,33 @@ main = do
   check (result_is_sorted_bits robustsortM)
   putStrLn "True!"
   putStrLn "Custom Tensort returns a sorted array..."
-  check (result_is_sorted_bits tensortTest)
+  check (result_is_sorted_bits tensortCustomExample)
+  putStrLn "True!"
+  putStrLn "Custom Mundane Supersort returns a sorted array..."
+  check (result_is_sorted_records_short supersortMundaneCustomExample)
+  putStrLn "True!"
+  putStrLn "Custom Magic Supersort returns a sorted array..."
+  check (result_is_sorted_records_short supersortMagicCustomExample)
+  putStrLn "True!"
+  putStrLn "Custom Mundane Robustsort returns a sorted array..."
+  check (result_is_sorted_bits robustsortMundaneCustomExample)
+  putStrLn "True!"
+  putStrLn "Custom Magic Robustsort returns a sorted array..."
+  check (result_is_sorted_bits robustsortMagicCustomExample)
   putStrLn "True!"
   putStrLn "All tests pass!"
 
-tensortTest :: [Bit] -> [Bit]
-tensortTest xs = tensort xs (mkTSProps 8 mergesort)
+tensortCustomExample :: [Bit] -> [Bit]
+tensortCustomExample xs = tensort xs (mkTSProps 8 mergesort)
+
+supersortMundaneCustomExample :: Sortable -> Sortable
+supersortMundaneCustomExample xs = supersort xs (quicksort, magicsort, bubblesort, mundaneSuperStrat)
+
+supersortMagicCustomExample :: Sortable -> Sortable
+supersortMagicCustomExample xs = supersort xs (bogosort, permutationsort, magicsort, magicSuperStrat)
+
+robustsortMundaneCustomExample :: [Bit] -> [Bit]
+robustsortMundaneCustomExample xs = tensort xs (mkTSProps 3 supersortMundaneCustomExample)
+
+robustsortMagicCustomExample :: [Bit] -> [Bit]
+robustsortMagicCustomExample xs = tensort xs (mkTSProps 3 supersortMagicCustomExample)
