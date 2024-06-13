@@ -14,6 +14,9 @@ genUnsortedBits n = randomizeList (SortBit [1 .. n]) 143
 
 main :: IO ()
 main = do
+  -- Eventually, the plan here is to test on this pattern:
+  --  [10, 20, 30 .. 100, 200, 300 .. 1000, 2000, 3000 .. 10000 .. 100000,
+  --    1000000], plus 52
   printTimes (map genUnsortedBits [52, 1000, 10000, 50000])
 
 printTimes :: [Sortable] -> IO ()
@@ -54,8 +57,8 @@ printTime l = do
   endQuicksort <- getCurrentTime
   putStr (" Quicksort   | " ++ show (diffUTCTime endQuicksort startQuicksort) ++ " | ")
   startBubblesort <- getCurrentTime
-  putStrLn ("    " ++ show (length (fromSortBit (bubblesort l))))
+  putStrLn ("     " ++ show (length (fromSortBit (bubblesort l))))
   endBubblesort <- getCurrentTime
   putStr (" Bubblesort  | " ++ show (diffUTCTime endBubblesort startBubblesort) ++ " | ")
-  putStrLn ("    " ++ show (length (fromSortBit (bubblesort l))))
+  putStrLn ("    " ++ show (length (fromSortBit l)))
   putStrLn "----------------------------------------------------------"
