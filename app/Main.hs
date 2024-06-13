@@ -9,15 +9,12 @@ import Data.Tensort.Utils.RandomizeList (randomizeList)
 import Data.Tensort.Utils.Types (Sortable (..), fromSortBit)
 import Data.Time.Clock
 
-unsortedBits :: [Int]
-unsortedBits = [2, 5, 10, 4, 15, 11, 7, 14, 16, 6, 13, 3, 8, 9, 12, 1]
-
 genUnsortedBits :: Int -> Sortable
 genUnsortedBits n = randomizeList (SortBit [1 .. n]) 143
 
 main :: IO ()
 main = do
-  printTimes (map genUnsortedBits [52, 1000, 10000, 50000, 100000])
+  printTimes (map genUnsortedBits [52, 1000, 10000, 50000])
 
 printTimes :: [Sortable] -> IO ()
 printTimes [] = return ()
@@ -35,7 +32,7 @@ printTime l = do
   startTensortBL <- getCurrentTime
   putStrLn ("    " ++ show (length (tensortBL (fromSortBit l))))
   endTensortBL <- getCurrentTime
-  putStr (" tensortBL   | " ++ show (diffUTCTime endTensortBL startTensortBL) ++ " | ")
+  putStr (" TensortBL   | " ++ show (diffUTCTime endTensortBL startTensortBL) ++ " | ")
   startRSortP <- getCurrentTime
   putStrLn ("    " ++ show (length (robustsortP (fromSortBit l))))
   endRSortP <- getCurrentTime
