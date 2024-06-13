@@ -13,7 +13,7 @@ import Data.Tensort.Utils.Convert (rawBitsToBytes)
 import Data.Tensort.Utils.RandomizeList (randomizeList)
 import Data.Tensort.Utils.Reduce (reduceTensorStacks)
 import Data.Tensort.Utils.Render (getSortedBitsFromTensor)
-import Data.Tensort.Utils.Types (Sortable (..), TensortProps (..), fromSortBit, SortAlg, Bit)
+import Data.Tensort.Utils.Types (Bit, SortAlg, Sortable (..), TensortProps (..), fromSortBit)
 
 -- | Sort a list of Bits using the Tensort algorithm
 
@@ -38,6 +38,9 @@ tensortBN :: Int -> [Bit] -> [Bit]
 tensortBN n xs = tensort xs (mkTSProps n bubblesort)
 
 tensortBL :: [Bit] -> [Bit]
+tensortBL [] = []
+tensortBL [x] = [x]
+tensortBL [x, y] = if x <= y then [x, y] else [y, x]
 tensortBL xs = tensort xs (mkTSProps (calculateBytesize xs) bubblesort)
 
 calculateBytesize :: [Bit] -> Int
