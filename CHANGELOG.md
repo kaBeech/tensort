@@ -33,3 +33,7 @@
 * Improve documentation
 
 * Add very basic benchmarking
+
+## 0.2.0.2 -- 2024-06-13
+
+* Cleanup testing and CI
