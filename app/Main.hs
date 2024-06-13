@@ -14,10 +14,8 @@ genUnsortedBits n = randomizeList (SortBit [1 .. n]) 143
 
 main :: IO ()
 main = do
-  -- Eventually, the plan here is to test on this pattern:
-  --  [10, 20, 30 .. 100, 200, 300 .. 1000, 2000, 3000 .. 10000 .. 100000,
-  --    1000000], plus 52
-  printTimes (map genUnsortedBits [52, 1000, 10000, 50000])
+  -- Eventually I hope to turn that 14 into a 20
+  printTimes (map (genUnsortedBits . (2 ^)) [3 .. 14])
 
 printTimes :: [Sortable] -> IO ()
 printTimes [] = return ()
