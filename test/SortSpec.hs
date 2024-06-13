@@ -2,9 +2,11 @@ module SortSpec
   ( result_is_sorted_bits,
     result_is_sorted_records,
     result_is_sorted_records_short,
+    result_is_sorted_custom_bitsize,
   )
 where
 
+import Data.Tensort.Tensort (tensortBN)
 import Data.Tensort.Utils.Check (isSorted)
 import Data.Tensort.Utils.Types (Bit, Record, SortAlg, Sortable (..))
 import Test.QuickCheck
@@ -31,4 +33,12 @@ result_is_sorted_records_short sort unsortedList =
     100000
     ( (length unsortedList < 6) ==>
         isSorted (sort (SortRec unsortedList))
+    )
+
+result_is_sorted_custom_bitsize :: Int -> [Bit] -> Property
+result_is_sorted_custom_bitsize n unsortedList =
+  within
+    100000
+    ( (length unsortedList < 15) && (n > 1) ==>
+        isSorted (SortBit (tensortBN n unsortedList))
     )
