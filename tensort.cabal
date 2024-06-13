@@ -186,4 +186,4 @@ test-suite tensort-test
         base,
         tensort,
         mtl,
-        QuickCheck >= 2.15 && < 2.16,
+        QuickCheck >= 2.14.3 && < 2.16,
