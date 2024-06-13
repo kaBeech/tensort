@@ -1,3 +1,6 @@
+# Note: Testing for multiple GHC versions occurs under the GitHub Actions 
+# workflow. This one is just to test before adding to Stackage
+
 # This is the simple Travis configuration, which is intended for use
 # on applications which do not require cross-platform and
 # multiple-GHC-version support. For more information and other
