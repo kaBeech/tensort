@@ -24,10 +24,12 @@
 
 * Add tests
 
-## 0.2.0.1 -- DATE
+## 0.2.0.1 -- 2024-06-12
 
 * Add guards for short lists in input
 
 * Improve testing
 
 * Improve documentation
+
+* Add very basic benchmarking
