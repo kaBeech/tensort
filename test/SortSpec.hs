@@ -11,7 +11,7 @@ result_is_sorted_records :: SortAlg -> [Record] -> Property
 result_is_sorted_records sort unsortedList = (length unsortedList < 10) && not (null unsortedList) ==> isSorted (sort (SortRec unsortedList))
 
 result_is_sorted_records_short :: SortAlg -> [Record] -> Property
-result_is_sorted_records_short sort unsortedList = (length unsortedList < 6) && not (null unsortedList) ==> isSorted (sort (SortRec unsortedList))
+result_is_sorted_records_short sort unsortedList = within 1000000 ((length unsortedList < 6) && not (null unsortedList) ==> isSorted (sort (SortRec unsortedList)))
 
 result_is_sorted_sortable :: SortAlg -> Sortable -> Property
 result_is_sorted_sortable sort (SortBit unsortedList) = (length unsortedList < 10) && not (null unsortedList) ==> isSorted (sort (SortBit unsortedList))
