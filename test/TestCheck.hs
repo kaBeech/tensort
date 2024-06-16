@@ -17,7 +17,7 @@ import Test.QuickCheck
 --   ...exit with failure
 check :: (Testable prop) => prop -> IO ()
 check prop = do
-  result <- quickCheckResult (withDiscardRatio 2000 prop)
+  result <- quickCheckWithResult stdArgs {maxDiscardRatio = 2000} prop
   unless (isPass result) exitFailure
 
 -- | Returns True if a test passes, and False otherwise

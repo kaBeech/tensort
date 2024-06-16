@@ -37,3 +37,7 @@
 ## 0.2.0.2 -- 2024-06-13
 
 * Cleanup testing and CI
+
+## 0.2.0.3 -- 2024-06-16
+
+* Improve testing compatibility (fix text breaking Stackage build)
