@@ -40,4 +40,4 @@
 
 ## 0.2.0.3 -- 2024-06-16
 
-* Improve testing compatibility (fix text breaking Stackage build)
+* Improve testing compatibility (fix QuickCheck breaking Stackage build)
