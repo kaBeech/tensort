@@ -9,6 +9,11 @@ implementations of Robustsort, a group of Tensort variants designed to
 prioritize robustness in conditions defined in David H. Ackley's
 [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf).
 
+Simply put, Tensort takes in input list, transforms the list into a tensor field, 
+then transforms the tensor field back into a sorted list. These transformations
+provide opportunities to increase redundancy for improved robustness and can
+be leveraged to include any further processing we wish to do on the elements.
+
 Note: This project is still under construction. Everything works and according
 to my calculations will perform excellently under Ackley's testing conditions.
 Still to add: benchmarking to prove how cool it is, documentation 
