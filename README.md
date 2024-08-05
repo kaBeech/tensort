@@ -48,6 +48,7 @@ code as well.
   - [A note on Robustsort and Bogosort](#a-note-on-robustsort-and-bogosort)
 - [Comparing it all](#comparing-it-all)
 - [Library](#library)
+- [Development Environment](#development-environment)
 
 ## Introduction
 
@@ -759,3 +760,33 @@ Notably, it provides the following:
 
 Check the code in `src/` or the documentation on Hackage/Hoogle
 for more details.
+
+## Development Environment
+
+This project is wrapped in a Nix Flake, so it's easy to hack on yourself!
+
+Note that (unless otherwise specified) all instructions assume you are in the 
+repository root, have Nix installed, and have entered the development shell.
+
+### Entering the Dev Shell
+
+Note that these instructions don't make the assumptions listed above
+
+  * [Install Nix](https://nixos.org/download/)
+  * [Enable Flakes](https://nixos.wiki/wiki/Flakes)
+  * [Clone this repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
+  * Run `nix develop` in the repository root 
+
+### Run main test suite (QuickCheck)
+
+  * Run `cabal test`
+
+### Run DocTest
+
+This is planned to be folded into the main test suite with the 1.0.0.0 release
+
+  * Run `cabal repl --with-compiler=doctest`
+
+### Get Benchmarking Data
+
+  * Run `cabal run`
