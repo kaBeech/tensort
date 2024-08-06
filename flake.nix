@@ -17,6 +17,7 @@
           buildInputs = with pkgs; [
             ghc
             haskellPackages.cabal-install
+            haskellPackages.doctest
           ];
 
           shellHook = ''

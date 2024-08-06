@@ -9,7 +9,7 @@ import Data.Tensort.Subalgorithms.Exchangesort (exchangesort)
 import Data.Tensort.Subalgorithms.Magicsort (magicsort)
 import Data.Tensort.Subalgorithms.Permutationsort (permutationsort)
 import Data.Tensort.Subalgorithms.Supersort (magicSuperStrat, mundaneSuperStrat, supersort)
-import Data.Tensort.Tensort (mkTSProps, tensort, tensortB4, tensortBL)
+import Data.Tensort.Tensort (mkTsProps, tensort, tensortB4, tensortBL)
 import Data.Tensort.Utils.Types (Bit, Sortable)
 import SortSpec (result_is_sorted_bits, result_is_sorted_custom_bitsize, result_is_sorted_records, result_is_sorted_records_short)
 import TestCheck (check)
@@ -76,7 +76,7 @@ main = do
   putStrLn "All tests pass!"
 
 tensortCustomExample :: [Bit] -> [Bit]
-tensortCustomExample xs = tensort xs (mkTSProps 8 mergesort)
+tensortCustomExample xs = tensort xs (mkTsProps 8 mergesort)
 
 supersortMundaneCustomExample :: Sortable -> Sortable
 supersortMundaneCustomExample xs = supersort xs (quicksort, magicsort, bubblesort, mundaneSuperStrat)
@@ -85,7 +85,7 @@ supersortMagicCustomExample :: Sortable -> Sortable
 supersortMagicCustomExample xs = supersort xs (bogosort, permutationsort, magicsort, magicSuperStrat)
 
 robustsortMundaneCustomExample :: [Bit] -> [Bit]
-robustsortMundaneCustomExample xs = tensort xs (mkTSProps 3 supersortMundaneCustomExample)
+robustsortMundaneCustomExample xs = tensort xs (mkTsProps 3 supersortMundaneCustomExample)
 
 robustsortMagicCustomExample :: [Bit] -> [Bit]
-robustsortMagicCustomExample xs = tensort xs (mkTSProps 3 supersortMagicCustomExample)
+robustsortMagicCustomExample xs = tensort xs (mkTsProps 3 supersortMagicCustomExample)
