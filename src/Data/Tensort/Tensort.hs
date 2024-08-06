@@ -3,7 +3,7 @@ module Data.Tensort.Tensort
     tensortB4,
     tensortBN,
     tensortBL,
-    mkTSProps,
+    mkTsProps,
   )
 where
 
@@ -29,20 +29,20 @@ tensort xs tsProps = do
   let topTensor = reduceTensorStacks tensorStacks tsProps
   getSortedBitsFromTensor topTensor (subAlgorithm tsProps)
 
-mkTSProps :: Int -> SortAlg -> TensortProps
-mkTSProps bSize subAlg = TensortProps {bytesize = bSize, subAlgorithm = subAlg}
+mkTsProps :: Int -> SortAlg -> TensortProps
+mkTsProps bSize subAlg = TensortProps {bytesize = bSize, subAlgorithm = subAlg}
 
 tensortB4 :: [Bit] -> [Bit]
-tensortB4 xs = tensort xs (mkTSProps 4 bubblesort)
+tensortB4 xs = tensort xs (mkTsProps 4 bubblesort)
 
 tensortBN :: Int -> [Bit] -> [Bit]
-tensortBN n xs = tensort xs (mkTSProps n bubblesort)
+tensortBN n xs = tensort xs (mkTsProps n bubblesort)
 
 tensortBL :: [Bit] -> [Bit]
 tensortBL [] = []
 tensortBL [x] = [x]
 tensortBL [x, y] = if x <= y then [x, y] else [y, x]
-tensortBL xs = tensort xs (mkTSProps (calculateBytesize xs) bubblesort)
+tensortBL xs = tensort xs (mkTsProps (calculateBytesize xs) bubblesort)
 
 calculateBytesize :: [Bit] -> Int
 calculateBytesize xs = ceiling (log (fromIntegral (length xs)) :: Double)
