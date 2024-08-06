@@ -98,6 +98,7 @@ library
                       Data.Tensort.Tensort,
                       Data.Tensort.Robustsort,
                       Data.Tensort.Utils.Types,
+                      Data.Tensort.Utils.MkTsProps,
                       Data.Tensort.Subalgorithms.Bubblesort,
                       Data.Tensort.Subalgorithms.Exchangesort,
                       Data.Tensort.Subalgorithms.Permutationsort,

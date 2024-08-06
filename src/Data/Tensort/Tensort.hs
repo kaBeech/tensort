@@ -3,17 +3,17 @@ module Data.Tensort.Tensort
     tensortB4,
     tensortBN,
     tensortBL,
-    mkTsProps,
   )
 where
 
 import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 import Data.Tensort.Utils.Compose (createInitialTensors)
 import Data.Tensort.Utils.Convert (rawBitsToBytes)
+import Data.Tensort.Utils.MkTsProps (mkTsProps)
 import Data.Tensort.Utils.RandomizeList (randomizeList)
 import Data.Tensort.Utils.Reduce (reduceTensorStacks)
 import Data.Tensort.Utils.Render (getSortedBitsFromTensor)
-import Data.Tensort.Utils.Types (Bit, SortAlg, Sortable (..), TensortProps (..), fromSortBit)
+import Data.Tensort.Utils.Types (Bit, Sortable (..), TensortProps (..), fromSortBit)
 
 -- | Sort a list of Bits using the Tensort algorithm
 
@@ -28,9 +28,6 @@ tensort xs tsProps = do
   let tensorStacks = createInitialTensors bytes tsProps
   let topTensor = reduceTensorStacks tensorStacks tsProps
   getSortedBitsFromTensor topTensor (subAlgorithm tsProps)
-
-mkTsProps :: Int -> SortAlg -> TensortProps
-mkTsProps bSize subAlg = TensortProps {bytesize = bSize, subAlgorithm = subAlg}
 
 tensortB4 :: [Bit] -> [Bit]
 tensortB4 xs = tensort xs (mkTsProps 4 bubblesort)
