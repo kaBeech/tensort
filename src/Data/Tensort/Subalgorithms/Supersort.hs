@@ -5,15 +5,17 @@ module Data.Tensort.Subalgorithms.Supersort
   )
 where
 
-import Data.Tensort.Utils.Types (SortAlg, Sortable (..), SupersortStrat)
+import Data.Tensort.Utils.Types (SortAlg, Sortable (..), SupersortStrat, WonkyState)
 
-supersort :: Sortable -> (SortAlg, SortAlg, SortAlg, SupersortStrat) -> Sortable
-supersort xs (subAlg1, subAlg2, subAlg3, superStrat) = do
-  let result1 = subAlg1 xs
-  let result2 = subAlg2 xs
+supersort :: Sortable -> (SortAlg, SortAlg, SortAlg, SupersortStrat) -> WonkyState -> (Sortable, WonkyState)
+supersort xs (subAlg1, subAlg2, subAlg3, superStrat) wonkySt = do
+  let (result1, _) = subAlg1 xs wonkySt
+  let (result2, wonkySt') = subAlg2 xs wonkySt
   if result1 == result2
-    then result1
-    else superStrat (result1, result2, subAlg3 xs)
+    then (result1, wonkySt')
+    else do
+      let (result3, wonkySt'') = subAlg3 xs wonkySt'
+      (superStrat (result1, result2, result3), wonkySt'')
 
 mundaneSuperStrat :: SupersortStrat
 mundaneSuperStrat (SortBit result1, SortBit result2, SortBit result3) = do
