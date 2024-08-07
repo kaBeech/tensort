@@ -8,22 +8,48 @@ module Data.Tensort.Utils.ComparisonFunctions
   )
 where
 
-import Data.Tensort.Utils.Types (Record, Bit)
+import Data.Tensort.Utils.Types (Bit, Record, WonkyState)
+import Data.Tensort.Utils.Wonky (handleWonkiness)
 
-lessThanBit :: Bit -> Bit -> Bool
-lessThanBit x y = x < y
+wonkyCompare :: Bit -> Bit -> WonkyState -> (Int, WonkyState)
+wonkyCompare x y wonkySt = do
+  let (wonky, result, wonkySt') = handleWonkiness wonkySt
+  if wonky
+    then (result, wonkySt')
+    else
+      if x < y
+        then (-1, wonkySt')
+        else
+          if x > y
+            then (1, wonkySt')
+            else (0, wonkySt')
 
-lessThanRecord :: Record -> Record -> Bool
-lessThanRecord x y = snd x < snd y
+lessThanBit :: Bit -> Bit -> WonkyState -> (Bool, WonkyState)
+lessThanBit x y wonkySt = do
+  let (result, wonkySt') = wonkyCompare x y wonkySt
+  (result == -1, wonkySt')
 
-greaterThanBit :: Bit -> Bit -> Bool
-greaterThanBit x y = x > y
+lessThanRecord :: Record -> Record -> WonkyState -> (Bool, WonkyState)
+lessThanRecord x y wonkySt = do
+  let (result, wonkySt') = wonkyCompare (snd x) (snd y) wonkySt
+  (result == -1, wonkySt')
 
-greaterThanRecord :: Record -> Record -> Bool
-greaterThanRecord x y = snd x > snd y
+greaterThanBit :: Bit -> Bit -> WonkyState -> (Bool, WonkyState)
+greaterThanBit x y wonkySt = do
+  let (result, wonkySt') = wonkyCompare x y wonkySt
+  (result == 1, wonkySt')
 
-lessThanOrEqualBit :: Bit -> Bit -> Bool
-lessThanOrEqualBit x y = x <= y
+greaterThanRecord :: Record -> Record -> WonkyState -> (Bool, WonkyState)
+greaterThanRecord x y wonkySt = do
+  let (result, wonkySt') = wonkyCompare (snd x) (snd y) wonkySt
+  (result == 1, wonkySt')
 
-lessThanOrEqualRecord :: Record -> Record -> Bool
-lessThanOrEqualRecord x y = snd x <= snd y
+lessThanOrEqualBit :: Bit -> Bit -> WonkyState -> (Bool, WonkyState)
+lessThanOrEqualBit x y wonkySt = do
+  let (result, wonkySt') = wonkyCompare x y wonkySt
+  (result <= 0, wonkySt')
+
+lessThanOrEqualRecord :: Record -> Record -> WonkyState -> (Bool, WonkyState)
+lessThanOrEqualRecord x y wonkySt = do
+  let (result, wonkySt') = wonkyCompare (snd x) (snd y) wonkySt
+  (result <= 0, wonkySt')
