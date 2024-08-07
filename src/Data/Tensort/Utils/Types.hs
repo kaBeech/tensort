@@ -2,7 +2,11 @@
 
 module Data.Tensort.Utils.Types where
 
+import System.Random (StdGen)
+
 data TensortProps = TensortProps {bytesize :: Int, subAlgorithm :: SortAlg}
+
+data WonkyState = WonkyState {wonkyChance :: Int, stuckChance :: Int, previousAnswer :: Int, stdGen :: StdGen}
 
 --   All the data types used in the Tensort and Tensort algorithms are
 --   defined here. Since these packages are only for sorting Ints currently,
