@@ -5,15 +5,15 @@ where
 
 import Data.Tensort.Subalgorithms.Bogosort (bogosort)
 import Data.Tensort.Subalgorithms.Permutationsort (permutationsort)
-import Data.Tensort.Utils.Types (Sortable (..))
+import Data.Tensort.Utils.Types (Sortable (..), WonkyState)
 
-magicsort :: Sortable -> Sortable
-magicsort xs = do
-  let result1 = permutationsort xs
-  let result2 = bogosort xs
+magicsort :: Sortable -> WonkyState -> (Sortable, WonkyState)
+magicsort xs wonkySt = do
+  let (result1, _) = permutationsort xs wonkySt
+  let (result2, wonkySt') = bogosort xs wonkySt
   if verifyResults result1 result2
-    then result1
-    else magicsort xs
+    then (result1, wonkySt')
+    else magicsort xs wonkySt'
 
 verifyResults :: Sortable -> Sortable -> Bool
 verifyResults (SortBit xs) (SortBit ys) = xs == ys
