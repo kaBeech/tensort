@@ -13,22 +13,22 @@ import Data.Tensort.Subalgorithms.Permutationsort (permutationsort)
 import Data.Tensort.Subalgorithms.Supersort (magicSuperStrat, mundaneSuperStrat, supersort)
 import Data.Tensort.Tensort (tensort)
 import Data.Tensort.Utils.MkTsProps (mkTsProps)
-import Data.Tensort.Utils.Types (Bit, Sortable)
+import Data.Tensort.Utils.Types (Bit, Sortable, WonkyState)
 
-robustsortP :: [Bit] -> [Bit]
-robustsortP xs = tensort xs (mkTsProps 3 supersortP)
+robustsortP :: [Bit] -> WonkyState -> ([Bit], WonkyState)
+robustsortP xs wonkySt = tensort xs (mkTsProps 3 supersortP) wonkySt
 
-supersortP :: Sortable -> Sortable
-supersortP xs = supersort xs (bubblesort, exchangesort, permutationsort, mundaneSuperStrat)
+supersortP :: Sortable -> WonkyState -> (Sortable, WonkyState)
+supersortP xs wonkySt = supersort xs (bubblesort, exchangesort, permutationsort, mundaneSuperStrat) wonkySt
 
-robustsortB :: [Bit] -> [Bit]
-robustsortB xs = tensort xs (mkTsProps 3 supersortB)
+robustsortB :: [Bit] -> WonkyState -> ([Bit], WonkyState)
+robustsortB xs wonkySt = tensort xs (mkTsProps 3 supersortB) wonkySt
 
-supersortB :: Sortable -> Sortable
-supersortB xs = supersort xs (bubblesort, exchangesort, bogosort, mundaneSuperStrat)
+supersortB :: Sortable -> WonkyState -> (Sortable, WonkyState)
+supersortB xs wonkySt = supersort xs (bubblesort, exchangesort, bogosort, mundaneSuperStrat) wonkySt
 
-robustsortM :: [Bit] -> [Bit]
-robustsortM xs = tensort xs (mkTsProps 3 supersortM)
+robustsortM :: [Bit] -> WonkyState -> ([Bit], WonkyState)
+robustsortM xs wonkySt = tensort xs (mkTsProps 3 supersortM) wonkySt
 
-supersortM :: Sortable -> Sortable
-supersortM xs = supersort xs (bubblesort, exchangesort, magicsort, magicSuperStrat)
+supersortM :: Sortable -> WonkyState -> (Sortable, WonkyState)
+supersortM xs wonkySt = supersort xs (bubblesort, exchangesort, magicsort, magicSuperStrat) wonkySt
