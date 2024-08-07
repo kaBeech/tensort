@@ -1,12 +1,20 @@
 module Data.Tensort.Utils.Check (isSorted) where
 
 import Data.Tensort.Utils.ComparisonFunctions (lessThanOrEqualBit, lessThanOrEqualRecord)
-import Data.Tensort.Utils.Types (Sortable (..))
+import Data.Tensort.Utils.Types (Sortable (..), WonkyState)
 
-isSorted :: Sortable -> Bool
-isSorted (SortBit []) = True
-isSorted (SortBit [_]) = True
-isSorted (SortBit (x : y : remainingElements)) = lessThanOrEqualBit x y && isSorted (SortBit (y : remainingElements))
-isSorted (SortRec []) = True
-isSorted (SortRec [_]) = True
-isSorted (SortRec (x : y : remainingElements)) = lessThanOrEqualRecord x y && isSorted (SortRec (y : remainingElements))
+isSorted :: Sortable -> WonkyState -> (Bool, WonkyState)
+isSorted (SortBit []) wonkySt = (True, wonkySt)
+isSorted (SortBit [_]) wonkySt = (True, wonkySt)
+isSorted (SortBit (x : y : remainingElements)) wonkySt = do
+  let (result, wonkySt') = lessThanOrEqualBit x y wonkySt
+  if result
+    then isSorted (SortBit (y : remainingElements)) wonkySt'
+    else (False, wonkySt')
+isSorted (SortRec []) wonkySt = (True, wonkySt)
+isSorted (SortRec [_]) wonkySt = (True, wonkySt)
+isSorted (SortRec (x : y : remainingElements)) wonkySt = do
+  let (result, wonkySt') = lessThanOrEqualRecord x y wonkySt
+  if result
+    then isSorted (SortRec (y : remainingElements)) wonkySt'
+    else (False, wonkySt')
