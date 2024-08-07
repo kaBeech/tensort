@@ -5,7 +5,7 @@ module Data.Tensort.Utils.Compose
 where
 
 import Data.Tensort.Utils.Split (splitEvery)
-import Data.Tensort.Utils.Types (Bit, Byte, Memory (..), Record, SortAlg, Sortable (..), Tensor, TensortProps (..), fromSortRec)
+import Data.Tensort.Utils.Types (Bit, Byte, Memory (..), Record, SortAlg, Sortable (..), Tensor, TensortProps (..), fromSortRec, WonkyState)
 
 -- | Convert a list of Bytes to a list of TensorStacks.
 
@@ -18,18 +18,20 @@ import Data.Tensort.Utils.Types (Bit, Byte, Memory (..), Record, SortAlg, Sortab
 -- >>> import Data.Tensort.Utils.MkTsProps (mkTsProps)
 -- >>> createInitialTensors [[2,4],[6,8],[1,3],[5,7]] (mkTsProps 2 bubblesort)
 -- [([(0,3),(1,7)],ByteMem [[1,3],[5,7]]),([(0,4),(1,8)],ByteMem [[2,4],[6,8]])]
-createInitialTensors :: [Byte] -> TensortProps -> [Tensor]
-createInitialTensors bytes tsProps = foldr acc [] (splitEvery (bytesize tsProps) bytes)
+createInitialTensors :: [Byte] -> TensortProps -> WonkyState -> ([Tensor], WonkyState)
+createInitialTensors bytes tsProps wonkySt = foldr acc ([], wonkySt) (splitEvery (bytesize tsProps) bytes)
   where
-    acc :: [Byte] -> [Tensor] -> [Tensor]
-    acc byte tensorStacks = tensorStacks ++ [getTensorFromBytes byte (subAlgorithm tsProps)]
+    acc :: [Byte] -> ([Tensor], WonkyState) -> ([Tensor], WonkyState)
+    acc byte (tensorStacks, wonkySt') = do
+      let (tensor, wonkySt'') = getTensorFromBytes byte (subAlgorithm tsProps) wonkySt'
+      (tensorStacks ++ [tensor], wonkySt'')
 
 -- | Create a Tensor from a Memory
 --   Aliases to getTensorFromBytes for ByteMem and getTensorFromTensors for
 --   TensorMem
-createTensor :: Memory -> SortAlg -> Tensor
-createTensor (ByteMem bytes) subAlg = getTensorFromBytes bytes subAlg
-createTensor (TensorMem tensors) subAlg = getTensorFromTensors tensors subAlg
+createTensor :: Memory -> SortAlg -> WonkyState -> (Tensor, WonkyState)
+createTensor (ByteMem bytes) subAlg wonkySt = getTensorFromBytes bytes subAlg wonkySt
+createTensor (TensorMem tensors) subAlg wonkySt = getTensorFromTensors tensors subAlg wonkySt
 
 -- | Convert a list of Bytes to a Tensor
 
@@ -46,11 +48,12 @@ createTensor (TensorMem tensors) subAlg = getTensorFromTensors tensors subAlg
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 -- >>> getTensorFromBytes [[2,4,6,8],[1,3,5,7]] bubblesort
 -- ([(1,7),(0,8)],ByteMem [[2,4,6,8],[1,3,5,7]])
-getTensorFromBytes :: [Byte] -> SortAlg -> Tensor
-getTensorFromBytes bytes subAlg = do
+getTensorFromBytes :: [Byte] -> SortAlg -> WonkyState -> (Tensor, WonkyState)
+getTensorFromBytes bytes subAlg wonkySt = do
   let register = acc bytes [] 0
-  let register' = fromSortRec (subAlg (SortRec register))
-  (register', ByteMem bytes)
+  let (result, wonkySt') = subAlg (SortRec register) wonkySt
+  let register' = fromSortRec result
+  ((register', ByteMem bytes), wonkySt')
   where
     acc :: [Byte] -> [Record] -> Int -> [Record]
     acc [] register _ = register
@@ -64,8 +67,10 @@ getTensorFromBytes bytes subAlg = do
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 -- >>> getTensorFromTensors [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(1,14),(0,17)],ByteMem [[16,17],[12,14]])] bubblesort
 -- ([(1,17),(0,18)],TensorMem [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(1,14),(0,17)],ByteMem [[16,17],[12,14]])])
-getTensorFromTensors :: [Tensor] -> SortAlg -> Tensor
-getTensorFromTensors tensors subAlg = (fromSortRec (subAlg (SortRec (getRegisterFromTensors tensors))), TensorMem tensors)
+getTensorFromTensors :: [Tensor] -> SortAlg -> WonkyState -> (Tensor, WonkyState)
+getTensorFromTensors tensors subAlg wonkySt = do
+    let (result, wonkySt') = subAlg (SortRec (getRegisterFromTensors tensors)) wonkySt
+    ((fromSortRec result, TensorMem tensors), wonkySt')
 
 -- | For each Tensor, produces a Record by combining the top bit of the
 --  Tensor with an index value for its Address
