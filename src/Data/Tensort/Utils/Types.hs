@@ -64,7 +64,7 @@ fromSortRec :: Sortable -> [Record]
 fromSortRec (SortRec recs) = recs
 fromSortRec (SortBit _) = error "This is for sorting Records - you gave me Bits"
 
-type SortAlg = Sortable -> Sortable
+type SortAlg = Sortable -> WonkyState -> (Sortable, WonkyState)
 
 type SupersortProps = (SortAlg, SortAlg, SortAlg, SupersortStrat)
 
