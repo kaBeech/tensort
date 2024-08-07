@@ -9,20 +9,20 @@ module Data.Tensort.Utils.ComparisonFunctions
 where
 
 import Data.Tensort.Utils.Types (Bit, Record, WonkyState)
-import Data.Tensort.Utils.Wonky (handleWonkiness)
+import Data.Tensort.Utils.Wonky (handleWonkiness, setPreviousAnswer)
 
 wonkyCompare :: Bit -> Bit -> WonkyState -> (Int, WonkyState)
 wonkyCompare x y wonkySt = do
   let (wonky, result, wonkySt') = handleWonkiness wonkySt
   if wonky
-    then (result, wonkySt')
+    then (result, setPreviousAnswer wonkySt' result)
     else
       if x < y
-        then (-1, wonkySt')
+        then (-1, setPreviousAnswer wonkySt' (-1))
         else
           if x > y
-            then (1, wonkySt')
-            else (0, wonkySt')
+            then (1, setPreviousAnswer wonkySt' 1)
+            else (0, setPreviousAnswer wonkySt' 0)
 
 lessThanBit :: Bit -> Bit -> WonkyState -> (Bool, WonkyState)
 lessThanBit x y wonkySt = do
