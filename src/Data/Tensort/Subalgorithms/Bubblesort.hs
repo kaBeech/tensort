@@ -1,26 +1,30 @@
 module Data.Tensort.Subalgorithms.Bubblesort (bubblesort) where
 
 import Data.Tensort.Utils.ComparisonFunctions (lessThanBit, lessThanRecord)
-import Data.Tensort.Utils.Types (Sortable (..), WonkyState (..))
+import Data.Tensort.Utils.Types (Bit, Record, Sortable (..), WonkyState)
 
 bubblesort :: Sortable -> WonkyState -> (Sortable, WonkyState)
 bubblesort (SortBit bits) wonkySt = do
-  let (bits', wonkySt') = bubblesortRepeater bits wonkySt lessThanBit (length bits)
-  (SortBit bits', wonkySt')
+  let (result, wonkySt') = foldr acc ([], wonkySt) bits
+  (SortBit result, wonkySt')
+  where
+    acc :: Bit -> ([Bit], WonkyState) -> ([Bit], WonkyState)
+    acc x (xs, wonkySt') = bubblesortSinglePass x xs lessThanBit wonkySt'
 bubblesort (SortRec recs) wonkySt = do
-  let (recs', wonkySt') = bubblesortRepeater recs wonkySt lessThanRecord (length recs)
-  (SortRec recs', wonkySt')
+  let (result, wonkySt') = foldr acc ([], wonkySt) recs
+  (SortRec result, wonkySt')
+  where
+    acc :: Record -> ([Record], WonkyState) -> ([Record], WonkyState)
+    acc x (xs, wonkySt') = bubblesortSinglePass x xs lessThanRecord wonkySt'
 
-bubblesortRepeater :: [a] -> WonkyState -> (a -> a -> WonkyState -> (Bool, WonkyState)) -> Int -> ([a], WonkyState)
-bubblesortRepeater recs wonkySt _ 0 = (recs, wonkySt)
-bubblesortRepeater recs wonkySt lessThan i = do
-  let (recs', wonkySt') = bubblesortSinglePass [] (head recs) (tail recs) lessThan wonkySt
-  bubblesortRepeater recs' wonkySt' lessThan (i - 1)
-
-bubblesortSinglePass :: [a] -> a -> [a] -> (a -> a -> WonkyState -> (Bool, WonkyState)) -> WonkyState -> ([a], WonkyState)
-bubblesortSinglePass sortedSegment x [] _ wonkySt = (sortedSegment ++ [x], wonkySt)
-bubblesortSinglePass sortedSegment x (y : unsortedSegment) lessThan wonkySt = do
+bubblesortSinglePass :: a -> [a] -> (a -> a -> WonkyState -> (Bool, WonkyState)) -> WonkyState -> ([a], WonkyState)
+bubblesortSinglePass x [] _ wonkySt = ([x], wonkySt)
+bubblesortSinglePass x (y : remaningElements) lessThan wonkySt = do
   let (result, wonkySt') = lessThan x y wonkySt
   if result
-    then bubblesortSinglePass (sortedSegment ++ [x]) y unsortedSegment lessThan wonkySt'
-    else bubblesortSinglePass (sortedSegment ++ [y]) x unsortedSegment lessThan wonkySt'
+    then do
+      let (result', wonkySt'') = bubblesortSinglePass y remaningElements lessThan wonkySt'
+      (x : result', wonkySt'')
+    else do
+      let (result', wonkySt'') = bubblesortSinglePass x remaningElements lessThan wonkySt'
+      (y : result', wonkySt'')
