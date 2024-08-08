@@ -2,6 +2,9 @@ module Data.Tensort.Robustsort
   ( robustsortP,
     robustsortB,
     robustsortM,
+    supersortP,
+    supersortB,
+    supersortM,
   )
 where
 
