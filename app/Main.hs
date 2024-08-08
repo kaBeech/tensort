@@ -6,17 +6,61 @@ import Data.Tensort.Robustsort (robustsortB, robustsortM, robustsortP)
 import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 import Data.Tensort.Tensort (tensortB4, tensortBL)
 import Data.Tensort.Utils.RandomizeList (randomizeList)
-import Data.Tensort.Utils.Types (Sortable (..), WonkyState (..), fromSortBit)
+import Data.Tensort.Utils.Score (getTotalPositionalErrors)
+import Data.Tensort.Utils.Types (Bit, SortAlg, Sortable (..), WonkyState (..), fromSortBit)
 import Data.Time.Clock
 import System.Random (mkStdGen)
 
 genUnsortedBits :: Int -> Sortable
 genUnsortedBits n = randomizeList (SortBit [1 .. n]) 143
 
+genTestPeriod :: Int -> Int
+genTestPeriod n = 2 ^ n
+
+padOut :: String -> Int -> String
+padOut s totalLength = s ++ replicate (totalLength - length s) ' '
+
+-- This is to force times to record before and after the sort, otherwise
+-- the functions run asynchronously
+getCurrentTimeArg :: Int -> IO UTCTime
+getCurrentTimeArg i = do
+  let time = i * 0
+  putStr (replicate time ' ')
+  getCurrentTime
+
+printResultSortable :: String -> Sortable -> SortAlg -> WonkyState -> IO ()
+printResultSortable sortName l sortAlg wonkySt = do
+  startTime <- getCurrentTime
+  let result = fst (sortAlg l wonkySt)
+  endTime <- getCurrentTimeArg (length (fromSortBit result))
+  composeResultString sortName startTime endTime result
+
+printResultBits :: String -> Sortable -> ([Bit] -> WonkyState -> ([Bit], WonkyState)) -> WonkyState -> IO ()
+printResultBits sortName l sortAlg wonkySt = do
+  startTime <- getCurrentTime
+  let result = fst (sortAlg (fromSortBit l) wonkySt)
+  endTime <- getCurrentTimeArg (head result)
+  composeResultString sortName startTime endTime (SortBit result)
+
+composeResultString :: String -> UTCTime -> UTCTime -> Sortable -> IO ()
+composeResultString sortName startTime endTime result = do
+  let nameString = padOut sortName 12
+  let timeString = padOut (show (diffUTCTime endTime startTime)) 15
+  let scoreString = padOut (show (getTotalPositionalErrors (fromSortBit result))) 8
+  putStrLn
+    ( " "
+        ++ nameString
+        ++ " | "
+        ++ timeString
+        ++ " | "
+        ++ scoreString
+        ++ " | "
+    )
+
 main :: IO ()
 main = do
   -- Eventually I hope to turn that 14 into a 20
-  printTimes (map (genUnsortedBits . (2 ^)) [3 .. 14])
+  printTimes (map (genUnsortedBits . genTestPeriod) [3 .. 14])
 
 printTimes :: [Sortable] -> IO ()
 printTimes [] = return ()
@@ -27,38 +71,14 @@ printTimes (x : xs) = do
 printTime :: Sortable -> IO ()
 printTime l = do
   let wonkySt = WonkyState {wonkyChance = 10, stuckChance = 10, previousAnswer = 0, stdGen = mkStdGen 143}
-  putStr " Algorithm   | Time         | n ="
-  startTensortB4 <- getCurrentTime
-  putStrLn (" " ++ show (length (fst (tensortB4 (fromSortBit l) wonkySt))))
-  endTensortB4 <- getCurrentTime
-  putStr (" Tensort4Bit | " ++ show (diffUTCTime endTensortB4 startTensortB4) ++ " | ")
-  startTensortBL <- getCurrentTime
-  putStrLn ("    " ++ show (length (fst (tensortBL (fromSortBit l) wonkySt))))
-  endTensortBL <- getCurrentTime
-  putStr (" TensortBL   | " ++ show (diffUTCTime endTensortBL startTensortBL) ++ " | ")
-  startRSortP <- getCurrentTime
-  putStrLn ("    " ++ show (length (fst (robustsortP (fromSortBit l) wonkySt))))
-  endRSortP <- getCurrentTime
-  putStr (" RobustsortP | " ++ show (diffUTCTime endRSortP startRSortP) ++ " | ")
-  startRSortB <- getCurrentTime
-  putStrLn ("    " ++ show (length (fst (robustsortB (fromSortBit l) wonkySt))))
-  endRSortB <- getCurrentTime
-  putStr (" RobustsortB | " ++ show (diffUTCTime endRSortB startRSortB) ++ " | ")
-  startRSortM <- getCurrentTime
-  putStrLn ("    " ++ show (length (fst (robustsortM (fromSortBit l) wonkySt))))
-  endRSortM <- getCurrentTime
-  putStr (" RobustsortM | " ++ show (diffUTCTime endRSortM startRSortM) ++ " | ")
-  startMergesort <- getCurrentTime
-  putStrLn ("    " ++ show (length (fromSortBit (fst (mergesort l wonkySt)))))
-  endMergesort <- getCurrentTime
-  putStr (" Mergesort   | " ++ show (diffUTCTime endMergesort startMergesort) ++ " | ")
-  startQuicksort <- getCurrentTime
-  putStrLn ("    " ++ show (length (fromSortBit (fst (quicksort l wonkySt)))))
-  endQuicksort <- getCurrentTime
-  putStr (" Quicksort   | " ++ show (diffUTCTime endQuicksort startQuicksort) ++ " | ")
-  startBubblesort <- getCurrentTime
-  putStrLn ("     " ++ show (length (fromSortBit (fst (bubblesort l wonkySt)))))
-  endBubblesort <- getCurrentTime
-  putStr (" Bubblesort  | " ++ show (diffUTCTime endBubblesort startBubblesort) ++ " | ")
-  putStrLn ("    " ++ show (length (fromSortBit l)))
+  putStrLn (" Algorithm    | Time            | Score    | n = " ++ show (length (fromSortBit l)))
+  putStrLn ""
+  printResultBits "TensortB4" l tensortB4 wonkySt
+  printResultBits "TensortBL" l tensortBL wonkySt
+  printResultBits "RSortP" l robustsortP wonkySt
+  printResultBits "RSortB" l robustsortB wonkySt
+  printResultBits "RSortM" l robustsortM wonkySt
+  printResultSortable "Mergesort" l mergesort wonkySt
+  printResultSortable "Quicksort" l quicksort wonkySt
+  printResultSortable "Bubblesort" l bubblesort wonkySt
   putStrLn "----------------------------------------------------------"
