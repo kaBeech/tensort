@@ -32,3 +32,11 @@ robustsortM xs = tensort xs (mkTsProps 3 supersortM)
 
 supersortM :: Sortable -> Sortable
 supersortM xs = supersort xs (bubblesort, exchangesort, magicsort, magicSuperStrat)
+
+-- robustsortCustomRecursive :: [Bit] -> Int -> SortAlg -> [Bit]
+-- robustsortCustomRecursive xs currentBytesize baseSortAlg =
+--   if currentBytesize <= 27
+--     then baseSortAlg xs
+--     else do
+--       let currentBytesize' = ceiling (log (fromIntegral currentBytesize) :: Double)
+--       tensort xs (mkTsProps currentBytesize' (robustsortCustomRecursive xs currentBytesize' baseSortAlg))
