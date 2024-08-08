@@ -24,15 +24,15 @@ exchangesortIterable xs i j greaterThan wonkySt = do
               let (firstElemGreater, wonkySt') = greaterThan (xs !! j) (xs !! i) wonkySt
               if firstElemGreater
                 then exchangesortIterable (swap xs i j) i (j - 1) greaterThan wonkySt'
-                else
-                  if j > i
-                    then do
-                      let (secondElemGreater, wonkySt'') = greaterThan (xs !! i) (xs !! j) wonkySt'
-                      if secondElemGreater
-                        then exchangesortIterable (swap xs i j) i (j - 1) greaterThan wonkySt''
-                        else exchangesortIterable xs i (j - 1) greaterThan wonkySt''
+                else exchangesortIterable xs i (j - 1) greaterThan wonkySt
+            else
+              if j > i
+                then do
+                  let (firstElemGreater, wonkySt') = greaterThan (xs !! i) (xs !! j) wonkySt
+                  if firstElemGreater
+                    then exchangesortIterable (swap xs i j) i (j - 1) greaterThan wonkySt'
                     else exchangesortIterable xs i (j - 1) greaterThan wonkySt'
-            else exchangesortIterable xs i (j - 1) greaterThan wonkySt
+                else exchangesortIterable xs i (j - 1) greaterThan wonkySt
 
 swap :: [a] -> Int -> Int -> [a]
 swap xs i j = do
