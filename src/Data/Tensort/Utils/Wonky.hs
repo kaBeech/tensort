@@ -38,12 +38,13 @@ setPreviousAnswer wonkySt pAnswer' =
 handleWonkiness :: WonkyState -> (Bool, Int, WonkyState)
 handleWonkiness wonkySt = do
   let (roll, stdGen') = randomR (1 :: Int, 100) (stdGen wonkySt)
-  let wonkySt' = setStdGen wonkySt stdGen'
+  let (roll', stdGen'') = randomR (1 :: Int, 100) stdGen'
+  let wonkySt' = setStdGen wonkySt stdGen''
   if roll <= stuckChance wonkySt'
     then (True, previousAnswer wonkySt', wonkySt')
     else
-      if roll <= wonkyChance wonkySt'
+      if roll' <= wonkyChance wonkySt'
         then do
-          let (rndResult, stdGen'') = randomR (-1 :: Int, 1) (stdGen wonkySt')
-          (True, rndResult, setStdGen wonkySt' stdGen'')
+          let (rndResult, stdGen''') = randomR (-1 :: Int, 1) (stdGen wonkySt')
+          (True, rndResult, setStdGen wonkySt' stdGen''')
         else (False, -2, wonkySt')
