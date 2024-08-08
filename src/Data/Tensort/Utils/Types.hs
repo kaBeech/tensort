@@ -60,6 +60,19 @@ fromSortRec :: Sortable -> [Record]
 fromSortRec (SortRec recs) = recs
 fromSortRec (SortBit _) = error "This is for sorting Records - you gave me Bits"
 
+data SBytes
+  = SBytesBit [Byte]
+  | SBytesRec [[Record]]
+  deriving (Show, Eq, Ord)
+
+fromSBytesBit :: SBytes -> [[Bit]]
+fromSBytesBit (SBytesBit bits) = bits
+fromSBytesBit (SBytesRec _) = error "This is for sorting Bits - you gave me Records"
+
+fromSBytesRec :: SBytes -> [[Record]]
+fromSBytesRec (SBytesRec recs) = recs
+fromSBytesRec (SBytesBit _) = error "This is for sorting Records - you gave me Bits"
+
 type SortAlg = Sortable -> Sortable
 
 type SupersortProps = (SortAlg, SortAlg, SortAlg, SupersortStrat)
