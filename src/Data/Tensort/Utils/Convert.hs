@@ -9,7 +9,7 @@ import Data.Tensort.Utils.Types (Bit, Byte, Sortable (..), TensortProps (..), fr
 -- | ==== __Examples__
 --   >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 --   >>> import Data.Tensort.Utils.MkTsProps (mkTsProps)
---   >>> rawBitsToBytes [5,1,3,7,8,2,4,6] (mkTsProps 4 bubblesort)
+--   >>> rawBitsToBytes (mkTsProps 4 bubblesort) [5,1,3,7,8,2,4,6]
 --   [[2,4,6,8],[1,3,5,7]]
 rawBitsToBytes :: TensortProps -> [Bit] -> [Byte]
 rawBitsToBytes tsProps bits = foldr acc [] (splitEvery (bytesize tsProps) bits)
