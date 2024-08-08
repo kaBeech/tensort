@@ -2,7 +2,7 @@ module Main where
 
 import Data.Tensort.OtherSorts.Mergesort (mergesort)
 import Data.Tensort.OtherSorts.Quicksort (quicksort)
-import Data.Tensort.Robustsort (robustsortB, robustsortM, robustsortP)
+import Data.Tensort.Robustsort (robustsortB, robustsortM, robustsortP, robustsortRM, robustsortRecursive)
 import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 import Data.Tensort.Tensort (tensortB4, tensortBL)
 import Data.Tensort.Utils.RandomizeList (randomizeList)
@@ -46,6 +46,10 @@ printTime l = do
   putStrLn ("    " ++ show (length (fromSortBit (robustsortM l))))
   endRSortM <- getCurrentTime
   putStr (" RobustsortM | " ++ show (diffUTCTime endRSortM startRSortM) ++ " | ")
+  startRSortRM <- getCurrentTime
+  putStrLn ("    " ++ show (length (fromSortBit (robustsortRM l))))
+  endRSortRM <- getCurrentTime
+  putStr (" RobustsortRM | " ++ show (diffUTCTime endRSortRM startRSortRM) ++ " | ")
   startMergesort <- getCurrentTime
   putStrLn ("    " ++ show (length (fromSortBit (mergesort l))))
   endMergesort <- getCurrentTime

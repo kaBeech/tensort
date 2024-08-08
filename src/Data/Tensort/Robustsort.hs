@@ -3,6 +3,7 @@ module Data.Tensort.Robustsort
     robustsortB,
     robustsortM,
     robustsortRecursive,
+    robustsortRM,
   )
 where
 
@@ -14,7 +15,7 @@ import Data.Tensort.Subalgorithms.Permutationsort (permutationsort)
 import Data.Tensort.Subalgorithms.Supersort (magicSuperStrat, mundaneSuperStrat, supersort)
 import Data.Tensort.Tensort (tensort)
 import Data.Tensort.Utils.MkTsProps (mkTsProps)
-import Data.Tensort.Utils.Types (SortAlg, Sortable)
+import Data.Tensort.Utils.Types (SortAlg, Sortable, fromSortBit)
 
 robustsortP :: Sortable -> Sortable
 robustsortP = tensort (mkTsProps 3 supersortP)
@@ -33,6 +34,9 @@ robustsortM = tensort (mkTsProps 3 supersortM)
 
 supersortM :: Sortable -> Sortable
 supersortM = supersort (bubblesort, exchangesort, magicsort, magicSuperStrat)
+
+robustsortRM :: Sortable -> Sortable
+robustsortRM xs = tensort (mkTsProps (getLn (length (fromSortBit xs))) (robustsortRecursive (getLn (length (fromSortBit xs))) robustsortM)) xs
 
 getLn :: Int -> Int
 getLn x = ceiling (log (fromIntegral x) :: Double)
