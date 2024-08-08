@@ -27,23 +27,23 @@ printTime :: Sortable -> IO ()
 printTime l = do
   putStr " Algorithm   | Time         | n ="
   startTensortB4 <- getCurrentTime
-  putStrLn (" " ++ show (length (tensortB4 (fromSortBit l))))
+  putStrLn (" " ++ show (length (fromSortBit (tensortB4 l))))
   endTensortB4 <- getCurrentTime
   putStr (" Tensort4Bit | " ++ show (diffUTCTime endTensortB4 startTensortB4) ++ " | ")
   startTensortBL <- getCurrentTime
-  putStrLn ("    " ++ show (length (tensortBL (fromSortBit l))))
+  putStrLn ("    " ++ show (length (fromSortBit (tensortBL l))))
   endTensortBL <- getCurrentTime
   putStr (" TensortBL   | " ++ show (diffUTCTime endTensortBL startTensortBL) ++ " | ")
   startRSortP <- getCurrentTime
-  putStrLn ("    " ++ show (length (robustsortP (fromSortBit l))))
+  putStrLn ("    " ++ show (length (fromSortBit (robustsortP l))))
   endRSortP <- getCurrentTime
   putStr (" RobustsortP | " ++ show (diffUTCTime endRSortP startRSortP) ++ " | ")
   startRSortB <- getCurrentTime
-  putStrLn ("    " ++ show (length (robustsortB (fromSortBit l))))
+  putStrLn ("    " ++ show (length (fromSortBit (robustsortB l))))
   endRSortB <- getCurrentTime
   putStr (" RobustsortB | " ++ show (diffUTCTime endRSortB startRSortB) ++ " | ")
   startRSortM <- getCurrentTime
-  putStrLn ("    " ++ show (length (robustsortM (fromSortBit l))))
+  putStrLn ("    " ++ show (length (fromSortBit (robustsortM l))))
   endRSortM <- getCurrentTime
   putStr (" RobustsortM | " ++ show (diffUTCTime endRSortM startRSortM) ++ " | ")
   startMergesort <- getCurrentTime
