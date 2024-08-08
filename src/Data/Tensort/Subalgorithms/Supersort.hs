@@ -7,8 +7,8 @@ where
 
 import Data.Tensort.Utils.Types (SortAlg, Sortable (..), SupersortStrat)
 
-supersort :: Sortable -> (SortAlg, SortAlg, SortAlg, SupersortStrat) -> Sortable
-supersort xs (subAlg1, subAlg2, subAlg3, superStrat) = do
+supersort :: (SortAlg, SortAlg, SortAlg, SupersortStrat) -> Sortable -> Sortable
+supersort (subAlg1, subAlg2, subAlg3, superStrat) xs = do
   let result1 = subAlg1 xs
   let result2 = subAlg2 xs
   if result1 == result2

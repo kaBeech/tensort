@@ -10,7 +10,7 @@ import Data.Tensort.Utils.Types (Sortable (..), fromSortBit)
 import Data.Time.Clock
 
 genUnsortedBits :: Int -> Sortable
-genUnsortedBits n = randomizeList (SortBit [1 .. n]) 143
+genUnsortedBits n = randomizeList 143 (SortBit [1 .. n])
 
 main :: IO ()
 main = do

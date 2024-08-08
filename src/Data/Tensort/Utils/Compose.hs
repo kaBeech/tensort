@@ -18,18 +18,18 @@ import Data.Tensort.Utils.Types (Bit, Byte, Memory (..), Record, SortAlg, Sortab
 -- >>> import Data.Tensort.Utils.MkTsProps (mkTsProps)
 -- >>> createInitialTensors [[2,4],[6,8],[1,3],[5,7]] (mkTsProps 2 bubblesort)
 -- [([(0,3),(1,7)],ByteMem [[1,3],[5,7]]),([(0,4),(1,8)],ByteMem [[2,4],[6,8]])]
-createInitialTensors :: [Byte] -> TensortProps -> [Tensor]
-createInitialTensors bytes tsProps = foldr acc [] (splitEvery (bytesize tsProps) bytes)
+createInitialTensors :: TensortProps -> [Byte] -> [Tensor]
+createInitialTensors tsProps bytes = foldr acc [] (splitEvery (bytesize tsProps) bytes)
   where
     acc :: [Byte] -> [Tensor] -> [Tensor]
-    acc byte tensorStacks = tensorStacks ++ [getTensorFromBytes byte (subAlgorithm tsProps)]
+    acc byte tensorStacks = tensorStacks ++ [getTensorFromBytes (subAlgorithm tsProps) byte]
 
 -- | Create a Tensor from a Memory
 --   Aliases to getTensorFromBytes for ByteMem and getTensorFromTensors for
 --   TensorMem
-createTensor :: Memory -> SortAlg -> Tensor
-createTensor (ByteMem bytes) subAlg = getTensorFromBytes bytes subAlg
-createTensor (TensorMem tensors) subAlg = getTensorFromTensors tensors subAlg
+createTensor :: SortAlg -> Memory -> Tensor
+createTensor subAlg (ByteMem bytes) = getTensorFromBytes subAlg bytes
+createTensor subAlg (TensorMem tensors) = getTensorFromTensors subAlg tensors
 
 -- | Convert a list of Bytes to a Tensor
 
@@ -46,8 +46,8 @@ createTensor (TensorMem tensors) subAlg = getTensorFromTensors tensors subAlg
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 -- >>> getTensorFromBytes [[2,4,6,8],[1,3,5,7]] bubblesort
 -- ([(1,7),(0,8)],ByteMem [[2,4,6,8],[1,3,5,7]])
-getTensorFromBytes :: [Byte] -> SortAlg -> Tensor
-getTensorFromBytes bytes subAlg = do
+getTensorFromBytes :: SortAlg -> [Byte] -> Tensor
+getTensorFromBytes subAlg bytes = do
   let register = acc bytes [] 0
   let register' = fromSortRec (subAlg (SortRec register))
   (register', ByteMem bytes)
@@ -64,8 +64,8 @@ getTensorFromBytes bytes subAlg = do
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 -- >>> getTensorFromTensors [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(1,14),(0,17)],ByteMem [[16,17],[12,14]])] bubblesort
 -- ([(1,17),(0,18)],TensorMem [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(1,14),(0,17)],ByteMem [[16,17],[12,14]])])
-getTensorFromTensors :: [Tensor] -> SortAlg -> Tensor
-getTensorFromTensors tensors subAlg = (fromSortRec (subAlg (SortRec (getRegisterFromTensors tensors))), TensorMem tensors)
+getTensorFromTensors :: SortAlg -> [Tensor] -> Tensor
+getTensorFromTensors subAlg tensors = (fromSortRec (subAlg (SortRec (getRegisterFromTensors tensors))), TensorMem tensors)
 
 -- | For each Tensor, produces a Record by combining the top bit of the
 --  Tensor with an index value for its Address

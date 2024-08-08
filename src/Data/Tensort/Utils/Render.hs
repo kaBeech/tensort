@@ -12,12 +12,12 @@ import Data.Tensort.Utils.Types (Bit, Memory (..), SortAlg, Sortable (..), Tenso
 -- [1,3,5,7]
 -- >>> getSortedBitsFromTensor ([(0,8),(1,18)],TensorMem [([(0,7),(1,8)],TensorMem [([(0,3),(1,7)],ByteMem [[1,3],[5,7]]),([(0,4),(1,8)],ByteMem [[2,4],[6,8]])]),([(1,17),(0,18)],TensorMem [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(0,14),(1,17)],ByteMem [[12,14],[16,17]])])]) bubblesort
 -- [1,2,3,4,5,6,7,8,11,12,13,14,15,16,17,18]
-getSortedBitsFromTensor :: TensorStack -> SortAlg -> [Bit]
-getSortedBitsFromTensor tensorRaw subAlg = acc tensorRaw []
+getSortedBitsFromTensor :: SortAlg -> TensorStack -> [Bit]
+getSortedBitsFromTensor subAlg tensorRaw = acc tensorRaw []
   where
     acc :: TensorStack -> [Bit] -> [Bit]
     acc tensor sortedBits = do
-      let (nextBit, tensor') = removeTopBitFromTensor tensor subAlg
+      let (nextBit, tensor') = removeTopBitFromTensor subAlg tensor
       if isNothing tensor'
         then nextBit : sortedBits
         else do
@@ -32,17 +32,17 @@ getSortedBitsFromTensor tensorRaw subAlg = acc tensorRaw []
 --   >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 --   >>> removeTopBitFromTensor  ([(0,5),(1,7)],ByteMem [[1,5],[3,7]]) bubblesort
 --   (7,Just ([(1,3),(0,5)],ByteMem [[1,5],[3]]))
-removeTopBitFromTensor :: Tensor -> SortAlg -> (Bit, Maybe Tensor)
-removeTopBitFromTensor (register, memory) subAlg = do
+removeTopBitFromTensor :: SortAlg -> Tensor -> (Bit, Maybe Tensor)
+removeTopBitFromTensor subAlg (register, memory) = do
   let topRecord = last register
   let topAddress = fst topRecord
-  let (topBit, memory') = removeBitFromMemory memory topAddress subAlg
+  let (topBit, memory') = removeBitFromMemory subAlg memory topAddress
   if isNothing memory'
     then (topBit, Nothing)
-    else (topBit, Just (createTensor (fromJust memory') subAlg))
+    else (topBit, Just (createTensor subAlg (fromJust memory')))
 
-removeBitFromMemory :: Memory -> Int -> SortAlg -> (Bit, Maybe Memory)
-removeBitFromMemory (ByteMem bytes) i subAlg = do
+removeBitFromMemory :: SortAlg -> Memory -> Int -> (Bit, Maybe Memory)
+removeBitFromMemory subAlg (ByteMem bytes) i = do
   let topByte = bytes !! i
   let topBit = last topByte
   let topByte' = init topByte
@@ -59,9 +59,9 @@ removeBitFromMemory (ByteMem bytes) i subAlg = do
       let topByte'' = fromSortBit (subAlg (SortBit topByte'))
       let bytes' = take i bytes ++ [topByte''] ++ drop (i + 1) bytes
       (topBit, Just (ByteMem bytes'))
-removeBitFromMemory (TensorMem tensors) i subAlg = do
+removeBitFromMemory subAlg (TensorMem tensors) i = do
   let topTensor = tensors !! i
-  let (topBit, topTensor') = removeTopBitFromTensor topTensor subAlg
+  let (topBit, topTensor') = removeTopBitFromTensor subAlg topTensor
   if isNothing topTensor'
     then do
       let tensors' = take i tensors ++ drop (i + 1) tensors

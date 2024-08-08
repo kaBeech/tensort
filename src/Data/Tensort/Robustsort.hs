@@ -20,19 +20,19 @@ robustsortP :: Sortable -> Sortable
 robustsortP = tensort (mkTsProps 3 supersortP)
 
 supersortP :: Sortable -> Sortable
-supersortP xs = supersort xs (bubblesort, exchangesort, permutationsort, mundaneSuperStrat)
+supersortP = supersort (bubblesort, exchangesort, permutationsort, mundaneSuperStrat)
 
 robustsortB :: Sortable -> Sortable
 robustsortB = tensort (mkTsProps 3 supersortB)
 
 supersortB :: Sortable -> Sortable
-supersortB xs = supersort xs (bubblesort, exchangesort, bogosort, mundaneSuperStrat)
+supersortB = supersort (bubblesort, exchangesort, bogosort, mundaneSuperStrat)
 
 robustsortM :: Sortable -> Sortable
 robustsortM = tensort (mkTsProps 3 supersortM)
 
 supersortM :: Sortable -> Sortable
-supersortM xs = supersort xs (bubblesort, exchangesort, magicsort, magicSuperStrat)
+supersortM = supersort (bubblesort, exchangesort, magicsort, magicSuperStrat)
 
 getLn :: Int -> Int
 getLn x = ceiling (log (fromIntegral x) :: Double)

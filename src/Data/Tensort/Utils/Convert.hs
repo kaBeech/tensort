@@ -11,8 +11,8 @@ import Data.Tensort.Utils.Types (Bit, Byte, Sortable (..), TensortProps (..), fr
 --   >>> import Data.Tensort.Utils.MkTsProps (mkTsProps)
 --   >>> rawBitsToBytes [5,1,3,7,8,2,4,6] (mkTsProps 4 bubblesort)
 --   [[2,4,6,8],[1,3,5,7]]
-rawBitsToBytes :: [Bit] -> TensortProps -> [Byte]
-rawBitsToBytes bits tsProps = foldr acc [] (splitEvery (bytesize tsProps) bits)
+rawBitsToBytes :: TensortProps -> [Bit] -> [Byte]
+rawBitsToBytes tsProps bits = foldr acc [] (splitEvery (bytesize tsProps) bits)
   where
     acc :: [Bit] -> [Byte] -> [Byte]
     acc byte bytes = bytes ++ [fromSortBit (subAlgorithm tsProps (SortBit byte))]
