@@ -9,8 +9,9 @@ import Data.Tensort.Subalgorithms.Exchangesort (exchangesort)
 import Data.Tensort.Subalgorithms.Magicsort (magicsort)
 import Data.Tensort.Subalgorithms.Permutationsort (permutationsort)
 import Data.Tensort.Subalgorithms.Supersort (magicSuperStrat, mundaneSuperStrat, supersort)
-import Data.Tensort.Tensort (mkTsProps, tensort, tensortB4, tensortBL)
-import Data.Tensort.Utils.Types (Bit, Sortable)
+import Data.Tensort.Tensort (tensort, tensortB4, tensortBL)
+import Data.Tensort.Utils.MkTsProps (mkTsProps)
+import Data.Tensort.Utils.Types (Sortable)
 import SortSpec (result_is_sorted_bits, result_is_sorted_custom_bitsize, result_is_sorted_records, result_is_sorted_records_short)
 import TestCheck (check)
 
@@ -75,17 +76,17 @@ main = do
   putStrLn "True!"
   putStrLn "All tests pass!"
 
-tensortCustomExample :: [Bit] -> [Bit]
-tensortCustomExample xs = tensort xs (mkTsProps 8 mergesort)
+tensortCustomExample :: Sortable -> Sortable
+tensortCustomExample = tensort (mkTsProps 8 mergesort)
 
 supersortMundaneCustomExample :: Sortable -> Sortable
-supersortMundaneCustomExample xs = supersort xs (quicksort, magicsort, bubblesort, mundaneSuperStrat)
+supersortMundaneCustomExample = supersort (quicksort, magicsort, bubblesort, mundaneSuperStrat)
 
 supersortMagicCustomExample :: Sortable -> Sortable
-supersortMagicCustomExample xs = supersort xs (bogosort, permutationsort, magicsort, magicSuperStrat)
+supersortMagicCustomExample = supersort (bogosort, permutationsort, magicsort, magicSuperStrat)
 
-robustsortMundaneCustomExample :: [Bit] -> [Bit]
-robustsortMundaneCustomExample xs = tensort xs (mkTsProps 3 supersortMundaneCustomExample)
+robustsortMundaneCustomExample :: Sortable -> Sortable
+robustsortMundaneCustomExample = tensort (mkTsProps 3 supersortMundaneCustomExample)
 
-robustsortMagicCustomExample :: [Bit] -> [Bit]
-robustsortMagicCustomExample xs = tensort xs (mkTsProps 3 supersortMagicCustomExample)
+robustsortMagicCustomExample :: Sortable -> Sortable
+robustsortMagicCustomExample = tensort (mkTsProps 3 supersortMagicCustomExample)
