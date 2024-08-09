@@ -26,9 +26,3 @@ rawRecsToBytes tsProps recs = foldr acc [] (splitEvery (bytesize tsProps) recs)
   where
     acc :: [Record] -> [[Record]] -> [[Record]]
     acc rbyte rbytes = rbytes ++ [fromSortRec (subAlgorithm tsProps (SortRec rbyte))]
-
--- rawBitsToBytes :: Sortable -> TensortProps -> [Sortable]
--- rawBitsToBytes bits tsProps = foldr acc [] (splitEvery (bytesize tsProps) bits)
---   where1
---     acc :: Sortable -> [Sortable] -> [Sortable]
---     acc byte bytes = bytes ++ [subAlgorithm tsProps byte]
