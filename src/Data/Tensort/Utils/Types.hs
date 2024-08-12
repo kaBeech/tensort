@@ -200,6 +200,10 @@ type TensorStack = Tensor
 
 type TensorStackR = TensorR
 
+type STensorStack = STensor
+
+type STensorStacks = STensors
+
 fromJust :: Maybe a -> a
 fromJust (Just x) = x
 fromJust Nothing = error "fromJust: Nothing"
