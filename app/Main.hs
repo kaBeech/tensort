@@ -2,7 +2,7 @@ module Main where
 
 import Data.Tensort.OtherSorts.Mergesort (mergesort)
 import Data.Tensort.OtherSorts.Quicksort (quicksort)
-import Data.Tensort.Robustsort (robustsortB, robustsortM, robustsortP, robustsortRM, robustsortRecursive)
+import Data.Tensort.Robustsort (robustsortB, robustsortM, robustsortP, robustsortRM)
 import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 import Data.Tensort.Tensort (tensortB4, tensortBL)
 import Data.Tensort.Utils.RandomizeList (randomizeList)
