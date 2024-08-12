@@ -25,11 +25,11 @@ data SBit
 
 fromSBitBit :: SBit -> Bit
 fromSBitBit (SBitBit bit) = bit
-fromSBitBit (SBitRec _) = error "This is for sorting Bits - you gave me Records"
+fromSBitBit (SBitRec _) = error "From fromSBitBit: This is for sorting Bits - you gave me Records"
 
 fromSBitRec :: SBit -> Record
 fromSBitRec (SBitRec record) = record
-fromSBitRec (SBitBit _) = error "This is for sorting Records - you gave me Bits"
+fromSBitRec (SBitBit _) = error "From fromSBitRec: This is for sorting Records - you gave me Bits"
 
 -- | A Byte is a list of Bits standardized to a fixed maximum length (Bytesize)
 
@@ -67,11 +67,11 @@ data SRecord
 
 fromSRecordBit :: SRecord -> Record
 fromSRecordBit (SRecordBit record) = record
-fromSRecordBit (SRecordRec _) = error "This is for sorting Records - you gave me Bits"
+fromSRecordBit (SRecordRec _) = error "From fromSRecordBit: This is for sorting Records - you gave me Bits"
 
 fromSRecordRec :: SRecord -> RecordR
 fromSRecordRec (SRecordRec record) = record
-fromSRecordRec (SRecordBit _) = error "This is for sorting Bits - you gave me Records"
+fromSRecordRec (SRecordBit _) = error "From fromSRecordRec: This is for sorting Bits - you gave me Records"
 
 data SRecords
   = SRecordsBit [Record]
@@ -80,11 +80,11 @@ data SRecords
 
 fromSRecordsBit :: SRecords -> [Record]
 fromSRecordsBit (SRecordsBit records) = records
-fromSRecordsBit (SRecordsRec _) = error "This is for sorting Records - you gave me Bits"
+fromSRecordsBit (SRecordsRec _) = error "From fromSRecordsBit: This is for sorting Records - you gave me Bits"
 
 fromSRecordsRec :: SRecords -> [RecordR]
 fromSRecordsRec (SRecordsRec records) = records
-fromSRecordsRec (SRecordsBit _) = error "This is for sorting Bits - you gave me Records"
+fromSRecordsRec (SRecordsBit _) = error "From fromSRecordsRec: This is for sorting Bits - you gave me Records"
 
 fromSRecordArrayBit :: [SRecord] -> [Record]
 fromSRecordArrayBit = map fromSRecordBit
@@ -106,11 +106,11 @@ data Sortable
 
 fromSortBit :: Sortable -> [Bit]
 fromSortBit (SortBit bits) = bits
-fromSortBit (SortRec _) = error "This is for sorting Bits - you gave me Records"
+fromSortBit (SortRec _) = error "From fromSortBit: This is for sorting Bits - you gave me Records"
 
 fromSortRec :: Sortable -> [Record]
 fromSortRec (SortRec recs) = recs
-fromSortRec (SortBit _) = error "This is for sorting Records - you gave me Bits"
+fromSortRec (SortBit _) = error "From fromSortRec: This is for sorting Records - you gave me Bits"
 
 fromSBitBits :: [SBit] -> Sortable
 fromSBitBits = SortBit . map fromSBitBit
@@ -125,11 +125,11 @@ data SBytes
 
 fromSBytesBit :: SBytes -> [[Bit]]
 fromSBytesBit (SBytesBit bits) = bits
-fromSBytesBit (SBytesRec _) = error "This is for sorting Bits - you gave me Records"
+fromSBytesBit (SBytesRec _) = error "From fromSBytesBit: This is for sorting Bits - you gave me Records"
 
 fromSBytesRec :: SBytes -> [[Record]]
 fromSBytesRec (SBytesRec recs) = recs
-fromSBytesRec (SBytesBit _) = error "This is for sorting Records - you gave me Bits"
+fromSBytesRec (SBytesBit _) = error "From fromSBytesRec: This is for sorting Records - you gave me Bits"
 
 data STensor
   = STensorBit Tensor
@@ -143,19 +143,19 @@ data STensors
 
 fromSTensorBit :: STensor -> Tensor
 fromSTensorBit (STensorBit tensor) = tensor
-fromSTensorBit (STensorRec _) = error "This is for sorting Tensors - you gave me Records"
+fromSTensorBit (STensorRec _) = error "From fromSTensorBit: This is for sorting Tensors - you gave me Records"
 
 fromSTensorRec :: STensor -> TensorR
 fromSTensorRec (STensorRec tensor) = tensor
-fromSTensorRec (STensorBit _) = error "This is for sorting Records - you gave me Tensors"
+fromSTensorRec (STensorBit _) = error "From fromSTensorRec: This is for sorting Records - you gave me Tensors"
 
 fromSTensorsBit :: STensors -> [Tensor]
 fromSTensorsBit (STensorsBit tensors) = tensors
-fromSTensorsBit (STensorsRec _) = error "This is for sorting Tensors - you gave me Records"
+fromSTensorsBit (STensorsRec _) = error "From fromSTensorsBit: This is for sorting Tensors - you gave me Records"
 
 fromSTensorsRec :: STensors -> [TensorR]
 fromSTensorsRec (STensorsRec tensors) = tensors
-fromSTensorsRec (STensorsBit _) = error "This is for sorting Records - you gave me Tensors"
+fromSTensorsRec (STensorsBit _) = error "From fromSTensorsRec: This is for sorting Records - you gave me Tensors"
 
 type SortAlg = Sortable -> Sortable
 
@@ -182,11 +182,11 @@ data SMemory
 
 fromSMemoryBit :: SMemory -> Memory
 fromSMemoryBit (SMemoryBit memory) = memory
-fromSMemoryBit (SMemoryRec _) = error "This is for sorting Bits - you gave me Records"
+fromSMemoryBit (SMemoryRec _) = error "From fromSTensorsRec: This is for sorting Bits - you gave me Records"
 
 fromSMemoryRec :: SMemory -> MemoryR
 fromSMemoryRec (SMemoryRec memory) = memory
-fromSMemoryRec (SMemoryBit _) = error "This is for sorting Records - you gave me Bits"
+fromSMemoryRec (SMemoryBit _) = error "From fromSMemoryRec: This is for sorting Records - you gave me Bits"
 
 -- | A Tensor contains data to be sorted in a structure allowing for
 --   easy access. It consists of a Register and its Memory.
