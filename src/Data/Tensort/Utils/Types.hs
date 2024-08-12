@@ -112,6 +112,12 @@ fromSortRec :: Sortable -> [Record]
 fromSortRec (SortRec recs) = recs
 fromSortRec (SortBit _) = error "This is for sorting Records - you gave me Bits"
 
+fromSBitBits :: [SBit] -> Sortable
+fromSBitBits = SortBit . map fromSBitBit
+
+fromSBitRecs :: [SBit] -> Sortable
+fromSBitRecs = SortRec . map fromSBitRec
+
 data SBytes
   = SBytesBit [Byte]
   | SBytesRec [ByteR]
