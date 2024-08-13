@@ -6,7 +6,9 @@ import Data.Tensort.Robustsort
   ( robustsortB,
     robustsortM,
     robustsortP,
+    robustsortRB,
     robustsortRM,
+    robustsortRP,
     supersortB,
     supersortM,
     supersortP,
@@ -72,9 +74,9 @@ composeResultString sortName startTime endTime result = do
 
 main :: IO ()
 main = do
+  -- printErrorRateComparison 1000
   -- Eventually I hope to turn that 14 into a 20
-  -- printTimes (map (\x -> (genUnsortedBits (genTestPeriod x), 143)) [3 .. 20])
-  printErrorRateComparison 1000
+  printTimes (map (\x -> (genUnsortedBits (genTestPeriod x), 143)) [3 .. 14])
 
 printTimes :: [(Sortable, Int)] -> IO ()
 printTimes [] = return ()
@@ -95,6 +97,12 @@ printTime (l, seed) = do
   printResultSortable "Mergesort" l mergesort wonkySt
   printResultSortable "Quicksort" l quicksort wonkySt
   printResultSortable "Bubblesort" l bubblesort wonkySt
+  printResultBits "RSortRM" l robustsortRM wonkySt
+  printResultBits "RSortRB" l robustsortRB wonkySt
+  printResultBits "RSortRP" l robustsortRP wonkySt
+  printResultBits "RSortM" l robustsortM wonkySt
+  printResultBits "RSortB" l robustsortB wonkySt
+  printResultBits "RSortP" l robustsortP wonkySt
   putStrLn "----------------------------------------------------------"
 
 sortAlgsCompared :: [(WonkyState -> Sortable -> (Sortable, WonkyState), String)]
@@ -109,6 +117,8 @@ sortAlgsCompared =
     (supersortP, "SupersortP"),
     (supersortB, "SupersortB"),
     (supersortM, "SupersortM"),
+    (robustsortP, "RobustsortP"),
+    (robustsortB, "RobustsortB"),
     (robustsortRM, "RobustsortRM")
   ]
 
