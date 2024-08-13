@@ -5,9 +5,9 @@ import Data.Tensort.Utils.RandomizeList (randomizeList)
 import Data.Tensort.Utils.Types (Sortable (..))
 
 bogosort :: Sortable -> Sortable
-bogosort xs = bogosortSeeded xs 143
+bogosort = bogosortSeeded 143
 
-bogosortSeeded :: Sortable -> Int -> Sortable
-bogosortSeeded xs seed
+bogosortSeeded :: Int -> Sortable -> Sortable
+bogosortSeeded seed xs
   | isSorted xs = xs
-  | otherwise = bogosortSeeded (randomizeList xs seed) (seed + 1)
+  | otherwise = bogosortSeeded (seed + 1) (randomizeList seed xs)

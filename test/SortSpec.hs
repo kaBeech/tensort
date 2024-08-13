@@ -11,12 +11,12 @@ import Data.Tensort.Utils.Check (isSorted)
 import Data.Tensort.Utils.Types (Bit, Record, SortAlg, Sortable (..))
 import Test.QuickCheck
 
-result_is_sorted_bits :: ([Bit] -> [Bit]) -> [Bit] -> Property
+result_is_sorted_bits :: SortAlg -> [Bit] -> Property
 result_is_sorted_bits sort unsortedList =
   within
     1000000
     ( (length unsortedList < 10) ==>
-        isSorted (SortBit (sort unsortedList))
+        isSorted (sort (SortBit unsortedList))
     )
 
 result_is_sorted_records :: SortAlg -> [Record] -> Property
@@ -40,5 +40,5 @@ result_is_sorted_custom_bitsize n unsortedList =
   within
     1000000
     ( (length unsortedList < 15) && (n > 1) ==>
-        isSorted (SortBit (tensortBN n unsortedList))
+        isSorted (tensortBN n (SortBit unsortedList))
     )

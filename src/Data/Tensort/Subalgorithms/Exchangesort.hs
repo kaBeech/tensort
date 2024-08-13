@@ -4,20 +4,20 @@ import Data.Tensort.Utils.ComparisonFunctions (greaterThanBit, greaterThanRecord
 import Data.Tensort.Utils.Types (Sortable (..))
 
 exchangesort :: Sortable -> Sortable
-exchangesort (SortBit bits) = SortBit (exchangesortIterable bits (length bits - 1) (length bits - 2) greaterThanBit)
-exchangesort (SortRec recs) = SortRec (exchangesortIterable recs (length recs - 1) (length recs - 2) greaterThanRecord)
+exchangesort (SortBit bits) = SortBit (exchangesortIterable greaterThanBit bits (length bits - 1) (length bits - 2))
+exchangesort (SortRec recs) = SortRec (exchangesortIterable greaterThanRecord recs (length recs - 1) (length recs - 2))
 
-exchangesortIterable :: [a] -> Int -> Int -> (a -> a -> Bool) -> [a]
-exchangesortIterable xs i j greaterThan = do
+exchangesortIterable :: (a -> a -> Bool) -> [a] -> Int -> Int -> [a]
+exchangesortIterable greaterThan xs i j = do
   if i < 0
     then xs
     else
       if j < 0
-        then exchangesortIterable xs (i - 1) (length xs - 1) greaterThan
+        then exchangesortIterable greaterThan xs (i - 1) (length xs - 1)
         else
           if ((i > j) && greaterThan (xs !! j) (xs !! i)) || ((j > i) && greaterThan (xs !! i) (xs !! j))
-            then exchangesortIterable (swap xs i j) i (j - 1) greaterThan
-            else exchangesortIterable xs i (j - 1) greaterThan
+            then exchangesortIterable greaterThan (swap xs i j) i (j - 1)
+            else exchangesortIterable greaterThan xs i (j - 1)
 
 swap :: [a] -> Int -> Int -> [a]
 swap xs i j = do

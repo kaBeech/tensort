@@ -2,26 +2,43 @@ module Data.Tensort.Utils.Render (getSortedBitsFromTensor) where
 
 import Data.Maybe (isNothing)
 import Data.Tensort.Utils.Compose (createTensor)
-import Data.Tensort.Utils.Types (Bit, Memory (..), SortAlg, Sortable (..), Tensor, TensorStack, fromJust, fromSortBit)
+import Data.Tensort.Utils.Types (Bit, BitR, Memory (..), MemoryR (..), SBit (..), SMemory (..), STensor (..), STensorStack, SortAlg, Sortable (..), Tensor, TensorR, TensorStack, TensorStackR, fromJust, fromSTensorBit, fromSTensorRec, fromSortBit, fromSortRec)
 
 -- | Compile a sorted list of Bits from a list of TensorStacks
 
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
--- >>> getSortedBitsFromTensor ([(0,5),(1,7)],ByteMem [[1,5],[3,7]]) bubblesort
+-- >>> getSortedBitsFromTensor bubblesort ([(0,5),(1,7)],ByteMem [[1,5],[3,7]])
 -- [1,3,5,7]
--- >>> getSortedBitsFromTensor ([(0,8),(1,18)],TensorMem [([(0,7),(1,8)],TensorMem [([(0,3),(1,7)],ByteMem [[1,3],[5,7]]),([(0,4),(1,8)],ByteMem [[2,4],[6,8]])]),([(1,17),(0,18)],TensorMem [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(0,14),(1,17)],ByteMem [[12,14],[16,17]])])]) bubblesort
+-- >>> getSortedBitsFromTensor bubblesort ([(0,8),(1,18)],TensorMem [([(0,7),(1,8)],TensorMem [([(0,3),(1,7)],ByteMem [[1,3],[5,7]]),([(0,4),(1,8)],ByteMem [[2,4],[6,8]])]),([(1,17),(0,18)],TensorMem [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(0,14),(1,17)],ByteMem [[12,14],[16,17]])])])
 -- [1,2,3,4,5,6,7,8,11,12,13,14,15,16,17,18]
-getSortedBitsFromTensor :: TensorStack -> SortAlg -> [Bit]
-getSortedBitsFromTensor tensorRaw subAlg = acc tensorRaw []
+getSortedBitsFromTensor :: SortAlg -> STensorStack -> [SBit]
+getSortedBitsFromTensor subAlg (STensorBit tensorRaw) = getSortedBitsFromTensorB subAlg tensorRaw
+getSortedBitsFromTensor subAlg (STensorRec tensorRaw) = getSortedBitsFromTensorR subAlg tensorRaw
+
+getSortedBitsFromTensorB :: SortAlg -> TensorStack -> [SBit]
+getSortedBitsFromTensorB subAlg tensorRaw = acc tensorRaw []
   where
-    acc :: TensorStack -> [Bit] -> [Bit]
+    acc :: TensorStack -> [SBit] -> [SBit]
     acc tensor sortedBits = do
-      let (nextBit, tensor') = removeTopBitFromTensor tensor subAlg
+      let (nextBit, tensor') = removeTopBitFromTensor subAlg tensor
+      let nextBit' = SBitBit nextBit
       if isNothing tensor'
-        then nextBit : sortedBits
+        then nextBit' : sortedBits
         else do
-          acc (fromJust tensor') (nextBit : sortedBits)
+          acc (fromJust tensor') (nextBit' : sortedBits)
+
+getSortedBitsFromTensorR :: SortAlg -> TensorStackR -> [SBit]
+getSortedBitsFromTensorR subAlg tensorRaw = acc tensorRaw []
+  where
+    acc :: TensorStackR -> [SBit] -> [SBit]
+    acc tensor sortedBits = do
+      let (nextBit, tensor') = removeTopBitFromTensorR subAlg tensor
+      let nextBit' = SBitRec nextBit
+      if isNothing tensor'
+        then nextBit' : sortedBits
+        else do
+          acc (fromJust tensor') (nextBit' : sortedBits)
 
 -- | For use in compiling a list of Tensors into a sorted list of Bits
 --
@@ -30,19 +47,28 @@ getSortedBitsFromTensor tensorRaw subAlg = acc tensorRaw []
 
 -- | ==== __Examples__
 --   >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
---   >>> removeTopBitFromTensor  ([(0,5),(1,7)],ByteMem [[1,5],[3,7]]) bubblesort
+--   >>> removeTopBitFromTensor bubblesort ([(0,5),(1,7)],ByteMem [[1,5],[3,7]])
 --   (7,Just ([(1,3),(0,5)],ByteMem [[1,5],[3]]))
-removeTopBitFromTensor :: Tensor -> SortAlg -> (Bit, Maybe Tensor)
-removeTopBitFromTensor (register, memory) subAlg = do
+removeTopBitFromTensor :: SortAlg -> Tensor -> (Bit, Maybe Tensor)
+removeTopBitFromTensor subAlg (register, memory) = do
   let topRecord = last register
   let topAddress = fst topRecord
-  let (topBit, memory') = removeBitFromMemory memory topAddress subAlg
+  let (topBit, memory') = removeBitFromMemory subAlg memory topAddress
   if isNothing memory'
     then (topBit, Nothing)
-    else (topBit, Just (createTensor (fromJust memory') subAlg))
+    else (topBit, Just (fromSTensorBit (createTensor subAlg (SMemoryBit (fromJust memory')))))
 
-removeBitFromMemory :: Memory -> Int -> SortAlg -> (Bit, Maybe Memory)
-removeBitFromMemory (ByteMem bytes) i subAlg = do
+removeTopBitFromTensorR :: SortAlg -> TensorR -> (BitR, Maybe TensorR)
+removeTopBitFromTensorR subAlg (register, memory) = do
+  let topRecord = last register
+  let topAddress = fst topRecord
+  let (topBit, memory') = removeBitFromMemoryR subAlg memory topAddress
+  if isNothing memory'
+    then (topBit, Nothing)
+    else (topBit, Just (fromSTensorRec (createTensor subAlg (SMemoryRec (fromJust memory')))))
+
+removeBitFromMemory :: SortAlg -> Memory -> Int -> (Bit, Maybe Memory)
+removeBitFromMemory subAlg (ByteMem bytes) i = do
   let topByte = bytes !! i
   let topBit = last topByte
   let topByte' = init topByte
@@ -59,9 +85,9 @@ removeBitFromMemory (ByteMem bytes) i subAlg = do
       let topByte'' = fromSortBit (subAlg (SortBit topByte'))
       let bytes' = take i bytes ++ [topByte''] ++ drop (i + 1) bytes
       (topBit, Just (ByteMem bytes'))
-removeBitFromMemory (TensorMem tensors) i subAlg = do
+removeBitFromMemory subAlg (TensorMem tensors) i = do
   let topTensor = tensors !! i
-  let (topBit, topTensor') = removeTopBitFromTensor topTensor subAlg
+  let (topBit, topTensor') = removeTopBitFromTensor subAlg topTensor
   if isNothing topTensor'
     then do
       let tensors' = take i tensors ++ drop (i + 1) tensors
@@ -71,3 +97,34 @@ removeBitFromMemory (TensorMem tensors) i subAlg = do
     else do
       let tensors' = take i tensors ++ [fromJust topTensor'] ++ drop (i + 1) tensors
       (topBit, Just (TensorMem tensors'))
+
+removeBitFromMemoryR :: SortAlg -> MemoryR -> Int -> (BitR, Maybe MemoryR)
+removeBitFromMemoryR subAlg (ByteMemR bytesR) i = do
+  let topByteR = bytesR !! i
+  let topBitR = last topByteR
+  let topByteR' = init topByteR
+  case length topByteR' of
+    0 -> do
+      let bytesR' = take i bytesR ++ drop (i + 1) bytesR
+      if null bytesR'
+        then (topBitR, Nothing)
+        else (topBitR, Just (ByteMemR bytesR'))
+    1 -> do
+      let bytesR' = take i bytesR ++ [topByteR'] ++ drop (i + 1) bytesR
+      (topBitR, Just (ByteMemR bytesR'))
+    _ -> do
+      let topByteR'' = fromSortRec (subAlg (SortRec topByteR'))
+      let bytesR' = take i bytesR ++ [topByteR''] ++ drop (i + 1) bytesR
+      (topBitR, Just (ByteMemR bytesR'))
+removeBitFromMemoryR subAlg (TensorMemR tensorsR) i = do
+  let topTensorR = tensorsR !! i
+  let (topBitR, topTensorR') = removeTopBitFromTensorR subAlg topTensorR
+  if isNothing topTensorR'
+    then do
+      let tensorsR' = take i tensorsR ++ drop (i + 1) tensorsR
+      if null tensorsR'
+        then (topBitR, Nothing)
+        else (topBitR, Just (TensorMemR tensorsR'))
+    else do
+      let tensorsR' = take i tensorsR ++ [fromJust topTensorR'] ++ drop (i + 1) tensorsR
+      (topBitR, Just (TensorMemR tensorsR'))

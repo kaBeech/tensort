@@ -7,8 +7,8 @@ where
 
 import Data.Tensort.Utils.Types (SortAlg, Sortable (..), SupersortStrat)
 
-supersort :: Sortable -> (SortAlg, SortAlg, SortAlg, SupersortStrat) -> Sortable
-supersort xs (subAlg1, subAlg2, subAlg3, superStrat) = do
+supersort :: (SortAlg, SortAlg, SortAlg, SupersortStrat) -> Sortable -> Sortable
+supersort (subAlg1, subAlg2, subAlg3, superStrat) xs = do
   let result1 = subAlg1 xs
   let result2 = subAlg2 xs
   if result1 == result2
@@ -36,7 +36,7 @@ mundaneSuperStrat (SortRec result1, SortRec result2, SortRec result3) = do
           if last result2 == last result3
             then SortRec result2
             else SortRec result1
-mundaneSuperStrat (_, _, _) = error "All three inputs must be of the same type."
+mundaneSuperStrat (_, _, _) = error "From Mundane SuperStrat: All three inputs must be of the same type."
 
 magicSuperStrat :: SupersortStrat
 magicSuperStrat (SortBit result1, SortBit result2, SortBit result3) = do
@@ -53,4 +53,4 @@ magicSuperStrat (SortRec result1, SortRec result2, SortRec result3) = do
       if last result1 == last result2
         then SortRec result1
         else SortRec result3
-magicSuperStrat (_, _, _) = error "All three inputs must be of the same type."
+magicSuperStrat (_, _, _) = error "From Magic SuperStrat: All three inputs must be of the same type."
