@@ -25,7 +25,8 @@ code as well.
 - [Introduction](#introduction)
   - [Inspiration](#inspiration)
   - [Why?](#why)
-  - [But why would anyone care about this in the first place?](#but-why-would-anyone-care-about-this-in-the-first-place)
+  - [But why would anyone care about this in the first place?
+    ](#but-why-would-anyone-care-about-this-in-the-first-place)
   - [Why Haskell?](#why-haskell)
 - [Project structure](#project-structure)
 - [Algorithms overview](#algorithms-overview)
@@ -64,7 +65,8 @@ code as well.
 
 ### Why?
 
-Because near the end of [that podcast episode](https://futureofcoding.org/episodes/070), 
+Because near the end of [that podcast episode
+](https://futureofcoding.org/episodes/070), 
 [Ivan](https://github.com/ivanreese) said "Why are we comparing Bubblesort 
 versus Quicksort and Mergesort? Well, because no one's made Robustsort yet."
 
@@ -93,13 +95,15 @@ non-deterministic), it can be helpful to have systems in place to make sure
 that the answer we come to is really valid.
 
 Incidentally, while I was preparing for this project, we experienced 
-[the strongest solar storm to reach Earth in 2 decades](https://science.nasa.gov/science-research/heliophysics/how-nasa-tracked-the-most-intense-solar-storm-in-decades/). 
+[the strongest solar storm to reach Earth in 2 decades
+](https://science.nasa.gov/science-research/heliophysics/how-nasa-tracked-the-most-intense-solar-storm-in-decades/). 
 I don't know for certain whether the solar activity caused any computer errors, 
-but we had some anomalies at work and certainly joked about them being caused by
-the Sun.
+but we had some anomalies at work and certainly joked about them being caused 
+by the Sun.
 
 Also during the same period, 
-[one of the Internet's root-servers glitched out for unexplained reasons](https://arstechnica.com/security/2024/05/dns-glitch-that-threatened-internet-stability-fixed-cause-remains-unclear/).
+[one of the Internet's root-servers glitched out for unexplained reasons
+](https://arstechnica.com/security/2024/05/dns-glitch-that-threatened-internet-stability-fixed-cause-remains-unclear/).
 
 As Ackley mentions, as a culture we have tended to prioritize correctness and 
 efficiency to the exclusion of robustness. The rate of our technological 
@@ -107,13 +111,24 @@ progression precludes us from continuing to do so.
 
 ### Why Haskell?
 
-[Obviously](https://www.youtube.com/shorts/LGZKXZQeEBg).
+1. Tensort can involve a lot of recursion, which Haskell handles well
+
+2. All the other benefits we get with using a purely functional language, such 
+as strict dependency management, which 
+[even the smartest of us](http://livingcomputation.com/robusort2.tar) sometimes 
+falter without:
+
+  ![Comment from Ackley in the Beyond Efficiency code about Perl updates 
+  breaking their code](./assets/images/ackley_deps.png)
+
+3. [Obviously](https://www.youtube.com/shorts/LGZKXZQeEBg)
 
 ## Project structure
 
 - `src/` contains the Tensort library
     
-- `app/` contains the suite for comparing different sorting algorithms in terms of robustness and time efficiency
+- `app/` contains the suite for comparing different sorting algorithms in terms
+of robustness and time efficiency
 
 ## Algorithms overview
 
@@ -185,13 +200,15 @@ fear not!
     
   - Register <- List of Records referencing each Byte or Tensor in Memory
     
-  - Record <- Tuple of the Address and the TopBit of the referenced Byte or Tensor
+  - Record <- Tuple of the Address and the TopBit of the referenced Byte or 
+  Tensor
     
   - Address <- Pointer to a Byte or Tensor in Memory
     
   - TopBit <- Value of the Bit at the top of the stack in a Byte or Tensor
 
-  - TensorStack <- A top-level Tensor along with all the Bits, Bytes, and Tensors it contains
+  - TensorStack <- A top-level Tensor along with all the Bits, Bytes, and 
+  Tensors it contains
     
   - SubAlgorithm <- The sorting sub-algorithm used at various stages
 
@@ -236,21 +253,22 @@ to make mistakes when the list is already nearly sorted.
   1. Randomize the input list of elements (Bits)
 
   2. Assemble Bytes by sorting the Bits using the SubAlgorithm. After this, we 
-    will do no more write operations on the Bits until the final steps. Instead, we 
-    will make copies of the Bits and sort the copies alongside their pointers.
+    will do no more write operations on the Bits until the final steps. 
+    Instead, we will make copies of the Bits and sort the copies alongside 
+    their pointers.
 
   3. Assemble TensorStacks by creating Tensors from the Bytes. Tensors are 
     created by grouping Bytes together (setting them as the Tensor's 
-    second element), making Records from their top bits, sorting the records, and 
-    then recording the Pointers from the Records (after being sorted) as the 
-    Tensor's first element.
+    second element), making Records from their top bits, sorting the records, 
+    and then recording the Pointers from the Records (after being sorted) as 
+    the Tensor's first element.
 
   4. Reduce the number of TensorStacks by creating a new layer of Tensors from 
     the Tensors created in Step 3. These new Tensors are created by grouping 
     the first layer of Tensors together (setting them as the new Tensor's 
-    second element), making Records from their top Bits, sorting the Records, and 
-    then recording the Pointers from the Records 
-    (after being sorted) as the Tensor's first element.
+    second element), making Records from their top Bits, sorting the Records, 
+    and then recording the Pointers from the Records (after being sorted) as 
+    the Tensor's first element.
 
   5. Continue in the same manner as in Step 4 until the number of TensorStacks 
     equals the Bytesize
@@ -774,7 +792,8 @@ Note that these instructions don't make the assumptions listed above
 
   * [Install Nix](https://nixos.org/download/)
   * [Enable Flakes](https://nixos.wiki/wiki/Flakes)
-  * [Clone this repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
+  * [Clone this repository
+    ](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
   * Run `nix develop` in the repository root 
 
 ### Run main test suite (QuickCheck)
