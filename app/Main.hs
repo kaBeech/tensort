@@ -76,7 +76,8 @@ main :: IO ()
 main = do
   -- printErrorRateComparison 1000
   -- Eventually I hope to turn that 14 into a 20
-  printTimes (map (\x -> (genUnsortedBits (genTestPeriod x), 143)) [3 .. 14])
+  -- printTimes (map (\x -> (genUnsortedBits (genTestPeriod x), 143)) [3 .. 14])
+  printErrorSpread 1000
 
 printTimes :: [(Sortable, Int)] -> IO ()
 printTimes [] = return ()
@@ -122,6 +123,49 @@ sortAlgsCompared =
     (robustsortRM, "RobustsortRM")
   ]
 
+printErrorSpread :: Int -> IO ()
+printErrorSpread i = foldr acc (return ()) sortAlgsCompared
+  where
+    acc sortAlg io = do
+      _ <- io
+      printErrorSpreadForAlg i sortAlg
+
+printErrorSpreadForAlg :: Int -> (WonkyState -> Sortable -> (Sortable, WonkyState), String) -> IO ()
+printErrorSpreadForAlg i (sortAlg, sortName) = do
+  putStrLn (sortName ++ " Error Spread")
+  putStrLn "-------------------------"
+  let (oneTwoThree, oneThreeTwo, twoOneThree, twoThreeOne, threeOneTwo, threeTwoOne) = getErrorSpread (0, 0, 0, 0, 0, 0) [1 .. i] sortAlg
+  putStrLn ("123: " ++ show oneTwoThree)
+  putStrLn ("132: " ++ show oneThreeTwo)
+  putStrLn ("213: " ++ show twoOneThree)
+  putStrLn ("231: " ++ show twoThreeOne)
+  putStrLn ("312: " ++ show threeOneTwo)
+  putStrLn ("321: " ++ show threeTwoOne)
+  putStrLn ""
+
+getErrorSpread :: (Int, Int, Int, Int, Int, Int) -> [Int] -> (WonkyState -> Sortable -> (Sortable, WonkyState)) -> (Int, Int, Int, Int, Int, Int)
+getErrorSpread errorSpread [] _ = errorSpread
+getErrorSpread errorSpread (x : xs) sortAlg = do
+  let (oneTwoThree, oneThreeTwo, twoOneThree, twoThreeOne, threeOneTwo, threeTwoOne) = getErrorSpread errorSpread xs sortAlg
+  let l = randomizeList x (SortBit [1 .. 3])
+  let wonkySt = WonkyState {wonkyChance = 10, stuckChance = 0, previousAnswer = 0, stdGen = mkStdGen x}
+  let result = fst (sortAlg wonkySt l)
+  if result == SortBit [1, 2, 3]
+    then (oneTwoThree + 1, oneThreeTwo, twoOneThree, twoThreeOne, threeOneTwo, threeTwoOne)
+    else
+      if result == SortBit [1, 3, 2]
+        then (oneTwoThree, oneThreeTwo + 1, twoOneThree, twoThreeOne, threeOneTwo, threeTwoOne)
+        else
+          if result == SortBit [2, 1, 3]
+            then (oneTwoThree, oneThreeTwo, twoOneThree + 1, twoThreeOne, threeOneTwo, threeTwoOne)
+            else
+              if result == SortBit [2, 3, 1]
+                then (oneTwoThree, oneThreeTwo, twoOneThree, twoThreeOne + 1, threeOneTwo, threeTwoOne)
+                else
+                  if result == SortBit [3, 1, 2]
+                    then (oneTwoThree, oneThreeTwo, twoOneThree, twoThreeOne, threeOneTwo + 1, threeTwoOne)
+                    else (oneTwoThree, oneThreeTwo, twoOneThree, twoThreeOne, threeOneTwo, threeTwoOne)
+
 printErrorRateComparison :: Int -> IO ()
 printErrorRateComparison i = foldr acc (return ()) sortAlgsCompared
   where
@@ -130,8 +174,7 @@ printErrorRateComparison i = foldr acc (return ()) sortAlgsCompared
       printErrorRateComparisonForAlg i sortAlg
 
 printErrorRateComparisonForAlg :: Int -> (WonkyState -> Sortable -> (Sortable, WonkyState), String) -> IO ()
-printErrorRateComparisonForAlg i (sortAlg, sortName) = do
-  putStrLn (padOut (sortName ++ " Errors: ") 24 ++ show (getTotalErrorsScore i sortAlg))
+printErrorRateComparisonForAlg i (sortAlg, sortName) = putStrLn (padOut (sortName ++ " Errors: ") 24 ++ show (getTotalErrorsScore i sortAlg))
 
 getTotalErrorsScore :: Int -> (WonkyState -> Sortable -> (Sortable, WonkyState)) -> Int
 getTotalErrorsScore i sortAlg = foldr acc 0 [1 .. i]
