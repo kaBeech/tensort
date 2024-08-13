@@ -75,9 +75,9 @@ composeResultString sortName startTime endTime result = do
 main :: IO ()
 main = do
   -- printErrorRateComparison 1000
+  -- printErrorSpread 100000
   -- Eventually I hope to turn that 14 into a 20
-  -- printTimes (map (\x -> (genUnsortedBits (genTestPeriod x), 143)) [3 .. 14])
-  printErrorSpread 1000
+  printTimes (map (\x -> (genUnsortedBits (genTestPeriod x), 143)) [3 .. 14])
 
 printTimes :: [(Sortable, Int)] -> IO ()
 printTimes [] = return ()
@@ -109,7 +109,6 @@ printTime (l, seed) = do
 sortAlgsCompared :: [(WonkyState -> Sortable -> (Sortable, WonkyState), String)]
 sortAlgsCompared =
   [ (bubblesort, "Bubblesort"),
-    (exchangesort, "Exchangesort"),
     (mergesort, "Mergesort"),
     (quicksort, "Quicksort"),
     (bogosort, "Bogosort"),
@@ -120,7 +119,8 @@ sortAlgsCompared =
     (supersortM, "SupersortM"),
     (robustsortP, "RobustsortP"),
     (robustsortB, "RobustsortB"),
-    (robustsortRM, "RobustsortRM")
+    (robustsortRM, "RobustsortRM"),
+    (exchangesort, "Exchangesort")
   ]
 
 printErrorSpread :: Int -> IO ()
@@ -147,7 +147,7 @@ getErrorSpread :: (Int, Int, Int, Int, Int, Int) -> [Int] -> (WonkyState -> Sort
 getErrorSpread errorSpread [] _ = errorSpread
 getErrorSpread errorSpread (x : xs) sortAlg = do
   let (oneTwoThree, oneThreeTwo, twoOneThree, twoThreeOne, threeOneTwo, threeTwoOne) = getErrorSpread errorSpread xs sortAlg
-  let l = randomizeList x (SortBit [1 .. 3])
+  let l = randomizeList x (SortBit [1, 2, 3])
   let wonkySt = WonkyState {wonkyChance = 10, stuckChance = 0, previousAnswer = 0, stdGen = mkStdGen x}
   let result = fst (sortAlg wonkySt l)
   if result == SortBit [1, 2, 3]
@@ -164,7 +164,10 @@ getErrorSpread errorSpread (x : xs) sortAlg = do
                 else
                   if result == SortBit [3, 1, 2]
                     then (oneTwoThree, oneThreeTwo, twoOneThree, twoThreeOne, threeOneTwo + 1, threeTwoOne)
-                    else (oneTwoThree, oneThreeTwo, twoOneThree, twoThreeOne, threeOneTwo, threeTwoOne)
+                    else
+                      if result == SortBit [3, 2, 1]
+                        then (oneTwoThree, oneThreeTwo, twoOneThree, twoThreeOne, threeOneTwo, threeTwoOne + 1)
+                        else error ("From getErrorSpread: Unrecognized result: " ++ show result)
 
 printErrorRateComparison :: Int -> IO ()
 printErrorRateComparison i = foldr acc (return ()) sortAlgsCompared
