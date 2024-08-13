@@ -1,16 +1,46 @@
 module Data.Tensort.OtherSorts.Quicksort (quicksort) where
 
-import Data.Tensort.Utils.ComparisonFunctions (greaterThanBit, greaterThanRecord, lessThanOrEqualBit, lessThanOrEqualRecord)
-import Data.Tensort.Utils.Types (Sortable (..), fromSortBit, fromSortRec)
+import Data.Tensort.Utils.ComparisonFunctions (greaterThanBit, greaterThanRecord)
+import Data.Tensort.Utils.Types (Bit, Record, Sortable (..))
 
 quicksort :: Sortable -> Sortable
 quicksort (SortBit []) = SortBit []
-quicksort (SortBit (x : xs)) =
-  let lowerPartition = quicksort (SortBit [a | a <- xs, lessThanOrEqualBit a x])
-      upperPartition = quicksort (SortBit [a | a <- xs, greaterThanBit a x])
-   in SortBit (fromSortBit lowerPartition ++ [x] ++ fromSortBit upperPartition)
+quicksort (SortBit [x]) = SortBit [x]
+quicksort (SortBit xs) = SortBit (quicksortBits xs)
 quicksort (SortRec []) = SortRec []
-quicksort (SortRec (x : xs)) =
-  let lowerPartition = quicksort (SortRec [a | a <- xs, lessThanOrEqualRecord a x])
-      upperPartition = quicksort (SortRec [a | a <- xs, greaterThanRecord a x])
-   in SortRec (fromSortRec lowerPartition ++ [x] ++ fromSortRec upperPartition)
+quicksort (SortRec [x]) = SortRec [x]
+quicksort (SortRec xs) = SortRec (quicksortRecs xs)
+
+quicksortBits :: [Bit] -> [Bit]
+quicksortBits [] = []
+quicksortBits [x] = [x]
+quicksortBits xs =
+  let (lower, pivot, upper) = getPartitionsBits xs
+   in quicksortBits lower ++ [pivot] ++ quicksortBits upper
+
+getPartitionsBits :: [Bit] -> ([Bit], Bit, [Bit])
+getPartitionsBits [] = error "From getPartitionsBits: empty input list"
+getPartitionsBits [x] = ([], x, [])
+getPartitionsBits (x : xs) = foldr acc ([], x, []) xs
+  where
+    acc :: Bit -> ([Bit], Bit, [Bit]) -> ([Bit], Bit, [Bit])
+    acc y (lower, pivot, upper)
+      | greaterThanBit y pivot = (lower, pivot, y : upper)
+      | otherwise = (y : lower, pivot, upper)
+
+quicksortRecs :: [Record] -> [Record]
+quicksortRecs [] = []
+quicksortRecs [x] = [x]
+quicksortRecs xs =
+  let (lower, pivot, upper) = getPartitionsRecs xs
+   in quicksortRecs lower ++ [pivot] ++ quicksortRecs upper
+
+getPartitionsRecs :: [Record] -> ([Record], Record, [Record])
+getPartitionsRecs [] = error "From getPartitionsRecs: empty input list"
+getPartitionsRecs [x] = ([], x, [])
+getPartitionsRecs (x : xs) = foldr acc ([], x, []) xs
+  where
+    acc :: Record -> ([Record], Record, [Record]) -> ([Record], Record, [Record])
+    acc y (lower, pivot, upper)
+      | greaterThanRecord y pivot = (lower, pivot, y : upper)
+      | otherwise = (y : lower, pivot, upper)
