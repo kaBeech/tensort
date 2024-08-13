@@ -3,11 +3,11 @@ module Data.Tensort.OtherSorts.Mergesort (mergesort) where
 import Data.Tensort.Utils.ComparisonFunctions (lessThanBit, lessThanRecord)
 import Data.Tensort.Utils.Types (Bit, Record, Sortable (..), WonkyState)
 
-mergesort :: Sortable -> WonkyState -> (Sortable, WonkyState)
-mergesort (SortBit xs) wonkySt = do
+mergesort :: WonkyState -> Sortable -> (Sortable, WonkyState)
+mergesort wonkySt (SortBit xs) = do
   let (result, wonkySt') = mergesortBits xs wonkySt
   (SortBit result, wonkySt')
-mergesort (SortRec xs) wonkySt = do
+mergesort wonkySt (SortRec xs) = do
   let (result, wonkySt') = mergesortRecs xs wonkySt
   (SortRec result, wonkySt')
 

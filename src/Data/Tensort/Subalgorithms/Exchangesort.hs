@@ -3,36 +3,36 @@ module Data.Tensort.Subalgorithms.Exchangesort (exchangesort) where
 import Data.Tensort.Utils.ComparisonFunctions (greaterThanBit, greaterThanRecord)
 import Data.Tensort.Utils.Types (Sortable (..), WonkyState)
 
-exchangesort :: Sortable -> WonkyState -> (Sortable, WonkyState)
-exchangesort (SortBit bits) wonkySt = do
-  let (result, wonkySt') = exchangesortIterable bits (length bits - 1) (length bits - 2) greaterThanBit wonkySt
+exchangesort :: WonkyState -> Sortable -> (Sortable, WonkyState)
+exchangesort wonkySt (SortBit bits) = do
+  let (result, wonkySt') = exchangesortIterable greaterThanBit wonkySt bits (length bits - 1) (length bits - 2)
   (SortBit result, wonkySt')
-exchangesort (SortRec recs) wonkySt = do
-  let (result, wonkySt') = exchangesortIterable recs (length recs - 1) (length recs - 2) greaterThanRecord wonkySt
+exchangesort wonkySt (SortRec recs) = do
+  let (result, wonkySt') = exchangesortIterable greaterThanRecord wonkySt recs (length recs - 1) (length recs - 2)
   (SortRec result, wonkySt')
 
-exchangesortIterable :: [a] -> Int -> Int -> (a -> a -> WonkyState -> (Bool, WonkyState)) -> WonkyState -> ([a], WonkyState)
-exchangesortIterable xs i j greaterThan wonkySt = do
+exchangesortIterable :: (a -> a -> WonkyState -> (Bool, WonkyState)) -> WonkyState -> [a] -> Int -> Int -> ([a], WonkyState)
+exchangesortIterable greaterThan wonkySt xs i j = do
   if i < 0
     then (xs, wonkySt)
     else
       if j < 0
-        then exchangesortIterable xs (i - 1) (length xs - 1) greaterThan wonkySt
+        then exchangesortIterable greaterThan wonkySt xs (i - 1) (length xs - 1)
         else
           if i > j
             then do
               let (firstElemGreater, wonkySt') = greaterThan (xs !! j) (xs !! i) wonkySt
               if firstElemGreater
-                then exchangesortIterable (swap xs i j) i (j - 1) greaterThan wonkySt'
-                else exchangesortIterable xs i (j - 1) greaterThan wonkySt
+                then exchangesortIterable greaterThan wonkySt' (swap xs i j) i (j - 1)
+                else exchangesortIterable greaterThan wonkySt xs i (j - 1)
             else
               if j > i
                 then do
                   let (firstElemGreater, wonkySt') = greaterThan (xs !! i) (xs !! j) wonkySt
                   if firstElemGreater
-                    then exchangesortIterable (swap xs i j) i (j - 1) greaterThan wonkySt'
-                    else exchangesortIterable xs i (j - 1) greaterThan wonkySt'
-                else exchangesortIterable xs i (j - 1) greaterThan wonkySt
+                    then exchangesortIterable greaterThan wonkySt' (swap xs i j) i (j - 1)
+                    else exchangesortIterable greaterThan wonkySt' xs i (j - 1)
+                else exchangesortIterable greaterThan wonkySt xs i (j - 1)
 
 swap :: [a] -> Int -> Int -> [a]
 swap xs i j = do

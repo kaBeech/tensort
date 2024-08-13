@@ -7,14 +7,14 @@ where
 
 import Data.Tensort.Utils.Types (SortAlg, Sortable (..), SupersortStrat, WonkyState)
 
-supersort :: Sortable -> (SortAlg, SortAlg, SortAlg, SupersortStrat) -> WonkyState -> (Sortable, WonkyState)
-supersort xs (subAlg1, subAlg2, subAlg3, superStrat) wonkySt = do
-  let (result1, _) = subAlg1 xs wonkySt
-  let (result2, wonkySt') = subAlg2 xs wonkySt
+supersort :: (SortAlg, SortAlg, SortAlg, SupersortStrat) -> WonkyState -> Sortable -> (Sortable, WonkyState)
+supersort (subAlg1, subAlg2, subAlg3, superStrat) wonkySt xs = do
+  let (result1, _) = subAlg1 wonkySt xs
+  let (result2, wonkySt') = subAlg2 wonkySt xs
   if result1 == result2
     then (result1, wonkySt')
     else do
-      let (result3, wonkySt'') = subAlg3 xs wonkySt'
+      let (result3, wonkySt'') = subAlg3 wonkySt' xs
       (superStrat (result1, result2, result3), wonkySt'')
 
 mundaneSuperStrat :: SupersortStrat
@@ -38,7 +38,7 @@ mundaneSuperStrat (SortRec result1, SortRec result2, SortRec result3) = do
           if last result2 == last result3
             then SortRec result2
             else SortRec result1
-mundaneSuperStrat (_, _, _) = error "All three inputs must be of the same type."
+mundaneSuperStrat (_, _, _) = error "From Mundane SuperStrat: All three inputs must be of the same type."
 
 magicSuperStrat :: SupersortStrat
 magicSuperStrat (SortBit result1, SortBit result2, SortBit result3) = do
@@ -55,4 +55,4 @@ magicSuperStrat (SortRec result1, SortRec result2, SortRec result3) = do
       if last result1 == last result2
         then SortRec result1
         else SortRec result3
-magicSuperStrat (_, _, _) = error "All three inputs must be of the same type."
+magicSuperStrat (_, _, _) = error "From Magic SuperStrat: All three inputs must be of the same type."

@@ -6,6 +6,7 @@ import Data.Tensort.Robustsort
   ( robustsortB,
     robustsortM,
     robustsortP,
+    robustsortRM,
     supersortB,
     supersortM,
     supersortP,
@@ -18,12 +19,12 @@ import Data.Tensort.Subalgorithms.Permutationsort (permutationsort)
 import Data.Tensort.Tensort (tensortB4, tensortBL)
 import Data.Tensort.Utils.RandomizeList (randomizeList)
 import Data.Tensort.Utils.Score (getTotalPositionalErrors)
-import Data.Tensort.Utils.Types (Bit, SortAlg, Sortable (..), WonkyState (..), fromSortBit)
+import Data.Tensort.Utils.Types (SortAlg, Sortable (..), WonkyState (..), fromSortBit)
 import Data.Time.Clock
 import System.Random (mkStdGen)
 
 genUnsortedBits :: Int -> Sortable
-genUnsortedBits n = randomizeList (SortBit [1 .. n]) 143
+genUnsortedBits n = randomizeList 143 (SortBit [1 .. n])
 
 genTestPeriod :: Int -> Int
 genTestPeriod n = 2 ^ n
@@ -42,16 +43,16 @@ getCurrentTimeArg i = do
 printResultSortable :: String -> Sortable -> SortAlg -> WonkyState -> IO ()
 printResultSortable sortName l sortAlg wonkySt = do
   startTime <- getCurrentTime
-  let result = fst (sortAlg l wonkySt)
+  let result = fst (sortAlg wonkySt l)
   endTime <- getCurrentTimeArg (length (fromSortBit result))
   composeResultString sortName startTime endTime result
 
-printResultBits :: String -> Sortable -> ([Bit] -> WonkyState -> ([Bit], WonkyState)) -> WonkyState -> IO ()
+printResultBits :: String -> Sortable -> SortAlg -> WonkyState -> IO ()
 printResultBits sortName l sortAlg wonkySt = do
   startTime <- getCurrentTime
-  let result = fst (sortAlg (fromSortBit l) wonkySt)
-  endTime <- getCurrentTimeArg (head result)
-  composeResultString sortName startTime endTime (SortBit result)
+  let result = fst (sortAlg wonkySt l)
+  endTime <- getCurrentTimeArg (head (fromSortBit result))
+  composeResultString sortName startTime endTime result
 
 composeResultString :: String -> UTCTime -> UTCTime -> Sortable -> IO ()
 composeResultString sortName startTime endTime result = do
@@ -96,7 +97,7 @@ printTime (l, seed) = do
   printResultSortable "Bubblesort" l bubblesort wonkySt
   putStrLn "----------------------------------------------------------"
 
-sortAlgsCompared :: [(Sortable -> WonkyState -> (Sortable, WonkyState), String)]
+sortAlgsCompared :: [(WonkyState -> Sortable -> (Sortable, WonkyState), String)]
 sortAlgsCompared =
   [ (bubblesort, "Bubblesort"),
     (exchangesort, "Exchangesort"),
@@ -107,7 +108,8 @@ sortAlgsCompared =
     (magicsort, "Magicsort"),
     (supersortP, "SupersortP"),
     (supersortB, "SupersortB"),
-    (supersortM, "SupersortM")
+    (supersortM, "SupersortM"),
+    (robustsortRM, "RobustsortRM")
   ]
 
 printErrorRateComparison :: Int -> IO ()
@@ -117,16 +119,16 @@ printErrorRateComparison i = foldr acc (return ()) sortAlgsCompared
       _ <- io
       printErrorRateComparisonForAlg i sortAlg
 
-printErrorRateComparisonForAlg :: Int -> (Sortable -> WonkyState -> (Sortable, WonkyState), String) -> IO ()
+printErrorRateComparisonForAlg :: Int -> (WonkyState -> Sortable -> (Sortable, WonkyState), String) -> IO ()
 printErrorRateComparisonForAlg i (sortAlg, sortName) = do
   putStrLn (padOut (sortName ++ " Errors: ") 24 ++ show (getTotalErrorsScore i sortAlg))
 
-getTotalErrorsScore :: Int -> (Sortable -> WonkyState -> (Sortable, WonkyState)) -> Int
+getTotalErrorsScore :: Int -> (WonkyState -> Sortable -> (Sortable, WonkyState)) -> Int
 getTotalErrorsScore i sortAlg = foldr acc 0 [1 .. i]
   where
     acc x totalScore = do
-      let l = randomizeList (SortBit [1 .. 3]) x
+      let l = randomizeList x (SortBit [1 .. 3])
       let wonkySt = WonkyState {wonkyChance = 10, stuckChance = 0, previousAnswer = 0, stdGen = mkStdGen x}
-      let result = fst (sortAlg l wonkySt)
+      let result = fst (sortAlg wonkySt l)
       let roundScore = getTotalPositionalErrors (fromSortBit result)
       totalScore + roundScore

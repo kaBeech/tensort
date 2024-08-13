@@ -3,18 +3,18 @@ module Data.Tensort.OtherSorts.Quicksort (quicksort) where
 import Data.Tensort.Utils.ComparisonFunctions (lessThanOrEqualBit, lessThanOrEqualRecord)
 import Data.Tensort.Utils.Types (Bit, Record, Sortable (..), WonkyState, fromSortBit, fromSortRec)
 
-quicksort :: Sortable -> WonkyState -> (Sortable, WonkyState)
-quicksort (SortBit []) wonkySt = (SortBit [], wonkySt)
-quicksort (SortBit (x : xs)) wonkySt = do
+quicksort :: WonkyState -> Sortable -> (Sortable, WonkyState)
+quicksort wonkySt (SortBit []) = (SortBit [], wonkySt)
+quicksort wonkySt (SortBit (x : xs)) = do
   let (lowerPartition, x', upperPartition, wonkySt') = partitionBits xs x wonkySt
-  let (lowerPartitionSorted, wonkySt'') = quicksort (SortBit lowerPartition) wonkySt'
-  let (upperPartitionSorted, wonkySt''') = quicksort (SortBit upperPartition) wonkySt''
+  let (lowerPartitionSorted, wonkySt'') = quicksort wonkySt' (SortBit lowerPartition)
+  let (upperPartitionSorted, wonkySt''') = quicksort wonkySt'' (SortBit upperPartition)
   (SortBit (fromSortBit lowerPartitionSorted ++ [x'] ++ fromSortBit upperPartitionSorted), wonkySt''')
-quicksort (SortRec []) wonkySt = (SortRec [], wonkySt)
-quicksort (SortRec (x : xs)) wonkySt = do
+quicksort wonkySt (SortRec []) = (SortRec [], wonkySt)
+quicksort wonkySt (SortRec (x : xs)) = do
   let (lowerPartition, x', upperPartition, wonkySt') = partitionRecords xs x wonkySt
-  let (lowerPartitionSorted, wonkySt'') = quicksort (SortRec lowerPartition) wonkySt'
-  let (upperPartitionSorted, wonkySt''') = quicksort (SortRec upperPartition) wonkySt''
+  let (lowerPartitionSorted, wonkySt'') = quicksort wonkySt' (SortRec lowerPartition)
+  let (upperPartitionSorted, wonkySt''') = quicksort wonkySt'' (SortRec upperPartition)
   (SortRec (fromSortRec lowerPartitionSorted ++ [x'] ++ fromSortRec upperPartitionSorted), wonkySt''')
 
 partitionBits :: [Bit] -> Bit -> WonkyState -> ([Bit], Bit, [Bit], WonkyState)

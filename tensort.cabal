@@ -119,6 +119,7 @@ library
                       Data.Tensort.Utils.Compose,
                       Data.Tensort.Utils.Reduce,
                       Data.Tensort.Utils.Render,
+                      Data.Tensort.Utils.SimplifyRegister,
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:

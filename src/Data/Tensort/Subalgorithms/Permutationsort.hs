@@ -4,14 +4,14 @@ import Data.List (permutations)
 import Data.Tensort.Utils.Check (isSorted)
 import Data.Tensort.Utils.Types (Bit, Record, Sortable (..), WonkyState)
 
-permutationsort :: Sortable -> WonkyState -> (Sortable, WonkyState)
-permutationsort (SortBit bits) wonkySt = do
+permutationsort :: WonkyState -> Sortable -> (Sortable, WonkyState)
+permutationsort wonkySt (SortBit bits) = do
   let initPermutations = permutations bits
   let (result, wonkySt') = permutationsortBits initPermutations wonkySt
   if null result
     then (SortBit bits, wonkySt')
     else (SortBit result, wonkySt')
-permutationsort (SortRec recs) wonkySt = do
+permutationsort wonkySt (SortRec recs) = do
   let initPermutations = permutations recs
   let (result, wonkySt') = permutationsortRecords initPermutations wonkySt
   if null result

@@ -5,6 +5,10 @@ module Data.Tensort.Robustsort
     supersortP,
     supersortB,
     supersortM,
+    robustsortRCustom,
+    robustsortRP,
+    robustsortRB,
+    robustsortRM,
   )
 where
 
@@ -13,25 +17,65 @@ import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 import Data.Tensort.Subalgorithms.Exchangesort (exchangesort)
 import Data.Tensort.Subalgorithms.Magicsort (magicsort)
 import Data.Tensort.Subalgorithms.Permutationsort (permutationsort)
-import Data.Tensort.Subalgorithms.Supersort (magicSuperStrat, mundaneSuperStrat, supersort)
+import Data.Tensort.Subalgorithms.Supersort
+  ( magicSuperStrat,
+    mundaneSuperStrat,
+    supersort,
+  )
 import Data.Tensort.Tensort (tensort)
 import Data.Tensort.Utils.MkTsProps (mkTsProps)
-import Data.Tensort.Utils.Types (Bit, Sortable, WonkyState)
+import Data.Tensort.Utils.Types (SortAlg, Sortable, WonkyState, fromSortBit)
 
-robustsortP :: [Bit] -> WonkyState -> ([Bit], WonkyState)
-robustsortP xs wonkySt = tensort xs (mkTsProps 3 supersortP) wonkySt
+robustsortRP :: WonkyState -> Sortable -> (Sortable, WonkyState)
+robustsortRP = robustsortRCustom robustsortP
 
-supersortP :: Sortable -> WonkyState -> (Sortable, WonkyState)
-supersortP xs wonkySt = supersort xs (bubblesort, exchangesort, permutationsort, mundaneSuperStrat) wonkySt
+robustsortP :: WonkyState -> Sortable -> (Sortable, WonkyState)
+robustsortP = tensort (mkTsProps 3 supersortP)
 
-robustsortB :: [Bit] -> WonkyState -> ([Bit], WonkyState)
-robustsortB xs wonkySt = tensort xs (mkTsProps 3 supersortB) wonkySt
+supersortP :: WonkyState -> Sortable -> (Sortable, WonkyState)
+supersortP =
+  supersort
+    ( bubblesort,
+      exchangesort,
+      permutationsort,
+      mundaneSuperStrat
+    )
 
-supersortB :: Sortable -> WonkyState -> (Sortable, WonkyState)
-supersortB xs wonkySt = supersort xs (bubblesort, exchangesort, bogosort, mundaneSuperStrat) wonkySt
+robustsortRB :: WonkyState -> Sortable -> (Sortable, WonkyState)
+robustsortRB = robustsortRCustom robustsortB
 
-robustsortM :: [Bit] -> WonkyState -> ([Bit], WonkyState)
-robustsortM xs wonkySt = tensort xs (mkTsProps 3 supersortM) wonkySt
+robustsortB :: WonkyState -> Sortable -> (Sortable, WonkyState)
+robustsortB = tensort (mkTsProps 3 supersortB)
 
-supersortM :: Sortable -> WonkyState -> (Sortable, WonkyState)
-supersortM xs wonkySt = supersort xs (bubblesort, exchangesort, magicsort, magicSuperStrat) wonkySt
+supersortB :: WonkyState -> Sortable -> (Sortable, WonkyState)
+supersortB = supersort (bubblesort, exchangesort, bogosort, mundaneSuperStrat)
+
+robustsortRM :: WonkyState -> Sortable -> (Sortable, WonkyState)
+robustsortRM = robustsortRCustom robustsortM
+
+robustsortM :: WonkyState -> Sortable -> (Sortable, WonkyState)
+robustsortM = tensort (mkTsProps 3 supersortM)
+
+supersortM :: WonkyState -> Sortable -> (Sortable, WonkyState)
+supersortM = supersort (bubblesort, exchangesort, magicsort, magicSuperStrat)
+
+robustsortRCustom :: SortAlg -> WonkyState -> Sortable -> (Sortable, WonkyState)
+robustsortRCustom baseSortAlg wonkySt xs =
+  tensort
+    ( mkTsProps
+        (getLnBytesize xs)
+        (robustsortRecursive (getLnBytesize xs) baseSortAlg)
+    )
+    wonkySt
+    xs
+
+getLnBytesize :: Sortable -> Int
+getLnBytesize xs = getLn (length (fromSortBit xs))
+
+getLn :: Int -> Int
+getLn x = ceiling (log (fromIntegral x) :: Double)
+
+robustsortRecursive :: Int -> SortAlg -> SortAlg
+robustsortRecursive bytesize baseSortAlg
+  | bytesize <= 27 = baseSortAlg
+  | otherwise = tensort (mkTsProps (getLn bytesize) (robustsortRecursive (getLn bytesize) baseSortAlg))
