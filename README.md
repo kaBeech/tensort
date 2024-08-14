@@ -491,7 +491,7 @@ Exchangesort will also make an average of 6 comparisons when sorting a
 <!-- As with Bubblesort, Exchangesort will perform three iterations over a 3-element -->
 <!-- list, with the final iteration being redundant. -->
 
-Here are the results of runnitng Exchangesort 1000 times on Bytes of random 
+Here are the results of running Exchangesort 1000 times on Bytes of random 
 permutations of [1,2,3] using a faulty comparator that gives a random result 
 10% of the time:
 
@@ -507,7 +507,7 @@ permutations of [1,2,3] using a faulty comparator that gives a random result
 
     2.1% <- [3,2,1]
 
-In these results, 94,3% of the time the Top Bit was returned in the correct
+In these results, 94.3% of the time the Top Bit was returned in the correct
 position and it returned the bottom value in the top position only 2.1% of the
 time.
 
@@ -562,7 +562,7 @@ B) it uses logic that is completely different from Bubblesort and Exchangesort.
 Using different manners of reasoning to reach an agreed-upon answer greatly 
 increases the robustness of the system.
 
-Here are the results of runnitng Permutationsort 1000 times on Bytes of random 
+Here are the results of running Permutationsort 1000 times on Bytes of random 
 permutations of [1,2,3] using a faulty comparator that gives a random result 
 10% of the time:
 
@@ -682,7 +682,7 @@ algorithms are run again. This process is repeated until the two algorithms
 agree on a result.
 
 Strong-brained readers may have already deduced that Permutationsort functions
-nearly identically to Bogosort. Here are the results of runnitng Bogosort 1000 
+nearly identically to Bogosort. Here are the results of running Bogosort 1000 
 times on Bytes of random permutations of [1,2,3] using a faulty comparator that 
 gives a random result 10% of the time:
 
@@ -709,21 +709,25 @@ Magicsort is based on the notion that if you happen to pull the right
 answer out of a hat once, it might be random chance, but if you do it twice,
 it might just be magic!
 
-Given a Byte of [1,2,3], here are the approximate chances of various outcomes 
-from Magicsort using a faulty comparator that gives a random result 10% of the 
-time:
+Here are the results of running Magicsort 1000 
+times on Bytes of random permutations of [1,2,3] using a faulty comparator that 
+gives a random result 10% of the time:
 
-    ~95.27% <- [1,2,3] (Correct)
+    ~94.0% <- [1,2,3] (Correct)
 
-    ~1.18% <- [2,1,3] (Correct TopBit)
+    ~1.5% <- [2,1,3] (Correct TopBit)
 
-    ~1.18% <- [1,3,2] (Incorrect)
+    ~1.4% <- [1,3,2] (Incorrect)
 
-    ~1.18% <- [3,1,2] (Incorrect)
+    ~1.5% <- [3,1,2] (Incorrect)
 
-    ~1.18% <- [2,3,1] (Incorrect)
+    ~1.5% <- [2,3,1] (Incorrect)
 
-    ~0.02% <- [3,2,1] (Reverse)
+    ~0.1% <- [3,2,1] (Reverse)
+
+94% of the time we got the absolutely correct answer! In total, 95.5% of the 
+time we got the Top Bit in the correct position and only 1.6% of the time did
+we get the bottom value in the top position.
 
 The downside here is that Magisort can take a long time to run. I don't know 
 how many comparisons are made on average, but it's well over 14.
