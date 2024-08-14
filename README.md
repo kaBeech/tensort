@@ -490,8 +490,9 @@ Exchangesort will also make an average of 6 comparisons when sorting a
 <!-- As with Bubblesort, Exchangesort will perform three iterations over a 3-element -->
 <!-- list, with the final iteration being redundant. -->
 
-Given a Byte of [1,2,3], here are the chances of various outcomes from using a 
-faulty comparator that gives a random result 10% of the time:
+Here are the results of runnitng Exchangesort 1000 times on Bytes of random 
+permutations of [1,2,3] using a faulty comparator that gives a random result 
+10% of the time:
 
     91.8% <- [1,2,3] 
 
@@ -527,53 +528,18 @@ sorting algorithms, in our case Bubblesort and Exchangesort. If both
 algorithms agree on the result, that result is used. 
 
 Looking at our analysis on Bubblesort and Exchangesort, we can 
-approximate the chances of various outcomes when comparing the results of 
-running these two algorithms in similar conditions:
+approximate the chances of how often they will agree in similar conditions:
 
-    65.61% <- [1,2,3], [1,2,3] (Agree Correctly)
+    79.96% <- Agree Correctly
 
-    7.29% <- [1,2,3], [2,1,3] (Disagree - TopBit agrees correctly)
+    19.73% <- Disagree
 
-    7.29% <- [1,2,3], [3,2,1] (Disagree Fully)
+    0.17% <- Agree Incorrectly - TopBit correct
 
-    7.29% <- [2,1,3], [1,2,3] (Disagree - TopBit agrees correctly)
+    0.14% <- Agree Incorectly - TopBit incorrect
 
-    7.29% <- [1,3,2], [1,2,3] (Disagree Fully)
-
-    0.81% <- [2,1,3], [2,1,3] (Agree Incorrectly - TopBit correct)
-
-    0.81% <- [2,1,3], [3,2,1] (Disagree Fully)
-
-    0.81% <- [1,3,2], [2,1,3] (Disagree Fully)
-
-    0.81% <- [1,3,2], [3,2,1] (Disagree Fully)
-
-    0.09% <- [2,1,3], [3,1,2] (Disagree Fully)
-
-    0.09% <- [1,3,2], [3,1,2] (Disagree - TopBit agrees incorrectly)
-
-    0.09% <- [2,3,1], [2,1,3] (Disagree Fully)
-  
-    0.09% <- [2,3,1], [3,2,1] (Disagree - TopBit agrees incorrectly)
-
-    0.01% <- [2,3,1], [3,1,2] (Disagree Fully)
-
-In total, that makes:
-
-    65.61% <- Agree Correctly
-
-    17.2% <- Disagree Fully
-
-    14.58% <- Disagree - TopBit agrees correctly
-
-    0.81% <- Agree Incorrectly - TopBit correct
-
-    0.18% <- Disagree - TopBit agrees incorrectly
-
-    [no outcome] <- Agree with TopBit incorrect
-
-The first thing that might stand out is that around 34% of the time, these 
-sub-algorithms will disagree with each other. What happens then?
+Hey, that's pretty good! One thing that stands out is that around 20% of the 
+time, these sub-algorithms will disagree with each other. What happens then?
 
 Well, in that case we run a third sub-algorithm to compare the results with: 
 Permutationsort.
