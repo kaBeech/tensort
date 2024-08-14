@@ -806,6 +806,10 @@ Notably, it provides the following:
 
   - Magic Robustsort
 
+In the 1.0.0.0 release there will also be a wrapper around top-level 
+Tensort (Logarithmic) and Robustsort (Magic) that will allow for easy
+use without dealing with Type conversions.
+
 Check the code in `src/` or the documentation on Hackage/Hoogle
 for more details.
 
