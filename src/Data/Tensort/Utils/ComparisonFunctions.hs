@@ -5,6 +5,8 @@ module Data.Tensort.Utils.ComparisonFunctions
     greaterThanRecord,
     lessThanOrEqualBit,
     lessThanOrEqualRecord,
+    equalBit,
+    equalRecord,
   )
 where
 
@@ -53,3 +55,13 @@ lessThanOrEqualRecord :: Record -> Record -> WonkyState -> (Bool, WonkyState)
 lessThanOrEqualRecord x y wonkySt = do
   let (result, wonkySt') = wonkyCompare (snd x) (snd y) wonkySt
   (result <= 0, wonkySt')
+
+equalBit :: Bit -> Bit -> WonkyState -> (Bool, WonkyState)
+equalBit x y wonkySt = do
+  let (result, wonkySt') = wonkyCompare x y wonkySt
+  (result == 0, wonkySt')
+
+equalRecord :: Record -> Record -> WonkyState -> (Bool, WonkyState)
+equalRecord x y wonkySt = do
+  let (result, wonkySt') = wonkyCompare (snd x) (snd y) wonkySt
+  (result == 0, wonkySt')
