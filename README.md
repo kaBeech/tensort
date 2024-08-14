@@ -667,7 +667,7 @@ with another newly-named sorting algorithm: Magicsort!
 For our most robust iteration of Robustsort we will relax the requirement on
 never re-running the same deterministic sub-algorithm in one specific context.
 Magicsort is an algorithm that will re-run Permutationsort only if it disagrees 
-with an extremely reliable algorithm algorithm - one that's so good it's robust 
+with an extremely reliable algorithm - one that's so good it's robust 
 against logic itself...
 
 <!-- (image4) -->
@@ -682,8 +682,30 @@ algorithms are run again. This process is repeated until the two algorithms
 agree on a result.
 
 Strong-brained readers may have already deduced that Permutationsort functions
-nearly identically to Bogosort. Indeed, their approximate analysis results are
-the same. Magicsort is based on the idea that if you happen to pull the right 
+nearly identically to Bogosort. Here are the results of runnitng Bogosort 1000 
+times on Bytes of random permutations of [1,2,3] using a faulty comparator that 
+gives a random result 10% of the time:
+
+    81.3% <- [1,2,3]
+
+    3.0% <- [2,1,3]
+  
+    3.8% <- [3,1,2]
+
+    5.8% <- [1,3,2]
+
+    5.7% <- [2,3,1]
+
+    0.8% <- [3,2,1]
+
+In these cases, 84.3% of the time the Top Bit was in the correct position. 
+Note that even though both Bogosort and Permutationsort were ran with the same 
+random seeds, they gave slightly different results because their methodology 
+is slightly different the least likely outcome is a reverse-sorted Byte and the other 
+possible incorrect outcomes are in approximately even distribution with 
+each other.
+
+Magicsort is based on the notion that if you happen to pull the right 
 answer out of a hat once, it might be random chance, but if you do it twice,
 it might just be magic!
 
@@ -707,8 +729,9 @@ The downside here is that Magisort can take a long time to run. I don't know
 how many comparisons are made on average, but it's well over 14.
 
 Thankfully, Magicsort will only be run in our algorithm if Bubblesort and
-Exchangesort disagree on an answer. Overall the Robustsort we're building that 
-uses Magicsort will still have an average of O(n log n) time efficiency.
+Exchangesort disagree on an answer, and then only with 3 elements to sort. 
+Overall, the Robustsort we're building that uses Magicsort will still have an 
+average of O(n log n) time efficiency.
 
 #### Supersort adjudication with Magic
 
