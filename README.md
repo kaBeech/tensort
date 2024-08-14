@@ -425,27 +425,35 @@ We've said before that Bubblesort is likely to put the last element in the
 correct position. Let's examine this in the context of Bubblesorting a 
 3-element list.
 
-Our implementation of Bubblesort (which mirrors Ackley's) will perform three
-iterations over a 3-element list. After the second iteration, if everything
-goes as planned, the list will be sorted and the final iteration is an extra
-verification step. Therefore, to simplify the analysis, we will consider
-what happens with a faulty comparator during the final iteration, assuming the
-list has been correctly sorted up to that point.
+<!-- Our implementation of Bubblesort (which mirrors Ackley's) will perform three -->
+<!-- iterations over a 3-element list. After the second iteration, if everything -->
+<!-- goes as planned, the list will be sorted and the final iteration is an extra -->
+<!-- verification step. Therefore, to simplify the analysis, we will consider -->
+<!-- what happens with a faulty comparator during the final iteration, assuming the -->
+<!-- list has been correctly sorted up to that point. -->
 
-Given a Byte of [1,2,3], here are the chances of various outcomes from using a 
-faulty comparator that gives a random result 10% of the time:
+I ran Bubblesort 1000 times on Bytes of random permutations of [1,2,3] using a 
+faulty comparator that gives a random result 10% of the time. Here is how often
+each outcome was returned:
 
-    81% <- [1,2,3] (correct - no swaps made)
+    87.1% <- [1,2,3]
 
-    9% <- [2,1,3] (faulty first swap)
+    4.1% <- [1,3,2]
 
-    9% <- [1,3,2] (faulty second swap)
+    6.6% <- [2,1,3]
 
-    1% <- [2,3,1] (faulty first and second swap)
+    0.2% <- [2,3,1] 
 
-In these cases, 90% of the time the Top Bit will be in the correct position, 
-and in the other cases it will be off by one position, and in no case will the 
-Byte be reverse sorted.
+    1.8% <- [3,1,2]
+
+    0.2% <- [3,2,1]
+
+In these results, 93.7% of the time the Top Bit was returned in the correct 
+position, and the bottom value was returned in the top position only 0.4% of 
+the time.
+
+Notably, the far more likely result where the Top Bit was at the bottom was 
+[3,1,2], with [3,2,1] occurring only 0.2% of the time.
 
 #### Exchangesort
 
@@ -454,6 +462,10 @@ substantially different logic, for the sake of robustness. We do,
 however, want something similar to Bubblesort in that it compares our elements 
 multiple times. And, as mentioned above, the element that is most important to 
 our sorting is the top (biggest) element, by a large degree.
+
+In terms of the probability of different outcomes, if our algorithm returns 
+an incorrect result, we want that result to be different than what Bubblesort
+is likely to return.
 
 With these priorities in mind, the comparison algorithm we choose shall be 
 Exchangesort. If you're not familiar with this algorithm, I'd recommend
@@ -475,26 +487,38 @@ using this variation for our Exchangesort.
 Exchangesort will also make an average of 6 comparisons when sorting a
 3-element list.
 
-As with Bubblesort, Exchangesort will perform three iterations over a 3-element
-list, with the final iteration being redundant.
+<!-- As with Bubblesort, Exchangesort will perform three iterations over a 3-element -->
+<!-- list, with the final iteration being redundant. -->
 
 Given a Byte of [1,2,3], here are the chances of various outcomes from using a 
 faulty comparator that gives a random result 10% of the time:
 
-    81% <- [1,2,3] (correct - no swaps made)
+    91.8% <- [1,2,3] 
 
-    9% <- [2,1,3] (faulty first swap)
+    3.4% <- [1,3,2] 
 
-    9% <- [3,2,1] (faulty second swap)
+    2.5% <- [2,1,3]
 
-    1% <- [3,1,2] (faulty first and second swap)
+    0% <- [2,3,1]
 
-In these cases, 90% of the time the Top Bit will have the correct value. 
-Notably there is a 9% chance that the Byte will be reverse sorted, but we will 
-exploit this trait later on in the Supersort SubAlgorithm. Note also that the 
-only possible outcomes shared between this example and the Bubblesort example
-are the correct outcome and [2,1,3], which retains the TopBit with the correct 
-value.
+    0.2% <- [3,1,2]
+
+    2.1% <- [3,2,1]
+
+In these results, 94,3% of the time the Top Bit was returned in the correct
+position and it returned the bottom value in the top position only 2.1% of the
+time.
+
+In results where the Top Bit was in the
+bottom position, [3,2,1] was the most likely outcome, with [3,1,2] occurring
+only 0.2% of the time. This is opposite to what happens in Bubblesort,
+making cases in which they agree with the Top Bit in the bottom position
+very rare.
+
+Overall, there is a modest probability (about 0.14% according to these results)
+that Bubblesort and Exchangesort will agree on [1,3,2] as the result, but it is
+very unlikely that they will agree on any other result that does not have the
+Top Bit in the correct position.
 
 #### Introducing Supersort
 
