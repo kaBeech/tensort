@@ -18,7 +18,7 @@ import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 import Data.Tensort.Subalgorithms.Exchangesort (exchangesort)
 import Data.Tensort.Subalgorithms.Magicsort (magicsort)
 import Data.Tensort.Subalgorithms.Permutationsort (permutationsort)
-import Data.Tensort.Tensort (tensortB4, tensortBL)
+import Data.Tensort.Tensort (tensortBL)
 import Data.Tensort.Utils.RandomizeList (randomizeList)
 import Data.Tensort.Utils.Score (getTotalPositionalErrors)
 import Data.Tensort.Utils.Types (SortAlg, Sortable (..), WonkyState (..), fromSortBit)
@@ -90,13 +90,9 @@ printTime (l, seed) = do
   let wonkySt = WonkyState {wonkyChance = 10, stuckChance = 0, previousAnswer = 0, stdGen = mkStdGen seed}
   putStrLn (" Algorithm    | Time            | Score    | n = " ++ show (length (fromSortBit l)))
   putStrLn ""
-  printResultBits "TensortB4" l tensortB4 wonkySt
   printResultBits "TensortBL" l tensortBL wonkySt
-  printResultBits "RSortP" l robustsortP wonkySt
-  printResultBits "RSortB" l robustsortB wonkySt
-  printResultBits "RSortM" l robustsortM wonkySt
   printResultSortable "Mergesort" l mergesort wonkySt
-  printResultSortable "Quicksort" l quicksort wonkySt
+  -- printResultSortable "Quicksort" l quicksort wonkySt
   printResultSortable "Bubblesort" l bubblesort wonkySt
   printResultBits "RSortRM" l robustsortRM wonkySt
   printResultBits "RSortRB" l robustsortRB wonkySt
