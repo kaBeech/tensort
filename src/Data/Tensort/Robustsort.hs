@@ -73,10 +73,12 @@ getLn x = ceiling (log (fromIntegral x) :: Double)
 
 robustsortRecursive :: Int -> SortAlg -> SortAlg
 robustsortRecursive bytesize baseSortAlg
-  -- ln (ln (528491359)) ~= 3
-  -- So this is saying, if we have a bitesize of 528,491,359 or less, use
+  -- ln (532048240602) ~= 27
+  -- ln (27) ~= 3
+  -- 3 ^ 3 = 27
+  -- So this is saying, if we have a bitesize of 532,048,240,602 or less, use
   -- one more iteration of Tensort to sort the records. This last iteration
   -- will use the baseSortAlg (which by default is a standard version of
   -- Robustsort with a bytesize of 3) to sort its records.
-  | bytesize <= 528491359 = tensort (mkTsProps (getLn bytesize) baseSortAlg)
+  | bytesize <= 532048240602 = tensort (mkTsProps (getLn bytesize) baseSortAlg)
   | otherwise = tensort (mkTsProps (getLn bytesize) (robustsortRecursive (getLn bytesize) baseSortAlg))
