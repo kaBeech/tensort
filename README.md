@@ -733,36 +733,42 @@ The downside here is that Magisort can take a long time to run. I don't know
 how many comparisons are made on average, but it's well over 14.
 
 Thankfully, Magicsort will only be run in our algorithm if Bubblesort and
-Exchangesort disagree on an answer, and then only with 3 elements to sort. 
-Overall, the Robustsort we're building that uses Magicsort will still have an 
+Exchangesort disagree on an answer, and then only with 3 elements to sort.
+Overall, the Robustsort we're building that uses Magicsort will still have an
 average of O(n log n) time efficiency.
 
 #### Supersort adjudication with Magic
 
-Since we have replaced Permutationsort with Magicsort (which is far more robust 
+Since we have replaced Permutationsort with Magicsort (which is far more robust
 than Bubblesort or Exchangesort), we will adjust our adjudication
 within the Supersort SubAlgorithm.
 
-If Bubblesort and Exchangesort disagree, we will run Magicsort on the
-input. If Magicsort agrees with either Bubblesort or Exchangesort, we
-will use the result from Magicsort. Otherwise, if Magicsort agrees on the 
-TopBit with either Bubblesort or Exchangesort, we will use the result
-from Magicsort. Otherwise, if Bubblesort and Exchangesort agree on the
-TopBit, we will use the result from Bubblesort.
+If Bubblesort and Exchangesort disagree, instead of running Magicsort right 
+away, we check to see if they agree on the Top Bit. If they do, we run 
+Magicsort on the input and use the results from that.
 
-If no agreement is reached at this point, we abandon all logic and just use
-Magicsort.
+The reason we check to see if Bubblesort and Exchangesort agree on the Top Bit
+is that based on our results, there is only about a 0.07% chance that they will
+agree on the incorrect Top Bit while disagreeing on the total results. This is 
+due to the fact that these algorithms have only one result with a incorrect 
+Top Bit ([1,3,2]) that they both return more than 1% of the time, so one of 
+them has to return a rare result for this peculiar semi-agreement to occur.
+
+The reason that we don't check to see whether Magicsort agrees with any of the
+other algorithms is that we would end up using the results from Magicsort in 
+all pass cases and fail cases.
 
 ### A note on Robustsort and Bogosort
 
-It is perfectly valid to use Bogosort in place of Permutationsort in Robustsort's 
-standard Supersort SubAlgorithm. It may be argued that doing so is even more 
-robust, since it barely even relies on logic. Here are some considerations to
+It is perfectly valid to use Bogosort in place of Permutationsort in 
+Robustsort's standard Supersort SubAlgorithm. It may be argued that doing so is
+even more robust, since it barely even relies on logic. Here are some
+considerations to
 keep in mind:
 
-  - Permutationsort uses additional space and may take slightly longer on average 
-      due to computing all possible permutations of the input and storing them in a 
-      list.
+  - Permutationsort uses additional space and may take slightly longer on
+      average due to computing all possible permutations of the input and
+      storing them in a list.
 
   - Bogosort could theoretically run forever without returning a result, even 
       when no errors occur.
