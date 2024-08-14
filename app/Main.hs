@@ -75,7 +75,7 @@ composeResultString sortName startTime endTime result = do
 main :: IO ()
 main = do
   -- printErrorRateComparison 1000
-  -- printErrorSpread 100000
+  -- printErrorSpread 1000
   -- Eventually I hope to turn that 14 into a 20
   printTimes (map (\x -> (genUnsortedBits (genTestPeriod x), 143)) [3 .. 14])
 
@@ -92,7 +92,7 @@ printTime (l, seed) = do
   putStrLn ""
   printResultBits "TensortBL" l tensortBL wonkySt
   printResultSortable "Mergesort" l mergesort wonkySt
-  -- printResultSortable "Quicksort" l quicksort wonkySt
+  printResultSortable "Quicksort" l quicksort wonkySt
   printResultSortable "Bubblesort" l bubblesort wonkySt
   printResultBits "RSortRM" l robustsortRM wonkySt
   printResultBits "RSortRB" l robustsortRB wonkySt
@@ -105,6 +105,7 @@ printTime (l, seed) = do
 sortAlgsCompared :: [(WonkyState -> Sortable -> (Sortable, WonkyState), String)]
 sortAlgsCompared =
   [ (bubblesort, "Bubblesort"),
+    (exchangesort, "Exchangesort"),
     (mergesort, "Mergesort"),
     (quicksort, "Quicksort"),
     (bogosort, "Bogosort"),
@@ -115,8 +116,7 @@ sortAlgsCompared =
     (supersortM, "SupersortM"),
     (robustsortP, "RobustsortP"),
     (robustsortB, "RobustsortB"),
-    (robustsortRM, "RobustsortRM"),
-    (exchangesort, "Exchangesort")
+    (robustsortRM, "RobustsortRM")
   ]
 
 printErrorSpread :: Int -> IO ()
