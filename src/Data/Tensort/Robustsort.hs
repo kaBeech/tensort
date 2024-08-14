@@ -73,5 +73,5 @@ getLn x = ceiling (log (fromIntegral x) :: Double)
 
 robustsortRecursive :: Int -> SortAlg -> SortAlg
 robustsortRecursive bytesize baseSortAlg
-  | bytesize <= 27 = baseSortAlg
+  | bytesize <= 528491359 = tensort (mkTsProps (getLn bytesize) (baseSortAlg))
   | otherwise = tensort (mkTsProps (getLn bytesize) (robustsortRecursive (getLn bytesize) baseSortAlg))
