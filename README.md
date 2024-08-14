@@ -530,13 +530,13 @@ algorithms agree on the result, that result is used.
 Looking at our analysis on Bubblesort and Exchangesort, we can 
 approximate the chances of how often they will agree in similar conditions:
 
-    79.96% <- Agree Correctly
+    ~79.96% <- Agree Correctly
 
-    19.73% <- Disagree
+    ~19.73% <- Disagree
 
-    0.17% <- Agree Incorrectly - TopBit correct
+    ~0.17% <- Agree Incorrectly - TopBit correct
 
-    0.14% <- Agree Incorectly - TopBit incorrect
+    ~0.14% <- Agree Incorectly - TopBit incorrect
 
 Hey, that's pretty good! One thing that stands out is that around 20% of the 
 time, these sub-algorithms will disagree with each other. What happens then?
@@ -595,57 +595,37 @@ Permutationsort will agree on results with Bubblesort or Exchangesort.
 
 Permutationsort and Bubblesort:
 
-    ~55.62% <- [1,2,3] (Correct)
+    ~71.33% <- Agree Correctly
 
-    ~0.69% <- [2,1,3] (Correct TopBit)
+    ~28.13% <- Disagree
 
-    ~0.69% <- [1,3,2] (Incorrect)
+    ~0.30% <- Agree Incorrectly - TopBit correct
 
-    ~0.08% <- [2,3,1] (Incorrect)
+    ~0.24% <- Agree Incorectly - TopBit incorrect
 
 Permutationsort and Exchangesort:
 
-    ~55.62% <- [1,2,3] (Correct)
+    ~75.18% <- Agree Correctly
 
-    ~0.69% <- [2,1,3] (Correct TopBit)
+    ~25.44% <- Disagree
 
-    ~0.08% <- [3,1,2] (Incorrect)
+    ~0.11% <- Agree Incorrectly - TopBit correct
 
-    ~0.08% <- [3,2,1] (Reverse)
+    ~0.16% <- Agree Incorectly - TopBit incorrect
 
-As we can see, it is very unlikely that Permutationsort will agree with
-either Bubblesort or Exchangesort incorrectly. It is even less likely
-that they will do so when the TopBit is incorrect. However, there are many 
-cases in which they do not agree, so let's handle those.
+If Permutationsort agrees with either Bubblesort or Exchangesort, then it's 
+easy - just use that result!
 
-If there is no agreed-upon result between these three algorithms, we will look 
-at the top bit only.
+According to these results, Permutationsort is likely to disagree with both
+Bubblesort and Exchangesort about 7.16% of the time if all three are run 
+indepedently. In practice this will happen more often than that because in 
+order to reach the point of doing Permutationsort, either Bubblesort or 
+Exchangesort must have sorted the list incorrectly (which makes it less likely
+to agree with Permutationsort).
 
-First we check if the results from Bubblesort and Exchangesort agree on the 
-TopBit. This is because the chance is very unlikely 
-(0.18%) that they will agree on an incorrect TopBit. If they do agree, we use 
-the result from Bubblesort (as it will not return a reverse-sorted list).
+In any case, if all three algorithms disagree, use the results from Bubblesort.
 
-If they do not agree, we will check the TopBit results from Bubblesort and 
-Permutationsort. This is because it is unlikely 
-(~0.92%) that they will agree on an incorrect TopBit, and the chance of them 
-incorrectly agreeing on the highest Bit as the TopBit is even lower (~0.16%). 
-If they do agree, we use the result from Bubblesort.
-
-If they do not agree, we will check the TopBit results from Exchangesort 
-and Permutationsort. The chance that they will agree on an 
-incorrect TopBit is about 1.55%, with the chances of them incorrectly agreeing
-on the highest Bit as the TopBit also around 0.16%. If they do agree, we use
-the result from Exchangesort.
-
-If after all this adjudication we still do not have an agreed-upon result, we
-will use the result from Bubblesort.
-
-Now obviously we have made some approximations in our analysis (and I may have
-made some mistakes in my calculations), but in general I think we can conclude 
-that it is very unlikely that this Supersort process will return an incorrect 
-result, and that if an incorrect result is returned, it is very likely to still 
-have a correct TopBit.
+<!---->
 
 We now have the basic form of Robustsort: a 3-bit Tensort with a Supersort 
 adjudicating Bubblesort, Exchangesort, and Permutationsort as its
