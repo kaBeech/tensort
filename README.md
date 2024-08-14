@@ -539,11 +539,27 @@ approximate the chances of how often they will agree in similar conditions:
 
     ~0.14% <- Agree Incorectly - TopBit incorrect
 
-Hey, that's pretty good! One thing that stands out is that around 20% of the 
-time, these sub-algorithms will disagree with each other. What happens then?
+Hey, that's pretty good! If they agree, then return the results from 
+Bubblesort because if for some reason the module that compares the full Bytes
+is also faulty (outside the scope of these benchmarks), Bubblesort is less 
+likely to have a result with the bottom value set as the Top Bit.
 
-Well, in that case we run a third sub-algorithm to compare the results with: 
-Permutationsort.
+Around 20% of the time, these sub-algorithms will disagree with each other.
+What happens then?
+
+First we check to see if they agree on the Top Bit. If they do, we return the 
+results from Exchangesort, since it is more likely to have the results exactly
+correct. Otherwise, we run a third sub-algorithm to compare the results with.
+
+The reason we check to see if Bubblesort and Exchangesort agree on the Top Bit
+is that based on our results, there is only about a 0.07% chance that they will
+agree on the incorrect Top Bit while disagreeing on the total results. This is 
+due to the fact that these algorithms have only one result with a incorrect 
+Top Bit ([1,3,2]) that they both return more than 1% of the time, so one of 
+them has to return a rare result for this peculiar semi-agreement to occur.
+
+If the first two sub-algorithms don't agree on a Top Bit then we run our third 
+sub-algorithm: Permutationsort.
 
 #### Permutationsort
 
@@ -741,22 +757,13 @@ average of O(n log n) time efficiency.
 
 Since we have replaced Permutationsort with Magicsort (which is far more robust
 than Bubblesort or Exchangesort), we will adjust our adjudication
-within the Supersort SubAlgorithm.
+within the Supersort SubAlgorithm. If Bubblesort and Exchangesort don't come 
+to an agreement, we just use Magicsort.
 
-If Bubblesort and Exchangesort disagree, instead of running Magicsort right 
-away, we check to see if they agree on the Top Bit. If they do, we run 
-Magicsort on the input and use the results from that.
-
-The reason we check to see if Bubblesort and Exchangesort agree on the Top Bit
-is that based on our results, there is only about a 0.07% chance that they will
-agree on the incorrect Top Bit while disagreeing on the total results. This is 
-due to the fact that these algorithms have only one result with a incorrect 
-Top Bit ([1,3,2]) that they both return more than 1% of the time, so one of 
-them has to return a rare result for this peculiar semi-agreement to occur.
-
-The reason that we don't check to see whether Magicsort agrees with any of the
-other algorithms is that we would end up using the results from Magicsort in 
-all pass cases and fail cases.
+You might expect that we'd check to see whether Magicsort agrees with any of 
+the other algorithms before just using its results, but even if we were to 
+check we would end up using the results from Magicsort in all pass cases and 
+all fail cases.
 
 ### A note on Robustsort and Bogosort
 
