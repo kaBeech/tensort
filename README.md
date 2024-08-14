@@ -43,6 +43,7 @@ There's likely a lot of room for improvement in the code as well.
     - [Introducing Supersort](#introducing-supersort)
     - [Permutationsort](#permutationsort)
     - [Supersort Adjudication](#supersort-adjudication)
+    - [Recursion](#recursion)
   - [Magicsort](#magicsort)
     - [Supersort adjudication with Magic](#supersort-adjudication-with-magic)
   - [A note on Robustsort and Bogosort](#a-note-on-robustsort-and-bogosort)
@@ -625,16 +626,38 @@ to agree with Permutationsort).
 
 In any case, if all three algorithms disagree, use the results from Bubblesort.
 
-<!---->
+#### Recursion
 
-We now have the basic form of Robustsort: a 3-bit Tensort with a Supersort 
-adjudicating Bubblesort, Exchangesort, and Permutationsort as its
-SubAlgorithm.
+I hear you out there. You're asking "But is the trade-off of not having
+a logarithmic Bytesize worth the advantages that the 3-magic brings?"
+
+What if we could have the best of both worlds? With recursion, we can!
+
+<!-- (image3) -->
+
+Let's take our base Robustsort example above and make it recursive.
+
+First, instead of using a 3-bit Bytesize, we will use a logarithmic Bytesize.
+Then, instead of using our Supersort directly as our
+SubAlgorithm, we will use Robustsort itself to sort the records.
+
+At the base case, this Robustsort will have a Bytesize of 3. If the logarithmic 
+Bytesize of the input list is greater than 27, then the SubAlgorithm of the 
+top-level Robustsort will be a recursive Robustsort with a logarithmic 
+Bytesize.
+
+The number 27 is chosen because we want a number that has a natural log that is
+close to 3 (27's is about 3.3) and since 3 ^ 3 = 27, it is easy to sort lists 
+of 27 elements in groups of 3.
+
+We now have the basic form of Robustsort: a recursive Tensort with a 3-bit 
+base case using a Supersort adjudicating Bubblesort, Exchangesort, and 
+Permutationsort as its base SubAlgorithm.
 
 Well that's pretty cool! But I wonder... can we make this more robust, if 
 we relax the rules just a little more?
 
-<!-- (image3) -->
+<!-- (image4) -->
 
 Of course we can! And we will. To do so, we will simply replace Permutationsort
 with another newly-named sorting algorithm: Magicsort!
