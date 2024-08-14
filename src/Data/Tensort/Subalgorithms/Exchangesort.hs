@@ -4,28 +4,27 @@ import Data.Tensort.Utils.ComparisonFunctions (greaterThanBit, greaterThanRecord
 import Data.Tensort.Utils.Types (Sortable (..))
 
 exchangesort :: Sortable -> Sortable
-exchangesort (SortBit bits) = SortBit (exchangesortIterable greaterThanBit bits (length bits - 1) (length bits - 2))
-exchangesort (SortRec recs) = SortRec (exchangesortIterable greaterThanRecord recs (length recs - 1) (length recs - 2))
+exchangesort (SortBit bits) = SortBit (exchangesortIterable greaterThanBit bits 0 (length bits - 1))
+exchangesort (SortRec recs) = SortRec (exchangesortIterable greaterThanRecord recs 0 (length recs - 1))
 
-exchangesortIterable :: (a -> a -> Bool) -> [a] -> Int -> Int -> [a]
-exchangesortIterable greaterThan xs i j = do
-  if i < 0
-    then xs
-    else
-      if j < 0
-        then exchangesortIterable greaterThan xs (i - 1) (length xs - 1)
-        else
-          if ((i > j) && greaterThan (xs !! j) (xs !! i)) || ((j > i) && greaterThan (xs !! i) (xs !! j))
-            then exchangesortIterable greaterThan (swap xs i j) i (j - 1)
+exchangesortIterable :: (Ord a) => (a -> a -> Bool) -> [a] -> Int -> Int -> [a]
+exchangesortIterable greaterThan xs i j
+  | i > length xs - 1 =
+      xs
+  | j < 0 =
+      exchangesortIterable greaterThan xs (i + 1) (length xs - 1)
+  | i == j =
+      exchangesortIterable greaterThan xs i (j - 1)
+  | otherwise =
+      let mini = min i j
+          maxi = max i j
+          left = take mini xs
+          middle = take (maxi - mini - 1) (drop (mini + 1) xs)
+          right = drop (maxi + 1) xs
+          x = xs !! mini
+          y = xs !! maxi
+          leftElemGreater = greaterThan x y
+          swappedXs = left ++ [y] ++ middle ++ [x] ++ right
+       in if leftElemGreater
+            then exchangesortIterable greaterThan swappedXs i (j - 1)
             else exchangesortIterable greaterThan xs i (j - 1)
-
-swap :: [a] -> Int -> Int -> [a]
-swap xs i j = do
-  let x = xs !! i
-  let y = xs !! j
-  let mini = min i j
-  let maxi = max i j
-  let left = take mini xs
-  let middle = take (maxi - mini - 1) (drop (mini + 1) xs)
-  let right = drop (maxi + 1) xs
-  left ++ [y] ++ middle ++ [x] ++ right
