@@ -5,7 +5,7 @@ module Data.Tensort.Subalgorithms.Supersort
   )
 where
 
-import Data.Tensort.Utils.ComparisonFunctions (equalBit, equalRecord, greaterThanRecord)
+import Data.Tensort.Utils.ComparisonFunctions (equalBit, equalRecord)
 import Data.Tensort.Utils.Types (SortAlg, Sortable (..), SupersortStrat, WonkyState, fromSortBit, fromSortRec)
 
 supersort :: (SortAlg, SortAlg, SortAlg, SupersortStrat) -> WonkyState -> Sortable -> (Sortable, WonkyState)
