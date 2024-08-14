@@ -23,7 +23,7 @@ supersort (subAlg1, subAlg2, subAlg3, superStrat) wonkySt (SortBit xs) = do
       if result
         then (result2, wonkySt'')
         else do
-          let (result3, wonkySt''') = subAlg3 wonkySt' (SortBit xs)
+          let (result3, wonkySt''') = subAlg3 wonkySt'' (SortBit xs)
           (superStrat (result1, result2, result3), wonkySt''')
 supersort (subAlg1, subAlg2, subAlg3, superStrat) wonkySt (SortRec xs) = do
   let (result1, _) = subAlg1 wonkySt (SortRec xs)
