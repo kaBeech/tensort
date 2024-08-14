@@ -644,10 +644,9 @@ In any case, if all three algorithms disagree, use the results from Bubblesort.
 
 #### Recursion
 
-I hear you out there. You're asking "But is the trade-off of not having
-a logarithmic Bytesize worth the advantages that the 3-magic brings?"
-
-What if we could have the best of both worlds? With recursion, we can!
+You'll remember that our standard Tensort uses a logarithmic Bytesize. Our base
+Robustsort uses a Bytesize of 3, but we can use a logarithmic Bytesize by 
+adding recursion.
 
 <!-- (image3) -->
 
