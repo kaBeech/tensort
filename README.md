@@ -34,7 +34,7 @@ There's likely a lot of room for improvement in the code as well.
     - [Structure](#structure)
     - [Algorithm](#algorithm)
     - [What are the benefits?](#what-are-the-benefits)
-    - [Logarithmic Tensort](#logarithmic-tensort)
+    - [Logarithmic Bytesize](#logarithmic-bytesize)
   - [Robustsort](#robustsort)
     - [Preface](#preface-1)
     - [Overview](#overview)
@@ -324,7 +324,7 @@ last element is in the final position of a list, and B) at each step of Tensort
 the only element we *really* care about is the last element in a given list 
 (or to look at it another way, the TopBit of a given Tensor).
 
-#### Logarithmic Tensort
+#### Logarithmic Bytesize
 
 When using standard Tensort (i.e. using Bubblesort as the SubAlgoritm), as the 
 Bytesize approaches the square root of the number of elements in the 
