@@ -375,11 +375,12 @@ With those ground rules in place, let's get to Robustsort!
 
 #### Overview
 
-Once we have Tensort in our toolbox, the road to Robustsort is pretty simple. 
-Robustsort is a 3-bit Tensort with a custom SubAlgorithm that compares other 
+Once we have Tensort in our toolbox, the road to Robustsort is not long. 
+Robustsort is a recursive version of Tensort, so first we'll look at its base 
+case, a 3-bit Tensort with a custom SubAlgorithm that compares other 
 sub-algorithms. For convenience, we will call this custom SubAlgorithm 
-Supersort. We use a 3-bit Tensort here because there's something 
-magical that happens around these numbers.
+Supersort. We use a 3-bit Tensort here because there's something magical that 
+happens around the number 3.
 
 Robust sorting algorithms tend to be 
 slow. Bubblesort, for example, has an average time efficiency of O(n^2), 
@@ -389,13 +390,9 @@ Here's the trick though: with small numbers the difference between these values
 is minimal. For example, when n=4, Mergesort will make 6 comparisons, while 
 Bubblesort will make 12. A Byte holding 4 Bites is both small enough to run 
 the Bubblesort quickly and large enough to allow multiple opportunities for a 
-mistake to be corrected. Since we don't as much built-in parallelism in 
-Tensort, it can make sense to weight more heavily on the side of making more 
-checks.
+mistake to be corrected. 
 
-In Robustsort, however, we have parallelism built into the Supersort 
-SubAlgorithm, so we can afford to make less checks during this step. 
-We choose a Bytesize of 
+In Robustsort, we choose a Bytesize of 
 3 because a list of
 3 Bits has some special properties. For one thing, sorting at 
 this length greatly reduces the time it takes to run our slow-but-robust 
@@ -413,9 +410,8 @@ Note: One might ask why we don't use a Bytesize of 2, since it would be even fas
 and still have the same property of displacing an element by only 1 or 2
 positions. Well, how many different algorithms can you use to sort 2 elements?
 At this length, most algorithms function equivalently (in terms of the 
-sub-operations performed) and in my mind running two such algorithms is 
-equivalent to re-running a single algorithm (which violates the requirements 
-of this project).
+sub-operations performed) and as we will see, it pays to have some diversity
+in our sub-algorithms.
 
 #### Examining Bubblesort
 
