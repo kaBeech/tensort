@@ -5,10 +5,12 @@ module Data.Tensort.Utils.ComparisonFunctions
     greaterThanRecord,
     lessThanOrEqualBit,
     lessThanOrEqualRecord,
+    equalBit,
+    equalRecord,
   )
 where
 
-import Data.Tensort.Utils.Types (Record, Bit)
+import Data.Tensort.Utils.Types (Bit, Record)
 
 lessThanBit :: Bit -> Bit -> Bool
 lessThanBit x y = x < y
@@ -27,3 +29,9 @@ lessThanOrEqualBit x y = x <= y
 
 lessThanOrEqualRecord :: Record -> Record -> Bool
 lessThanOrEqualRecord x y = snd x <= snd y
+
+equalBit :: Bit -> Bit -> Bool
+equalBit x y = x == y
+
+equalRecord :: Record -> Record -> Bool
+equalRecord x y = snd x == snd y
