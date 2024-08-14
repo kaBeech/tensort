@@ -561,24 +561,26 @@ B) it uses logic that is completely different from Bubblesort and Exchangesort.
 Using different manners of reasoning to reach an agreed-upon answer greatly 
 increases the robustness of the system.
 
-Given a Byte of [1,2,3], here are the chances of various outcomes from using a
-faulty comparator that gives a random result 10% of the time:
+Here are the results of runnitng Permutationsort 1000 times on Bytes of random 
+permutations of [1,2,3] using a faulty comparator that gives a random result 
+10% of the time:
 
-    ~68.67% <- [1,2,3] (correct)
+    81.9% <- [1,2,3]
 
-    ~7.63% <- [2,1,3] (faulty first comparator)
+    4.1% <- [2,1,3]
   
-    ~7.63% <- [3,1,2] (faulty first comparator)
+    4.5% <- [3,1,2]
 
-    ~7.63% <- [1,3,2] (faulty second comparator)
+    5.3% <- [1,3,2]
 
-    ~7.63% <- [2,3,1] (faulty second comparator)
+    3.4% <- [2,3,1]
 
-    ~0.85% <- [3,2,1] (faulty first and second comparator)
+    0.8% <- [3,2,1]
 
-In these cases, 76.6% of the time the Top Bit will be in the correct position. 
+In these cases, 86% of the time the Top Bit was in the correct position. 
 Notably the least likely outcome is a reverse-sorted Byte and the other 
-possible incorrect outcomes are in even distribution with each other.
+possible incorrect outcomes are in approximately even distribution with 
+each other.
 
 #### Supersort Adjudication
 
