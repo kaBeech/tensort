@@ -36,8 +36,8 @@ robustsortP = tensort (mkTsProps 3 supersortP)
 supersortP :: Sortable -> Sortable
 supersortP =
   supersort
-    ( bubblesort,
-      rotationsort,
+    ( rotationsort,
+      bubblesort,
       permutationsort,
       mundaneSuperStrat
     )
@@ -49,7 +49,7 @@ robustsortB :: Sortable -> Sortable
 robustsortB = tensort (mkTsProps 3 supersortB)
 
 supersortB :: Sortable -> Sortable
-supersortB = supersort (bubblesort, rotationsort, bogosort, mundaneSuperStrat)
+supersortB = supersort (rotationsort, bubblesort, bogosort, mundaneSuperStrat)
 
 robustsortRM :: Sortable -> Sortable
 robustsortRM = robustsortRCustom robustsortM
