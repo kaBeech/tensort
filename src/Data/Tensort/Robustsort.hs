@@ -84,5 +84,6 @@ robustsortRecursive bytesize baseSortAlg
   -- one more iteration of Tensort to sort the records. This last iteration
   -- will use the baseSortAlg (which by default is a standard version of
   -- Robustsort with a bytesize of 3) to sort its records.
-  | bytesize <= 532048240602 = tensort (mkTsProps (getLn bytesize) baseSortAlg)
+  | bytesize <= 27 = baseSortAlg
+  -- \| bytesize <= 532048240602 = tensort (mkTsProps (getLn bytesize) baseSortAlg)
   | otherwise = tensort (mkTsProps (getLn bytesize) (robustsortRecursive (getLn bytesize) baseSortAlg))
