@@ -102,6 +102,7 @@ library
                       Data.Tensort.Utils.Wonky,
                       Data.Tensort.Subalgorithms.Bubblesort,
                       Data.Tensort.Subalgorithms.Exchangesort,
+                      Data.Tensort.Subalgorithms.Rotationsort,
                       Data.Tensort.Subalgorithms.Permutationsort,
                       Data.Tensort.Subalgorithms.Rotationsort,
                       Data.Tensort.Subalgorithms.Bogosort,

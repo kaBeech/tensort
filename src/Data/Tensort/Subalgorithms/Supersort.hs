@@ -51,11 +51,8 @@ mundaneSuperStrat (_, _, _) =
   error
     "From Mundane SuperStrat: All three inputs must be of the same type."
 
+-- Previously we used different SuperStrats for Mundane and Magic Supersorts.
+-- Currently there is no need to differentiate, but we keep this here in case
+-- this changes again in the future
 magicSuperStrat :: SupersortStrat
-magicSuperStrat (SortBit result1, SortBit result2, SortBit result3) =
-  if result2 == result3 then SortBit result2 else SortBit result1
-magicSuperStrat (SortRec result1, SortRec result2, SortRec result3) =
-  if result2 == result3 then SortRec result2 else SortRec result1
-magicSuperStrat (_, _, _) =
-  error
-    "From Magic SuperStrat: All three inputs must be of the same type."
+magicSuperStrat = mundaneSuperStrat

@@ -28,13 +28,6 @@ import Data.Tensort.Utils.Types
     TensorR,
     TensortProps (..),
     WonkyState,
-    fromSBitBit,
-    fromSBitRec,
-    fromSRecordArrayBit,
-    fromSRecordArrayRec,
-    fromSTensorBit,
-    fromSTensorRec,
-    fromSortRec,
   )
 
 -- | Convert a list of Bytes to a list of TensorStacks.
@@ -46,8 +39,8 @@ import Data.Tensort.Utils.Types
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 -- >>> import Data.Tensort.Utils.MkTsProps (mkTsProps)
--- >>> createInitialTensors (mkTsProps 2 bubblesort) [[2,4],[6,8],[1,3],[5,7]]
--- [([(0,3),(1,7)],ByteMem [[1,3],[5,7]]),([(0,4),(1,8)],ByteMem [[2,4],[6,8]])]
+-- >>> createInitialTensors (mkTsProps 2 bubblesort) (SBytesBit [[2,4],[6,8],[1,3],[5,7]])
+-- STensorsBit [([(0,3),(1,7)],ByteMem [[1,3],[5,7]]),([(0,4),(1,8)],ByteMem [[2,4],[6,8]])]
 createInitialTensors :: TensortProps -> WonkyState -> SBytes -> (STensors, WonkyState)
 createInitialTensors tsProps wonkySt (SBytesBit bytes) = do
   let (result, wonkySt') = createInitialTensorsBits tsProps wonkySt bytes
@@ -100,8 +93,8 @@ createTensorR subAlg wonkySt (TensorMemR tensorsR) = getTensorFromTensors subAlg
 
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
--- >>> getTensorFromBytes bubblesort [[2,4,6,8],[1,3,5,7]]
--- ([(1,7),(0,8)],ByteMem [[2,4,6,8],[1,3,5,7]])
+-- >>> getTensorFromBytes bubblesort (SBytesBit [[2,4,6,8],[1,3,5,7]])
+-- STensorBit ([(1,7),(0,8)],ByteMem [[2,4,6,8],[1,3,5,7]])
 getTensorFromBytes :: SortAlg -> WonkyState -> SBytes -> (STensor, WonkyState)
 getTensorFromBytes subAlg wonkySt (SBytesBit bytes) = do
   let (result, wonkySt') = getTensorFromBytesB subAlg wonkySt bytes
@@ -140,8 +133,8 @@ getTensorFromBytesR subAlg wonkySt bytesR = do
 
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
--- >>> getTensorFromTensors bubblesort [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(1,14),(0,17)],ByteMem [[16,17],[12,14]])]
--- ([(1,17),(0,18)],TensorMem [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(1,14),(0,17)],ByteMem [[16,17],[12,14]])])
+-- >>> getTensorFromTensors bubblesort (STensorsBit [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(1,14),(0,17)],ByteMem [[16,17],[12,14]])])
+-- STensorBit ([(1,17),(0,18)],TensorMem [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(1,14),(0,17)],ByteMem [[16,17],[12,14]])])
 getTensorFromTensors :: SortAlg -> WonkyState -> STensors -> (STensor, WonkyState)
 getTensorFromTensors subAlg wonkySt (STensorsBit tensors) = do
   let (result, wonkySt') = getTensorFromTensorsB subAlg wonkySt tensors
@@ -171,8 +164,8 @@ getTensorFromTensorsR subAlg wonkySt tensorsR = do
 --   getTensorFromTensors function
 
 -- | ==== __Examples__
--- >>> getRegisterFromTensors [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(0,14),(1,17)],ByteMem [[12,14],[16,17]]),([(0,3),(1,7)],ByteMem [[1,3],[5,7]]),([(0,4),(1,8)],ByteMem [[2,4],[6,8]])]
--- [(0,18),(1,17),(2,7),(3,8)]
+-- >>> getRegisterFromTensors (STensorsBit [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(0,14),(1,17)],ByteMem [[12,14],[16,17]]),([(0,3),(1,7)],ByteMem [[1,3],[5,7]]),([(0,4),(1,8)],ByteMem [[2,4],[6,8]])])
+-- [SRecordBit (0,18),SRecordBit (1,17),SRecordBit (2,7),SRecordBit (3,8)]
 getRegisterFromTensors :: STensors -> [SRecord]
 getRegisterFromTensors (STensorsBit tensors) = getRegisterFromTensorsB tensors
 getRegisterFromTensors (STensorsRec tensors) = getRegisterFromTensorsR tensors
@@ -206,8 +199,8 @@ getRegisterFromTensorsR tensorsR = acc tensorsR []
 -- | This is also expected to be the highest value in the TensorStack
 
 -- | ==== __Examples__
--- >>> getTopBitFromTensorStack (([(0,28),(1,38)],TensorMem [([(0,27),(1,28)],TensorMem [([(0,23),(1,27)],ByteMem [[21,23],[25,27]]),([(0,24),(1,28)],ByteMem [[22,24],[26,28]])]),([(1,37),(0,38)],TensorMem [([(0,33),(1,38)],ByteMem [[31,33],[35,38]]),([(0,34),(1,37)],ByteMem [[32,14],[36,37]])])]))
--- 38
+-- >>> getTopBitFromTensorStack (STensorBit ([(0,28),(1,38)],TensorMem [([(0,27),(1,28)],TensorMem [([(0,23),(1,27)],ByteMem [[21,23],[25,27]]),([(0,24),(1,28)],ByteMem [[22,24],[26,28]])]),([(1,37),(0,38)],TensorMem [([(0,33),(1,38)],ByteMem [[31,33],[35,38]]),([(0,34),(1,37)],ByteMem [[32,14],[36,37]])])]))
+-- SBitBit 38
 getTopBitFromTensorStack :: STensor -> SBit
 getTopBitFromTensorStack (STensorBit tensor) = getTopBitFromTensorStackB tensor
 getTopBitFromTensorStack (STensorRec tensorR) = getTopBitFromTensorStackR tensorR

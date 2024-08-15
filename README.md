@@ -14,11 +14,10 @@ then transforms the tensor field back into a sorted list. These transformations
 provide opportunities to increase redundancy for improved robustness and can
 be leveraged to include any further processing we wish to do on the elements.
 
-Note: This project is still under construction. Everything works and according
-to my calculations will perform excellently under Ackley's testing conditions.
-Still to add: benchmarking to prove how cool it is, documentation 
-additions/revisions, memes. There's likely a lot of room for improvement in the
-code as well.
+Note: This project is still under construction. Everything works and performs 
+excellently under Ackley's testing conditions. Still to add: documentation 
+additions/revisions, convenience wrappers for the top-level functions, memes. 
+There's likely a lot of room for improvement in the code as well.
 
 ## Table of Contents
 
@@ -35,7 +34,7 @@ code as well.
     - [Structure](#structure)
     - [Algorithm](#algorithm)
     - [What are the benefits?](#what-are-the-benefits)
-    - [Logarithmic Tensort](#logarithmic-tensort)
+    - [Logarithmic Bytesize](#logarithmic-bytesize)
   - [Robustsort](#robustsort)
     - [Preface](#preface-1)
     - [Overview](#overview)
@@ -44,6 +43,7 @@ code as well.
     - [Introducing Supersort](#introducing-supersort)
     - [Permutationsort](#permutationsort)
     - [Supersort Adjudication](#supersort-adjudication)
+    - [Recursion](#recursion)
   - [Magicsort](#magicsort)
     - [Supersort adjudication with Magic](#supersort-adjudication-with-magic)
   - [A note on Robustsort and Bogosort](#a-note-on-robustsort-and-bogosort)
@@ -325,7 +325,7 @@ last element is in the final position of a list, and B) at each step of Tensort
 the only element we *really* care about is the last element in a given list 
 (or to look at it another way, the TopBit of a given Tensor).
 
-#### Logarithmic Tensort
+#### Logarithmic Bytesize
 
 When using standard Tensort (i.e. using Bubblesort as the SubAlgoritm), as the 
 Bytesize approaches the square root of the number of elements in the 
@@ -376,11 +376,12 @@ With those ground rules in place, let's get to Robustsort!
 
 #### Overview
 
-Once we have Tensort in our toolbox, the road to Robustsort is pretty simple. 
-Robustsort is a 3-bit Tensort with a custom SubAlgorithm that compares other 
-sub-algorithms. For convenience, we will call this custom SubAlgorithm 
-Supersort. We use a 3-bit Tensort here because there's something 
-magical that happens around these numbers.
+Once we have Tensort in our toolbox, the road to Robustsort is not long. 
+Robustsort is a potentially recursive version of Tensort, but first we'll look 
+at the basic variant: a 3-bit Tensort with a custom SubAlgorithm that compares 
+other sub-algorithms. For convenience, we will call this custom SubAlgorithm 
+Supersort. We use a 3-bit Tensort here because there's something magical that 
+happens around the number 3.
 
 Robust sorting algorithms tend to be 
 slow. Bubblesort, for example, has an average time efficiency of O(n^2), 
@@ -390,13 +391,9 @@ Here's the trick though: with small numbers the difference between these values
 is minimal. For example, when n=4, Mergesort will make 6 comparisons, while 
 Bubblesort will make 12. A Byte holding 4 Bites is both small enough to run 
 the Bubblesort quickly and large enough to allow multiple opportunities for a 
-mistake to be corrected. Since we don't as much built-in parallelism in 
-Tensort, it can make sense to weight more heavily on the side of making more 
-checks.
+mistake to be corrected. 
 
-In Robustsort, however, we have parallelism built into the Supersort 
-SubAlgorithm, so we can afford to make less checks during this step. 
-We choose a Bytesize of 
+In Robustsort, we choose a Bytesize of 
 3 because a list of
 3 Bits has some special properties. For one thing, sorting at 
 this length greatly reduces the time it takes to run our slow-but-robust 
@@ -414,9 +411,8 @@ Note: One might ask why we don't use a Bytesize of 2, since it would be even fas
 and still have the same property of displacing an element by only 1 or 2
 positions. Well, how many different algorithms can you use to sort 2 elements?
 At this length, most algorithms function equivalently (in terms of the 
-sub-operations performed) and in my mind running two such algorithms is 
-equivalent to re-running a single algorithm (which violates the requirements 
-of this project).
+sub-operations performed) and as we will see, it pays to have some diversity
+in our sub-algorithms.
 
 #### Examining Bubblesort
 
@@ -430,27 +426,35 @@ We've said before that Bubblesort is likely to put the last element in the
 correct position. Let's examine this in the context of Bubblesorting a 
 3-element list.
 
-Our implementation of Bubblesort (which mirrors Ackley's) will perform three
-iterations over a 3-element list. After the second iteration, if everything
-goes as planned, the list will be sorted and the final iteration is an extra
-verification step. Therefore, to simplify the analysis, we will consider
-what happens with a faulty comparator during the final iteration, assuming the
-list has been correctly sorted up to that point.
+<!-- Our implementation of Bubblesort (which mirrors Ackley's) will perform three -->
+<!-- iterations over a 3-element list. After the second iteration, if everything -->
+<!-- goes as planned, the list will be sorted and the final iteration is an extra -->
+<!-- verification step. Therefore, to simplify the analysis, we will consider -->
+<!-- what happens with a faulty comparator during the final iteration, assuming the -->
+<!-- list has been correctly sorted up to that point. -->
 
-Given a Byte of [1,2,3], here are the chances of various outcomes from using a 
-faulty comparator that gives a random result 10% of the time:
+I ran Bubblesort 1000 times on Bytes of random permutations of [1,2,3] using a 
+faulty comparator that gives a random result 10% of the time. Here is how often
+each outcome was returned:
 
-    81% <- [1,2,3] (correct - no swaps made)
+    87.1% <- [1,2,3]
 
-    9% <- [2,1,3] (faulty first swap)
+    4.1% <- [1,3,2]
 
-    9% <- [1,3,2] (faulty second swap)
+    6.6% <- [2,1,3]
 
-    1% <- [2,3,1] (faulty first and second swap)
+    0.2% <- [2,3,1] 
 
-In these cases, 90% of the time the Top Bit will be in the correct position, 
-and in the other cases it will be off by one position, and in no case will the 
-Byte be reverse sorted.
+    1.8% <- [3,1,2]
+
+    0.2% <- [3,2,1]
+
+In these results, 93.7% of the time the Top Bit was returned in the correct 
+position, and the bottom value was returned in the top position only 0.4% of 
+the time.
+
+Notably, the far more likely result where the Top Bit was at the bottom was 
+[3,1,2], with [3,2,1] occurring only 0.2% of the time.
 
 #### Exchangesort
 
@@ -459,6 +463,10 @@ substantially different logic, for the sake of robustness. We do,
 however, want something similar to Bubblesort in that it compares our elements 
 multiple times. And, as mentioned above, the element that is most important to 
 our sorting is the top (biggest) element, by a large degree.
+
+In terms of the probability of different outcomes, if our algorithm returns 
+an incorrect result, we want that result to be different than what Bubblesort
+is likely to return.
 
 With these priorities in mind, the comparison algorithm we choose shall be 
 Exchangesort. If you're not familiar with this algorithm, I'd recommend
@@ -480,26 +488,39 @@ using this variation for our Exchangesort.
 Exchangesort will also make an average of 6 comparisons when sorting a
 3-element list.
 
-As with Bubblesort, Exchangesort will perform three iterations over a 3-element
-list, with the final iteration being redundant.
+<!-- As with Bubblesort, Exchangesort will perform three iterations over a 3-element -->
+<!-- list, with the final iteration being redundant. -->
 
-Given a Byte of [1,2,3], here are the chances of various outcomes from using a 
-faulty comparator that gives a random result 10% of the time:
+Here are the results of running Exchangesort 1000 times on Bytes of random 
+permutations of [1,2,3] using a faulty comparator that gives a random result 
+10% of the time:
 
-    81% <- [1,2,3] (correct - no swaps made)
+    91.8% <- [1,2,3] 
 
-    9% <- [2,1,3] (faulty first swap)
+    3.4% <- [1,3,2] 
 
-    9% <- [3,2,1] (faulty second swap)
+    2.5% <- [2,1,3]
 
-    1% <- [3,1,2] (faulty first and second swap)
+    0% <- [2,3,1]
 
-In these cases, 90% of the time the Top Bit will have the correct value. 
-Notably there is a 9% chance that the Byte will be reverse sorted, but we will 
-exploit this trait later on in the Supersort SubAlgorithm. Note also that the 
-only possible outcomes shared between this example and the Bubblesort example
-are the correct outcome and [2,1,3], which retains the TopBit with the correct 
-value.
+    0.2% <- [3,1,2]
+
+    2.1% <- [3,2,1]
+
+In these results, 94.3% of the time the Top Bit was returned in the correct
+position and it returned the bottom value in the top position only 2.1% of the
+time.
+
+In results where the Top Bit was in the
+bottom position, [3,2,1] was the most likely outcome, with [3,1,2] occurring
+only 0.2% of the time. This is opposite to what happens in Bubblesort,
+making cases in which they agree with the Top Bit in the bottom position
+very rare.
+
+Overall, there is a modest probability (about 0.14% according to these results)
+that Bubblesort and Exchangesort will agree on [1,3,2] as the result, but it is
+very unlikely that they will agree on any other result that does not have the
+Top Bit in the correct position.
 
 #### Introducing Supersort
 
@@ -508,56 +529,37 @@ sorting algorithms, in our case Bubblesort and Exchangesort. If both
 algorithms agree on the result, that result is used. 
 
 Looking at our analysis on Bubblesort and Exchangesort, we can 
-approximate the chances of various outcomes when comparing the results of 
-running these two algorithms in similar conditions:
+approximate the chances of how often they will agree in similar conditions:
 
-    65.61% <- [1,2,3], [1,2,3] (Agree Correctly)
+    ~79.96% <- Agree Correctly
 
-    7.29% <- [1,2,3], [2,1,3] (Disagree - TopBit agrees correctly)
+    ~19.73% <- Disagree
 
-    7.29% <- [1,2,3], [3,2,1] (Disagree Fully)
+    ~0.17% <- Agree Incorrectly - TopBit correct
 
-    7.29% <- [2,1,3], [1,2,3] (Disagree - TopBit agrees correctly)
+    ~0.14% <- Agree Incorectly - TopBit incorrect
 
-    7.29% <- [1,3,2], [1,2,3] (Disagree Fully)
+Hey, that's pretty good! If they agree, then return the results from 
+Bubblesort because if for some reason the module that compares the full Bytes
+is also faulty (outside the scope of these benchmarks), Bubblesort is less 
+likely to have a result with the bottom value set as the Top Bit.
 
-    0.81% <- [2,1,3], [2,1,3] (Agree Incorrectly - TopBit correct)
+Around 20% of the time, these sub-algorithms will disagree with each other.
+What happens then?
 
-    0.81% <- [2,1,3], [3,2,1] (Disagree Fully)
+First we check to see if they agree on the Top Bit. If they do, we return the 
+results from Exchangesort, since it is more likely to have the results exactly
+correct. Otherwise, we run a third sub-algorithm to compare the results with.
 
-    0.81% <- [1,3,2], [2,1,3] (Disagree Fully)
+The reason we check to see if Bubblesort and Exchangesort agree on the Top Bit
+is that based on our results, there is only about a 0.07% chance that they will
+agree on the incorrect Top Bit while disagreeing on the total results. This is 
+due to the fact that these algorithms have only one result with a incorrect 
+Top Bit ([1,3,2]) that they both return more than 1% of the time, so one of 
+them has to return a rare result for this peculiar semi-agreement to occur.
 
-    0.81% <- [1,3,2], [3,2,1] (Disagree Fully)
-
-    0.09% <- [2,1,3], [3,1,2] (Disagree Fully)
-
-    0.09% <- [1,3,2], [3,1,2] (Disagree - TopBit agrees incorrectly)
-
-    0.09% <- [2,3,1], [2,1,3] (Disagree Fully)
-  
-    0.09% <- [2,3,1], [3,2,1] (Disagree - TopBit agrees incorrectly)
-
-    0.01% <- [2,3,1], [3,1,2] (Disagree Fully)
-
-In total, that makes:
-
-    65.61% <- Agree Correctly
-
-    17.2% <- Disagree Fully
-
-    14.58% <- Disagree - TopBit agrees correctly
-
-    0.81% <- Agree Incorrectly - TopBit correct
-
-    0.18% <- Disagree - TopBit agrees incorrectly
-
-    [no outcome] <- Agree with TopBit incorrect
-
-The first thing that might stand out is that around 34% of the time, these 
-sub-algorithms will disagree with each other. What happens then?
-
-Well, in that case we run a third sub-algorithm to compare the results with: 
-Permutationsort.
+If the first two sub-algorithms don't agree on a Top Bit then we run our third 
+sub-algorithm: Permutationsort.
 
 #### Permutationsort
 
@@ -576,24 +578,26 @@ B) it uses logic that is completely different from Bubblesort and Exchangesort.
 Using different manners of reasoning to reach an agreed-upon answer greatly 
 increases the robustness of the system.
 
-Given a Byte of [1,2,3], here are the chances of various outcomes from using a
-faulty comparator that gives a random result 10% of the time:
+Here are the results of running Permutationsort 1000 times on Bytes of random 
+permutations of [1,2,3] using a faulty comparator that gives a random result 
+10% of the time:
 
-    ~68.67% <- [1,2,3] (correct)
+    81.9% <- [1,2,3]
 
-    ~7.63% <- [2,1,3] (faulty first comparator)
+    4.1% <- [2,1,3]
   
-    ~7.63% <- [3,1,2] (faulty first comparator)
+    4.5% <- [3,1,2]
 
-    ~7.63% <- [1,3,2] (faulty second comparator)
+    5.3% <- [1,3,2]
 
-    ~7.63% <- [2,3,1] (faulty second comparator)
+    3.4% <- [2,3,1]
 
-    ~0.85% <- [3,2,1] (faulty first and second comparator)
+    0.8% <- [3,2,1]
 
-In these cases, 76.6% of the time the Top Bit will be in the correct position. 
+In these cases, 86% of the time the Top Bit was in the correct position. 
 Notably the least likely outcome is a reverse-sorted Byte and the other 
-possible incorrect outcomes are in even distribution with each other.
+possible incorrect outcomes are in approximately even distribution with 
+each other.
 
 #### Supersort Adjudication
 
@@ -608,66 +612,72 @@ Permutationsort will agree on results with Bubblesort or Exchangesort.
 
 Permutationsort and Bubblesort:
 
-    ~55.62% <- [1,2,3] (Correct)
+    ~71.33% <- Agree Correctly
 
-    ~0.69% <- [2,1,3] (Correct TopBit)
+    ~28.13% <- Disagree
 
-    ~0.69% <- [1,3,2] (Incorrect)
+    ~0.30% <- Agree Incorrectly - TopBit correct
 
-    ~0.08% <- [2,3,1] (Incorrect)
+    ~0.24% <- Agree Incorectly - TopBit incorrect
 
 Permutationsort and Exchangesort:
 
-    ~55.62% <- [1,2,3] (Correct)
+    ~75.18% <- Agree Correctly
 
-    ~0.69% <- [2,1,3] (Correct TopBit)
+    ~25.44% <- Disagree
 
-    ~0.08% <- [3,1,2] (Incorrect)
+    ~0.11% <- Agree Incorrectly - TopBit correct
 
-    ~0.08% <- [3,2,1] (Reverse)
+    ~0.16% <- Agree Incorectly - TopBit incorrect
 
-As we can see, it is very unlikely that Permutationsort will agree with
-either Bubblesort or Exchangesort incorrectly. It is even less likely
-that they will do so when the TopBit is incorrect. However, there are many 
-cases in which they do not agree, so let's handle those.
+If Permutationsort agrees with either Bubblesort or Exchangesort, then it's 
+easy - just use that result!
 
-If there is no agreed-upon result between these three algorithms, we will look 
-at the top bit only.
+According to these results, Permutationsort is likely to disagree with both
+Bubblesort and Exchangesort about 7.16% of the time if all three are run 
+indepedently. In practice this will happen more often than that because in 
+order to reach the point of doing Permutationsort, either Bubblesort or 
+Exchangesort must have sorted the list incorrectly (which makes it less likely
+to agree with Permutationsort).
 
-First we check if the results from Bubblesort and Exchangesort agree on the 
-TopBit. This is because the chance is very unlikely 
-(0.18%) that they will agree on an incorrect TopBit. If they do agree, we use 
-the result from Bubblesort (as it will not return a reverse-sorted list).
+In any case, if all three algorithms disagree, use the results from Bubblesort.
 
-If they do not agree, we will check the TopBit results from Bubblesort and 
-Permutationsort. This is because it is unlikely 
-(~0.92%) that they will agree on an incorrect TopBit, and the chance of them 
-incorrectly agreeing on the highest Bit as the TopBit is even lower (~0.16%). 
-If they do agree, we use the result from Bubblesort.
+#### Recursion
 
-If they do not agree, we will check the TopBit results from Exchangesort 
-and Permutationsort. The chance that they will agree on an 
-incorrect TopBit is about 1.55%, with the chances of them incorrectly agreeing
-on the highest Bit as the TopBit also around 0.16%. If they do agree, we use
-the result from Exchangesort.
+You'll remember that our standard Tensort uses a logarithmic Bytesize. Our base
+Robustsort uses a Bytesize of 3, but we can use a logarithmic Bytesize by 
+adding recursion.
 
-If after all this adjudication we still do not have an agreed-upon result, we
-will use the result from Bubblesort.
+<!-- (image3) -->
 
-Now obviously we have made some approximations in our analysis (and I may have
-made some mistakes in my calculations), but in general I think we can conclude 
-that it is very unlikely that this Supersort process will return an incorrect 
-result, and that if an incorrect result is returned, it is very likely to still 
-have a correct TopBit.
+Let's take our base Robustsort example above and make it recursive.
 
-We now have the basic form of Robustsort: a 3-bit Tensort with a Supersort 
-adjudicating Bubblesort, Exchangesort, and Permutationsort as its
-SubAlgorithm.
+First, instead of using a 3-bit Bytesize, we will use a logarithmic Bytesize.
+Then, instead of using our Supersort directly as our
+SubAlgorithm, we will use Robustsort itself to sort the records.
+
+At the base case, this Robustsort will have a Bytesize of 3. If the logarithmic 
+Bytesize of the input list is greater than 27, then the SubAlgorithm of the 
+top-level Robustsort will be a recursive Robustsort with a logarithmic 
+Bytesize.
+
+The number 27 is chosen because we want a number that has a natural log that is
+close to 3 (27's is about 3.3) and since 3 ^ 3 = 27, it is easy to sort lists 
+of 27 elements in groups of 3.
+
+This recursive version of Robustsort is more tailored to large input lists 
+(it doesn't add another layer of recursion until the input list is
+is longer than 500 billion elements), but differences can be noticed when 
+sorting smaller lists as well.
+
+We now have the standard form of Robustsort: a potentially recursive Tensort 
+with a 3-bit base case using a Supersort adjudicating Bubblesort, Exchangesort,
+and Permutationsort as its base SubAlgorithm.
 
 Well that's pretty cool! But I wonder... can we make this more robust, if 
 we relax the rules just a little more?
 
-<!-- (image3) -->
+<!-- (image4) -->
 
 Of course we can! And we will. To do so, we will simply replace Permutationsort
 with another newly-named sorting algorithm: Magicsort!
@@ -677,7 +687,7 @@ with another newly-named sorting algorithm: Magicsort!
 For our most robust iteration of Robustsort we will relax the requirement on
 never re-running the same deterministic sub-algorithm in one specific context.
 Magicsort is an algorithm that will re-run Permutationsort only if it disagrees 
-with an extremely reliable algorithm algorithm - one that's so good it's robust 
+with an extremely reliable algorithm - one that's so good it's robust 
 against logic itself...
 
 <!-- (image4) -->
@@ -692,60 +702,84 @@ algorithms are run again. This process is repeated until the two algorithms
 agree on a result.
 
 Strong-brained readers may have already deduced that Permutationsort functions
-nearly identically to Bogosort. Indeed, their approximate analysis results are
-the same. Magicsort is based on the idea that if you happen to pull the right 
+nearly identically to Bogosort. Here are the results of running Bogosort 1000 
+times on Bytes of random permutations of [1,2,3] using a faulty comparator that 
+gives a random result 10% of the time:
+
+    81.3% <- [1,2,3]
+
+    3.0% <- [2,1,3]
+  
+    3.8% <- [3,1,2]
+
+    5.8% <- [1,3,2]
+
+    5.7% <- [2,3,1]
+
+    0.8% <- [3,2,1]
+
+In these cases, 84.3% of the time the Top Bit was in the correct position. 
+Note that even though both Bogosort and Permutationsort were ran with the same 
+random seeds, they gave slightly different results because their methodology 
+is slightly different the least likely outcome is a reverse-sorted Byte and the other 
+possible incorrect outcomes are in approximately even distribution with 
+each other.
+
+Magicsort is based on the notion that if you happen to pull the right 
 answer out of a hat once, it might be random chance, but if you do it twice,
 it might just be magic!
 
-Given a Byte of [1,2,3], here are the approximate chances of various outcomes 
-from Magicsort using a faulty comparator that gives a random result 10% of the 
-time:
+Here are the results of running Magicsort 1000 
+times on Bytes of random permutations of [1,2,3] using a faulty comparator that 
+gives a random result 10% of the time:
 
-    ~95.27% <- [1,2,3] (Correct)
+    ~94.0% <- [1,2,3] (Correct)
 
-    ~1.18% <- [2,1,3] (Correct TopBit)
+    ~1.5% <- [2,1,3] (Correct TopBit)
 
-    ~1.18% <- [1,3,2] (Incorrect)
+    ~1.4% <- [1,3,2] (Incorrect)
 
-    ~1.18% <- [3,1,2] (Incorrect)
+    ~1.5% <- [3,1,2] (Incorrect)
 
-    ~1.18% <- [2,3,1] (Incorrect)
+    ~1.5% <- [2,3,1] (Incorrect)
 
-    ~0.02% <- [3,2,1] (Reverse)
+    ~0.1% <- [3,2,1] (Reverse)
+
+94% of the time we got the absolutely correct answer! In total, 95.5% of the 
+time we got the Top Bit in the correct position and only 1.6% of the time did
+we get the bottom value in the top position.
 
 The downside here is that Magisort can take a long time to run. I don't know 
 how many comparisons are made on average, but it's well over 14.
 
 Thankfully, Magicsort will only be run in our algorithm if Bubblesort and
-Exchangesort disagree on an answer. Overall the Robustsort we're building that 
-uses Magicsort will still have an average of O(n log n) time efficiency.
+Exchangesort disagree on an answer, and then only with 3 elements to sort.
+Overall, the Robustsort we're building that uses Magicsort will still have an
+average of O(n log n) time efficiency.
 
 #### Supersort adjudication with Magic
 
-Since we have replaced Permutationsort with Magicsort (which is far more robust 
+Since we have replaced Permutationsort with Magicsort (which is far more robust
 than Bubblesort or Exchangesort), we will adjust our adjudication
-within the Supersort SubAlgorithm.
+within the Supersort SubAlgorithm. If Bubblesort and Exchangesort don't come 
+to an agreement, we just use Magicsort.
 
-If Bubblesort and Exchangesort disagree, we will run Magicsort on the
-input. If Magicsort agrees with either Bubblesort or Exchangesort, we
-will use the result from Magicsort. Otherwise, if Magicsort agrees on the 
-TopBit with either Bubblesort or Exchangesort, we will use the result
-from Magicsort. Otherwise, if Bubblesort and Exchangesort agree on the
-TopBit, we will use the result from Bubblesort.
-
-If no agreement is reached at this point, we abandon all logic and just use
-Magicsort.
+You might expect that we'd check to see whether Magicsort agrees with any of 
+the other algorithms before just using its results, but even if we were to 
+check we would end up using the results from Magicsort in all pass cases and 
+all fail cases.
 
 ### A note on Robustsort and Bogosort
 
-It is perfectly valid to use Bogosort in place of Permutationsort in Robustsort's 
-standard Supersort SubAlgorithm. It may be argued that doing so is even more 
-robust, since it barely even relies on logic. Here are some considerations to
+It is perfectly valid to use Bogosort in place of Permutationsort in 
+Robustsort's standard Supersort SubAlgorithm. It may be argued that doing so is
+even more robust, since it barely even relies on logic. Here are some
+considerations to
 keep in mind:
 
-  - Permutationsort uses additional space and may take slightly longer on average 
-      due to computing all possible permutations of the input and storing them in a 
-      list.
+  - Permutationsort uses additional space and may take slightly longer on
+      average due to computing all possible permutations of the input and
+      storing them in a list.
 
   - Bogosort could theoretically run forever without returning a result, even 
       when no errors occur.
@@ -775,6 +809,10 @@ Notably, it provides the following:
   - Mundane Robustsort with Bogosort adjudicator
 
   - Magic Robustsort
+
+In the 1.0.0.0 release there will also be a wrapper around top-level 
+Tensort (Logarithmic) and Robustsort (Magic) that will allow for easy
+use without dealing with Type conversions.
 
 Check the code in `src/` or the documentation on Hackage/Hoogle
 for more details.
