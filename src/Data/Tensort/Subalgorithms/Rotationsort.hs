@@ -7,8 +7,8 @@ module Data.Tensort.Subalgorithms.Rotationsort
 where
 
 import Data.Tensort.Utils.ComparisonFunctions
-  ( greaterThanBit,
-    greaterThanRecord,
+  ( greaterThanOrEqualBit,
+    greaterThanOrEqualRecord,
   )
 import Data.Tensort.Utils.Types (Sortable (..))
 
@@ -18,28 +18,28 @@ import Data.Tensort.Utils.Types (Sortable (..))
 rotationsort :: Sortable -> Sortable
 rotationsort (SortBit bits) =
   let result =
-        rotationsortIterable greaterThanBit bits 0 False False
+        rotationsortIterable greaterThanOrEqualBit bits 0 False False
    in SortBit result
 rotationsort (SortRec recs) =
   let result =
-        rotationsortIterable greaterThanRecord recs 0 False False
+        rotationsortIterable greaterThanOrEqualRecord recs 0 False False
    in SortRec result
 
 rotationsortAmbi :: Sortable -> Sortable
 rotationsortAmbi (SortBit bits) =
   let result =
-        rotationsortIterable greaterThanBit bits 0 True False
+        rotationsortIterable greaterThanOrEqualBit bits 0 True False
    in SortBit result
 rotationsortAmbi (SortRec recs) =
   let result =
-        rotationsortIterable greaterThanRecord recs 0 True False
+        rotationsortIterable greaterThanOrEqualRecord recs 0 True False
    in SortRec result
 
 rotationsortReverse :: Sortable -> Sortable
 rotationsortReverse (SortBit bits) =
   let result =
         rotationsortIterable
-          greaterThanBit
+          greaterThanOrEqualBit
           bits
           (length bits - 1)
           False
@@ -48,7 +48,7 @@ rotationsortReverse (SortBit bits) =
 rotationsortReverse (SortRec recs) =
   let result =
         rotationsortIterable
-          greaterThanRecord
+          greaterThanOrEqualRecord
           recs
           (length recs - 1)
           False
@@ -59,7 +59,7 @@ rotationsortReverseAmbi :: Sortable -> Sortable
 rotationsortReverseAmbi (SortBit bits) =
   let result =
         rotationsortIterable
-          greaterThanBit
+          greaterThanOrEqualBit
           bits
           (length bits - 1)
           True
@@ -68,7 +68,7 @@ rotationsortReverseAmbi (SortBit bits) =
 rotationsortReverseAmbi (SortRec recs) =
   let result =
         rotationsortIterable
-          greaterThanRecord
+          greaterThanOrEqualRecord
           recs
           (length recs - 1)
           True
@@ -83,7 +83,7 @@ rotationsortIterable ::
   Bool ->
   Bool ->
   [a]
-rotationsortIterable greaterThan xs currentIndex isAmbi isReverse
+rotationsortIterable greaterThanOrEqual xs currentIndex isAmbi isReverse
   | length xs > 3 =
       error
         "From rotationsortIterable: algorithm not yet implemented for lists of length greater than 3"
@@ -91,13 +91,13 @@ rotationsortIterable greaterThan xs currentIndex isAmbi isReverse
       xs
   | length xs < 2 = xs
   | length xs == 2 =
-      rotatationsortPair greaterThan xs currentIndex isAmbi isReverse
+      rotatationsortPair greaterThanOrEqual xs currentIndex isAmbi isReverse
   | currentIndex == firstIndex (length xs) isReverse =
-      rotationsortHead greaterThan xs currentIndex isAmbi isReverse
+      rotationsortHead greaterThanOrEqual xs currentIndex isAmbi isReverse
   | currentIndex == lastIndex (length xs) isReverse =
-      rotationsortLast greaterThan xs currentIndex isAmbi isReverse
+      rotationsortLast greaterThanOrEqual xs currentIndex isAmbi isReverse
   | otherwise =
-      rotationsortMiddle greaterThan xs currentIndex isAmbi isReverse
+      rotationsortMiddle greaterThanOrEqual xs currentIndex isAmbi isReverse
 
 rotatationsortPair ::
   (Ord a) =>
@@ -107,24 +107,24 @@ rotatationsortPair ::
   Bool ->
   Bool ->
   [a]
-rotatationsortPair greaterThan xs currentIndex isAmbi isReverse =
+rotatationsortPair greaterThanOrEqual xs currentIndex isAmbi isReverse =
   let x = head xs
       y = xs !! 1
-      secondElemGreater = greaterThan y x
+      secondElemGreater = greaterThanOrEqual y x
       swappedXs = y : [x]
    in switch secondElemGreater swappedXs
   where
     switch secondElemGreater swappedXs
       | not secondElemGreater =
           rotationsortIterable
-            greaterThan
+            greaterThanOrEqual
             swappedXs
             (firstIndex (length xs) isReverse)
             isAmbi
             isReverse
       | otherwise =
           rotationsortIterable
-            greaterThan
+            greaterThanOrEqual
             xs
             (nextIndex currentIndex isReverse)
             isAmbi
@@ -138,48 +138,38 @@ rotationsortHead ::
   Bool ->
   Bool ->
   [a]
-rotationsortHead greaterThan xs currentIndex isAmbi isReverse =
+rotationsortHead greaterThanOrEqual xs currentIndex isAmbi isReverse =
   let w = xs !! lastIndex (length xs) isReverse
       x = xs !! currentIndex
       y = xs !! nextIndex currentIndex isReverse
-      lastElemGreater = greaterThan w x
-      lastElemOrdered =
-        if isReverse then not lastElemGreater else lastElemGreater
-      nextElemGreater = greaterThan y x
-      nextElemOrdered =
-        if isReverse then not nextElemGreater else nextElemGreater
       rotateToFirst =
         if isReverse then [y] ++ [x] ++ [w] else [w] ++ [x] ++ [y]
       rotateBackward =
         if isReverse then [w] ++ [x] ++ [y] else [y] ++ [x] ++ [w]
    in switch
-        lastElemOrdered
-        nextElemOrdered
         rotateToFirst
         rotateBackward
   where
     switch
-      lastElemOrdered
-      nextElemOrdered
       rotateToFirst
       rotateBackward
-        | not lastElemOrdered =
+        | not (lastElemOrdered greaterThanOrEqual xs currentIndex isReverse) =
             rotationsortIterable
-              greaterThan
+              greaterThanOrEqual
               rotateToFirst
               (firstIndex (length xs) isReverse)
               isAmbi
               isReverse
-        | not nextElemOrdered =
+        | not (nextElemOrdered greaterThanOrEqual xs currentIndex isReverse) =
             rotationsortIterable
-              greaterThan
+              greaterThanOrEqual
               rotateBackward
               (firstIndex (length xs) isReverse)
               isAmbi
               isReverse
         | otherwise =
             rotationsortIterable
-              greaterThan
+              greaterThanOrEqual
               xs
               (nextIndex currentIndex isReverse)
               isAmbi
@@ -193,55 +183,45 @@ rotationsortMiddle ::
   Bool ->
   Bool ->
   [a]
-rotationsortMiddle greaterThan xs currentIndex isAmbi isReverse =
+rotationsortMiddle greaterThanOrEqual xs currentIndex isAmbi isReverse =
   let w = xs !! prevIndex currentIndex isReverse
       x = xs !! currentIndex
       y = xs !! nextIndex currentIndex isReverse
-      nextElemGreater = greaterThan y x
-      nextElemOrdered =
-        if isReverse then not nextElemGreater else nextElemGreater
-      prevElemGreater = greaterThan w x
-      prevElemOrdered =
-        if isReverse then prevElemGreater else not prevElemGreater
       rotateBackward =
         if isReverse then [x] ++ [y] ++ [w] else [y] ++ [w] ++ [x]
       rotateForward =
         if isReverse then [y] ++ [w] ++ [x] else [x] ++ [y] ++ [w]
    in switch
-        nextElemOrdered
-        prevElemOrdered
         rotateBackward
         rotateForward
   where
     switch
-      nextElemOrdered
-      prevElemOrdered
       rotateBackward
       rotateForward
-        | not nextElemOrdered =
+        | not (nextElemOrdered greaterThanOrEqual xs currentIndex isReverse) =
             rotationsortIterable
-              greaterThan
+              greaterThanOrEqual
               rotateBackward
               (firstIndex (length xs) isReverse)
               isAmbi
               isReverse
         | not isAmbi =
             rotationsortIterable
-              greaterThan
+              greaterThanOrEqual
               xs
               (nextIndex currentIndex isReverse)
               isAmbi
               isReverse
-        | not prevElemOrdered =
+        | not (prevElemOrdered greaterThanOrEqual xs currentIndex isReverse) =
             rotationsortIterable
-              greaterThan
+              greaterThanOrEqual
               rotateForward
               (prevIndex currentIndex isReverse)
               isAmbi
               isReverse
         | otherwise =
             rotationsortIterable
-              greaterThan
+              greaterThanOrEqual
               xs
               (nextIndex currentIndex isReverse)
               isAmbi
@@ -255,55 +235,45 @@ rotationsortLast ::
   Bool ->
   Bool ->
   [a]
-rotationsortLast greaterThan xs currentIndex isAmbi isReverse =
+rotationsortLast greaterThanOrEqual xs currentIndex isAmbi isReverse =
   let w = xs !! prevIndex currentIndex isReverse
       x = xs !! currentIndex
       y = xs !! firstIndex (length xs) isReverse
-      firstElemGreater = greaterThan y x
-      firstElemOrdered =
-        if isReverse then firstElemGreater else not firstElemGreater
-      prevElemGreater = greaterThan w x
-      prevElemOrdered =
-        if isReverse then prevElemGreater else not prevElemGreater
       rotateForward =
         if isReverse then [w] ++ [x] ++ [y] else [y] ++ [x] ++ [w]
       rotateToLast =
         if isReverse then [y] ++ [x] ++ [w] else [w] ++ [x] ++ [y]
    in switch
-        firstElemOrdered
-        prevElemOrdered
         rotateForward
         rotateToLast
   where
     switch
-      firstElemOrdered
-      prevElemOrdered
       rotateForward
       rotateToLast
         | not isAmbi =
             rotationsortIterable
-              greaterThan
+              greaterThanOrEqual
               xs
               (nextIndex currentIndex isReverse)
               isAmbi
               isReverse
-        | not firstElemOrdered =
+        | not (firstElemOrdered greaterThanOrEqual xs currentIndex isReverse) =
             rotationsortIterable
-              greaterThan
+              greaterThanOrEqual
               rotateToLast
               (prevIndex currentIndex isReverse)
               isAmbi
               isReverse
-        | not prevElemOrdered =
+        | not (prevElemOrdered greaterThanOrEqual xs currentIndex isReverse) =
             rotationsortIterable
-              greaterThan
+              greaterThanOrEqual
               rotateForward
               (prevIndex currentIndex isReverse)
               isAmbi
               isReverse
         | otherwise =
             rotationsortIterable
-              greaterThan
+              greaterThanOrEqual
               xs
               (nextIndex currentIndex isReverse)
               isAmbi
@@ -328,3 +298,27 @@ firstIndex :: Int -> Bool -> Int
 firstIndex listLength isReverse
   | isReverse = listLength - 1
   | otherwise = 0
+
+nextElemOrdered :: (Ord a) => (a -> a -> Bool) -> [a] -> Int -> Bool -> Bool
+nextElemOrdered greaterThanOrEqual xs currentIndex isReverse =
+  let x = xs !! currentIndex
+      y = xs !! nextIndex currentIndex isReverse
+   in if isReverse then greaterThanOrEqual x y else greaterThanOrEqual y x
+
+prevElemOrdered :: (Ord a) => (a -> a -> Bool) -> [a] -> Int -> Bool -> Bool
+prevElemOrdered greaterThanOrEqual xs currentIndex isReverse =
+  let x = xs !! currentIndex
+      w = xs !! prevIndex currentIndex isReverse
+   in if isReverse then greaterThanOrEqual w x else greaterThanOrEqual x w
+
+firstElemOrdered :: (Ord a) => (a -> a -> Bool) -> [a] -> Int -> Bool -> Bool
+firstElemOrdered greaterThanOrEqual xs currentIndex isReverse =
+  let x = xs !! currentIndex
+      w = xs !! firstIndex (length xs) isReverse
+   in if isReverse then greaterThanOrEqual w x else greaterThanOrEqual x w
+
+lastElemOrdered :: (Ord a) => (a -> a -> Bool) -> [a] -> Int -> Bool -> Bool
+lastElemOrdered greaterThanOrEqual xs currentIndex isReverse =
+  let x = xs !! currentIndex
+      y = xs !! lastIndex (length xs) isReverse
+   in if isReverse then greaterThanOrEqual x y else greaterThanOrEqual y x
