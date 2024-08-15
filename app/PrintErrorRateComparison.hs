@@ -8,11 +8,11 @@ import Data.Tensort.Utils.Types
     fromSortBit,
   )
 import PadOut (padOut)
-import SortAlgsCompared (sortAlgsCompared)
+import SubAlgsCompared (subAlgsCompared)
 import System.Random (mkStdGen)
 
 printErrorRateComparison :: Int -> IO ()
-printErrorRateComparison i = foldr acc (return ()) sortAlgsCompared
+printErrorRateComparison i = foldr acc (return ()) subAlgsCompared
   where
     acc sortAlg io = do
       _ <- io

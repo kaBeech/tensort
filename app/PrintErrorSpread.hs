@@ -5,11 +5,11 @@ import Data.Tensort.Utils.Types
   ( Sortable (..),
     WonkyState (..),
   )
-import SortAlgsCompared (sortAlgsCompared)
+import SubAlgsCompared (subAlgsCompared)
 import System.Random (mkStdGen)
 
 printErrorSpread :: Int -> IO ()
-printErrorSpread i = foldr acc (return ()) sortAlgsCompared
+printErrorSpread i = foldr acc (return ()) subAlgsCompared
   where
     acc sortAlg io = do
       _ <- io
