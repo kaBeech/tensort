@@ -1,30 +1,43 @@
 module Data.Tensort.Subalgorithms.Bubblesort (bubblesort) where
 
-import Data.Tensort.Utils.ComparisonFunctions (lessThanBit, lessThanRecord)
-import Data.Tensort.Utils.Types (Bit, Record, Sortable (..), WonkyState)
+import Data.Tensort.Utils.ComparisonFunctions
+  ( greaterThanBit,
+    greaterThanRecord,
+  )
+import Data.Tensort.Utils.Types (Sortable (..), WonkyState)
 
 bubblesort :: WonkyState -> Sortable -> (Sortable, WonkyState)
-bubblesort wonkySt (SortBit bits) = do
-  let (result, wonkySt') = foldr acc ([], wonkySt) bits
-  (SortBit result, wonkySt')
-  where
-    acc :: Bit -> ([Bit], WonkyState) -> ([Bit], WonkyState)
-    acc x (xs, wonkySt') = bubblesortSinglePass lessThanBit wonkySt' x xs
-bubblesort wonkySt (SortRec recs) = do
-  let (result, wonkySt') = foldr acc ([], wonkySt) recs
-  (SortRec result, wonkySt')
-  where
-    acc :: Record -> ([Record], WonkyState) -> ([Record], WonkyState)
-    acc x (xs, wonkySt') = bubblesortSinglePass lessThanRecord wonkySt' x xs
+bubblesort wonkySt (SortBit bits) =
+  let (result, wonkySt') =
+        bublesortIterable greaterThanBit wonkySt bits 0 (length bits)
+   in (SortBit result, wonkySt')
+bubblesort wonkySt (SortRec recs) =
+  let (result, wonkySt') =
+        bublesortIterable greaterThanRecord wonkySt recs 0 (length recs)
+   in (SortRec result, wonkySt')
 
-bubblesortSinglePass :: (a -> a -> WonkyState -> (Bool, WonkyState)) -> WonkyState -> a -> [a] -> ([a], WonkyState)
-bubblesortSinglePass _ wonkySt x [] = ([x], wonkySt)
-bubblesortSinglePass lessThan wonkySt x (y : remaningElements) = do
-  let (result, wonkySt') = lessThan x y wonkySt
-  if result
-    then do
-      let (result', wonkySt'') = bubblesortSinglePass lessThan wonkySt' y remaningElements
-      (x : result', wonkySt'')
-    else do
-      let (result', wonkySt'') = bubblesortSinglePass lessThan wonkySt' x remaningElements
-      (y : result', wonkySt'')
+bublesortIterable ::
+  (Ord a) =>
+  (a -> a -> WonkyState -> (Bool, WonkyState)) ->
+  WonkyState ->
+  [a] ->
+  Int ->
+  Int ->
+  ([a], WonkyState)
+bublesortIterable greaterThan wonkySt xs currentIndex i
+  | length xs < 2 =
+      (xs, wonkySt)
+  | i < 1 =
+      (xs, wonkySt)
+  | currentIndex > length xs - 2 =
+      bublesortIterable greaterThan wonkySt xs 0 (i - 1)
+  | otherwise =
+      let left = take currentIndex xs
+          right = drop (currentIndex + 2) xs
+          x = xs !! currentIndex
+          y = xs !! (currentIndex + 1)
+          (leftElemGreater, wonkySt') = greaterThan x y wonkySt
+          swappedXs = left ++ [y] ++ [x] ++ right
+       in if leftElemGreater
+            then bublesortIterable greaterThan wonkySt' swappedXs (currentIndex + 1) i
+            else bublesortIterable greaterThan wonkySt' xs (currentIndex + 1) i
