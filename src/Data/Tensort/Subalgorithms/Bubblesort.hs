@@ -4,7 +4,6 @@ import Data.Tensort.Utils.ComparisonFunctions
   ( greaterThanBit,
     greaterThanRecord,
   )
-<<<<<<< HEAD
 import Data.Tensort.Utils.Types (Sortable (..), WonkyState)
 
 bubblesort :: WonkyState -> Sortable -> (Sortable, WonkyState)

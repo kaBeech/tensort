@@ -28,6 +28,13 @@ import Data.Tensort.Utils.Types
     TensorR,
     TensortProps (..),
     WonkyState,
+    fromSBitBit,
+    fromSBitRec,
+    fromSRecordArrayBit,
+    fromSRecordArrayRec,
+    fromSTensorBit,
+    fromSTensorRec,
+    fromSortRec,
   )
 
 -- | Convert a list of Bytes to a list of TensorStacks.
