@@ -1,10 +1,12 @@
 module Data.Tensort.Utils.ComparisonFunctions
   ( lessThanBit,
     lessThanRecord,
-    greaterThanBit,
-    greaterThanRecord,
     lessThanOrEqualBit,
     lessThanOrEqualRecord,
+    greaterThanBit,
+    greaterThanRecord,
+    greaterThanOrEqualBit,
+    greaterThanOrEqualRecord,
     equalBit,
     equalRecord,
   )
@@ -36,6 +38,16 @@ lessThanRecord x y wonkySt = do
   let (result, wonkySt') = wonkyCompare (snd x) (snd y) wonkySt
   (result == -1, wonkySt')
 
+lessThanOrEqualBit :: Bit -> Bit -> WonkyState -> (Bool, WonkyState)
+lessThanOrEqualBit x y wonkySt = do
+  let (result, wonkySt') = wonkyCompare x y wonkySt
+  (result <= 0, wonkySt')
+
+lessThanOrEqualRecord :: Record -> Record -> WonkyState -> (Bool, WonkyState)
+lessThanOrEqualRecord x y wonkySt = do
+  let (result, wonkySt') = wonkyCompare (snd x) (snd y) wonkySt
+  (result <= 0, wonkySt')
+
 greaterThanBit :: Bit -> Bit -> WonkyState -> (Bool, WonkyState)
 greaterThanBit x y wonkySt = do
   let (result, wonkySt') = wonkyCompare x y wonkySt
@@ -46,15 +58,15 @@ greaterThanRecord x y wonkySt = do
   let (result, wonkySt') = wonkyCompare (snd x) (snd y) wonkySt
   (result == 1, wonkySt')
 
-lessThanOrEqualBit :: Bit -> Bit -> WonkyState -> (Bool, WonkyState)
-lessThanOrEqualBit x y wonkySt = do
+greaterThanOrEqualBit :: Bit -> Bit -> WonkyState -> (Bool, WonkyState)
+greaterThanOrEqualBit x y wonkySt = do
   let (result, wonkySt') = wonkyCompare x y wonkySt
-  (result <= 0, wonkySt')
+  (result >= 0, wonkySt')
 
-lessThanOrEqualRecord :: Record -> Record -> WonkyState -> (Bool, WonkyState)
-lessThanOrEqualRecord x y wonkySt = do
+greaterThanOrEqualRecord :: Record -> Record -> WonkyState -> (Bool, WonkyState)
+greaterThanOrEqualRecord x y wonkySt = do
   let (result, wonkySt') = wonkyCompare (snd x) (snd y) wonkySt
-  (result <= 0, wonkySt')
+  (result >= 0, wonkySt')
 
 equalBit :: Bit -> Bit -> WonkyState -> (Bool, WonkyState)
 equalBit x y wonkySt = do

@@ -7,8 +7,8 @@ module Data.Tensort.Subalgorithms.Rotationsort
 where
 
 import Data.Tensort.Utils.ComparisonFunctions
-  ( greaterThanBit,
-    greaterThanRecord,
+  ( greaterThanOrEqualBit,
+    greaterThanOrEqualRecord,
   )
 import Data.Tensort.Utils.Types (Sortable (..), WonkyState)
 
@@ -18,28 +18,28 @@ import Data.Tensort.Utils.Types (Sortable (..), WonkyState)
 rotationsort :: WonkyState -> Sortable -> (Sortable, WonkyState)
 rotationsort wonkySt (SortBit bits) =
   let (result, wonkySt') =
-        rotationsortIterable greaterThanBit wonkySt bits 0 False False
+        rotationsortIterable greaterThanOrEqualBit wonkySt bits 0 False False
    in (SortBit result, wonkySt')
 rotationsort wonkySt (SortRec recs) =
   let (result, wonkySt') =
-        rotationsortIterable greaterThanRecord wonkySt recs 0 False False
+        rotationsortIterable greaterThanOrEqualRecord wonkySt recs 0 False False
    in (SortRec result, wonkySt')
 
 rotationsortAmbi :: WonkyState -> Sortable -> (Sortable, WonkyState)
 rotationsortAmbi wonkySt (SortBit bits) =
   let (result, wonkySt') =
-        rotationsortIterable greaterThanBit wonkySt bits 0 True False
+        rotationsortIterable greaterThanOrEqualBit wonkySt bits 0 True False
    in (SortBit result, wonkySt')
 rotationsortAmbi wonkySt (SortRec recs) =
   let (result, wonkySt') =
-        rotationsortIterable greaterThanRecord wonkySt recs 0 True False
+        rotationsortIterable greaterThanOrEqualRecord wonkySt recs 0 True False
    in (SortRec result, wonkySt')
 
 rotationsortReverse :: WonkyState -> Sortable -> (Sortable, WonkyState)
 rotationsortReverse wonkySt (SortBit bits) =
   let (result, wonkySt') =
         rotationsortIterable
-          greaterThanBit
+          greaterThanOrEqualBit
           wonkySt
           bits
           (length bits - 1)
@@ -49,7 +49,7 @@ rotationsortReverse wonkySt (SortBit bits) =
 rotationsortReverse wonkySt (SortRec recs) =
   let (result, wonkySt') =
         rotationsortIterable
-          greaterThanRecord
+          greaterThanOrEqualRecord
           wonkySt
           recs
           (length recs - 1)
@@ -61,7 +61,7 @@ rotationsortReverseAmbi :: WonkyState -> Sortable -> (Sortable, WonkyState)
 rotationsortReverseAmbi wonkySt (SortBit bits) =
   let (result, wonkySt') =
         rotationsortIterable
-          greaterThanBit
+          greaterThanOrEqualBit
           wonkySt
           bits
           (length bits - 1)
@@ -71,7 +71,7 @@ rotationsortReverseAmbi wonkySt (SortBit bits) =
 rotationsortReverseAmbi wonkySt (SortRec recs) =
   let (result, wonkySt') =
         rotationsortIterable
-          greaterThanRecord
+          greaterThanOrEqualRecord
           wonkySt
           recs
           (length recs - 1)
@@ -88,7 +88,7 @@ rotationsortIterable ::
   Bool ->
   Bool ->
   ([a], WonkyState)
-rotationsortIterable greaterThan wonkySt xs currentIndex isAmbi isReverse
+rotationsortIterable greaterThanOrEqual wonkySt xs currentIndex isAmbi isReverse
   | length xs > 3 =
       error
         "From rotationsortIterable: algorithm not yet implemented for lists of length greater than 3"
@@ -96,13 +96,13 @@ rotationsortIterable greaterThan wonkySt xs currentIndex isAmbi isReverse
       (xs, wonkySt)
   | length xs < 2 = (xs, wonkySt)
   | length xs == 2 =
-      rotatationsortPair greaterThan wonkySt xs currentIndex isAmbi isReverse
+      rotatationsortPair greaterThanOrEqual wonkySt xs currentIndex isAmbi isReverse
   | currentIndex == firstIndex (length xs) isReverse =
-      rotationsortHead greaterThan wonkySt xs currentIndex isAmbi isReverse
+      rotationsortHead greaterThanOrEqual wonkySt xs currentIndex isAmbi isReverse
   | currentIndex == lastIndex (length xs) isReverse =
-      rotationsortLast greaterThan wonkySt xs currentIndex isAmbi isReverse
+      rotationsortLast greaterThanOrEqual wonkySt xs currentIndex isAmbi isReverse
   | otherwise =
-      rotationsortMiddle greaterThan wonkySt xs currentIndex isAmbi isReverse
+      rotationsortMiddle greaterThanOrEqual wonkySt xs currentIndex isAmbi isReverse
 
 rotatationsortPair ::
   (Ord a) =>
@@ -113,17 +113,17 @@ rotatationsortPair ::
   Bool ->
   Bool ->
   ([a], WonkyState)
-rotatationsortPair greaterThan wonkySt xs currentIndex isAmbi isReverse =
+rotatationsortPair greaterThanOrEqual wonkySt xs currentIndex isAmbi isReverse =
   let x = head xs
       y = xs !! 1
-      (secondElemGreater, wonkySt') = greaterThan y x wonkySt
+      (secondElemGreater, wonkySt') = greaterThanOrEqual y x wonkySt
       swappedXs = y : [x]
    in switch secondElemGreater wonkySt' swappedXs
   where
     switch secondElemGreater wonkySt' swappedXs
       | not secondElemGreater =
           rotationsortIterable
-            greaterThan
+            greaterThanOrEqual
             wonkySt'
             swappedXs
             (firstIndex (length xs) isReverse)
@@ -131,7 +131,7 @@ rotatationsortPair greaterThan wonkySt xs currentIndex isAmbi isReverse =
             isReverse
       | otherwise =
           rotationsortIterable
-            greaterThan
+            greaterThanOrEqual
             wonkySt'
             xs
             (nextIndex currentIndex isReverse)
@@ -147,46 +147,42 @@ rotationsortHead ::
   Bool ->
   Bool ->
   ([a], WonkyState)
-rotationsortHead greaterThan wonkySt xs currentIndex isAmbi isReverse =
+rotationsortHead greaterThanOrEqual wonkySt xs currentIndex isAmbi isReverse =
   let w = xs !! lastIndex (length xs) isReverse
       x = xs !! currentIndex
       y = xs !! nextIndex currentIndex isReverse
-      (lastElemGreater, wonkySt') = greaterThan w x wonkySt
-      lastElemOrdered =
-        if isReverse then not lastElemGreater else lastElemGreater
-      (nextElemGreater, wonkySt'') = greaterThan y x wonkySt'
-      nextElemOrdered =
-        if isReverse then not nextElemGreater else nextElemGreater
+      (lastElemOrdered', wonkySt') = lastElemOrdered greaterThanOrEqual wonkySt xs currentIndex isReverse
+      (nextElemOrdered', wonkySt'') = nextElemOrdered greaterThanOrEqual wonkySt' xs currentIndex isReverse
       rotateToFirst =
         if isReverse then [y] ++ [x] ++ [w] else [w] ++ [x] ++ [y]
       rotateBackward =
         if isReverse then [w] ++ [x] ++ [y] else [y] ++ [x] ++ [w]
    in switch
-        lastElemOrdered
-        nextElemOrdered
+        lastElemOrdered'
+        nextElemOrdered'
         wonkySt'
         wonkySt''
         rotateToFirst
         rotateBackward
   where
     switch
-      lastElemOrdered
-      nextElemOrdered
+      lastElemOrdered'
+      nextElemOrdered'
       wonkySt'
       wonkySt''
       rotateToFirst
       rotateBackward
-        | not lastElemOrdered =
+        | not lastElemOrdered' =
             rotationsortIterable
-              greaterThan
+              greaterThanOrEqual
               wonkySt'
               rotateToFirst
               (firstIndex (length xs) isReverse)
               isAmbi
               isReverse
-        | not nextElemOrdered =
+        | not nextElemOrdered' =
             rotationsortIterable
-              greaterThan
+              greaterThanOrEqual
               wonkySt''
               rotateBackward
               (firstIndex (length xs) isReverse)
@@ -194,7 +190,7 @@ rotationsortHead greaterThan wonkySt xs currentIndex isAmbi isReverse =
               isReverse
         | otherwise =
             rotationsortIterable
-              greaterThan
+              greaterThanOrEqual
               wonkySt''
               xs
               (nextIndex currentIndex isReverse)
@@ -210,38 +206,34 @@ rotationsortMiddle ::
   Bool ->
   Bool ->
   ([a], WonkyState)
-rotationsortMiddle greaterThan wonkySt xs currentIndex isAmbi isReverse =
+rotationsortMiddle greaterThanOrEqual wonkySt xs currentIndex isAmbi isReverse =
   let w = xs !! prevIndex currentIndex isReverse
       x = xs !! currentIndex
       y = xs !! nextIndex currentIndex isReverse
-      (nextElemGreater, wonkySt') = greaterThan y x wonkySt
-      nextElemOrdered =
-        if isReverse then not nextElemGreater else nextElemGreater
-      (prevElemGreater, wonkySt'') = greaterThan w x wonkySt'
-      prevElemOrdered =
-        if isReverse then prevElemGreater else not prevElemGreater
+      (nextElemOrdered', wonkySt') = nextElemOrdered greaterThanOrEqual wonkySt xs currentIndex isReverse
+      (prevElemOrdered', wonkySt'') = prevElemOrdered greaterThanOrEqual wonkySt' xs currentIndex isReverse
       rotateBackward =
         if isReverse then [x] ++ [y] ++ [w] else [y] ++ [w] ++ [x]
       rotateForward =
         if isReverse then [y] ++ [w] ++ [x] else [x] ++ [y] ++ [w]
    in switch
-        nextElemOrdered
-        prevElemOrdered
+        nextElemOrdered'
+        prevElemOrdered'
         wonkySt'
         wonkySt''
         rotateBackward
         rotateForward
   where
     switch
-      nextElemOrdered
-      prevElemOrdered
+      nextElemOrdered'
+      prevElemOrdered'
       wonkySt'
       wonkySt''
       rotateBackward
       rotateForward
-        | not nextElemOrdered =
+        | not nextElemOrdered' =
             rotationsortIterable
-              greaterThan
+              greaterThanOrEqual
               wonkySt'
               rotateBackward
               (firstIndex (length xs) isReverse)
@@ -249,15 +241,15 @@ rotationsortMiddle greaterThan wonkySt xs currentIndex isAmbi isReverse =
               isReverse
         | not isAmbi =
             rotationsortIterable
-              greaterThan
+              greaterThanOrEqual
               wonkySt'
               xs
               (nextIndex currentIndex isReverse)
               isAmbi
               isReverse
-        | not prevElemOrdered =
+        | not prevElemOrdered' =
             rotationsortIterable
-              greaterThan
+              greaterThanOrEqual
               wonkySt''
               rotateForward
               (prevIndex currentIndex isReverse)
@@ -265,7 +257,7 @@ rotationsortMiddle greaterThan wonkySt xs currentIndex isAmbi isReverse =
               isReverse
         | otherwise =
             rotationsortIterable
-              greaterThan
+              greaterThanOrEqual
               wonkySt''
               xs
               (nextIndex currentIndex isReverse)
@@ -281,54 +273,50 @@ rotationsortLast ::
   Bool ->
   Bool ->
   ([a], WonkyState)
-rotationsortLast greaterThan wonkySt xs currentIndex isAmbi isReverse =
+rotationsortLast greaterThanOrEqual wonkySt xs currentIndex isAmbi isReverse =
   let w = xs !! prevIndex currentIndex isReverse
       x = xs !! currentIndex
       y = xs !! firstIndex (length xs) isReverse
-      (firstElemGreater, wonkySt') = greaterThan y x wonkySt
-      firstElemOrdered =
-        if isReverse then firstElemGreater else not firstElemGreater
-      (prevElemGreater, wonkySt'') = greaterThan w x wonkySt'
-      prevElemOrdered =
-        if isReverse then prevElemGreater else not prevElemGreater
+      (firstElemOrdered', wonkySt') = firstElemOrdered greaterThanOrEqual wonkySt xs currentIndex isReverse
+      (prevElemOrdered', wonkySt'') = prevElemOrdered greaterThanOrEqual wonkySt' xs currentIndex isReverse
       rotateForward =
         if isReverse then [w] ++ [x] ++ [y] else [y] ++ [x] ++ [w]
       rotateToLast =
         if isReverse then [y] ++ [x] ++ [w] else [w] ++ [x] ++ [y]
    in switch
-        firstElemOrdered
-        prevElemOrdered
+        firstElemOrdered'
+        prevElemOrdered'
         wonkySt'
         wonkySt''
         rotateForward
         rotateToLast
   where
     switch
-      firstElemOrdered
-      prevElemOrdered
+      firstElemOrdered'
+      prevElemOrdered'
       wonkySt'
       wonkySt''
       rotateForward
       rotateToLast
         | not isAmbi =
             rotationsortIterable
-              greaterThan
+              greaterThanOrEqual
               wonkySt
               xs
               (nextIndex currentIndex isReverse)
               isAmbi
               isReverse
-        | not firstElemOrdered =
+        | not firstElemOrdered' =
             rotationsortIterable
-              greaterThan
+              greaterThanOrEqual
               wonkySt'
               rotateToLast
               (prevIndex currentIndex isReverse)
               isAmbi
               isReverse
-        | not prevElemOrdered =
+        | not prevElemOrdered' =
             rotationsortIterable
-              greaterThan
+              greaterThanOrEqual
               wonkySt''
               rotateForward
               (prevIndex currentIndex isReverse)
@@ -336,7 +324,7 @@ rotationsortLast greaterThan wonkySt xs currentIndex isAmbi isReverse =
               isReverse
         | otherwise =
             rotationsortIterable
-              greaterThan
+              greaterThanOrEqual
               wonkySt''
               xs
               (nextIndex currentIndex isReverse)
@@ -362,3 +350,55 @@ firstIndex :: Int -> Bool -> Int
 firstIndex listLength isReverse
   | isReverse = listLength - 1
   | otherwise = 0
+
+nextElemOrdered ::
+  (Ord a) =>
+  (a -> a -> WonkyState -> (Bool, WonkyState)) ->
+  WonkyState ->
+  [a] ->
+  Int ->
+  Bool ->
+  (Bool, WonkyState)
+nextElemOrdered greaterThanOrEqual wonkySt xs currentIndex isReverse =
+  let x = xs !! currentIndex
+      y = xs !! nextIndex currentIndex isReverse
+   in if isReverse then greaterThanOrEqual x y wonkySt else greaterThanOrEqual y x wonkySt
+
+prevElemOrdered ::
+  (Ord a) =>
+  (a -> a -> WonkyState -> (Bool, WonkyState)) ->
+  WonkyState ->
+  [a] ->
+  Int ->
+  Bool ->
+  (Bool, WonkyState)
+prevElemOrdered greaterThanOrEqual wonkySt xs currentIndex isReverse =
+  let x = xs !! currentIndex
+      w = xs !! prevIndex currentIndex isReverse
+   in if isReverse then greaterThanOrEqual w x wonkySt else greaterThanOrEqual x w wonkySt
+
+firstElemOrdered ::
+  (Ord a) =>
+  (a -> a -> WonkyState -> (Bool, WonkyState)) ->
+  WonkyState ->
+  [a] ->
+  Int ->
+  Bool ->
+  (Bool, WonkyState)
+firstElemOrdered greaterThanOrEqual wonkySt xs currentIndex isReverse =
+  let x = xs !! currentIndex
+      w = xs !! firstIndex (length xs) isReverse
+   in if isReverse then greaterThanOrEqual w x wonkySt else greaterThanOrEqual x w wonkySt
+
+lastElemOrdered ::
+  (Ord a) =>
+  (a -> a -> WonkyState -> (Bool, WonkyState)) ->
+  WonkyState ->
+  [a] ->
+  Int ->
+  Bool ->
+  (Bool, WonkyState)
+lastElemOrdered greaterThanOrEqual wonkySt xs currentIndex isReverse =
+  let x = xs !! currentIndex
+      y = xs !! lastIndex (length xs) isReverse
+   in if isReverse then greaterThanOrEqual x y wonkySt else greaterThanOrEqual y x wonkySt
