@@ -43,16 +43,16 @@ printTime (l, seed) = do
         ++ show (length (fromSortBit l))
     )
   putStrLn ""
-  printResult "TensortBL" l tensortBL wonkySt
   printResult "Mergesort" l mergesort wonkySt
   printResult "Quicksort" l quicksort wonkySt
-  printResult "Bubblesort" l bubblesort wonkySt
-  printResult "RSortRM" l robustsortRM wonkySt
-  printResult "RSortRB" l robustsortRB wonkySt
-  printResult "RSortRP" l robustsortRP wonkySt
-  printResult "RSortM" l robustsortM wonkySt
-  printResult "RSortB" l robustsortB wonkySt
+  -- printResult "Bubblesort" l bubblesort wonkySt
+  printResult "TensortBL" l tensortBL wonkySt
   printResult "RSortP" l robustsortP wonkySt
+  printResult "RSortB" l robustsortB wonkySt
+  printResult "RSortM" l robustsortM wonkySt
+  printResult "RSortRP" l robustsortRP wonkySt
+  printResult "RSortRB" l robustsortRB wonkySt
+  printResult "RSortRM" l robustsortRM wonkySt
   putStrLn "----------------------------------------------------------"
 
 printResult :: String -> Sortable -> SortAlg -> WonkyState -> IO ()

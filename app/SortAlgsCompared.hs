@@ -6,33 +6,25 @@ import Data.Tensort.Robustsort
   ( robustsortB,
     robustsortM,
     robustsortP,
+    robustsortRB,
     robustsortRM,
-    supersortB,
-    supersortM,
-    supersortP,
+    robustsortRP,
   )
-import Data.Tensort.Subalgorithms.Bogosort (bogosort)
 import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
-import Data.Tensort.Subalgorithms.Exchangesort (exchangesort)
-import Data.Tensort.Subalgorithms.Magicsort (magicsort)
-import Data.Tensort.Subalgorithms.Permutationsort (permutationsort)
+import Data.Tensort.Tensort (tensortBL)
 import Data.Tensort.Utils.Types (Sortable, WonkyState)
 
 sortAlgsCompared ::
   [(WonkyState -> Sortable -> (Sortable, WonkyState), String)]
 sortAlgsCompared =
-  [ (bubblesort, "Bubblesort"),
-    (exchangesort, "Exchangesort"),
-    (mergesort, "Mergesort"),
+  [ (robustsortRM, "Magic Robustsort"),
+    (robustsortRB, "Bogo Robustsort"),
+    (robustsortRP, "Mundane Robustsort"),
+    (robustsortM, "Base RobustsortM"),
+    (robustsortB, "Base RobustsortB"),
+    (robustsortP, "Base RobustsortP"),
+    (tensortBL, "TensortBL"),
+    (bubblesort, "Bubblesort"),
     (quicksort, "Quicksort"),
-    (bogosort, "Bogosort"),
-    (permutationsort, "Permutationsort"),
-    (magicsort, "Magicsort"),
-    (supersortP, "SupersortP"),
-    (supersortB, "SupersortB"),
-    (supersortM, "SupersortM"),
-    (robustsortP, "RobustsortP"),
-    (robustsortB, "RobustsortB"),
-    (robustsortM, "RobustsortM"),
-    (robustsortRM, "RobustsortRM")
+    (mergesort, "Mergesort")
   ]

@@ -4,6 +4,7 @@ import Data.Tensort.Utils.RandomizeList (randomizeList)
 import Data.Tensort.Utils.Types
   ( Sortable (..),
   )
+import PrintDeckShuffleErrors (printDeckShuffleErrors)
 import PrintErrorRateComparison (printErrorRateComparison)
 import PrintErrorSpread (printErrorSpread)
 import PrintTimes (printTimes)
@@ -16,6 +17,7 @@ genTestPeriod n = 2 ^ n
 
 main :: IO ()
 main = do
-  printErrorRateComparison 1000
-  printErrorSpread 1000
-  printTimes (map (\x -> (genUnsortedBits (genTestPeriod x), 143)) [3 .. 14])
+  -- printErrorRateComparison 1000
+  -- printErrorSpread 1000
+  -- printTimes (map (\x -> (genUnsortedBits (genTestPeriod x), 143)) [3 .. 14])
+  printDeckShuffleErrors 1000
