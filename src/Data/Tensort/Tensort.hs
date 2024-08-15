@@ -53,5 +53,7 @@ tensortBL :: Sortable -> Sortable
 tensortBL xs = tensort (mkTsProps (calculateBytesize xs) bubblesort) xs
 
 calculateBytesize :: Sortable -> Int
-calculateBytesize (SortBit xs) = ceiling (log (fromIntegral (length xs)) :: Double)
-calculateBytesize (SortRec xs) = ceiling (log (fromIntegral (length xs)) :: Double)
+calculateBytesize (SortBit xs) =
+  ceiling (log (fromIntegral (length xs)) :: Double)
+calculateBytesize (SortRec xs) =
+  ceiling (log (fromIntegral (length xs)) :: Double)

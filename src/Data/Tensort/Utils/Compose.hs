@@ -4,12 +4,37 @@ module Data.Tensort.Utils.Compose
   )
 where
 
-import qualified Data.Bifunctor
-import Data.Data (ConstrRep (..))
-import Data.Tensort.Utils.SimplifyRegister (applySortingFromSimplifiedRegister, simplifyRegister)
+import Data.Tensort.Utils.SimplifyRegister
+  ( applySortingFromSimplifiedRegister,
+    simplifyRegister,
+  )
 import Data.Tensort.Utils.Split (splitEvery)
-import Data.Tensort.Utils.Types (Bit, Byte, ByteR, Memory (..), MemoryR (..), Record, RecordR, SBit (..), SBytes (..), SMemory (..), SRecord (..), SRecords (SRecordsBit), STensor (..), STensors (..), SortAlg, Sortable (..), Tensor, TensorR, TensortProps (..), fromSBitBit, fromSBitRec, fromSRecordArrayBit, fromSRecordArrayRec, fromSRecordBit, fromSRecordsBit, fromSTensorBit, fromSTensorRec, fromSTensorsBit, fromSortRec)
-import GHC.Base (RuntimeRep (TupleRep))
+import Data.Tensort.Utils.Types
+  ( Byte,
+    ByteR,
+    Memory (..),
+    MemoryR (..),
+    Record,
+    RecordR,
+    SBit (..),
+    SBytes (..),
+    SMemory (..),
+    SRecord (..),
+    STensor (..),
+    STensors (..),
+    SortAlg,
+    Sortable (..),
+    Tensor,
+    TensorR,
+    TensortProps (..),
+    fromSBitBit,
+    fromSBitRec,
+    fromSRecordArrayBit,
+    fromSRecordArrayRec,
+    fromSTensorBit,
+    fromSTensorRec,
+    fromSortRec,
+  )
 
 -- | Convert a list of Bytes to a list of TensorStacks.
 
