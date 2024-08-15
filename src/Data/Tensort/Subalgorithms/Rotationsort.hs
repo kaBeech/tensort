@@ -48,8 +48,8 @@ rotationsortIterable greaterThan wonkySt xs currentIndex
           y = xs !! (currentIndex + 1)
           (lastElemGreater, wonkySt') = greaterThan w x wonkySt
           (rightElemGreater, wonkySt'') = greaterThan y x wonkySt'
-          rotateBackward = [w] ++ [x] ++ [y] ++ right
-          rotateLeft = [y] ++ [x] ++ right ++ [w]
+          rotateBackward = [w] ++ [x] ++ [y]
+          rotateLeft = [y] ++ [x] ++ [w]
        in if not lastElemGreater
             then rotationsortIterable greaterThan wonkySt' rotateBackward 0
             else
