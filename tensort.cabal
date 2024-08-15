@@ -104,7 +104,6 @@ library
                       Data.Tensort.Subalgorithms.Exchangesort,
                       Data.Tensort.Subalgorithms.Permutationsort,
                       Data.Tensort.Subalgorithms.Rotationsort,
-                      Data.Tensort.Subalgorithms.RotationsortReverse,
                       Data.Tensort.Subalgorithms.Bogosort,
                       Data.Tensort.Subalgorithms.Supersort,
                       Data.Tensort.Subalgorithms.Magicsort,

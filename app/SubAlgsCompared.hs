@@ -18,7 +18,12 @@ import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 import Data.Tensort.Subalgorithms.Exchangesort (exchangesort)
 import Data.Tensort.Subalgorithms.Magicsort (magicsort)
 import Data.Tensort.Subalgorithms.Permutationsort (permutationsort)
-import Data.Tensort.Subalgorithms.Rotationsort (rotationsort)
+import Data.Tensort.Subalgorithms.Rotationsort
+  ( rotationsort,
+    rotationsortAmbi,
+    rotationsortReverse,
+    rotationsortReverseAmbi,
+  )
 import Data.Tensort.Utils.Types (Sortable, WonkyState)
 
 subAlgsCompared ::
@@ -27,6 +32,9 @@ subAlgsCompared =
   [ (bubblesort, "Bubblesort"),
     (exchangesort, "Exchangesort"),
     (rotationsort, "Rotationsort"),
+    (rotationsortReverse, "RotationsortReverse"),
+    (rotationsortAmbi, "RotationsortAmbi"),
+    (rotationsortReverseAmbi, "RotationsortReverseAmbi"),
     (mergesort, "Mergesort"),
     (quicksort, "Quicksort"),
     (bogosort, "Bogosort"),
