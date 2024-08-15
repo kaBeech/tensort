@@ -17,6 +17,8 @@ import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 import Data.Tensort.Subalgorithms.Exchangesort (exchangesort)
 import Data.Tensort.Subalgorithms.Magicsort (magicsort)
 import Data.Tensort.Subalgorithms.Permutationsort (permutationsort)
+import Data.Tensort.Subalgorithms.Rotationsort (rotationsort, rotationsortAmbi)
+import Data.Tensort.Subalgorithms.RotationsortReverse (rotationsortAmbiReverse)
 import Data.Tensort.Subalgorithms.Supersort
   ( magicSuperStrat,
     mundaneSuperStrat,
@@ -35,8 +37,8 @@ robustsortP = tensort (mkTsProps 3 supersortP)
 supersortP :: WonkyState -> Sortable -> (Sortable, WonkyState)
 supersortP =
   supersort
-    ( bubblesort,
-      exchangesort,
+    ( rotationsort,
+      bubblesort,
       permutationsort,
       mundaneSuperStrat
     )
@@ -48,7 +50,7 @@ robustsortB :: WonkyState -> Sortable -> (Sortable, WonkyState)
 robustsortB = tensort (mkTsProps 3 supersortB)
 
 supersortB :: WonkyState -> Sortable -> (Sortable, WonkyState)
-supersortB = supersort (bubblesort, exchangesort, bogosort, mundaneSuperStrat)
+supersortB = supersort (rotationsort, bubblesort, bogosort, mundaneSuperStrat)
 
 robustsortRM :: WonkyState -> Sortable -> (Sortable, WonkyState)
 robustsortRM = robustsortRCustom robustsortM
@@ -57,7 +59,7 @@ robustsortM :: WonkyState -> Sortable -> (Sortable, WonkyState)
 robustsortM = tensort (mkTsProps 3 supersortM)
 
 supersortM :: WonkyState -> Sortable -> (Sortable, WonkyState)
-supersortM = supersort (bubblesort, exchangesort, magicsort, magicSuperStrat)
+supersortM = supersort (rotationsortAmbi, rotationsortAmbiReverse, magicsort, magicSuperStrat)
 
 robustsortRCustom :: SortAlg -> WonkyState -> Sortable -> (Sortable, WonkyState)
 robustsortRCustom baseSortAlg wonkySt xs =
