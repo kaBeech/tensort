@@ -11,9 +11,13 @@ where
 
 import Data.Tensort.Subalgorithms.Bogosort (bogosort)
 import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
-import Data.Tensort.Subalgorithms.Exchangesort (exchangesort)
 import Data.Tensort.Subalgorithms.Magicsort (magicsort)
 import Data.Tensort.Subalgorithms.Permutationsort (permutationsort)
+import Data.Tensort.Subalgorithms.Rotationsort
+  ( rotationsort,
+    rotationsortAmbi,
+    rotationsortReverseAmbi,
+  )
 import Data.Tensort.Subalgorithms.Supersort
   ( magicSuperStrat,
     mundaneSuperStrat,
@@ -33,7 +37,7 @@ supersortP :: Sortable -> Sortable
 supersortP =
   supersort
     ( bubblesort,
-      exchangesort,
+      rotationsort,
       permutationsort,
       mundaneSuperStrat
     )
@@ -45,7 +49,7 @@ robustsortB :: Sortable -> Sortable
 robustsortB = tensort (mkTsProps 3 supersortB)
 
 supersortB :: Sortable -> Sortable
-supersortB = supersort (bubblesort, exchangesort, bogosort, mundaneSuperStrat)
+supersortB = supersort (bubblesort, rotationsort, bogosort, mundaneSuperStrat)
 
 robustsortRM :: Sortable -> Sortable
 robustsortRM = robustsortRCustom robustsortM
@@ -54,7 +58,7 @@ robustsortM :: Sortable -> Sortable
 robustsortM = tensort (mkTsProps 3 supersortM)
 
 supersortM :: Sortable -> Sortable
-supersortM = supersort (bubblesort, exchangesort, magicsort, magicSuperStrat)
+supersortM = supersort (rotationsortAmbi, rotationsortReverseAmbi, magicsort, magicSuperStrat)
 
 robustsortRCustom :: SortAlg -> Sortable -> Sortable
 robustsortRCustom baseSortAlg xs =
@@ -73,10 +77,12 @@ getLn x = ceiling (log (fromIntegral x) :: Double)
 
 robustsortRecursive :: Int -> SortAlg -> SortAlg
 robustsortRecursive bytesize baseSortAlg
-  -- ln (ln (528491359)) ~= 3
-  -- So this is saying, if we have a bitesize of 528,491,359 or less, use
+  -- ln (532048240602) ~= 27
+  -- ln (27) ~= 3
+  -- 3 ^ 3 = 27
+  -- So this is saying, if we have a bitesize of 532,048,240,602 or less, use
   -- one more iteration of Tensort to sort the records. This last iteration
   -- will use the baseSortAlg (which by default is a standard version of
   -- Robustsort with a bytesize of 3) to sort its records.
-  | bytesize <= 528491359 = tensort (mkTsProps (getLn bytesize) baseSortAlg)
+  | bytesize <= 27 = baseSortAlg
   | otherwise = tensort (mkTsProps (getLn bytesize) (robustsortRecursive (getLn bytesize) baseSortAlg))

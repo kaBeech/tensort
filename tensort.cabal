@@ -101,6 +101,7 @@ library
                       Data.Tensort.Utils.MkTsProps,
                       Data.Tensort.Subalgorithms.Bubblesort,
                       Data.Tensort.Subalgorithms.Exchangesort,
+                      Data.Tensort.Subalgorithms.Rotationsort,
                       Data.Tensort.Subalgorithms.Permutationsort,
                       Data.Tensort.Subalgorithms.Bogosort,
                       Data.Tensort.Subalgorithms.Supersort,

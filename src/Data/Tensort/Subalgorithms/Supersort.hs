@@ -5,69 +5,49 @@ module Data.Tensort.Subalgorithms.Supersort
   )
 where
 
-import Data.Tensort.Utils.Types (SortAlg, Sortable (..), SupersortStrat)
+import Data.Tensort.Utils.ComparisonFunctions (equalBit, equalRecord)
+import Data.Tensort.Utils.Types
+  ( SortAlg,
+    Sortable (..),
+    SupersortStrat,
+    fromSortBit,
+    fromSortRec,
+  )
 
-supersort :: (SortAlg, SortAlg, SortAlg, SupersortStrat) -> Sortable -> Sortable
-supersort (subAlg1, subAlg2, subAlg3, superStrat) xs = do
-  let result1 = subAlg1 xs
-  let result2 = subAlg2 xs
+supersort ::
+  (SortAlg, SortAlg, SortAlg, SupersortStrat) ->
+  Sortable ->
+  Sortable
+supersort (subAlg1, subAlg2, subAlg3, superStrat) (SortBit xs) = do
+  let result1 = subAlg1 (SortBit xs)
+  let result2 = subAlg2 (SortBit xs)
   if result1 == result2
     then result1
-    else superStrat (result1, result2, subAlg3 xs)
+    else
+      if equalBit (last (fromSortBit result1)) (last (fromSortBit result2))
+        then result2
+        else superStrat (result1, result2, subAlg3 (SortBit xs))
+supersort (subAlg1, subAlg2, subAlg3, superStrat) (SortRec xs) = do
+  let result1 = subAlg1 (SortRec xs)
+  let result2 = subAlg2 (SortRec xs)
+  if result1 == result2
+    then result1
+    else
+      if equalRecord (last (fromSortRec result1)) (last (fromSortRec result2))
+        then result2
+        else superStrat (result1, result2, subAlg3 (SortRec xs))
 
 mundaneSuperStrat :: SupersortStrat
 mundaneSuperStrat (SortBit result1, SortBit result2, SortBit result3) = do
-  if result2 == result3 then SortBit result3 else SortBit result1
+  if result2 == result3 then SortBit result2 else SortBit result1
 mundaneSuperStrat (SortRec result1, SortRec result2, SortRec result3) = do
-  if result2 == result3 then SortRec result3 else SortRec result1
-mundaneSuperStrat (_, _, _) = error "From Mundane SuperStrat: All three inputs must be of the same type."
+  if result2 == result3 then SortRec result2 else SortRec result1
+mundaneSuperStrat (_, _, _) =
+  error
+    "From Mundane SuperStrat: All three inputs must be of the same type."
 
+-- Previously we used different SuperStrats for Mundane and Magic Supersorts.
+-- Currently there is no need to differentiate, but we keep this here in case
+-- this changes again in the future
 magicSuperStrat :: SupersortStrat
-magicSuperStrat (SortBit _result1, SortBit _result2, SortBit result3) = SortBit result3
-magicSuperStrat (SortRec _result1, SortRec _result2, SortRec result3) = SortRec result3
-magicSuperStrat (_, _, _) = error "From Magic SuperStrat: All three inputs must be of the same type."
-
--- Something like the following could also be considered. This would be less
--- reliable in cases where only the element comparison module is faulty, but
--- could be more reliable in cases where both the element comparison module and
--- the list comparison module are faulty
---
--- mundaneSuperStrat :: SupersortStrat
--- mundaneSuperStrat (SortBit result1, SortBit result2, SortBit result3) = do
---   if result1 == result3 || result2 == result3
---     then SortBit result3
---     else
---       if equalTo (last result1) (last result2) || equalTo (last result1) (last result3)
---         then SortBit result1
---         else
---           if equalTo (last result2) (last result3)
---             then SortBit result2
---             else SortBit result1
--- mundaneSuperStrat (SortRec result1, SortRec result2, SortRec result3) = do
---   if result1 == result3 || result2 == result3
---     then SortRec result3
---     else
---       if equalTo (last result1) (last result2) || equalTo (last result1) (last result3)
---         then SortRec result1
---         else
---           if equalTo (last result2) (last result3)
---             then SortRec result2
---             else SortRec result1
--- mundaneSuperStrat (_, _, _) = error "From Mundane SuperStrat: All three inputs must be of the same type."
---
--- magicSuperStrat :: SupersortStrat
--- magicSuperStrat (SortBit result1, SortBit result2, SortBit result3) = do
---   if equalTo (last result1) (last result3) || equalTo (last result2) (last result3)
---     then SortBit result3
---     else
---       if equalTo (last result1) (last result2)
---         then SortBit result1
---         else SortBit result3
--- magicSuperStrat (SortRec result1, SortRec result2, SortRec result3) = do
---   if equalTo (last result1) (last result3) || equalTo (last result2) (last result3)
---     then SortRec result3
---     else
---       if equalTo (last result1) (last result2)
---         then SortRec result1
---         else SortRec result3
--- magicSuperStrat (_, _, _) = error "From Magic SuperStrat: All three inputs must be of the same type."
+magicSuperStrat = mundaneSuperStrat
