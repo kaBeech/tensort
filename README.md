@@ -377,9 +377,9 @@ With those ground rules in place, let's get to Robustsort!
 #### Overview
 
 Once we have Tensort in our toolbox, the road to Robustsort is not long. 
-Robustsort is a recursive version of Tensort, so first we'll look at its base 
-case, a 3-bit Tensort with a custom SubAlgorithm that compares other 
-sub-algorithms. For convenience, we will call this custom SubAlgorithm 
+Robustsort is a potentially recursive version of Tensort, but first we'll look 
+at the basic variant: a 3-bit Tensort with a custom SubAlgorithm that compares 
+other sub-algorithms. For convenience, we will call this custom SubAlgorithm 
 Supersort. We use a 3-bit Tensort here because there's something magical that 
 happens around the number 3.
 
@@ -665,9 +665,14 @@ The number 27 is chosen because we want a number that has a natural log that is
 close to 3 (27's is about 3.3) and since 3 ^ 3 = 27, it is easy to sort lists 
 of 27 elements in groups of 3.
 
-We now have the basic form of Robustsort: a recursive Tensort with a 3-bit 
-base case using a Supersort adjudicating Bubblesort, Exchangesort, and 
-Permutationsort as its base SubAlgorithm.
+This recursive version of Robustsort is more tailored to large input lists 
+(it doesn't add another layer of recursion until the input list is
+is longer than 500 billion elements), but differences can be noticed when 
+sorting smaller lists as well.
+
+We now have the standard form of Robustsort: a potentially recursive Tensort 
+with a 3-bit base case using a Supersort adjudicating Bubblesort, Exchangesort,
+and Permutationsort as its base SubAlgorithm.
 
 Well that's pretty cool! But I wonder... can we make this more robust, if 
 we relax the rules just a little more?
