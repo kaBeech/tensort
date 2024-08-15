@@ -103,6 +103,8 @@ library
                       Data.Tensort.Subalgorithms.Bubblesort,
                       Data.Tensort.Subalgorithms.Exchangesort,
                       Data.Tensort.Subalgorithms.Permutationsort,
+                      Data.Tensort.Subalgorithms.Rotationsort,
+                      Data.Tensort.Subalgorithms.RotationsortReverse,
                       Data.Tensort.Subalgorithms.Bogosort,
                       Data.Tensort.Subalgorithms.Supersort,
                       Data.Tensort.Subalgorithms.Magicsort,
@@ -147,7 +149,9 @@ executable tensort
     other-modules: PrintTimes,
                    PrintErrorRateComparison,
                    PrintErrorSpread,
+                   PrintDeckShuffleErrors,
                    SortAlgsCompared,
+                   SubAlgsCompared,
                    PadOut,
 
     -- LANGUAGE extensions used by modules in this package.
