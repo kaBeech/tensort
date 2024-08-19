@@ -19,5 +19,5 @@ main :: IO ()
 main = do
   -- printErrorRateComparison 1000
   -- printErrorSpread 1000
-  -- printTimes (map (\x -> (genUnsortedBits (genTestPeriod x), 143)) [3 .. 14])
   printDeckShuffleErrors 1000
+  printTimes (map (\x -> (genUnsortedBits (genTestPeriod x), 143)) [3 .. 14])
