@@ -10,8 +10,6 @@ import Data.Tensort.Utils.Types
   ( SortAlg,
     Sortable (..),
     SupersortStrat,
-    fromSortBit,
-    fromSortRec,
   )
 
 supersort ::
@@ -23,19 +21,13 @@ supersort (subAlg1, subAlg2, subAlg3, superStrat) (SortBit xs) = do
   let result2 = subAlg2 (SortBit xs)
   if result1 == result2
     then result1
-    else
-      if equalBit (last (fromSortBit result1)) (last (fromSortBit result2))
-        then result2
-        else superStrat (result1, result2, subAlg3 (SortBit xs))
+    else superStrat (result1, result2, subAlg3 (SortBit xs))
 supersort (subAlg1, subAlg2, subAlg3, superStrat) (SortRec xs) = do
   let result1 = subAlg1 (SortRec xs)
   let result2 = subAlg2 (SortRec xs)
   if result1 == result2
     then result1
-    else
-      if equalRecord (last (fromSortRec result1)) (last (fromSortRec result2))
-        then result2
-        else superStrat (result1, result2, subAlg3 (SortRec xs))
+    else superStrat (result1, result2, subAlg3 (SortRec xs))
 
 mundaneSuperStrat :: SupersortStrat
 mundaneSuperStrat (SortBit result1, SortBit result2, SortBit result3) = do
