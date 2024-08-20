@@ -132,36 +132,37 @@ of robustness and time efficiency (only in the benchmarking branch)
 ## Algorithms overview
 
 This README assumes some general knowledge of basic sorting algoritms. If you
-would like a refresher, I recommend 
-[this video](https://www.youtube.com/watch?v=kgBjXUE_Nwc) which touches on 
-Bubblesort, Mergesort, and Bogosort, and 
+would like a refresher, I recommend
+[this video](https://www.youtube.com/watch?v=kgBjXUE_Nwc) which touches on
+Bubblesort, Mergesort, and Bogosort, and
 [this video](https://www.youtube.com/watch?v=XE4VP_8Y0BU) which discusses
 Quicksort.
 
-It also assumes you've read 
-[Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by 
+It also assumes you've read
+[Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by
 David H. Ackley. Go read it!
 
-Please note that we will discuss a few algorithms that I've either made up or 
-am just not familiar with by other names. If any of these algorithms have 
-previously been named, please let me know. Prior to this project I really 
+Please note that we will discuss a few algorithms that I've either made up or
+am just not familiar with by other names. If any of these algorithms have
+previously been named, please let me know. Prior to this project I really
 only had a rudimentary understanding of Insertionsort, Quicksort, Mergesort,
-Bubblesort and Bogosort, so it's entirely possible that I've reinvented a few 
+Bubblesort and Bogosort, so it's entirely possible that I've reinvented a few
 things that already exist.
 
 It also may be helpful to note that this project was originally undertaken in
-an endeavor to come up with a solution naively, for the practice, before 
-researching other algorithms built to tackle the same problem. I did very 
-briefly check out Ackley's 
-[Demon Horde Sort](https://www.youtube.com/watch?v=helScS3coAE&t=260s), 
-but only enough (about 5 seconds of that video) to verify that it is different 
-from this algorithm. I've been purposefully avoiding learning much about Demon 
-Horde Sort before publishing v1.0.0.0 of this package, but Ackley is way 
-smarter than me so if you do actually want a real, professional approach to 
+an endeavor to come up with a solution naively, for the practice, before
+researching other algorithms built to tackle the same problem. I did very
+briefly check out Ackley's
+[Demon Horde Sort](https://www.youtube.com/watch?v=helScS3coAE&t=260s),
+but only enough (about 5 seconds of that video) to verify that it is different
+from this algorithm. I've been purposefully avoiding learning much about Demon
+Horde Sort before publishing v1.0.0.0 of this package, but Ackley is way
+smarter than me so if you do actually want a real, professional approach to
 robust sorting, Demon Horde Sort is likely the place to look.
 
-The algorithms used here that I have made up or renamed are, in order of 
-introduction, Tensort, Robustsort, Permutationsort, and Magicsort. Get ready!
+The algorithms used here that I have made up or renamed are, in order of
+introduction, Tensort, Robustsort, Rotationsort, Permutationsort, and
+Magicsort. Get ready!
 
 ### Tensort
 
