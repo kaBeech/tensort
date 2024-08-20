@@ -392,12 +392,12 @@ to look at it another way, the TopBit of a given Tensor).
 
 #### Logarithmic Bytesize
 
-When using standard Tensort (i.e. using Bubblesort as the SubAlgoritm), as the 
-Bytesize approaches the square root of the number of elements in the 
+When using standard Tensort (i.e. using Bubblesort as the SubAlgoritm), as the
+Bytesize approaches the square root of the number of elements in the
 input list, its average time efficiency approaches O(n^2).
 
-Standard Tensort is most time efficient when the Bytesize is close 
-to the natural log of the number of elements in the input list. A logarithmic 
+Standard Tensort is most time efficient when the Bytesize is close
+to the natural log of the number of elements in the input list. A logarithmic
 Bytesize is likely to be ideal for most use cases of standard Tensort.
 
 -------
@@ -415,31 +415,30 @@ more robustness!
 
 #### Preface
 
-In Beyond Efficiency, Ackley augmented Mergesort and Quicksort with what he 
-called "cheap hacks" in order to give them a boost in robustness to get them to 
-compare with Bubblesort. This amounted to adding a quorum system to the 
-unpredictable comparison operator and choosing the most-agreed-upon answer. 
+In Beyond Efficiency, Ackley augmented Mergesort and Quicksort with what he
+called "cheap hacks" in order to give them a boost in robustness to get them to
+compare with Bubblesort. This amounted to adding a quorum system to the
+unpredictable comparison operator and choosing the most-agreed-upon answer.
 
-I agree that adding a quorum for the unpredictable comparison operator is a bit 
-of a cheap hack, or at least a post-hoc solution to a known problem. Instead of 
-retrying a specific component again because we know it to be unpredictable, 
-let's build redundancy into the system at the (sub-)algorithmic level. A simple 
-way to do this is by asking different components the same question and see if 
+I agree that adding a quorum for the unpredictable comparison operator is a bit
+of a cheap hack, or at least a post-hoc solution to a known problem. Instead of
+retrying a specific component again because we know it to be unpredictable,
+let's build redundancy into the system at the (sub-)algorithmic level. A simple
+way to do this is by asking different components the same question and see if
 they agree.
 
-Robustsort is my attempt to make the most robust sorting algorithm possible 
+Robustsort is my attempt to make the most robust sorting algorithm possible
 utilizing some solution-checking on the (sub-)algorithmic level while still:
 
-  - Keeping runtime somewhat reasonable
+  - Keeping to O(n log n) average time efficiency
 
-  - Never re-running a sub-algorithm that is expected to act deterministicly 
-      on the same arguments looking for a non-deterministic result (i.e. expect 
-      that if a components gives a wrong answer, running it again won't somehow 
-      yield a right answer)
+  - Never re-running a sub-algorithm that is expected to act deterministicly
+      on the same arguments looking for a non-deterministic result (i.e. expect
+      that if a components gives a wrong answer, running it again the same way
+      won't somehow yield a right answer)
 
-  - Using a minimal number of different sub-algorithms (i.e. doesn't just 
-      use every O(n log n) sorting algorithm I can think of and compare all 
-      their results)
+  - Using a minimal number of different sub-algorithms (i.e. doesn't just
+      use every sorting algorithm I can think of and compare all their results)
 
 With those ground rules in place, let's get to Robustsort!
 
