@@ -899,8 +899,7 @@ Note that these instructions don't make the assumptions listed above
 
   * [Install Nix](https://nixos.org/download/)
   * [Enable Flakes](https://nixos.wiki/wiki/Flakes)
-  * [Clone this repository
-    ](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
+  * [Clone this repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
   * Run `nix develop` in the repository root 
 
 ### Run main test suite (QuickCheck)
@@ -909,10 +908,10 @@ Note that these instructions don't make the assumptions listed above
 
 ### Run DocTest
 
-This is planned to be folded into the main test suite with the 1.0.0.0 release
-
   * Run `cabal repl --with-compiler=doctest`
 
-### Get Benchmarking Data
+### Print Benchmarking Data
 
+  * [Checkout to the 'benchmarking' branch](https://git-scm.com/docs/git-checkout)
+  * Uncomment the desired benchmarking process(es) in `app/Main.hs`
   * Run `cabal run`
