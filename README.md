@@ -125,14 +125,16 @@ sometimes falter without:
 - `src/` contains the Tensort library
     
 - `app/` contains the suite for comparing different sorting algorithms in terms
-of robustness and time efficiency
+of robustness and time efficiency (only in the benchmarking branch)
+
+- `data/` contains benchmarking data
 
 ## Algorithms overview
 
 This README assumes some general knowledge of basic sorting algoritms. If you
 would like a refresher, I recommend 
 [this video](https://www.youtube.com/watch?v=kgBjXUE_Nwc) which touches on 
-Bubblesort, MergeSort, and Bogosort, and 
+Bubblesort, Mergesort, and Bogosort, and 
 [this video](https://www.youtube.com/watch?v=XE4VP_8Y0BU) which discusses
 Quicksort.
 
