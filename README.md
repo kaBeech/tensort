@@ -522,7 +522,19 @@ I originally chose an algorithm that balances these properties and I retain the
 above paragraphs for the sake of theory. However, we're going to choose a
 highly accurate algorithm instead: Rotationsort.
 
-...
+The steps in Rotationsort are relatively simple:
+
+  1. Compare the first two elements. If the second element is smaller, move it
+       to the beginning of the list and return to Step 1.
+
+  2. Compare the second and third elements. If the third element is smaller,
+       move it to the beginning of the list and return to Step 1.
+
+  3. Continue on in this fashion until the end of the list is reached.
+
+  4. Compare the last element with the first element. If the last element is
+       smaller, move it to the beginning of the list and return to Step 1.
+       Otherwise, return the sorted list.
 
 Here are the results of running Rotationsort 1000 times on Bytes of random
 permutations of [1,2,3] using a faulty comparator that gives a random result
