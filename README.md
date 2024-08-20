@@ -46,7 +46,6 @@ There's likely a lot of room for improvement in the code as well.
     - [Supersort Adjudication](#supersort-adjudication)
     - [Recursion](#recursion)
   - [Magicsort](#magicsort)
-  - [A note on Robustsort and Bogosort](#a-note-on-robustsort-and-bogosort)
 - [Comparing it all](#comparing-it-all)
 - [Library](#library)
 - [Development Environment](#development-environment)
@@ -162,7 +161,7 @@ of robustness and time efficiency (only in the benchmarking branch)
 This README assumes some general knowledge of basic sorting algoritms. If you
 would like a refresher, I recommend
 [this video](https://www.youtube.com/watch?v=kgBjXUE_Nwc) which touches on
-Bubblesort, Mergesort, and Bogosort, and
+Bubblesort and Mergesort, and
 [this video](https://www.youtube.com/watch?v=XE4VP_8Y0BU) which discusses
 Quicksort.
 
@@ -705,30 +704,28 @@ another newly-named sorting algorithm: Magicsort!
 
 For our most robust iteration of Robustsort we will relax the requirement on
 never re-running the same deterministic sub-algorithm in one specific context.
-Magicsort is an algorithm that will re-run Permutationsort only if it disagrees 
-with an extremely reliable algorithm - one that's so good it's robust 
-against logic itself...
+Magicsort is an algorithm that will re-run Permutationsort only if it disagrees
+with an extremely reliable, theoretically non-deterministic algorithm - one
+that's so good it's robust against logic itself...
 
 <!-- (image4) -->
 
-Bogosort!
+[Bogosort!](https://www.youtube.com/watch?v=kgBjXUE_Nwc&t=583)
 
-<!-- (image5) -->
-
-Magicsort simply runs both Permutationsort and Bogosort on the same input and 
-checks if they agree. If they do, the result is used and if not, both 
+Magicsort simply runs both Permutationsort and Bogosort on the same input and
+checks if they agree. If they do, the result is used and if not, both
 algorithms are run again. This process is repeated until the two algorithms
 agree on a result.
 
-Strong-brained readers may have already deduced that Permutationsort functions
-nearly identically to Bogosort. Here are the results of running Bogosort 1000 
-times on Bytes of random permutations of [1,2,3] using a faulty comparator that 
+Observant readers may have already deduced that Permutationsort functions
+nearly identically to Bogosort. Here are the results of running Bogosort 1000
+times on Bytes of random permutations of [1,2,3] using a faulty comparator that
 gives a random result 10% of the time:
 
     81.3% <- [1,2,3]
 
     3.0% <- [2,1,3]
-  
+
     3.8% <- [3,1,2]
 
     5.8% <- [1,3,2]
@@ -737,20 +734,20 @@ gives a random result 10% of the time:
 
     0.8% <- [3,2,1]
 
-In these cases, 84.3% of the time the Top Bit was in the correct position. 
-Note that even though both Bogosort and Permutationsort were ran with the same 
-random seeds, they gave slightly different results because their methodology 
-is slightly different the least likely outcome is a reverse-sorted Byte and the other 
-possible incorrect outcomes are in approximately even distribution with 
-each other.
+In these cases, 84.3% of the time the Top Bit was in the correct position.
+Even though both Bogosort and Permutationsort were ran with the same random
+seeds, they gave slightly different results because their methodology is
+slightly different. Still, the least likely outcome for Bogosort is also a
+reverse-sorted Byte and the other possible incorrect outcomes are in
+approximately even distribution with each other.
 
-Magicsort is based on the notion that if you happen to pull the right 
-answer out of a hat once, it might be random chance, but if you do it twice,
-it might just be magic!
+Magicsort is based on the notion that if you happen to pull the right answer
+out of a hat once, it might be random chance, but if you do it twice, it might
+just be magic!
 
-Here are the results of running Magicsort 1000 
-times on Bytes of random permutations of [1,2,3] using a faulty comparator that 
-gives a random result 10% of the time:
+Here are the results of running Magicsort 1000 times on Bytes of random
+permutations of [1,2,3] using a faulty comparator that gives a random result
+10% of the time:
 
     ~94.0% <- [1,2,3] (Correct)
 
@@ -768,41 +765,32 @@ gives a random result 10% of the time:
 time we got the Top Bit in the correct position and only 1.6% of the time did
 we get the bottom value in the top position.
 
-The downside here is that Magisort can take a long time to run. I don't know 
-how many comparisons are made on average, but it's well over 14.
-
-Thankfully, Magicsort will only be run in our algorithm if Bubblesort and
-Exchangesort disagree on an answer, and then only with 3 elements to sort.
-Overall, the Robustsort we're building that uses Magicsort will still have an
-average of O(n log n) time efficiency.
-
-#### Supersort adjudication with Magic
-
-Since we have replaced Permutationsort with Magicsort (which is far more robust
-than Bubblesort or Exchangesort), we will adjust our adjudication
-within the Supersort SubAlgorithm. If Bubblesort and Exchangesort don't come 
-to an agreement, we just use Magicsort.
-
-You might expect that we'd check to see whether Magicsort agrees with any of 
-the other algorithms before just using its results, but even if we were to 
-check we would end up using the results from Magicsort in all pass cases and 
-all fail cases.
+The downside here is that Magisort can take a long time to run. Thankfully,
+Magicsort will only be run in our algorithm if Bubblesort and Rotationsort
+disagree on an answer, and even then it only has 3 elements to sort. Overall,
+the Robustsort we're building that uses Magicsort will still have an average of
+O(n log n) time efficiency.
 
 ### A note on Robustsort and Bogosort
 
 It is perfectly valid to use Bogosort in place of Permutationsort in 
-Robustsort's standard Supersort SubAlgorithm. It may be argued that doing so is
-even more robust, since it barely even relies on logic. Here are some
-considerations to
-keep in mind:
+Robustsort's standard Supersort SubAlgorithm. It may even be argued that doing
+so is more robust, since Bogosort barely even relies on logic. Here are some
+considerations to keep in mind:
 
-  - Permutationsort uses additional space and may take slightly longer on
-      average due to computing all possible permutations of the input and
-      storing them in a list.
+  - Bogosort by nature re-runs on the same input multiple times. Depending on
+      viewpoint, this either violates the original rules I set forward or is a
+      major benefit.
+
+  - In testing, Robustsort with Bogosort tends to give more robust results,
+      though Robustsort with Permutationsort tends to run slightly faster.
+
+  - Permutationsort uses additional space due to computing all possible
+      permutations of the input and storing them in a list.
 
   - Bogosort could theoretically run forever without returning a result, even 
       when no errors occur.
-  
+
 ## Comparing it all
 
 Now let's take a look at how everything compares. Here is a graph showing the 
