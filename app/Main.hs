@@ -15,9 +15,15 @@ genUnsortedBits n = randomizeList 143 (SortBit [1 .. n])
 genTestPeriod :: Int -> Int
 genTestPeriod n = 2 ^ n
 
+wonkyChance :: Int
+wonkyChance = 10
+
+stuckChance :: Int
+stuckChance = 0
+
 main :: IO ()
 main = do
-  -- printErrorRateComparison 1000
-  -- printErrorSpread 1000
-  printDeckShuffleErrors 1000
-  printTimes (map (\x -> (genUnsortedBits (genTestPeriod x), 143)) [3 .. 14])
+  printErrorRateComparison 1000 wonkyChance stuckChance
+  printErrorSpread 1000 wonkyChance stuckChance
+  printDeckShuffleErrors 1000 wonkyChance stuckChance
+  printTimes (map (\x -> (genUnsortedBits (genTestPeriod x), 143)) [3 .. 14]) wonkyChance stuckChance

@@ -8,22 +8,24 @@ import Data.Tensort.Utils.Types
 import SubAlgsCompared (subAlgsCompared)
 import System.Random (mkStdGen)
 
-printErrorSpread :: Int -> IO ()
-printErrorSpread i = foldr acc (return ()) subAlgsCompared
+printErrorSpread :: Int -> Int -> Int -> IO ()
+printErrorSpread i wChance sChance = foldr acc (return ()) subAlgsCompared
   where
     acc sortAlg io = do
       _ <- io
-      printErrorSpreadForAlg i sortAlg
+      printErrorSpreadForAlg i sortAlg wChance sChance
 
 printErrorSpreadForAlg ::
   Int ->
   (WonkyState -> Sortable -> (Sortable, WonkyState), String) ->
+  Int ->
+  Int ->
   IO ()
-printErrorSpreadForAlg i (sortAlg, sortName) = do
+printErrorSpreadForAlg i (sortAlg, sortName) wChance sChance = do
   putStrLn (sortName ++ " Error Spread")
   putStrLn "-------------------------"
   let (abc, acb, bac, bca, cab, cba) =
-        getErrorSpread (0, 0, 0, 0, 0, 0) [1 .. i] sortAlg
+        getErrorSpread (0, 0, 0, 0, 0, 0) [1 .. i] sortAlg wChance sChance
   putStrLn ("123: " ++ show abc)
   putStrLn ("132: " ++ show acb)
   putStrLn ("213: " ++ show bac)
@@ -36,15 +38,17 @@ getErrorSpread ::
   (Int, Int, Int, Int, Int, Int) ->
   [Int] ->
   (WonkyState -> Sortable -> (Sortable, WonkyState)) ->
+  Int ->
+  Int ->
   (Int, Int, Int, Int, Int, Int)
-getErrorSpread errorSpread [] _ = errorSpread
-getErrorSpread errorSpread (x : xs) sortAlg =
-  let (abc, acb, bac, bca, cab, cba) = getErrorSpread errorSpread xs sortAlg
+getErrorSpread errorSpread [] _ _ _ = errorSpread
+getErrorSpread errorSpread (x : xs) sortAlg wChance sChance =
+  let (abc, acb, bac, bca, cab, cba) = getErrorSpread errorSpread xs sortAlg wChance sChance
       l = randomizeList x (SortBit [1, 2, 3])
       wonkySt =
         WonkyState
-          { wonkyChance = 10,
-            stuckChance = 0,
+          { wonkyChance = wChance,
+            stuckChance = sChance,
             previousAnswer = 0,
             stdGen = mkStdGen x
           }

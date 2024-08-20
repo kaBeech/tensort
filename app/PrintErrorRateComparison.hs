@@ -11,21 +11,23 @@ import PadOut (padOut)
 import SubAlgsCompared (subAlgsCompared)
 import System.Random (mkStdGen)
 
-printErrorRateComparison :: Int -> IO ()
-printErrorRateComparison i = foldr acc (return ()) subAlgsCompared
+printErrorRateComparison :: Int -> Int -> Int -> IO ()
+printErrorRateComparison i wChance sChance = foldr acc (return ()) subAlgsCompared
   where
     acc sortAlg io = do
       _ <- io
-      printErrorRateComparisonForAlg i sortAlg
+      printErrorRateComparisonForAlg i sortAlg wChance sChance
 
 printErrorRateComparisonForAlg ::
   Int ->
   (WonkyState -> Sortable -> (Sortable, WonkyState), String) ->
+  Int ->
+  Int ->
   IO ()
-printErrorRateComparisonForAlg i (sortAlg, sortName) =
+printErrorRateComparisonForAlg i (sortAlg, sortName) wChance sChance =
   putStrLn
     ( padOut (sortName ++ " Errors: ") 24
-        ++ show (getTotalErrorsScore i sortAlg)
+        ++ show (getTotalErrorsScore i sortAlg wChance sChance)
     )
 
 getTotalErrorsScore ::
@@ -34,15 +36,17 @@ getTotalErrorsScore ::
     Sortable ->
     (Sortable, WonkyState)
   ) ->
+  Int ->
+  Int ->
   Int
-getTotalErrorsScore i sortAlg = foldr acc 0 [1 .. i]
+getTotalErrorsScore i sortAlg wChance sChance = foldr acc 0 [1 .. i]
   where
     acc x totalScore = do
       let l = randomizeList x (SortBit [1 .. 3])
       let wonkySt =
             WonkyState
-              { wonkyChance = 10,
-                stuckChance = 0,
+              { wonkyChance = wChance,
+                stuckChance = sChance,
                 previousAnswer = 0,
                 stdGen = mkStdGen x
               }

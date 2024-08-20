@@ -23,18 +23,18 @@ import Data.Time.Clock
 import PadOut (padOut)
 import System.Random (mkStdGen)
 
-printTimes :: [(Sortable, Int)] -> IO ()
-printTimes [] = return ()
-printTimes (x : xs) = do
-  printTime x
-  printTimes xs
+printTimes :: [(Sortable, Int)] -> Int -> Int -> IO ()
+printTimes [] _ _ = return ()
+printTimes (x : xs) wChance sChance = do
+  printTime x wChance sChance
+  printTimes xs wChance sChance
 
-printTime :: (Sortable, Int) -> IO ()
-printTime (l, seed) = do
+printTime :: (Sortable, Int) -> Int -> Int -> IO ()
+printTime (l, seed) wChance sChance = do
   let wonkySt =
         WonkyState
-          { wonkyChance = 10,
-            stuckChance = 0,
+          { wonkyChance = wChance,
+            stuckChance = sChance,
             previousAnswer = 0,
             stdGen = mkStdGen seed
           }
