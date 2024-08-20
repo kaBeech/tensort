@@ -620,14 +620,13 @@ each other.
 
 #### Supersort Adjudication
 
-Supposing that our results from Bubblesort and Exchangesort disagree 
-and we now have our result from Permutationsort, how do we choose which to
-use?
+Supposing that our results from Bubblesort and Rotationsort disagree and we now
+have our result from Permutationsort, how do we choose which to use?
 
-First we check to see whether the result from Permutationsort agrees with
-the results from either Bubblesort or Exchangesort. To keep things 
-simple, let's just look at the raw chances that 
-Permutationsort will agree on results with Bubblesort or Exchangesort.
+First we check to see whether the result from Permutationsort agrees with the
+results from either Bubblesort or Rotationsort. To keep things simple, let's
+just look at the raw chances that Permutationsort will agree on results with
+Bubblesort or Rotationsort.
 
 Permutationsort and Bubblesort:
 
@@ -639,7 +638,7 @@ Permutationsort and Bubblesort:
 
     ~0.24% <- Agree Incorectly - TopBit incorrect
 
-Permutationsort and Exchangesort:
+Permutationsort and Rotationsort:
 
     ~75.18% <- Agree Correctly
 
@@ -649,17 +648,18 @@ Permutationsort and Exchangesort:
 
     ~0.16% <- Agree Incorectly - TopBit incorrect
 
-If Permutationsort agrees with either Bubblesort or Exchangesort, then it's 
+If Permutationsort agrees with either Bubblesort or Rotationsort, then it's
 easy - just use that result!
 
 According to these results, Permutationsort is likely to disagree with both
-Bubblesort and Exchangesort about 7.16% of the time if all three are run 
-indepedently. In practice this will happen more often than that because in 
-order to reach the point of doing Permutationsort, either Bubblesort or 
-Exchangesort must have sorted the list incorrectly (which makes it less likely
-to agree with Permutationsort).
+Bubblesort and Rotationsort about 7.16% of the time if all three are run
+independently. In practice this will happen more often than that because in
+order to reach the point of doing Permutationsort, either Bubblesort or
+Rotationsort must have sorted the list incorrectly (which makes them less
+likely to agree with Permutationsort).
 
-In any case, if all three algorithms disagree, use the results from Bubblesort.
+In any case, if all three sub-algorithms disagree, use the results from
+Rotationsort.
 
 #### Recursion
 
