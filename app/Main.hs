@@ -4,10 +4,10 @@ import Data.Tensort.Utils.RandomizeList (randomizeList)
 import Data.Tensort.Utils.Types
   ( Sortable (..),
   )
-import PrintDeckShuffleErrors (printDeckShuffleErrors)
-import PrintErrorRateComparison (printErrorRateComparison)
-import PrintErrorSpread (printErrorSpread)
-import PrintTimes (printTimes)
+import Benchmarking.PrintDeckShuffleErrors (printDeckShuffleErrors)
+import Benchmarking.PrintErrorRateComparison (printErrorRateComparison)
+import Benchmarking.PrintErrorSpread (printErrorSpread)
+import Benchmarking.PrintTimes (printTimes)
 
 genUnsortedBits :: Int -> Sortable
 genUnsortedBits n = randomizeList 143 (SortBit [1 .. n])
