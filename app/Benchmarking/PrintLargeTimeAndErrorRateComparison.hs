@@ -1,4 +1,7 @@
-module Benchmarking.PrintTimes (printTimes) where
+module Benchmarking.PrintLargeTimeAndErrorRateComparison
+  ( printLargeTimeAndErrorRateComparison,
+  )
+where
 
 import Benchmarking.PadOut (padOut)
 import Benchmarking.Score (getSingleRunErrorsScore, getTotalErrorsScore)
@@ -8,11 +11,19 @@ import Data.Tensort.Utils.Types
   )
 import Data.Time.Clock
 
-printTimes :: [Int] -> Int -> Int -> Int -> IO ()
-printTimes [] _ _ _ = return ()
-printTimes (lengthExponent : remainingLengthExponents) i wChance sChance = do
-  printTime lengthExponent i wChance sChance
-  printTimes remainingLengthExponents i wChance sChance
+printLargeTimeAndErrorRateComparison :: [Int] -> Int -> Int -> Int -> IO ()
+printLargeTimeAndErrorRateComparison [] _ _ _ = return ()
+printLargeTimeAndErrorRateComparison
+  (lengthExponent : remainingLengthExponents)
+  i
+  wChance
+  sChance = do
+    printTime lengthExponent i wChance sChance
+    printLargeTimeAndErrorRateComparison
+      remainingLengthExponents
+      i
+      wChance
+      sChance
 
 printTime :: Int -> Int -> Int -> Int -> IO ()
 printTime lengthExponent i wChance sChance = do
@@ -26,7 +37,11 @@ printTime lengthExponent i wChance sChance = do
   putStrLn "----------------------------------------------------------"
 
 printResults :: Int -> Int -> Int -> Int -> IO ()
-printResults listLength i wChance sChance = foldr acc (return ()) sortAlgsCompared
+printResults listLength i wChance sChance =
+  foldr
+    acc
+    (return ())
+    sortAlgsCompared
   where
     acc (sortAlg, sortName) io = do
       _ <- io

@@ -146,8 +146,8 @@ executable tensort
 
     -- Modules included in this executable, other than Main.
     other-modules: Benchmarking.PadOut,
-                   Benchmarking.PrintTimes,
-                   Benchmarking.PrintErrorRateComparison,
+                   Benchmarking.PrintLargeTimeAndErrorRateComparison,
+                   Benchmarking.PrintSubAlgErrorRateComparison,
                    Benchmarking.PrintErrorSpread,
                    Benchmarking.PrintDeckShuffleErrors,
                    Benchmarking.Score,

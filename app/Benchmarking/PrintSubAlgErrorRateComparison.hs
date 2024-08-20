@@ -1,4 +1,4 @@
-module Benchmarking.PrintErrorRateComparison (printErrorRateComparison) where
+module Benchmarking.PrintSubAlgErrorRateComparison (printSubAlgErrorRateComparison) where
 
 import Benchmarking.PadOut (padOut)
 import Benchmarking.Score (getTotalErrorsScore)
@@ -8,8 +8,8 @@ import Data.Tensort.Utils.Types
     WonkyState (..),
   )
 
-printErrorRateComparison :: Int -> Int -> Int -> IO ()
-printErrorRateComparison i wChance sChance = foldr acc (return ()) subAlgsCompared
+printSubAlgErrorRateComparison :: Int -> Int -> Int -> IO ()
+printSubAlgErrorRateComparison i wChance sChance = foldr acc (return ()) subAlgsCompared
   where
     acc sortAlg io = do
       _ <- io
