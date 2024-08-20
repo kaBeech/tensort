@@ -145,7 +145,8 @@ executable tensort
     main-is:          Main.hs
 
     -- Modules included in this executable, other than Main.
-    other-modules: Benchmarking.PadOut,
+    other-modules: Benchmarking.MakeDeckShuffleChart,
+                   Benchmarking.PadOut,
                    Benchmarking.PrintLargeTimeAndErrorRateComparison,
                    Benchmarking.PrintSubAlgErrorRateComparison,
                    Benchmarking.PrintErrorSpread,
@@ -161,6 +162,8 @@ executable tensort
     -- Other library packages from which modules are imported.
     build-depends:
         base,
+        Chart,
+        Chart-diagrams,
         random >= 1.0.0.3 && < 1.3,
         tensort,
         time >= 1.2.0.3 && < 1.15,
