@@ -41,7 +41,7 @@ tested-with:        GHC==9.8.2,
                     GHC==7.0.1,
 
 -- A short (one-line) description of the package.
-synopsis:           Tunable sorting for responsive robustness and beyond!
+synopsis:           Tunable sorting for responsive robustness and beyond
 
 -- A longer description of the package.
 description:        A tunable tensor-based structure for sorting algorithms 
