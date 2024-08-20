@@ -761,7 +761,7 @@ permutations of [1,2,3] using a faulty comparator that gives a random result
 
     ~0.1% <- [3,2,1] (Reverse)
 
-94% of the time we got the absolutely correct answer! In total, 95.5% of the 
+94% of the time we got the absolutely correct answer! In total, 95.5% of the
 time we got the Top Bit in the correct position and only 1.6% of the time did
 we get the bottom value in the top position.
 
@@ -773,7 +773,7 @@ O(n log n) time efficiency.
 
 ### A note on Robustsort and Bogosort
 
-It is perfectly valid to use Bogosort in place of Permutationsort in 
+It is perfectly valid to use Bogosort in place of Permutationsort in
 Robustsort's standard Supersort SubAlgorithm. It may even be argued that doing
 so is more robust, since Bogosort barely even relies on logic. Here are some
 considerations to keep in mind:
@@ -788,15 +788,14 @@ considerations to keep in mind:
   - Permutationsort uses additional space due to computing all possible
       permutations of the input and storing them in a list.
 
-  - Bogosort could theoretically run forever without returning a result, even 
+  - Bogosort could theoretically run forever without returning a result, even
       when no errors occur.
 
 ## Comparing it all
 
-Now let's take a look at how everything compares. Here is a graph showing the 
-benchmarking results in both in both robustness and time efficiency for 
-Quicksort, Mergesort, Standard Logarithmic Tensort, Robustsort (Permutations), 
-Robustsort (Bogo), Robustsort (Magic), and Bubblesort:
+Now let's take a look at how everything compares. Here is a graph showing the
+benchmarking results for average error score and total runtime for our
+algorithms:
 
 ...Coming Soon!
 
