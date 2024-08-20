@@ -1,0 +1,137 @@
+Single run time elapsed and average element displacement
+over 100 runs for each algorithm on lists of integers of
+length n with an element comparator that gives a random
+result 10% of the time
+==========================================================
+ Algorithm    | Time            | Score    | n = 8
+ Mergesort    | 0.000036689s    | 3        | 
+ Quicksort    | 0.000011992s    | 3        | 
+ TensortBL    | 0.000062167s    | 1        | 
+ RobustsortP  | 0.000045746s    | 0        | 
+ RobustsortB  | 0.000034825s    | 0        | 
+ RobustsortM  | 0.000041187s    | 0        | 
+ RobustsortRP | 0.000086843s    | 0        | 
+ RobustsortRB | 0.000073037s    | 0        | 
+ RobustsortRM | 0.000084358s    | 0        | 
+----------------------------------------------------------
+ Algorithm    | Time            | Score    | n = 16
+ Mergesort    | 0.000013375s    | 14       | 
+ Quicksort    | 0.000009047s    | 15       | 
+ TensortBL    | 0.000055615s    | 6        | 
+ RobustsortP  | 0.00009084s     | 1        | 
+ RobustsortB  | 0.000077294s    | 0        | 
+ RobustsortM  | 0.000100969s    | 0        | 
+ RobustsortRP | 0.000232506s    | 0        | 
+ RobustsortRB | 0.000186429s    | 0        | 
+ RobustsortRM | 0.00021328s     | 0        | 
+----------------------------------------------------------
+ Algorithm    | Time            | Score    | n = 32
+ Mergesort    | 0.000025778s    | 64       | 
+ Quicksort    | 0.000017993s    | 69       | 
+ TensortBL    | 0.000139281s    | 20       | 
+ RobustsortP  | 0.000215053s    | 4        | 
+ RobustsortB  | 0.000201037s    | 3        | 
+ RobustsortM  | 0.000258455s    | 0        | 
+ RobustsortRP | 0.000595957s    | 4        | 
+ RobustsortRB | 0.000576491s    | 3        | 
+ RobustsortRM | 0.000775845s    | 0        | 
+----------------------------------------------------------
+ Algorithm    | Time            | Score    | n = 64
+ Mergesort    | 0.000054122s    | 265      | 
+ Quicksort    | 0.000039284s    | 300      | 
+ TensortBL    | 0.00038388s     | 59       | 
+ RobustsortP  | 0.000523211s    | 19       | 
+ RobustsortB  | 0.000521759s    | 13       | 
+ RobustsortM  | 0.000620263s    | 4        | 
+ RobustsortRP | 0.001996614s    | 16       | 
+ RobustsortRB | 0.001959455s    | 13       | 
+ RobustsortRM | 0.00205299s     | 2        | 
+----------------------------------------------------------
+ Algorithm    | Time            | Score    | n = 128
+ Mergesort    | 0.000118572s    | 1130     | 
+ Quicksort    | 0.000086893s    | 1053     | 
+ TensortBL    | 0.000979537s    | 247      | 
+ RobustsortP  | 0.001225598s    | 95       | 
+ RobustsortB  | 0.001260674s    | 51       | 
+ RobustsortM  | 0.001499802s    | 17       | 
+ RobustsortRP | 0.004864011s    | 68       | 
+ RobustsortRB | 0.004956585s    | 47       | 
+ RobustsortRM | 0.00507141s     | 19       | 
+----------------------------------------------------------
+ Algorithm    | Time            | Score    | n = 256
+ Mergesort    | 0.000259968s    | 4666     | 
+ Quicksort    | 0.000191589s    | 4112     | 
+ TensortBL    | 0.002787086s    | 792      | 
+ RobustsortP  | 0.003014593s    | 317      | 
+ RobustsortB  | 0.003127595s    | 241      | 
+ RobustsortM  | 0.00355677s     | 61       | 
+ RobustsortRP | 0.012324623s    | 258      | 
+ RobustsortRB | 0.012780588s    | 155      | 
+ RobustsortRM | 0.013268983s    | 53       | 
+----------------------------------------------------------
+ Algorithm    | Time            | Score    | n = 512
+ Mergesort    | 0.000578885s    | 19355    | 
+ Quicksort    | 0.000437501s    | 15842    | 
+ TensortBL    | 0.007962583s    | 2582     | 
+ RobustsortP  | 0.006919236s    | 1363     | 
+ RobustsortB  | 0.00748151s     | 865      | 
+ RobustsortM  | 0.008566235s    | 193      | 
+ RobustsortRP | 0.034934582s    | 1138     | 
+ RobustsortRB | 0.035845089s    | 876      | 
+ RobustsortRM | 0.038307236s    | 160      | 
+----------------------------------------------------------
+ Algorithm    | Time            | Score    | n = 1024
+ Mergesort    | 0.001213716s    | 77637    | 
+ Quicksort    | 0.000982322s    | 64753    | 
+ TensortBL    | 0.019195887s    | 10193    | 
+ RobustsortP  | 0.014712509s    | 5788     | 
+ RobustsortB  | 0.016023858s    | 3976     | 
+ RobustsortM  | 0.018152068s    | 806      | 
+ RobustsortRP | 0.087782668s    | 4484     | 
+ RobustsortRB | 0.089243498s    | 3163     | 
+ RobustsortRM | 0.094337994s    | 558      | 
+----------------------------------------------------------
+ Algorithm    | Time            | Score    | n = 2048
+ Mergesort    | 0.002643848s    | 319199   | 
+ Quicksort    | 0.002176753s    | 269252   | 
+ TensortBL    | 0.053549361s    | 34223    | 
+ RobustsortP  | 0.035763557s    | 21177    | 
+ RobustsortB  | 0.038012826s    | 18025    | 
+ RobustsortM  | 0.044333811s    | 3255     | 
+ RobustsortRP | 0.2124883s      | 15254    | 
+ RobustsortRB | 0.223989954s    | 10147    | 
+ RobustsortRM | 0.237427432s    | 1824     | 
+----------------------------------------------------------
+ Algorithm    | Time            | Score    | n = 4096
+ Mergesort    | 0.005988708s    | 1277538  | 
+ Quicksort    | 0.005058385s    | 1047130  | 
+ TensortBL    | 0.152447738s    | 123560   | 
+ RobustsortP  | 0.083779872s    | 87496    | 
+ RobustsortB  | 0.088226308s    | 68214    | 
+ RobustsortM  | 0.100881787s    | 12660    | 
+ RobustsortRP | 0.54312938s     | 66074    | 
+ RobustsortRB | 0.559931357s    | 46761    | 
+ RobustsortRM | 0.58954334s     | 5922     | 
+----------------------------------------------------------
+ Algorithm    | Time            | Score    | n = 8192
+ Mergesort    | 0.013295487s    | 5115761  | 
+ Quicksort    | 0.011727298s    | 4335394  | 
+ TensortBL    | 0.466448289s    | 457669   | 
+ RobustsortP  | 0.207382357s    | 359897   | 
+ RobustsortB  | 0.221273922s    | 276027   | 
+ RobustsortM  | 0.259600746s    | 52303    | 
+ RobustsortRP | 1.409269142s    | 286303   | 
+ RobustsortRB | 1.469748264s    | 196659   | 
+ RobustsortRM | 1.521192969s    | 25736    | 
+----------------------------------------------------------
+ Algorithm    | Time            | Score    | n = 16384
+ Mergesort    | 0.030572752s    | 20533658 | 
+ Quicksort    | 0.028087158s    | 17064001 | 
+ TensortBL    | 0.998863251s    | 1812368  | 
+ RobustsortP  | 0.553004927s    | 1427610  | 
+ RobustsortB  | 0.564624165s    | 1090989  | 
+ RobustsortM  | 0.65042478s     | 200300   | 
+ RobustsortRP | 2.840540327s    | 1144749  | 
+ RobustsortRB | 3.005998239s    | 782040   | 
+ RobustsortRM | 3.068583435s    | 105231   | 
+----------------------------------------------------------
