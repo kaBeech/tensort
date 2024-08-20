@@ -218,52 +218,75 @@ fear not!
 #### Structure
 
   - Bit <- Element of the list to be sorted
-    
+
   - Byte <- List of Bits
 
   - Bytesize <- Maximum length of a Byte
-    
+
   - Tensor <- Tuple of a Register list and a Memory list
-    
-  - Memory <- List of Bytes or Tensors contained in the current Tensor.
-    
-  - Register <- List of Records referencing each Byte or Tensor in Memory
-    
-  - Record <- Tuple of the Address and the TopBit of the referenced Byte or 
-  Tensor
-    
+
+  - Memory <- List of Bytes or other Tensors contained in the current Tensor
+
+  - Register <- List of Records, each Record referencing one Byte or Tensor
+  in Memory
+
+  - Record <- Tuple of the Address and a copy of the TopBit of the referenced
+  Byte or Tensor
+
   - Address <- Pointer to a Byte or Tensor in Memory
-    
+
   - TopBit <- Value of the Bit at the top of the stack in a Byte or Tensor
 
-  - TensorStack <- A top-level Tensor along with all the Bits, Bytes, and 
-  Tensors it contains
-    
+  - TensorStack <- A top-level Tensor along with all the Bits, Bytes, and
+  Tensors contained within it. Structurally equivalent to a Tensor
+
+  - TopRegister <- List of Records that is built after all Tensors are built.
+  Each Record references one TensorStack. Structurally equivalent to a Register
+
   - SubAlgorithm <- The sorting sub-algorithm used at various stages
 
-In Tensort, the smallest unit of information is a Bit. Each Bit stores one 
-element of the list to be sorted. A group of Bits is known as a Byte. 
+In Tensort, the smallest unit of information is a Bit. Each Bit stores one
+element of the list to be sorted. A group of Bits is known as a Byte.
 
-A Byte is a list of Bits. The maximum length of a Byte is set according to an 
-argument passed to Tensort. In practice, almost all Bytes will be of maximum 
-length until the final steps of Tensort. Several Bytes are grouped together 
-in a Tensor.
+A Byte is a list of Bits. The maximum length of a Byte (known as the Bytesize)
+is set according to an argument passed to Tensort. This Bytesize can also be
+thought of as the maximum rank (not degree) of a tensor in Tensort.
+Ideally, all Bytes will be of maximum length until the final steps of Tensort.
+Several Bytes are grouped together in a Tensor.
 
 A Tensor is a tuple with two elements: Register and Memory.
 
-Memory is the second element in a Tensor tuple. It is a list of Bytes or 
-other Tensors. The length of this Memory list is equal to the Bytesize.
+Memory is the second element in a Tensor tuple. It is a list of Bytes or
+other Tensors. The maximum length of this Memory list is equal to the Bytesize.
 
-A Register is the first element in a Tensor tuple. It is a list of Records, 
-each of which has an Address pointing to an element in its Tensor's Memory 
-and a copy of the TopBit in the referenced element. These Records are arranged 
-in the order that the elements of the Tensor's Memory are sorted (this will be 
-clarified soon).
+A Register is the first element in a Tensor tuple. It is a list of Records,
+each of which has an Address pointing to an element in its Tensor's Memory
+and a copy of the TopBit in the referenced element.
 
-A TensorStack is a top-level Tensor along with all the Bits, Bytes, and 
-Tensors it contains. Once the Tensors are fully built, the total number 
-of TensorStacks will equal the Bytesize, but before that point there will 
-be many more TensorStacks.
+Each Record is a simplification of a Byte or Tensor in a Tensor's memory. It
+is a tuple comprised of an Address and a TopBit
+
+The Address of a Record is an integer representing the index of the referenced
+Byte or Tensor in its containing Tensor's memory
+
+The TopBit in a Byte (which is copied into the Byte's referencing Record) is
+the Bit at the end of the Byte list. If everything functions correctly, this
+will be the highest value Bit in the Byte.
+
+The TopBit in a Tensor (which is also copied into the Tensor's referencing
+Record) is the TopBit of the Byte referenced by the Record at the end of the 
+Register list of the Tensor referenced by the Record at the end of the 
+Register list of the Tensor... and so on until the original (containing) Tensor
+is reached.
+
+A TensorStack is a top-level Tensor (i.e. a Tensor not contained within another
+Tensor) along with all the Bits, Bytes, and Tensors it contains. Once the
+Tensors are fully built, the total number of TensorStacks will be equal to (or
+sometimes less than) the Bytesize, but before that point there will be many
+more TensorStacks.
+
+Once all Tensors are built, a TopRegister is assembled as a list of Records,
+each Record referencing one TensorStack.
 
 The sorting SubAlgorithm will be used any time we sort something within 
 Tensort. The choice of this SubAlgorithm is very important. For reasons that 
