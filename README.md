@@ -538,6 +538,11 @@ The steps in Rotationsort are relatively simple:
 
   5. Return the sorted list.
 
+The version we use here will be a Reverse Rotationsort. Instead of starting at
+the beginning of the list and working forward, a Reverse Rotationsort starts at
+the end and works back. We do this because it yields a more favorable spread of
+results to combine with Bubblesort than a Forward Rotationsort does.
+
 Here are the results of running Rotationsort 1000 times on Bytes of random
 permutations of [1,2,3] using a faulty comparator that gives a random result
 10% of the time:
@@ -791,14 +796,15 @@ O(n log n) time efficiency.
 
 We will also make a few adjustments to our SubAlgorithms for Magic Robustsort.
 
-First, we will make our Rotationsort ambidextrous. This means that after each
+First, we will make our Reverse Rotationsort ambidextrous. This means that after each
 forward comparison (with a chance to rotate the smaller element to the front
 of the list), we will make a backward comparison (with a chance to rotate the
 larger element to the back of the list).
 
-Second, we will replace Bubblesort with a Reverse Ambidextrous Rotationsort.
-Instead of starting at the beginning of a list and working forward, a Reverse
-Rotationsort starts at the end and works back.
+Second, we will replace Bubblesort with a Forward Ambidextrous Rotationsort.
+
+Finally, we will adjust our adjudication scheme, taking the Forward Ambidextrous
+Rotationsort's results if there is no agreement within Supersort.
 
 ### A note on Robustsort and Bogosort
 
