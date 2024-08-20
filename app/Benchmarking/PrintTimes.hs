@@ -1,18 +1,7 @@
 module Benchmarking.PrintTimes (printTimes) where
 
 import Benchmarking.PadOut (padOut)
-import Data.Tensort.OtherSorts.Mergesort (mergesort)
-import Data.Tensort.OtherSorts.Quicksort (quicksort)
-import Data.Tensort.Robustsort
-  ( robustsortB,
-    robustsortM,
-    robustsortP,
-    robustsortRB,
-    robustsortRM,
-    robustsortRP,
-  )
-import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
-import Data.Tensort.Tensort (tensortBL)
+import Benchmarking.SortAlgsCompared (sortAlgsCompared)
 import Data.Tensort.Utils.Score (getTotalPositionalErrors)
 import Data.Tensort.Utils.Types
   ( SortAlg,
@@ -43,20 +32,18 @@ printTime (l, seed) wChance sChance = do
         ++ show (length (fromSortBit l))
     )
   putStrLn ""
-  printResult "Mergesort" l mergesort wonkySt
-  printResult "Quicksort" l quicksort wonkySt
-  -- printResult "Bubblesort" l bubblesort wonkySt
-  printResult "TensortBL" l tensortBL wonkySt
-  printResult "RSortP" l robustsortP wonkySt
-  printResult "RSortB" l robustsortB wonkySt
-  printResult "RSortM" l robustsortM wonkySt
-  printResult "RSortRP" l robustsortRP wonkySt
-  printResult "RSortRB" l robustsortRB wonkySt
-  printResult "RSortRM" l robustsortRM wonkySt
+  printResults l wonkySt
   putStrLn "----------------------------------------------------------"
 
-printResult :: String -> Sortable -> SortAlg -> WonkyState -> IO ()
-printResult sortName l sortAlg wonkySt = do
+printResults :: Sortable -> WonkyState -> IO ()
+printResults l wonkySt = foldr acc (return ()) sortAlgsCompared
+  where
+    acc (sortAlg, sortName) io = do
+      _ <- io
+      printResultForAlg sortName l sortAlg wonkySt
+
+printResultForAlg :: String -> Sortable -> SortAlg -> WonkyState -> IO ()
+printResultForAlg sortName l sortAlg wonkySt = do
   startTime <- getCurrentTime
   let result = fst (sortAlg wonkySt l)
   endTime <- getCurrentTimeArg (head (fromSortBit result))
