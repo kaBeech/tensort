@@ -688,9 +688,9 @@ doesn't add another layer of recursion until the input list is is longer than
 500 billion elements), but differences can be noticed when sorting smaller
 lists as well.
 
-We now have the standard form of Robustsort: a potentially recursive Tensort
-with a 3-bit base case using a Supersort adjudicating Bubblesort, Exchangesort,
-and Permutationsort as its base SubAlgorithm.
+We now have a basic form of Robustsort: a potentially recursive Tensort with a
+3-bit base case using a Supersort adjudicating Bubblesort, Rotationsort, and
+Permutationsort as its base SubAlgorithm.
 
 Well that's pretty cool! But I wonder... can we make this more robust, if
 we relax the rules just a little more?
