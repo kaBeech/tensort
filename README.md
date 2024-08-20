@@ -664,7 +664,7 @@ Rotationsort.
 #### Recursion
 
 You'll remember that our standard Tensort uses a logarithmic Bytesize. Our base
-Robustsort uses a Bytesize of 3, but we can use a logarithmic Bytesize by 
+Robustsort uses a Bytesize of 3, but we can use a logarithmic Bytesize by
 adding recursion.
 
 <!-- (image3) -->
@@ -672,34 +672,34 @@ adding recursion.
 Let's take our base Robustsort example above and make it recursive.
 
 First, instead of using a 3-bit Bytesize, we will use a logarithmic Bytesize.
-Then, instead of using our Supersort directly as our
-SubAlgorithm, we will use Robustsort itself to sort the records.
+Then, instead of using our Supersort directly as our SubAlgorithm, we will use
+Robustsort itself to sort the records.
 
-At the base case, this Robustsort will have a Bytesize of 3. If the logarithmic 
-Bytesize of the input list is greater than 27, then the SubAlgorithm of the 
-top-level Robustsort will be a recursive Robustsort with a logarithmic 
+At the base case, this Robustsort will have a Bytesize of 3. If the logarithmic
+Bytesize of the input list is greater than 27, then the SubAlgorithm of the
+top-level Robustsort will be a recursive Robustsort with a logarithmic
 Bytesize.
 
 The number 27 is chosen because we want a number that has a natural log that is
-close to 3 (27's is about 3.3) and since 3 ^ 3 = 27, it is easy to sort lists 
+close to 3 (27's is about 3.3) and since 3 ^ 3 = 27, it is easy to sort lists
 of 27 elements in groups of 3.
 
-This recursive version of Robustsort is more tailored to large input lists 
-(it doesn't add another layer of recursion until the input list is
-is longer than 500 billion elements), but differences can be noticed when 
-sorting smaller lists as well.
+This recursive version of Robustsort is more tailored to large input lists (it
+doesn't add another layer of recursion until the input list is is longer than
+500 billion elements), but differences can be noticed when sorting smaller
+lists as well.
 
-We now have the standard form of Robustsort: a potentially recursive Tensort 
+We now have the standard form of Robustsort: a potentially recursive Tensort
 with a 3-bit base case using a Supersort adjudicating Bubblesort, Exchangesort,
 and Permutationsort as its base SubAlgorithm.
 
-Well that's pretty cool! But I wonder... can we make this more robust, if 
+Well that's pretty cool! But I wonder... can we make this more robust, if
 we relax the rules just a little more?
 
 <!-- (image4) -->
 
-Of course we can! And we will. To do so, we will simply replace Permutationsort
-with another newly-named sorting algorithm: Magicsort!
+Of course we can! And we will. To do so, we will replace Permutationsort with
+another newly-named sorting algorithm: Magicsort!
 
 ### Magicsort
 
