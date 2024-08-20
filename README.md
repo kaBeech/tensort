@@ -581,29 +581,30 @@ If this happens we run our third sub-algorithm: Permutationsort.
 
 #### Permutationsort
 
-Permutationsort is a simple, brute-force sorting algorithm. As a first step we 
-generate all the different ways the elements could possibly be arranged in the 
-list. Then we loop over this list of permutations until we find one that is in 
-the right order. We check if a permutation is in the right order by comparing
-the first two elements, if they are in the right order comparing the next two
-elements, and so on until we either find two elements that are out of order or
-we confirm that the list is in order.
+Permutationsort is a simple, brute-force sorting algorithm.
 
-Permutationsort will also make an average of 7 comparisons when sorting a 
-3-element list. This is slightly more than the other algorithms examined but
-it's worth it because A) the spread of outcomes is favorable for our needs, and 
-B) it uses logic that is completely different from Bubblesort and Exchangesort. 
-Using different manners of reasoning to reach an agreed-upon answer greatly 
-increases the robustness of the system.
+As a first step we generate all the different ways the elements could possibly
+be arranged in the list. Then we loop over this list of permutations until we
+find one that is in the right order. We check if a permutation is in the right
+order by comparing the first two elements. If the first element is smaller,
+we compare the next two elements, and so on until we either find two elements
+that are out of order or we reach the end of the list, confirming that the list
+is in order.
 
-Here are the results of running Permutationsort 1000 times on Bytes of random 
-permutations of [1,2,3] using a faulty comparator that gives a random result 
+Permutationsort is a good choice for our adjudication algorithm because A) the
+spread of outcomes is favorable for our needs, and B) it uses logic that is
+completely different from Bubblesort and Rotationsort. Using different manners
+of reasoning to reach an agreed-upon answer increases the robustness of the
+system.
+
+Here are the results of running Permutationsort 1000 times on Bytes of random
+permutations of [1,2,3] using a faulty comparator that gives a random result
 10% of the time:
 
     81.9% <- [1,2,3]
 
     4.1% <- [2,1,3]
-  
+
     4.5% <- [3,1,2]
 
     5.3% <- [1,3,2]
@@ -612,9 +613,9 @@ permutations of [1,2,3] using a faulty comparator that gives a random result
 
     0.8% <- [3,2,1]
 
-In these cases, 86% of the time the Top Bit was in the correct position. 
-Notably the least likely outcome is a reverse-sorted Byte and the other 
-possible incorrect outcomes are in approximately even distribution with 
+In these cases, 86% of the time the Top Bit was in the correct position.
+Notably the least likely outcome is a reverse-sorted Byte and the other
+possible incorrect outcomes are in approximately even distribution with
 each other.
 
 #### Supersort Adjudication
