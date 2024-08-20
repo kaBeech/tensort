@@ -16,4 +16,4 @@ main = do
   -- printSubAlgErrorRateComparison 1000 wonkyChance stuckChance
   -- printErrorSpread 1000 wonkyChance stuckChance
   -- printDeckShuffleErrors 1000 wonkyChance stuckChance
-  printLargeTimeAndErrorRateComparison [3 .. 14] 100 wonkyChance stuckChance
+  printLargeTimeAndErrorRateComparison [3 .. 14] 100 2048 wonkyChance stuckChance

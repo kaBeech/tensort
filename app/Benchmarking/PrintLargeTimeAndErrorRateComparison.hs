@@ -11,33 +11,35 @@ import Data.Tensort.Utils.Types
   )
 import Data.Time.Clock
 
-printLargeTimeAndErrorRateComparison :: [Int] -> Int -> Int -> Int -> IO ()
-printLargeTimeAndErrorRateComparison [] _ _ _ = return ()
+printLargeTimeAndErrorRateComparison :: [Int] -> Int -> Int -> Int -> Int -> IO ()
+printLargeTimeAndErrorRateComparison [] _ _ _ _ = return ()
 printLargeTimeAndErrorRateComparison
   (lengthExponent : remainingLengthExponents)
   i
+  bubblesortCutoff
   wChance
   sChance = do
-    printTime lengthExponent i wChance sChance
+    printTime lengthExponent i bubblesortCutoff wChance sChance
     printLargeTimeAndErrorRateComparison
       remainingLengthExponents
       i
+      bubblesortCutoff
       wChance
       sChance
 
-printTime :: Int -> Int -> Int -> Int -> IO ()
-printTime lengthExponent i wChance sChance = do
+printTime :: Int -> Int -> Int -> Int -> Int -> IO ()
+printTime lengthExponent i bubblesortCutoff wChance sChance = do
   let listLength = 2 ^ lengthExponent
   putStrLn
     ( " Algorithm    | Time            | Score    | n = "
         ++ show listLength
     )
   putStrLn ""
-  printResults listLength i wChance sChance
+  printResults listLength i bubblesortCutoff wChance sChance
   putStrLn "----------------------------------------------------------"
 
-printResults :: Int -> Int -> Int -> Int -> IO ()
-printResults listLength i wChance sChance =
+printResults :: Int -> Int -> Int -> Int -> Int -> IO ()
+printResults listLength i bubblesortCutoff wChance sChance =
   foldr
     acc
     (return ())
@@ -45,21 +47,24 @@ printResults listLength i wChance sChance =
   where
     acc (sortAlg, sortName) io = do
       _ <- io
-      printResultForAlg i sortAlg sortName listLength wChance sChance
+      printResultForAlg listLength i bubblesortCutoff sortAlg sortName wChance sChance
 
-printResultForAlg :: Int -> SortAlg -> String -> Int -> Int -> Int -> IO ()
-printResultForAlg i sortAlg sortName listLength wChance sChance = do
-  startTime <- getCurrentTime
-  let timeResult =
-        getSingleRunErrorsScore
-          sortAlg
-          listLength
-          wChance
-          sChance
-          143
-  endTime <- getCurrentTimeArg timeResult
-  let score = getTotalErrorsScore i sortAlg listLength wChance sChance `div` i
-  composeResultString sortName startTime endTime score
+printResultForAlg :: Int -> Int -> Int -> SortAlg -> String -> Int -> Int -> IO ()
+printResultForAlg listLength i bubblesortCutoff sortAlg sortName wChance sChance =
+  if (listLength > bubblesortCutoff) && (sortName == "Bubblesort")
+    then return ()
+    else do
+      startTime <- getCurrentTime
+      let timeResult =
+            getSingleRunErrorsScore
+              sortAlg
+              listLength
+              wChance
+              sChance
+              143
+      endTime <- getCurrentTimeArg timeResult
+      let score = getTotalErrorsScore i sortAlg listLength wChance sChance `div` i
+      composeResultString sortName startTime endTime score
 
 -- This is to force times to record before and after the sort, otherwise
 -- the functions run asynchronously

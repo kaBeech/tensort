@@ -24,7 +24,7 @@ sortAlgsCompared =
     (robustsortB, "RobustsortB"),
     (robustsortP, "RobustsortP"),
     (tensortBL, "TensortBL"),
-    -- (bubblesort, "Bubblesort"),
+    (bubblesort, "Bubblesort"),
     (quicksort, "Quicksort"),
     (mergesort, "Mergesort")
   ]
