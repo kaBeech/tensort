@@ -475,24 +475,14 @@ sub-algorithms to compare with!
 
 #### Examining Bubblesort
 
-Before moving further, let's talk a little about Bubblesort, and why we're 
+Before moving further, let's talk a little about Bubblesort and why we're
 using it in our SubAlgorithm.
 
-As a reminder, Bubblesort will make an average of 6 comparisons when sorting
-a 3-element list.
-
-We've said before that Bubblesort is likely to put the last element in the 
-correct position. Let's examine this in the context of Bubblesorting a 
+We've said before that Bubblesort is likely to put the last element in the
+correct position. Let's examine this in the context of Bubblesorting a
 3-element list.
 
-<!-- Our implementation of Bubblesort (which mirrors Ackley's) will perform three -->
-<!-- iterations over a 3-element list. After the second iteration, if everything -->
-<!-- goes as planned, the list will be sorted and the final iteration is an extra -->
-<!-- verification step. Therefore, to simplify the analysis, we will consider -->
-<!-- what happens with a faulty comparator during the final iteration, assuming the -->
-<!-- list has been correctly sorted up to that point. -->
-
-I ran Bubblesort 1000 times on Bytes of random permutations of [1,2,3] using a 
+I ran Bubblesort 1000 times on Bytes of random permutations of [1,2,3] using a
 faulty comparator that gives a random result 10% of the time. Here is how often
 each outcome was returned:
 
@@ -508,11 +498,11 @@ each outcome was returned:
 
     0.2% <- [3,2,1]
 
-In these results, 93.7% of the time the Top Bit was returned in the correct 
-position, and the bottom value was returned in the top position only 0.4% of 
+In these results, 93.7% of the time the Top Bit was returned in the correct
+position, and the bottom value was returned in the top position only 0.4% of
 the time.
 
-Notably, the far more likely result where the Top Bit was at the bottom was 
+Notably, the far more likely result where the Top Bit was at the bottom was
 [3,1,2], with [3,2,1] occurring only 0.2% of the time.
 
 #### Exchangesort
