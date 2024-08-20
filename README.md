@@ -120,6 +120,34 @@ sometimes falter without:
 
 3. [Obviously](https://www.youtube.com/shorts/LGZKXZQeEBg)
 
+### What's a tensor?
+
+If you want an in-depth explanation,
+[Wikipedia](https://en.wikipedia.org/wiki/Tensor) is usually a good starting
+place.
+
+If you just want to understand Tensort, you can think of 'tensor' as a fancy 
+word for a multi-dimensional array.
+
+Every tensor has a degree, which is the number of dimensions it has. A 0-degree
+tensor is a scalar (like an integer), a 1-degree tensor is a vector (like a
+list), and a 2-degree tensor is a matrix.
+
+Each dimension of a tensor has a rank, which can be thought of as the length of
+the dimension. A tensor's shape can be described by a tensor denoting the ranks
+of each of its dimensions. For example. [1, 2, 3] is an instance of a 1-degree
+tensor. Its single dimension is 3 elements long, so it has a rank 3. Thus its
+shape is [3].
+
+For another example, consider the following tensor which has the shape [3, 2]:
+[[1, 2, 3],
+ [4, 5, 6]]
+
+Tensort transforms a list into the highest-degree tensors possible while
+giving most of its dimensions a specified rank size to achieve maximum
+parallelism. This provides opportunities to add processing tailored to current
+goals while preserving time efficiency.
+
 ## Project structure
 
 - `src/` contains the Tensort library
