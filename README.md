@@ -557,10 +557,10 @@ Top Bit in the correct position.
 #### Introducing Supersort
 
 Supersort is a SubAlgorithm that compares the results of two different
-sorting algorithms, in our case Bubblesort and Exchangesort. If both 
-algorithms agree on the result, that result is used. 
+sorting algorithms, in our case Bubblesort and Rotationsort. If both
+algorithms agree on the result, that result is used.
 
-Looking at our analysis on Bubblesort and Exchangesort, we can 
+Looking at our analysis on Bubblesort and Rotationsort, we can
 approximate the chances of how often they will agree in similar conditions:
 
     ~79.96% <- Agree Correctly
@@ -571,27 +571,13 @@ approximate the chances of how often they will agree in similar conditions:
 
     ~0.14% <- Agree Incorectly - TopBit incorrect
 
-Hey, that's pretty good! If they agree, then return the results from 
-Bubblesort because if for some reason the module that compares the full Bytes
-is also faulty (outside the scope of these benchmarks), Bubblesort is less 
-likely to have a result with the bottom value set as the Top Bit.
+Hey, that's pretty good! If they agree, then return the results from
+Rotationsort because if for some reason the module that compares the full Bytes
+is also faulty (outside the scope of these benchmarks), Rotationsort is more
+likely to have an accurate result.
 
 Around 20% of the time, these sub-algorithms will disagree with each other.
-What happens then?
-
-First we check to see if they agree on the Top Bit. If they do, we return the 
-results from Exchangesort, since it is more likely to have the results exactly
-correct. Otherwise, we run a third sub-algorithm to compare the results with.
-
-The reason we check to see if Bubblesort and Exchangesort agree on the Top Bit
-is that based on our results, there is only about a 0.07% chance that they will
-agree on the incorrect Top Bit while disagreeing on the total results. This is 
-due to the fact that these algorithms have only one result with a incorrect 
-Top Bit ([1,3,2]) that they both return more than 1% of the time, so one of 
-them has to return a rare result for this peculiar semi-agreement to occur.
-
-If the first two sub-algorithms don't agree on a Top Bit then we run our third 
-sub-algorithm: Permutationsort.
+If this happens we run our third sub-algorithm: Permutationsort.
 
 #### Permutationsort
 
