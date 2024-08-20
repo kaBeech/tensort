@@ -1,53 +1,50 @@
 module Benchmarking.PrintTimes (printTimes) where
 
 import Benchmarking.PadOut (padOut)
+import Benchmarking.Score (getSingleRunErrorsScore, getTotalErrorsScore)
 import Benchmarking.SortAlgsCompared (sortAlgsCompared)
-import Data.Tensort.Utils.Score (getTotalPositionalErrors)
 import Data.Tensort.Utils.Types
   ( SortAlg,
-    Sortable (..),
-    WonkyState (..),
-    fromSortBit,
   )
 import Data.Time.Clock
-import System.Random (mkStdGen)
 
-printTimes :: [(Sortable, Int)] -> Int -> Int -> IO ()
-printTimes [] _ _ = return ()
-printTimes (x : xs) wChance sChance = do
-  printTime x wChance sChance
-  printTimes xs wChance sChance
+printTimes :: [Int] -> Int -> Int -> Int -> IO ()
+printTimes [] _ _ _ = return ()
+printTimes (lengthExponent : remainingLengthExponents) i wChance sChance = do
+  printTime lengthExponent i wChance sChance
+  printTimes remainingLengthExponents i wChance sChance
 
-printTime :: (Sortable, Int) -> Int -> Int -> IO ()
-printTime (l, seed) wChance sChance = do
-  let wonkySt =
-        WonkyState
-          { wonkyChance = wChance,
-            stuckChance = sChance,
-            previousAnswer = 0,
-            stdGen = mkStdGen seed
-          }
+printTime :: Int -> Int -> Int -> Int -> IO ()
+printTime lengthExponent i wChance sChance = do
+  let listLength = 2 ^ lengthExponent
   putStrLn
     ( " Algorithm    | Time            | Score    | n = "
-        ++ show (length (fromSortBit l))
+        ++ show listLength
     )
   putStrLn ""
-  printResults l wonkySt
+  printResults listLength i wChance sChance
   putStrLn "----------------------------------------------------------"
 
-printResults :: Sortable -> WonkyState -> IO ()
-printResults l wonkySt = foldr acc (return ()) sortAlgsCompared
+printResults :: Int -> Int -> Int -> Int -> IO ()
+printResults listLength i wChance sChance = foldr acc (return ()) sortAlgsCompared
   where
     acc (sortAlg, sortName) io = do
       _ <- io
-      printResultForAlg sortName l sortAlg wonkySt
+      printResultForAlg i sortAlg sortName listLength wChance sChance
 
-printResultForAlg :: String -> Sortable -> SortAlg -> WonkyState -> IO ()
-printResultForAlg sortName l sortAlg wonkySt = do
+printResultForAlg :: Int -> SortAlg -> String -> Int -> Int -> Int -> IO ()
+printResultForAlg i sortAlg sortName listLength wChance sChance = do
   startTime <- getCurrentTime
-  let result = fst (sortAlg wonkySt l)
-  endTime <- getCurrentTimeArg (head (fromSortBit result))
-  composeResultString sortName startTime endTime result
+  let timeResult =
+        getSingleRunErrorsScore
+          sortAlg
+          listLength
+          wChance
+          sChance
+          143
+  endTime <- getCurrentTimeArg timeResult
+  let score = getTotalErrorsScore i sortAlg listLength wChance sChance `div` i
+  composeResultString sortName startTime endTime score
 
 -- This is to force times to record before and after the sort, otherwise
 -- the functions run asynchronously
@@ -57,12 +54,12 @@ getCurrentTimeArg i = do
   putStr (replicate time ' ')
   getCurrentTime
 
-composeResultString :: String -> UTCTime -> UTCTime -> Sortable -> IO ()
-composeResultString sortName startTime endTime result = do
+composeResultString :: String -> UTCTime -> UTCTime -> Int -> IO ()
+composeResultString sortName startTime endTime score = do
   let nameString = padOut sortName 12
   let timeString = padOut (show (diffUTCTime endTime startTime)) 15
   let scoreString =
-        padOut (show (getTotalPositionalErrors (fromSortBit result))) 8
+        padOut (show score) 8
   putStrLn
     ( " "
         ++ nameString
@@ -71,5 +68,4 @@ composeResultString sortName startTime endTime result = do
         ++ " | "
         ++ scoreString
         ++ " | "
-        -- ++ show (fromSortBit result)
     )
