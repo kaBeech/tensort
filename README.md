@@ -168,17 +168,18 @@ Magicsort. Get ready!
 
 #### Preface
 
-Tensort is my attempt to write the most robust O(n log n) sorting algorithm 
-possible while avoiding anything that Ackley might consider a "cheap hack." 
-My hope is that it will be, if not competitive with Bubblesort in robustness, 
-at least a major improvement over Quicksort and Mergesort. 
+Tensort is my original attempt to write the most robust sorting algorithm
+possible with O(n log n) average time efficiency while avoiding anything that
+Ackley might consider a "cheap hack." Starting out, my hope was that it would
+be, if not competitive with Bubblesort in robustness, at least a major
+improvement over Quicksort and Mergesort.
 
-Again, I'm not well-studied in sorting algorithms, so this may well be known 
-already under another name. After settling on this algorithm, I looked into 
-several other sorting algorithms for comparison and found a few that I think 
-are similar - significantly Blocksort, Bucketsort, and Patiencesort. If you are 
-familiar with these algorithms, you may recognize that they each have a 
-structure that aids in understanding them.
+Again, I haven't studied sorting algorithms long, so if you know this algorithm
+under another name, please let me know! After settling on this algorithm, I
+looked into several other sorting algorithms for comparison and found a few
+that have some similarities with Tensort - significantly Blocksort, Bucketsort,
+and Patiencesort. If you are familiar with these algorithms, you may recognize
+that they each have a structure that aids in understanding them.
 
 Tensort uses an underlying structure as well. We will discuss this structure 
 before going over the algorithm's actual steps. If this doesn't make sense yet,
