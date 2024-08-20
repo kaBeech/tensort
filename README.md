@@ -99,7 +99,7 @@ I don't know for certain whether the solar activity caused any computer errors,
 but we had some anomalies at work and certainly joked about them being caused
 by the Sun.
 
-Also during the same period, 
+Also during the same period,
 [one of the Internet's root-servers glitched out for unexplained reasons](https://arstechnica.com/security/2024/05/dns-glitch-that-threatened-internet-stability-fixed-cause-remains-unclear/).
 
 As Ackley asserts, as a culture we have tended to prioritize correctness and
@@ -110,12 +110,12 @@ progression precludes us from continuing to do so.
 
 1. Tensort can involve a lot of recursion, which Haskell handles well
 
-2. All the other benefits we get from using a purely functional language, such 
-as strict dependency management, which 
+2. All the other benefits we get from using a purely functional language, such
+as strict dependency management, which
 [even the smartest among us](http://livingcomputation.com/robusort2.tar)
 sometimes falter without:
 
-  ![Comment from Ackley in the Beyond Efficiency code about Perl updates 
+  ![Comment from Ackley in the Beyond Efficiency code about Perl updates
   breaking their code](./assets/images/ackley_deps.png)
 
 3. [Obviously](https://www.youtube.com/shorts/LGZKXZQeEBg)
@@ -126,7 +126,7 @@ If you want an in-depth explanation,
 [Wikipedia](https://en.wikipedia.org/wiki/Tensor) is usually a good starting
 place.
 
-If you just want to understand Tensort, you can think of 'tensor' as a fancy 
+If you just want to understand Tensort, you can think of 'tensor' as a fancy
 word for a multi-dimensional array.
 
 Every tensor has a degree, which is the number of dimensions it has. A 0-degree
@@ -135,13 +135,13 @@ list), and a 2-degree tensor is a matrix.
 
 Each dimension of a tensor has a rank, which can be thought of as the length of
 the dimension. A tensor's shape can be described by a tensor denoting the ranks
-of each of its dimensions. For example. [1, 2, 3] is an instance of a 1-degree
+of each of its dimensions. For example. [1,2,3] is an instance of a 1-degree
 tensor. Its single dimension is 3 elements long, so it has a rank 3. Thus its
 shape is [3].
 
-For another example, consider the following tensor which has the shape [3, 2]:
-[[1, 2, 3],
- [4, 5, 6]]
+For another example, consider the following tensor which has the shape [3,2]:
+[[1,2,3],
+ [4,5,6]]
 
 Tensort transforms a list into the highest-degree tensors possible while
 giving most of its dimensions a specified rank size to achieve maximum
@@ -492,7 +492,7 @@ each outcome was returned:
 
     6.6% <- [2,1,3]
 
-    0.2% <- [2,3,1] 
+    0.2% <- [2,3,1]
 
     1.8% <- [3,1,2]
 
@@ -505,48 +505,31 @@ the time.
 Notably, the far more likely result where the Top Bit was at the bottom was
 [3,1,2], with [3,2,1] occurring only 0.2% of the time.
 
-#### Exchangesort
+#### Rotationsort
 
-When choosing an algorithm to compare with Bubblesort, we want something with 
-substantially different logic, for the sake of robustness. We do, 
-however, want something similar to Bubblesort in that it compares our elements 
-multiple times. And, as mentioned above, the element that is most important to 
-our sorting is the top (biggest) element, by a large degree.
+When choosing an algorithm to compare with Bubblesort, we want something with
+substantially different logic, for the sake of robustness. We do,
+however, want something similar to Bubblesort in that it compares our elements
+multiple times. And, as mentioned above, the element that is most important to
+our sorting is the top (highest value) element, by a large degree.
 
-In terms of the probability of different outcomes, if our algorithm returns 
+In terms of the probability of different outcomes, if our algorithm returns
 an incorrect result, we want that result to be different than what Bubblesort
 is likely to return.
 
-With these priorities in mind, the comparison algorithm we choose shall be 
-Exchangesort. If you're not familiar with this algorithm, I'd recommend
-checking out [this video](https://youtu.be/wqibJMG42Ik?feature=shared&t=143). 
+I originally chose an algorithm that balances these properties and I retain the
+above paragraphs for the sake of theory. However, we're going to choose a
+highly accurate algorithm instead: Rotationsort.
 
-The Exchangesort we use is notable in two ways. Firstly, it is a Reverse 
-Exchangesort, as explained in that video.
+...
 
-Secondly, the algorithm as described in the video only compares selected element 
-with elements that appear after (or before, as in Reverse Exchangesort) it in 
-the list, swapping them if the compared element is larger. This functions 
-similarly to an optimized Bubblesort where after the each round the last 
-element compared that round is no longer compared in following rounds. Our 
-implementation will compare the selected element with all other elements in the 
-list, swapping them if the element that appears later is larger. Ackley 
-uses an unoptimized Bubblesort in Beyond Efficiency, so I feel comfortable 
-using this variation for our Exchangesort.
-
-Exchangesort will also make an average of 6 comparisons when sorting a
-3-element list.
-
-<!-- As with Bubblesort, Exchangesort will perform three iterations over a 3-element -->
-<!-- list, with the final iteration being redundant. -->
-
-Here are the results of running Exchangesort 1000 times on Bytes of random 
-permutations of [1,2,3] using a faulty comparator that gives a random result 
+Here are the results of running Rotationsort 1000 times on Bytes of random
+permutations of [1,2,3] using a faulty comparator that gives a random result
 10% of the time:
 
-    91.8% <- [1,2,3] 
+    91.8% <- [1,2,3]
 
-    3.4% <- [1,3,2] 
+    3.4% <- [1,3,2]
 
     2.5% <- [2,1,3]
 
@@ -567,7 +550,7 @@ making cases in which they agree with the Top Bit in the bottom position
 very rare.
 
 Overall, there is a modest probability (about 0.14% according to these results)
-that Bubblesort and Exchangesort will agree on [1,3,2] as the result, but it is
+that Bubblesort and Rotationsort will agree on [1,3,2] as the result, but it is
 very unlikely that they will agree on any other result that does not have the
 Top Bit in the correct position.
 
