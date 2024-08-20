@@ -46,6 +46,7 @@ There's likely a lot of room for improvement in the code as well.
     - [Supersort Adjudication](#supersort-adjudication)
     - [Recursion](#recursion)
   - [Magicsort](#magicsort)
+  - [Magic Robustsort sub-algorithm alterations](#magic-robustsort-sub-algorithm-alterations)
 - [Comparing it all](#comparing-it-all)
 - [Library](#library)
 - [Development Environment](#development-environment)
@@ -785,6 +786,19 @@ Magicsort will only be run in our algorithm if Bubblesort and Rotationsort
 disagree on an answer, and even then it only has 3 elements to sort. Overall,
 the Robustsort we're building that uses Magicsort will still have an average of
 O(n log n) time efficiency.
+
+### Magic Robustsort SubAlgorithm alterations
+
+We will also make a few adjustments to our SubAlgorithms for Magic Robustsort.
+
+First, we will make our Rotationsort ambidextrous. This means that after each
+forward comparison (with a chance to rotate the smaller element to the front
+of the list), we will make a backward comparison (with a chance to rotate the
+larger element to the back of the list).
+
+Second, we will replace Bubblesort with a Reverse Ambidextrous Rotationsort.
+Instead of starting at the beginning of a list and working forward, a Reverse
+Rotationsort starts at the end and works back.
 
 ### A note on Robustsort and Bogosort
 
