@@ -1,22 +1,23 @@
 # Tensort [![Hackage](https://img.shields.io/hackage/v/tensort.svg)](https://hackage.haskell.org/package/tensort)
 
-Tensort is a tensor-based sorting algorithm that is tunable to adjust to 
-the priorities of the task at hand.
+Tensort is a family of sorting algorithm that are tunable to adjust to the
+priorities of the task at hand.
 
-This project started as an exploration of what a sorting algorithm that 
+This project started as an exploration of what a sorting algorithm that
 prioritizes robustness would look like. As such it also describes and provides
-implementations of Robustsort, a group of Tensort variants designed to 
-prioritize robustness in conditions defined in David H. Ackley's
+implementations of Robustsort, a group of Tensort variants designed for
+robustness in conditions defined in David H. Ackley's
 [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf).
 
-Simply put, Tensort takes an input list, transforms the list into a tensor field, 
-then transforms the tensor field back into a sorted list. These transformations
-provide opportunities to increase redundancy for improved robustness and can
-be leveraged to include any further processing we wish to do on the elements.
+Simply put, Tensort takes an input list, transforms the list into a
+multi-dimensional tensor field, then transforms that tensor field back into a
+sorted list. These transformations provide opportunities to increase redundancy
+for improved robustness and can be leveraged to include any further processing
+we wish to do on the elements.
 
-Note: This project is still under construction. Everything works and performs 
-excellently under Ackley's testing conditions. Still to add: documentation 
-additions/revisions, convenience wrappers for the top-level functions, memes. 
+Note: This project is still under construction. Everything works and performs
+excellently under Ackley's testing conditions. Still to add: documentation
+additions/revisions, convenience wrappers for the top-level functions, memes.
 There's likely a lot of room for improvement in the code as well.
 
 ## Table of Contents
@@ -39,13 +40,12 @@ There's likely a lot of room for improvement in the code as well.
     - [Preface](#preface-1)
     - [Overview](#overview)
     - [Examining Bubblesort](#examining-bubblesort)
-    - [Exchangesort](#exchangesort)
+    - [Rotationsort](#rotationsort)
     - [Introducing Supersort](#introducing-supersort)
     - [Permutationsort](#permutationsort)
     - [Supersort Adjudication](#supersort-adjudication)
     - [Recursion](#recursion)
   - [Magicsort](#magicsort)
-    - [Supersort adjudication with Magic](#supersort-adjudication-with-magic)
   - [A note on Robustsort and Bogosort](#a-note-on-robustsort-and-bogosort)
 - [Comparing it all](#comparing-it-all)
 - [Library](#library)
@@ -55,68 +55,65 @@ There's likely a lot of room for improvement in the code as well.
 
 ### Inspiration
 
-  - [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by 
+  - [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by
   [David H. Ackley](https://github.com/DaveAckley)
     
-  - [Beyond Efficiency by Dave Ackley](https://futureofcoding.org/episodes/070) 
+  - [Beyond Efficiency by Dave Ackley](https://futureofcoding.org/episodes/070)
   by Future of Coding ([Lu Wilson](https://github.com/TodePond),
   [Jimmy Miller](https://github.com/jimmyhmiller),
   [Ivan Reese](https://github.com/ivanreese))
 
 ### Why?
 
-Because near the end of [that podcast episode
-](https://futureofcoding.org/episodes/070), 
-[Ivan](https://github.com/ivanreese) said "Why are we comparing Bubblesort 
+Because near the end of
+[that podcast episode](https://futureofcoding.org/episodes/070),
+[Ivan](https://github.com/ivanreese) said "Why are we comparing Bubblesort
 versus Quicksort and Mergesort? Well, because no one's made Robustsort yet."
 
 And I thought, "Why not?"
 
 ### But why would anyone care about this in the first place?
 
-Well, a tunable sorting algorithm is a really cool thing to have!
+Being adaptable to different scenarios, a tunable sorting algorithm has many
+potential applications. This README will focus on robustness in sorting.
 
-This can have many different uses, one of which is prioritizing robustness.
-
-[Ackley](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) has some really 
-compelling things to say about why prioritizing robustness is important and 
-useful, and I'd highly recommend you read that paper!
+[Ackley](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) has some
+compelling things to say about why prioritizing robustness is important and
+useful. I'd highly recommend you read that paper!
 
 Or listen to [this podcast](https://futureofcoding.org/episodes/070)!
 
 If you want my elevator pitch, it's because we eventually want to build things
-like [Dyson Spheres](https://en.wikipedia.org/wiki/Dyson_sphere). Doing so will 
-likely involve massively distributed systems being constantly pelted by 
-radiation. In circumstances like that, robustnesss is key.
+like [Dyson Spheres](https://en.wikipedia.org/wiki/Dyson_sphere). Doing so will
+involve massively distributed systems that are constantly pelted by radiation.
+In such circumstances, robustness is key.
 
-Another example I like to consider is artificial cognition. When working 
+Another example I like to consider is artificial cognition. When working
 in a non-deterministic system (or a system so complex as to be considered
-non-deterministic), it can be helpful to have systems in place to make sure 
-that the answer we come to is really valid.
+non-deterministic), it can be helpful to have systems in place to verify that
+the answer we come to is valid.
 
-Incidentally, while I was preparing for this project, we experienced 
-[the strongest solar storm to reach Earth in 2 decades
-](https://science.nasa.gov/science-research/heliophysics/how-nasa-tracked-the-most-intense-solar-storm-in-decades/). 
-I don't know for certain whether the solar activity caused any computer errors, 
-but we had some anomalies at work and certainly joked about them being caused 
+Incidentally, while I was preparing for this project, we experienced
+[the strongest solar storm to reach Earth in 2 decades](https://science.nasa.gov/science-research/heliophysics/how-nasa-tracked-the-most-intense-solar-storm-in-decades/).
+I don't know for certain whether the solar activity caused any computer errors,
+but we had some anomalies at work and certainly joked about them being caused
 by the Sun.
 
 Also during the same period, 
-[one of the Internet's root-servers glitched out for unexplained reasons
-](https://arstechnica.com/security/2024/05/dns-glitch-that-threatened-internet-stability-fixed-cause-remains-unclear/).
+[one of the Internet's root-servers glitched out for unexplained reasons](https://arstechnica.com/security/2024/05/dns-glitch-that-threatened-internet-stability-fixed-cause-remains-unclear/).
 
-As Ackley mentions, as a culture we have tended to prioritize correctness and 
-efficiency to the exclusion of robustness. The rate of our technological 
+As Ackley asserts, as a culture we have tended to prioritize correctness and
+efficiency to the detriment of robustness. The rate of our technological
 progression precludes us from continuing to do so.
 
 ### Why Haskell?
 
 1. Tensort can involve a lot of recursion, which Haskell handles well
 
-2. All the other benefits we get with using a purely functional language, such 
+2. All the other benefits we get from using a purely functional language, such 
 as strict dependency management, which 
-[even the smartest of us](http://livingcomputation.com/robusort2.tar) sometimes 
-falter without:
+[even the smartest among us](http://livingcomputation.com/robusort2.tar)
+sometimes falter without:
 
   ![Comment from Ackley in the Beyond Efficiency code about Perl updates 
   breaking their code](./assets/images/ackley_deps.png)
