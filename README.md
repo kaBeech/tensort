@@ -801,24 +801,25 @@ algorithms:
 
 ## Library
 
-This package contains implementations of each algorithm discussed above. 
-Notably, it provides the following:
-
-  - Customizable Tensort
+This package provides implementations of the following algorithms wrapped for
+integer sorting:
 
   - Standard Logarithmic Tensort
 
-  - Standard Tensort with customizable Bytesize
+  - Basic Robustsort with Permutationsort adjudicator
 
-  - Mundane Robustsort with Permutationsort adjudicator
+  - Basic Robustsort with Bogosort adjudicator
 
-  - Mundane Robustsort with Bogosort adjudicator
+  - Basic Magic Robustsort
 
-  - Magic Robustsort
+  - Recursive Robustsort with Permutationsort adjudicator
 
-In the 1.0.0.0 release there will also be a wrapper around top-level 
-Tensort (Logarithmic) and Robustsort (Magic) that will allow for easy
-use without dealing with Type conversions.
+  - Recursive Robustsort with Bogosort adjudicator
+
+  - Recursive Magic Robustsort
+
+It also provides many more algorithms and helper functions wrapped for both Bit
+and Record sorting so you can make your own Tensort variants!
 
 Check the code in `src/` or the documentation on Hackage/Hoogle
 for more details.
