@@ -444,43 +444,34 @@ With those ground rules in place, let's get to Robustsort!
 
 #### Overview
 
-Once we have Tensort in our toolbox, the road to Robustsort is not long. 
-Robustsort is a potentially recursive version of Tensort, but first we'll look 
-at the basic variant: a 3-bit Tensort with a custom SubAlgorithm that compares 
-other sub-algorithms. For convenience, we will call this custom SubAlgorithm 
-Supersort. We use a 3-bit Tensort here because there's something magical that 
+Once we have Tensort in our toolbox, the road to Robustsort is not long.
+Robustsort is a potentially recursive version of Tensort, but first we'll look
+at the basic variant: a 3-bit Tensort with a custom SubAlgorithm that compares
+other sub-algorithms. For convenience, we will call this custom SubAlgorithm
+Supersort. We use a 3-bit Tensort here because there's something magical that
 happens around the number 3.
 
-Robust sorting algorithms tend to be 
-slow. Bubblesort, for example, has an average time efficiency of O(n^2), 
-compared with Quicksort and Mergesort, which both have an average of (n log n).
+Robust sorting algorithms tend to be slow. Bubblesort, for example, having an
+average time efficiency of O(n^2), is practically glacial compared with
+Quicksort and Mergesort (which both have an average of O(n log n)).
 
-Here's the trick though: with small numbers the difference between these values 
-is minimal. For example, when n=4, Mergesort will make 6 comparisons, while 
-Bubblesort will make 12. A Byte holding 4 Bites is both small enough to run 
-the Bubblesort quickly and large enough to allow multiple opportunities for a 
-mistake to be corrected. 
+Here's the trick though: with small numbers the difference between these values
+is minimal. For example, when n=4, Mergesort will make 6 comparisons, while
+Bubblesort will make 12. A Byte holding 4 Bites is both small enough to run
+the Bubblesort quickly and large enough to allow multiple opportunities for a
+mistake to be corrected.
 
-In Robustsort, we choose a Bytesize of 
-3 because a list of
-3 Bits has some special properties. For one thing, sorting at 
-this length greatly reduces the time it takes to run our slow-but-robust 
-algorithms. For example, at this size, Bubblesort will make only 6 comparisons. 
-Mergesort still makes 6 as well.
+In Robustsort, we choose a Bytesize of 3 because a list of 3 Bits has some
+special properties. For one thing, sorting at this length greatly reduces the
+time it takes to run our slow-but-robust algorithms. For example, at this size,
+Bubblesort will make only 6 comparisons. Mergesort still makes 6 as well.
 
-In addition, when making a mistake while sorting 3 elements, the mistake 
-will displace an element by only 1 or 2 positions at the, no matter which 
+Furthermore, when making a mistake while sorting 3 elements, the mistake
+will displace an element by only 1 or 2 positions at most, no matter which
 algorithm is used.
 
-This is all to say that using a 3-bit byte size allows us to have our pick of 
-algorithms to compare with!
-
-Note: One might ask why we don't use a Bytesize of 2, since it would be even faster
-and still have the same property of displacing an element by only 1 or 2
-positions. Well, how many different algorithms can you use to sort 2 elements?
-At this length, most algorithms function equivalently (in terms of the 
-sub-operations performed) and as we will see, it pays to have some diversity
-in our sub-algorithms.
+This is all to say that using a 3-bit Bytesize allows us to have our pick of
+sub-algorithms to compare with!
 
 #### Examining Bubblesort
 
