@@ -69,8 +69,8 @@ robustsortM = tensort (mkTsProps 3 supersortM)
 supersortM :: WonkyState -> Sortable -> (Sortable, WonkyState)
 supersortM =
   supersort
-    ( rotationsortReverseAmbi,
-      rotationsortAmbi,
+    ( rotationsortAmbi,
+      rotationsortReverseAmbi,
       magicsort,
       magicSuperStrat
     )
