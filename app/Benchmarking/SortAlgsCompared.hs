@@ -17,14 +17,14 @@ import Data.Tensort.Utils.Types (Sortable, WonkyState)
 sortAlgsCompared ::
   [(WonkyState -> Sortable -> (Sortable, WonkyState), String)]
 sortAlgsCompared =
-  [ (robustsortRM, "Magic Robustsort"),
-    (robustsortRB, "Bogo Robustsort"),
-    (robustsortRP, "Mundane Robustsort"),
-    (robustsortM, "Base RobustsortM"),
-    (robustsortB, "Base RobustsortB"),
-    (robustsortP, "Base RobustsortP"),
+  [ (robustsortRM, "RobustsortRM"),
+    (robustsortRB, "RobustsortRB"),
+    (robustsortRP, "RobustsortRP"),
+    (robustsortM, "RobustsortM"),
+    (robustsortB, "RobustsortB"),
+    (robustsortP, "RobustsortP"),
     (tensortBL, "TensortBL"),
-    (bubblesort, "Bubblesort"),
+    -- (bubblesort, "Bubblesort"),
     (quicksort, "Quicksort"),
     (mergesort, "Mergesort")
   ]
