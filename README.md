@@ -25,8 +25,8 @@ There's likely a lot of room for improvement in the code as well.
 - [Introduction](#introduction)
   - [Inspiration](#inspiration)
   - [Why?](#why)
-  - [But why would anyone care about this in the first place?
-    ](#but-why-would-anyone-care-about-this-in-the-first-place)
+  - [But why would anyone care about this in the first
+    place?](#but-why-would-anyone-care-about-this-in-the-first-place)
   - [Why Haskell?](#why-haskell)
 - [Project structure](#project-structure)
 - [Algorithms overview](#algorithms-overview)
@@ -93,13 +93,15 @@ non-deterministic), it can be helpful to have systems in place to verify that
 the answer we come to is valid.
 
 Incidentally, while I was preparing for this project, we experienced
-[the strongest solar storm to reach Earth in 2 decades](https://science.nasa.gov/science-research/heliophysics/how-nasa-tracked-the-most-intense-solar-storm-in-decades/).
+[the strongest solar storm to reach Earth in 2
+decades](https://science.nasa.gov/science-research/heliophysics/how-nasa-tracked-the-most-intense-solar-storm-in-decades/).
 I don't know for certain whether the solar activity caused any computer errors,
 but we had some anomalies at work and certainly joked about them being caused
 by the Sun.
 
 Also during the same period,
-[one of the Internet's root-servers glitched out for unexplained reasons](https://arstechnica.com/security/2024/05/dns-glitch-that-threatened-internet-stability-fixed-cause-remains-unclear/).
+[one of the Internet's root-servers glitched out for unexplained
+reasons](https://arstechnica.com/security/2024/05/dns-glitch-that-threatened-internet-stability-fixed-cause-remains-unclear/).
 
 As Ackley asserts, as a culture we have tended to prioritize correctness and
 efficiency to the detriment of robustness. The rate of our technological
@@ -304,60 +306,60 @@ to make mistakes when the list is already nearly sorted.
   1. Randomize the input list of elements (Bits).
 
   2. Assemble Bytes by grouping the Bits into lists of lengths equal to the
-    Bytesize, then sorting the Bits in each Byte using the SubAlgorithm. After
-    this, we will do no more write operations on the Bits until the final
-    steps. Instead, we will make copies of the Bits and sort the copies
-    alongside their pointers.
+     Bytesize, then sorting the Bits in each Byte using the SubAlgorithm. After
+     this, we will do no more write operations on the Bits until the final
+     steps. Instead, we will make copies of the Bits and sort the copies
+     alongside their pointers.
 
   3. Assemble TensorStacks by creating Tensors from the Bytes:
         1. Group the Bytes together in Memory lists of Bytesize length.
         2. Assign each Memory to a newly-created Tensor.
         3. Make Records for each Byte in Memory by combining its index in the
-          Memory list with a copy of its TopBit.
+             Memory list with a copy of its TopBit.
         4. Group the Records together in Register lists and assign them to
-          their respective Tensors.
+           their respective Tensors.
         5. Sort each Register list in order of its Records' TopBits.
 
   4. Reduce the number of TensorStacks by creating a new layer of Tensors from
-    the Tensors created in Step 3:
+       the Tensors created in Step 3:
         1. Group the first layer of Tensors together in Tensor lists of
-          Bytesize length.
+             Bytesize length.
         2. Assign each Memory to a newly-created Tensor.
         3. Make Records for each Tensor in Memory by combining its index in the
-          Memory list with a copy of its TopBit.
+             Memory list with a copy of its TopBit.
         4. Group the Records together in Register lists and assign them to
-          their respective Tensors.
+             their respective Tensors.
         5. Sort each Register list in order of its Records' TopBits.
 
   5. Continue in the same manner as in Step 4 until the number of TensorStacks
-    is equal to or less than the Bytesize.
+       is equal to or less than the Bytesize.
 
   6. Assemble a TopRegister by making Records from the Top Bits on each
-    TensorStack and sorting the Records.
+       TensorStack and sorting the Records.
 
   7. Remove the Top Bit from the top Byte in the top TensorStack and add it
-    to the final Sorted List. If the top Byte has more than one Bit in it
-    still, re-sort the Byte for good measure
+       to the final Sorted List. If the top Byte has more than one Bit in it
+       still, re-sort the Byte for good measure
 
   8. If the top Byte in the top TensorStack is empty:
       1. Remove the Record that points to the top Byte from its containing 
-        Tensor's Register.
+           Tensor's Register.
       2. If the Tensor containing that byte is empty, remove the
-        Record that points to it from its containing Tensor's Register. Do this
-        recursively until the Tensor is not empty or the top of the
-        TensorStack is reached.
+           Record that points to it from its containing Tensor's Register. Do this
+           recursively until the Tensor is not empty or the top of the
+           TensorStack is reached.
       3. If the entire TensorStack is empty of Bits, remove its Record from the
-        TopRegister.
+           TopRegister.
       4. If all TensorStacks are empty of Bits, return the final
-        Sorted List. Otherwise, re-sort the TopRegister.
+           Sorted List. Otherwise, re-sort the TopRegister.
 
   9. Otherwise (i.e. the top Byte or a Tensor that contains it is not empty):
       1. Update the top Byte's (or Tensor's) Record with its new TopBit.
       2. Re-sort the top Byte's (or Tensor's) containing Tensor's Register.
       3. Then jump up a level to the Tensor that contains that Tensor,
-        update the containing Tensor's Record with its new TopBit, and re-sort
-        its Register. Do this recursively until the whole TensorStack is 
-        rebalanced.
+           update the containing Tensor's Record with its new TopBit, and re-sort
+           its Register. Do this recursively until the whole TensorStack is 
+           rebalanced.
       4. Update the TensorStack's Record in the TopRegister with its new TopBit
       5. Re-sort the TopRegister.
 
@@ -850,6 +852,7 @@ Note that these instructions don't make the assumptions listed above
 
 ### Print Benchmarking Data
 
-  * [Checkout to the 'benchmarking' branch](https://git-scm.com/docs/git-checkout)
+  * [Checkout to the 'benchmarking'
+    branch](https://git-scm.com/docs/git-checkout)
   * Uncomment the desired benchmarking process(es) in `app/Main.hs`
   * Run `cabal run`
