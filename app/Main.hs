@@ -25,7 +25,7 @@ main = do
   -- printGreeting
   printLargeTimeAndErrorRateComparison
     [12]
-    1
+    100
     4096
     wonkyChance
     stuckChance
