@@ -580,31 +580,28 @@ Before moving further, let's talk a little about Bubblesort and why we're
 using it in our SubAlgorithm.
 
 We've said before that Bubblesort is likely to put the last element in the
-correct position. Let's examine this in the context of Bubblesorting a
-3-element list.
+correct position of a list. Let's examine this in the context of Bubblesorting
+a 3-element list.
 
 I ran Bubblesort 1000 times on Bytes of random permutations of [1,2,3] using a
-faulty comparator that gives a random result 10% of the time. Here is how often
-each outcome was returned:
+faulty comparator that gives a random result 10% of the time when comparing two
+Bits. Here is how often each outcome was returned:
 
-    87.1% <- [1,2,3]
+    94.1% <- [1,2,3]
 
-    4.1% <- [1,3,2]
+    2.5% <- [1,3,2]
 
-    6.6% <- [2,1,3]
+    3.0% <- [2,1,3]
 
-    0.2% <- [2,3,1]
+    0.0% <- [2,3,1]
 
-    1.8% <- [3,1,2]
+    0.4% <- [3,1,2]
 
-    0.2% <- [3,2,1]
+    0.0% <- [3,2,1]
 
-In these results, 93.7% of the time the Top Bit was returned in the correct
-position, and the bottom value was returned in the top position only 0.4% of
-the time.
-
-Notably, the far more likely result where the Top Bit was at the bottom was
-[3,1,2], with [3,2,1] occurring only 0.2% of the time.
+In these results, 97.1% of the time the Top Bit was returned in the correct
+position. The only results returned in which the TopBit was not in the correct
+position were [1,3,2] and [3,1,2].
 
 #### Rotationsort
 
