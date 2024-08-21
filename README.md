@@ -15,12 +15,18 @@ sorted list. These transformations provide opportunities to increase redundancy
 for improved robustness and can be leveraged to include any further processing
 we wish to do on the elements.
 
-  ![When sorting a randomly shuffled deck of cards, Quicksort makes 202
-  positional errors, Mergesort makes 201, Bubblesort makes 4, Tensort makes 51,
-  Mundane Robustsort makes 11, and Magic Robustsort
-  makes [CENSORED]](./assets/images/deck_shuffle_chart_censored.svg "Read on
-  for the full data, or click here to jump ahead to the
-  spoilers(#comparing-it-all)")
+<figure>
+    <img src="./assets/images/deck_shuffle_chart_censored.svg "
+         alt="When sorting a randomly shuffled deck of cards, Quicksort makes
+        202 positional errors, Mergesort makes 201, Bubblesort makes 4, Tensort
+        makes 51, Mundane Robustsort makes 11, and Magic Robustsort makes
+        [CENSORED]">
+    <figcaption>!Read on for the full data, or 
+        <a href="#comparing-it-all">
+            click here to jump ahead to the spoilers
+        </a>
+    </figcaption>
+</figure>
 
 ## Table of Contents
 
@@ -836,10 +842,13 @@ Now let's take a look at how everything compares. Here is a graph showing the
 benchmarking results for average error score and total runtime for our
 algorithms:
 
-  ![When sorting a randomly shuffled deck of cards, Quicksort makes 202
-  positional errors, Mergesort makes 201, Bubblesort makes 4, Tensort makes 51,
-  Mundane Robustsort makes 11, and Magic Robustsort
-  makes 1](./assets/images/deck_shuffle_chart_uncensored.svg "!")
+<figure>
+    <img src="./assets/images/deck_shuffle_chart_uncensored.svg"
+         alt="When sorting a randomly shuffled deck of cards, Quicksort makes
+        202 positional errors, Mergesort makes 201, Bubblesort makes 4, Tensort
+        makes 51, Mundane Robustsort makes 11, and Magic Robustsort makes 1">
+    <figcaption>!</figcaption>
+</figure>
 
 As shown above, when sorting a randomly shuffled deck of cards, Quicksort makes
 202 positional errors, Mergesort makes 201, Bubblesort makes 4, Logarithmic
@@ -955,5 +964,5 @@ I'd like to send a special thank you to the following people:
   [Haskell Subreddit](https://www.reddit.com/r/haskell/) and
   [Portland Has Skill](https://github.com/kabeech/portland-has-skill)
 
-  - Countless friends, family, acquaintances, and strangers who've tolerated me
-  blathering on about sorting algorithms over the past few months💙
+  - Countless family, friends, acquaintances, and strangers who've tolerated me
+  blathering on about sorting algorithms over the past few months 💙
