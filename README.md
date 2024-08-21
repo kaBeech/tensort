@@ -344,7 +344,7 @@ The first step in Tensort is to randomize the input list. I'll explain why we
 do this in more detail later - for now just know that it's easier for Tensort
 to make mistakes when the list is already nearly sorted.
 
-  1. Randomize the input list of elements (Bits).
+  1. Randomize the input list of Bits.
 
   2. Assemble Bytes by grouping the Bits into lists of lengths equal to the
      Bytesize, then sorting the Bits in each Byte using the SubAlgorithm. After
@@ -353,100 +353,150 @@ to make mistakes when the list is already nearly sorted.
      alongside their pointers.
 
   3. Assemble TensorStacks by creating Tensors from the Bytes:
-        1. Group the Bytes together in Memory lists of Bytesize length.
-        2. Assign each Memory to a newly-created Tensor.
-        3. Make Records for each Byte in Memory by combining its index in the
-             Memory list with a copy of its TopBit.
-        4. Group the Records together in Register lists and assign them to
-           their respective Tensors.
-        5. Sort each Register list in order of its Records' TopBits.
+        <ol>
+            <li>
+                i. Group the Bytes together in Memory lists of Bytesize length.
+            </li>
+            <li>ii. Assign each Memory to a newly-created Tensor.</li>
+            <li>
+                iii. For each Tensor, make Records for each Byte in its Memory
+                     by combining the Byte's index in Memory list with a copy
+                     of its TopBit.
+            </li>
+            <li>
+                iv. Group the Records for each Tensor together and form them 
+                    into their Tensor's Register list.
+            </li>
+            <li>
+                v. Sort the Records in each Register list in order of their
+                   TopBits.
+            </li>
+        </ol>
 
   4. Reduce the number of TensorStacks by creating a new layer of Tensors from
        the Tensors created in Step 3:
-        1. Group the first layer of Tensors together in Tensor lists of
-             Bytesize length.
-        2. Assign each Memory to a newly-created Tensor.
-        3. Make Records for each Tensor in Memory by combining its index in the
-             Memory list with a copy of its TopBit.
-        4. Group the Records together in Register lists and assign them to
-             their respective Tensors.
-        5. Sort each Register list in order of its Records' TopBits.
+        <ol>
+            <li>
+                i. Group the first layer of Tensors together in Memory lists of
+                   Bytesize length.
+            </li>
+            <li>ii. Assign each Memory to a newly-created Tensor.</li>
+            <li>
+                iii. For each newly-created Tensor, make Records for each
+                     Tensor in its Memory by combining the enclosed Tensor's
+                     index in the Memory list with a copy of its TopBit.
+            </li>
+            <li>
+                iv. Group the Records for each newly-created Tensor together
+                    and form them into their Tensor's Register list.
+            </li>
+            <li>
+                v. Sort each Register list in order of its Records' TopBits.
+            </li>
+        </ol>
 
   5. Continue in the same manner as in Step 4 until the number of TensorStacks
-       is equal to or less than the Bytesize.
+     is equal to or less than the Bytesize.
 
-  6. Assemble a TopRegister by making Records from the Top Bits on each
-       TensorStack and sorting the Records.
+  6. Assemble a TopRegister by making Records from the Top Bits of each
+     TensorStack and sorting the Records.
 
-  7. Remove the Top Bit from the top Byte in the top TensorStack and add it
-       to the final Sorted List. If the top Byte has more than one Bit in it
-       still, re-sort the Byte for good measure
+  7. Remove the TopBit from the top Byte in the top TensorStack and add it to
+     the final Sorted List. If the top Byte has more than one Bit in it still,
+     re-sort the Byte for good measure
 
   8. If the top Byte in the top TensorStack is empty:
-      1. Remove the Record that points to the top Byte from its containing 
-           Tensor's Register.
-      2. If the Tensor containing that byte is empty, remove the
-           Record that points to it from its containing Tensor's Register. Do this
-           recursively until the Tensor is not empty or the top of the
-           TensorStack is reached.
-      3. If the entire TensorStack is empty of Bits, remove its Record from the
-           TopRegister.
-      4. If all TensorStacks are empty of Bits, return the final
-           Sorted List. Otherwise, re-sort the TopRegister.
+      <ol>
+          <li>
+              i. Remove the Record that points to the top Byte from its
+                 containing Tensor's Register.
+          </li>
+          <li>
+              ii. If the Tensor containing that byte is empty, remove the
+                  Record that points to that Tensor from its containing
+                  Tensor's Register. Do this recursively until finding a Tensor
+                  that is not empty or the top of the TensorStack is reached.
+          </li>
+          <li>
+              iii. If the entire TensorStack is empty of Bits, remove its
+                   Record from the TopRegister.
+         </li>
+          <li>
+              iv. If all TensorStacks are empty of Bits, return the final
+                  Sorted List. Otherwise, re-sort the TopRegister.
+          </li>
+      </ol>
 
   9. Otherwise (i.e. the top Byte or a Tensor that contains it is not empty):
-      1. Update the top Byte's (or Tensor's) Record with its new TopBit.
-      2. Re-sort the top Byte's (or Tensor's) containing Tensor's Register.
-      3. Then jump up a level to the Tensor that contains that Tensor,
-           update the containing Tensor's Record with its new TopBit, and re-sort
-           its Register. Do this recursively until the whole TensorStack is 
-           rebalanced.
-      4. Update the TensorStack's Record in the TopRegister with its new TopBit
-      5. Re-sort the TopRegister.
+      <ol>
+          <li>
+              i. Update the top Byte's (or Tensor's) Record with its new
+                 TopBit.
+          </li>
+          <li>
+              ii. Re-sort the top Byte's (or Tensor's) containing Tensor's
+                  Register.
+          </li>
+          <li>
+              iii. Jump up a level to the Tensor that contains that Tensor,
+                   update the containing Tensor's Record with its new TopBit,
+                   and re-sort its Register. Do this recursively until the
+                   whole TensorStack is rebalanced.
+          </li>
+          <li>
+              iv. Update the TensorStack's Record in the TopRegister with its
+                  new TopBit.
+          </li>
+          <li>v. Re-sort the TopRegister.</li>
+      </ol>
 
   10. Repeat Steps 7-9 until the final Sorted List is returned.
 
 Now that we know all the steps, it's easier to see why we randomize the list
-as the beginning step. This way, if the list is already nearly
-sorted, values close to each other don't get stuck under each other in their
-Byte. Ideally, we want the top Bits from all TensorStacks to be close to
-each other. Say for example that we're using a Bytesize of 4 and the first four
-elements in a 1,000,000-element list are 121, 122, 123, and 124. If we don't
-randomize the list, these 4 elements get grouped together in the first byte.
+as the beginning step. This way, if the list is already nearly sorted, values
+close to each other don't get stuck under each other in their Byte. Ideally, we
+want the top Bits in all the TensorStacks to be close to the same value.
+
+To illustrate, say that we're using a Bytesize of 4 and the first four Bits
+in a list of 1,000,000 to be sorted are 121, 122, 123, and 124. If we don't
+randomize the list, these 4 Bits get grouped together in the first Byte.
+
 That's all well and good if everything performs as expected, but if something
 unexpected happens during an operation where we intend to add 124 to the final
-list and we add a different element instead, three of the best-case elements to
-have mistakenly added (121, 122, and 123) are impossible to have been selected.
+list and we add a different Bit instead, three of the best Bits to have
+mistakenly added (121, 122, and 123) are impossible to have been selected.
 
 #### Benefits
 
-Tensort is designed to be adaptable for different purposes. The core idea of
-Tensort is breaking the input into smaller pieces along many dimensions and
-sorting the smaller pieces. Once we understand the overall structure, we can
-design a SubAlgorithm (and Bytesize) to suit our needs.
+Tensort is designed to be adaptable for different purposes. The core mechanic
+in Tensort is the breaking down of the input into smaller pieces along many
+dimensions to sort the smaller pieces. Once we understand the overall
+structure of Tensort, we can design a SubAlgorithm (and Bytesize) to suit our
+needs.
 
-Standard Tensort leverages the robustness of Bubblesort while reducing the time
-required by never Bubblesorting the entire input.
+Standard Tensort leverages the robustness of Bubblesort while reducing runtime
+by never Bubblesorting the entire input at once.
 
 We are able to do this because A) Bubblesort is very good at making sure the
-last element is in the final position of a list, and B) at each step of Tensort
-the only element we *really* care about is the last element in a given list (or
+last element is in the final position of a list, and B) at each step in Tensort
+the only element we *really* care about is the last element of a given list (or
 to look at it another way, the TopBit of a given Tensor).
 
 #### Logarithmic Bytesize
 
 When using standard Tensort (i.e. using Bubblesort as the SubAlgoritm), as the
-Bytesize approaches the square root of the number of elements in the
-input list, its average time efficiency approaches O(n^2).
+Bytesize approaches 1, the length of the input list, or the square root of the
+number of elements in the input list, its average time efficiency approaches
+O(n^2).
 
-Standard Tensort is most time efficient when the Bytesize is close
-to the natural log of the number of elements in the input list. A logarithmic
-Bytesize is likely to be ideal for most use cases of standard Tensort.
+Standard Tensort is most time efficient when the Bytesize is close to the
+natural log of the number of elements in the input list. A logarithmic Bytesize
+is likely to be ideal for most use cases of standard Tensort.
 
 -------
 
-Alright! We now have a simple sorting algorithm absent of cheap hacks that
-both maintains O(n log n) average time efficiency and is relatively robust. I'm
+Alright! We now have a sorting algorithm absent of cheap hacks that both
+maintains O(n log n) average time efficiency and is relatively robust. I'm
 pretty happy with that!
 
 But now that we understand Tensort's basic structure, let's tune it for even
@@ -454,7 +504,7 @@ more robustness!
 
 <figure>
     <img src="https://m.media-amazon.com/images/M/MV5BNjk2MTMzNTA4MF5BMl5BanBnXkFtZTcwMTM0OTk1Mw@@._V1_.jpg"
-         alt="Michael Caine at a desk in front of a chalkboard full of
+         alt="Michael Caine sitting at a desk in front of a chalkboard full of
         mathematical formulae and architectural drawings">
     <figcaption><i><a href="https://www.imdb.com/name/nm0000323/mediaviewer/rm3619586816/">
             Source
