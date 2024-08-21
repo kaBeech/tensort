@@ -133,13 +133,11 @@ sometimes falter without:
     <img src="./assets/images/ackley_deps.png"
          alt="Comment from Ackley in the Beyond Efficiency code about Perl
         updates breaking their code">
-    <figcaption><i><a href="http://livingcomputation.com/robusort2.tar">
+    <figcaption><center><i><a href="http://livingcomputation.com/robusort2.tar">
             Source
-        </a></i></figcaption>
+        </a></i></center></figcaption>
 </figure>
 
-      
-      
       
 
 3. [Obviously](https://www.youtube.com/shorts/LGZKXZQeEBg)
