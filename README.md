@@ -995,18 +995,19 @@ benchmarking results for average error score for our algorithms:
 
 As shown above, when sorting a randomly shuffled deck of cards, Quicksort makes
 202 positional errors, Mergesort makes 201, Bubblesort makes 4, Logarithmic
-Tensort makes 51, Basic Mundane Robustsort makes 11, and Basic Magic Robustsort
-makes only 1!
+Tensort makes 51, Basic Mundane Robustsort with Bogosort adjudicator makes 11,
+and Basic Magic Robustsort makes only 1!
 
-I'll note here that the results weren't quite as dramatic when adding in a
+I'll note here that the results weren't nearly as dramatic when adding in a
 stuck comparator (which gives the same answer it gave previously 50% of the
-time) in addition to the wonky one (which gives a random answer 10% of the time)
-. Our Recursive Magic Robustsort made an average of 292 positional errors,
-which well outperformed Mergesort's 747, but was still behind Bubblesort's 97.
+time) in addition to the wonky one (which gives a random answer 10% of the
+time). Our Recursive Magic Robustsort made an average of 292 positional errors
+in these conditions, which well outperformed Mergesort's 747, but was still
+behind Bubblesort's 97.
 
 More benchmarking data can be found in the `data/` directory. Before we wrap
 up, let's look at the runtimes and average error scores (with a wonky
-comparator) for the largest input list (2048) we benchmarked before removing
+comparator) for the largest input list (2048) I benchmarked before removing
 Bubblesort from the comparisons:
 
     ----------------------------------------------------------
