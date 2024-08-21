@@ -5,7 +5,6 @@ module Data.Tensort.Subalgorithms.Supersort
   )
 where
 
-import Data.Tensort.Utils.ComparisonFunctions (equalBit, equalRecord)
 import Data.Tensort.Utils.Types
   ( SortAlg,
     Sortable (..),
@@ -27,7 +26,7 @@ mundaneSuperStrat :: SupersortStrat
 mundaneSuperStrat (result1, result2, result3) = if result2 == result3 then result2 else result1
 
 -- Previously we used different SuperStrats for Mundane and Magic Supersorts.
--- Currently there is no need to differentiate, but we keep this here in case
--- this changes again in the future
+-- Currently there is no need to differentiate, but we keep this here for
+-- backwards compatibility and in case this changes again in the future
 magicSuperStrat :: SupersortStrat
 magicSuperStrat = mundaneSuperStrat
