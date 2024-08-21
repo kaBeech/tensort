@@ -1,3 +1,9 @@
+<style>
+    figcaption {
+        margin-top: 0;
+    }
+</style>
+
 # Tensort [![Hackage](https://img.shields.io/hackage/v/tensort.svg)](https://hackage.haskell.org/package/tensort)
 
 Tensort is a family of sorting algorithm that are tunable to adjust to the
@@ -23,7 +29,7 @@ we wish to do on the elements.
         [CENSORED]">
     <figcaption>Read on for the full data, or 
         <a href="#comparing-it-all">
-            click here to jump ahead to the spoilers
+            <i>click here to jump ahead to the spoilers</i>
         </a>
     </figcaption>
 </figure>
@@ -847,7 +853,7 @@ algorithms:
          alt="When sorting a randomly shuffled deck of cards, Quicksort makes
         202 positional errors, Mergesort makes 201, Bubblesort makes 4, Tensort
         makes 51, Mundane Robustsort makes 11, and Magic Robustsort makes 1">
-    <figcaption>!</figcaption>
+    <figcaption><i>!</i></figcaption>
 </figure>
 
 As shown above, when sorting a randomly shuffled deck of cards, Quicksort makes
