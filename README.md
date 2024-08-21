@@ -225,9 +225,9 @@ and re-read the paper!
 Alright, let's get started! Ready, Sir Michael?
 
 <figure>
-    <img src="./assets/images/image1.png"
-         alt="">
-    <figcaption><i><a href="http://www.wikipedia.org/Michael_Caine">
+    <img src="https://m.media-amazon.com/images/M/MV5BMzU2Nzk5NjA1M15BMl5BanBnXkFtZTYwNjcyNDU2._V1_.jpg"
+         alt="Sir Michael Caine, ready to go!">
+    <figcaption><i><a href="https://www.imdb.com/name/nm0000323/mediaviewer/rm1782683648/">
             Source
         </a></i></figcaption>
 </figure>
@@ -235,7 +235,7 @@ Alright, let's get started! Ready, Sir Michael?
 ### Tensort
 
 #### Preface
-
+http://www.wikipedia.org/Michael_Caine
 Tensort is my original attempt to write the most robust sorting algorithm
 possible with O(n log n) average time efficiency while avoiding anything that
 Ackley might consider a "cheap hack." Starting out, my hope was that it would
@@ -449,7 +449,14 @@ pretty happy with that!
 But now that we understand Tensort's basic structure, let's tune it for even
 more robustness!
 
-<!-- [image2] -->
+<figure>
+    <img src="https://m.media-amazon.com/images/M/MV5BNjk2MTMzNTA4MF5BMl5BanBnXkFtZTcwMTM0OTk1Mw@@._V1_.jpg"
+         alt="Michael Caine at a desk in front of a chalkboard full of
+        mathematical formulae and architectural drawings">
+    <figcaption><i><a href="https://www.imdb.com/name/nm0000323/mediaviewer/rm3619586816/">
+            Source
+        </a></i></figcaption>
+</figure>
 
 ### Robustsort
 
@@ -614,6 +621,15 @@ Top Bit in the correct position.
 
 #### Introducing Supersort
 
+<figure>
+    <img src="https://m.media-amazon.com/images/M/MV5BMjE3NjgyODc4MV5BMl5BanBnXkFtZTcwMDYzMTk2Mw@@._V1_.jpg"
+         alt="Michael Caine rushing past the Batmobile">
+    <figcaption><i><a 
+        href="https://www.imdb.com/name/nm0000323/mediaviewer/rm4040654848/">
+            Source
+        </a></i></figcaption>
+</figure>
+
 Supersort is a SubAlgorithm that compares the results of two different
 sorting algorithms, in our case Bubblesort and Rotationsort. If both
 algorithms agree on the result, that result is used.
@@ -721,13 +737,24 @@ Rotationsort.
 
 #### Recursion
 
+<figure>
+    <img src="https://m.media-amazon.com/images/M/MV5BZWUzM2NhMTMtM2U0Yy00MmE4LWI2OGItMWQyZjQ3MmRkMGVlXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg"
+         alt="Michael Caine reaching into a cage to gently etrieve a bird. The
+              cage is in a larger structure of cages. The camera is viewing
+              from an adjacent cage and can see into multiple subsequent cages
+              giving the appearance of a recursive picture-in-picture effect">
+    <figcaption><i><a href="https://www.imdb.com/name/nm0000323/mediaviewer/rm1461852929/">
+            Source
+        </a></i></figcaption>
+</figure>
+
 You'll remember that our standard Tensort uses a logarithmic Bytesize. Our base
 Robustsort uses a Bytesize of 3, but we can use a logarithmic Bytesize by
 adding recursion.
 
 <!-- (image3) -->
 
-Let's take our base Robustsort example above and make it recursive.
+Let's take our base Robustsort example above and make it rhttps://m.media-amazon.com/images/M/MV5BMjE3NjgyODc4MV5BMl5BanBnXkFtZTcwMDYzMTk2Mw@@._V1_.jpgecursive.
 
 First, instead of using a 3-bit Bytesize, we will use a logarithmic Bytesize.
 Then, instead of using our Supersort directly as our SubAlgorithm, we will use
@@ -754,8 +781,6 @@ Permutationsort as its base SubAlgorithm.
 Well that's pretty cool! But I wonder... can we make this more robust, if
 we relax the rules just a little more?
 
-<!-- (image4) -->
-
 Of course we can! And we will. To do so, we will replace Permutationsort with
 another newly-named sorting algorithm: Magicsort!
 
@@ -766,8 +791,15 @@ never re-running the same deterministic sub-algorithm in one specific context.
 Magicsort is an algorithm that will re-run Permutationsort only if it disagrees
 with an extremely reliable, theoretically non-deterministic algorithm - one
 that's so good it's robust against logic itself...
+4
 
-<!-- (image4) -->
+<figure>
+    <img src="./assets/images/mc_confused.png"
+         alt="Michael Caine and Mike Meyers looking taken aback">
+    <figcaption><i><a href="https://www.imdb.com/video/vi3757292825/">
+            Source
+        </a></i></figcaption>
+</figure>
 
 [Bogosort!](https://www.youtube.com/watch?v=kgBjXUE_Nwc&t=583)
 
@@ -908,6 +940,17 @@ Bubblesort from the comparisons:
      RobustsortRM | 0.249211013s    | 1824     |
     ----------------------------------------------------------
 
+Well, there it is! I'm pretty happy with the results. What do you think, Sir
+Michael?
+
+<figure>
+    <img src="./assets/images/mc_doors.png"
+         alt="Michael Caine looking upset with Michael Standing">
+    <figcaption><i><a href="https://www.imdb.com/video/vi3792027161/">
+            Source
+        </a></i></figcaption>
+</figure>
+
 ## Library
 
 This package provides implementations of the following algorithms wrapped for
@@ -947,7 +990,7 @@ Note that these instructions don't make the assumptions listed above
   * [Install Nix](https://nixos.org/download/)
   * [Enable Flakes](https://nixos.wiki/wiki/Flakes)
   * [Clone this repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
-  * Run `nix develop` in the repository root 
+  * Run `nix develop` in the repository root
 
 ### Run main test suite (QuickCheck)
 
