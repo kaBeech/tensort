@@ -807,7 +807,7 @@ that's so good it's robust against logic itself...
       
 
 
-[Bogosort!](https://www.youtube.com/watch?v=kgBjXUE_Nwc&t=583)
+...[Bogosort!](https://www.youtube.com/watch?v=kgBjXUE_Nwc&t=583)
 
 Magicsort simply runs both Permutationsort and Bogosort on the same input and
 checks if they agree. If they do, the result is used and if not, both
