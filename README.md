@@ -704,24 +704,24 @@ Supersort is a SubAlgorithm that compares the results of two different
 sorting algorithms, in our case Bubblesort and Rotationsort. If both
 algorithms agree on the result, that result is used.
 
-Looking at our analysis on Bubblesort and Rotationsort, we can
-approximate the chances of how often they will agree in similar conditions:
+Looking at our analysis of Bubblesort and Rotationsort, we can
+approximate the chances that they will agree in similar conditions:
 
-    ~79.96% <- Agree Correctly
+    ~89.68% <- Agree Correctly
 
-    ~19.73% <- Disagree
+    ~10.19% <- Disagree
 
-    ~0.17% <- Agree Incorrectly - TopBit correct
+    ~0.09% <- Agree Incorrectly - TopBit correct
 
-    ~0.14% <- Agree Incorectly - TopBit incorrect
+    ~0.04% <- Agree Incorectly - TopBit incorrect
 
 Hey, that's pretty good! If they agree, then return the results from
 Rotationsort because if for some reason the module that compares the full Bytes
 is also faulty (outside the scope of these benchmarks), Rotationsort is more
 likely to have an accurate result.
 
-Around 20% of the time, these sub-algorithms will disagree with each other.
-If this happens we run our third sub-algorithm: Permutationsort.
+Around 10% of the time, these sub-algorithms will disagree with each other.
+If this happens, we run our third sub-algorithm: Permutationsort.
 
 #### Permutationsort
 
