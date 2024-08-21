@@ -133,9 +133,9 @@ sometimes falter without:
     <img src="./assets/images/ackley_deps.png"
          alt="Comment from Ackley in the Beyond Efficiency code about Perl
         updates breaking their code">
-    <figcaption><center><i><a href="http://livingcomputation.com/robusort2.tar">
+    <center><figcaption><i><a href="http://livingcomputation.com/robusort2.tar">
             Source
-        </a></i></center></figcaption>
+        </a></i></figcaption></center>
 </figure>
 
       
@@ -146,7 +146,7 @@ sometimes falter without:
 
 If you want an in-depth explanation,
 [Wikipedia](https://en.wikipedia.org/wiki/Tensor) is usually a good starting
-place.
+place.comparing-it-all
 
 If you just want to understand Tensort, you can think of 'tensor' as a fancy
 word for a multi-dimensional array.
@@ -754,6 +754,9 @@ adding recursion.
         </a></i></figcaption>
 </figure>
 
+
+      
+
 Let's take our base Robustsort example above and make it recursive.
 
 First, instead of using a 3-bit Bytesize, we will use a logarithmic Bytesize.
@@ -799,7 +802,10 @@ that's so good it's robust against logic itself...
             Source
         </a></i></figcaption>
 </figure>
-...
+
+
+      
+
 
 [Bogosort!](https://www.youtube.com/watch?v=kgBjXUE_Nwc&t=583)
 
