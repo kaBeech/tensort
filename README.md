@@ -585,7 +585,7 @@ a 3-element list.
 
 I ran Bubblesort 1000 times on Bytes of random permutations of [1,2,3] using a
 faulty comparator that gives a random result 10% of the time when comparing two
-Bits. Here is how often each outcome was returned:
+elements. Here is how often each outcome was returned:
 
     94.1% <- [1,2,3]
 
@@ -599,76 +599,95 @@ Bits. Here is how often each outcome was returned:
 
     0.0% <- [3,2,1]
 
-In these results, 97.1% of the time the Top Bit was returned in the correct
+In these results, 97.1% of the time the TopBit was returned in the correct
 position. The only results returned in which the TopBit was not in the correct
 position were [1,3,2] and [3,1,2].
 
 #### Rotationsort
 
 When choosing an algorithm to compare with Bubblesort, we want something with
-substantially different logic, for the sake of robustness. We do,
-however, want something similar to Bubblesort in that it compares our elements
-multiple times. And, as mentioned above, the element that is most important to
-our sorting is the top (highest value) element, by a large degree.
+substantially different logic, for the sake of robustness. We do, however, want
+something similar to Bubblesort in that it compares our elements multiple
+times. And as mentioned above, the element that is most important to our
+sorting is the last (i.e. highest value) element, by a large degree.
 
 In terms of the probability of different outcomes, if our algorithm returns
 an incorrect result, we want that result to be different than what Bubblesort
 is likely to return.
 
-I originally chose an algorithm that balances these properties and I retain the
-above paragraphs for the sake of theory. However, we're going to choose a
-highly accurate algorithm instead: Rotationsort.
+Keeping these priorities in mind, the algorithm we will use to compare with
+Bubblesort is Rotationsort.
 
 The steps in Rotationsort are relatively simple:
 
   1. Compare the last element with the first element. If the last element is
-       smaller, move it to the beginning of the list and return to Step 1.
+     smaller, move it to the beginning of the list and repeat Step 1.
 
   2. Compare the first two elements. If the second element is smaller, move it
-       to the beginning of the list and return to Step 1.
+     to the beginning of the list and return to Step 1.
 
   3. Compare the second and third elements. If the third element is smaller,
-       move it to the beginning of the list and return to Step 1.
+     move it to the beginning of the list and return to Step 1.
 
   4. Continue on in this fashion until the end of the list is reached.
 
   5. Return the sorted list.
 
 The version we use here will be a Reverse Rotationsort. Instead of starting at
-the beginning of the list and working forward, a Reverse Rotationsort starts at
-the end and works back. We do this because it yields a more favorable spread of
-results to combine with Bubblesort than a Forward Rotationsort does.
+the beginning of the list and working forward, moving lower-value elements back
+to the beginning, a Reverse Rotationsort starts at the end and works backward, 
+moving higher-value elements to the end. We do this because it yields a more
+favorable spread of results to combine with Bubblesort than a Forward
+Rotationsort does.
 
-Here are the results of running Rotationsort 1000 times on Bytes of random
+Here are the results of running (Reverse) Rotationsort 1000 times on Bytes of random
 permutations of [1,2,3] using a faulty comparator that gives a random result
-10% of the time:
+10% of the time when comparing two elements:
 
-    91.8% <- [1,2,3]
+    95.3% <- [1,2,3]
 
-    3.4% <- [1,3,2]
+    1.5% <- [1,3,2]
 
-    2.5% <- [2,1,3]
+    3.1% <- [2,1,3]
 
-    0% <- [2,3,1]
+    0.1% <- [2,3,1]
 
-    0.2% <- [3,1,2]
+    0.0% <- [3,1,2]
 
-    2.1% <- [3,2,1]
+    0.0% <- [3,2,1]
 
-In these results, 94.3% of the time the Top Bit was returned in the correct
-position and it returned the bottom value in the top position only 2.1% of the
-time.
+In these results, 98.4% of the time the TopBit was returned in the correct
+position The only results returned in which the TopBit was not in the correct
+position were [1,3,2] and [2,3,1].
 
-In results where the Top Bit was in the
-bottom position, [3,2,1] was the most likely outcome, with [3,1,2] occurring
-only 0.2% of the time. This is opposite to what happens in Bubblesort,
-making cases in which they agree with the Top Bit in the bottom position
-very rare.
+You may notice that one of the two problematic results returned ([2,3,1]) was
+never returned by Bubblesort. In turn, Bubblesort returned one result ([3,1,2])
+that Rotationsort did not. This doesn't mean that these algorithms will never
+return these results, but the chances of them doing so are very low.
 
-Overall, there is a modest probability (about 0.14% according to these results)
+Overall, there is a modest probability (about 0.04% according to these results)
 that Bubblesort and Rotationsort will agree on [1,3,2] as the result, but it is
 very unlikely that they will agree on any other result that does not have the
 Top Bit in the correct position.
+
+##### A note about [1,3,2]
+
+You may notice that the most common problematic result returned by both
+Bubblesort and Rotationsort is [1,3,2]. Wouldn't it be better to compare with
+an algorithm that doesn't return this result as often?
+
+It would. It seems, however, that any sorting algorithm which has [1,2,3] and
+[2,1,3] as its most common results also has [1,3,2] as its third most common.
+This may be inevitable due to [2,1,3] and [1,3,2] being only one adjacent
+element swap away from [1,2,3].
+
+I came up with Rotationsort while attempting to discover a robust sorting
+algorithm that prioritizes non-adjacent swaps (compare
+[Circlesort](https://youtu.be/wqibJMG42Ik?feature=shared&t=222)). If anyone
+finds an algorithm that is comparable with Bubblesort and Rotationsort in terms
+of both accuracy in determining the TopBit and adhering to the general rules of
+this project while returning something besides [1,3,2] as its third most common
+result, [I'd love to hear about it](#contact)!
 
 <figure>
     <img src="https://m.media-amazon.com/images/M/MV5BMjE3NjgyODc4MV5BMl5BanBnXkFtZTcwMDYzMTk2Mw@@._V1_.jpg"
