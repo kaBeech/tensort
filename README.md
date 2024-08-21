@@ -56,8 +56,8 @@ we wish to do on the elements.
     - [Supersort Adjudication](#supersort-adjudication)
     - [Recursion](#recursion)
   - [Magicsort](#magicsort)
-    - [Magic Robustsort sub-algorithm
-       alterations](#magic-robustsort-sub-algorithm-alterations)
+    - [Magic Robustsort SubAlgorithm
+       alterations](#magic-robustsort-subalgorithm-alterations)
   - [A note about Mundane Robustsort
      SubAlgorithms](#a-note-about-mundane-robustsort-subalgorithms)
 - [Comparing it all](#comparing-it-all)
@@ -357,21 +357,21 @@ to make mistakes when the list is already nearly sorted.
   3. Assemble TensorStacks by creating Tensors from the Bytes:
         <ol>
             <li>
-                i. Group the Bytes together in Memory lists of Bytesize length.
+                Group the Bytes together in Memory lists of Bytesize length.
             </li>
-            <li>ii. Assign each Memory to a newly-created Tensor.</li>
+            <li>Assign each Memory to a newly-created Tensor.</li>
             <li>
-                iii. For each Tensor, make Records for each Byte in its Memory
-                     by combining the Byte's index in Memory list with a copy
-                     of its TopBit.
-            </li>
-            <li>
-                iv. Group the Records for each Tensor together and form them 
-                    into their Tensor's Register list.
+                For each Tensor, make Records for each Byte in its Memory
+                by combining the Byte's index in Memory list with a copy of its
+                TopBit.
             </li>
             <li>
-                v. Sort the Records in each Register list in order of their
-                   TopBits.
+                Group the Records for each Tensor together and form them into
+                their Tensor's Register list.
+            </li>
+            <li>
+                Sort the Records in each Register list in order of their
+                TopBits.
             </li>
         </ol>
 
@@ -379,21 +379,21 @@ to make mistakes when the list is already nearly sorted.
        the Tensors created in Step 3:
         <ol>
             <li>
-                i. Group the first layer of Tensors together in Memory lists of
-                   Bytesize length.
+                Group the first layer of Tensors together in Memory lists of
+                Bytesize length.
             </li>
-            <li>ii. Assign each Memory to a newly-created Tensor.</li>
+            <li>Assign each Memory to a newly-created Tensor.</li>
             <li>
-                iii. For each newly-created Tensor, make Records for each
-                     Tensor in its Memory by combining the enclosed Tensor's
-                     index in the Memory list with a copy of its TopBit.
-            </li>
-            <li>
-                iv. Group the Records for each newly-created Tensor together
-                    and form them into their Tensor's Register list.
+                For each newly-created Tensor, make Records for each Tensor in
+                its Memory by combining the enclosed Tensor's index in the
+                Memory list with a copy of its TopBit.
             </li>
             <li>
-                v. Sort each Register list in order of its Records' TopBits.
+                Group the Records for each newly-created Tensor together and
+                form them into their Tensor's Register list.
+            </li>
+            <li>
+                Sort each Register list in order of its Records' TopBits.
             </li>
         </ol>
 
@@ -410,46 +410,45 @@ to make mistakes when the list is already nearly sorted.
   8. If the top Byte in the top TensorStack is empty:
       <ol>
           <li>
-              i. Remove the Record that points to the top Byte from its
-                 containing Tensor's Register.
+              Remove the Record that points to the top Byte from its containing
+              Tensor's Register.
           </li>
           <li>
-              ii. If the Tensor containing that byte is empty, remove the
-                  Record that points to that Tensor from its containing
-                  Tensor's Register. Do this recursively until finding a Tensor
-                  that is not empty or the top of the TensorStack is reached.
+              If the Tensor containing that byte is empty, remove the Record
+              that points to that Tensor from its containing Tensor's Register.
+              Do this recursively until finding a Tensor that is not empty or
+              the top of the TensorStack is reached.
           </li>
           <li>
-              iii. If the entire TensorStack is empty of Bits, remove its
-                   Record from the TopRegister.
+              If the entire TensorStack is empty of Bits, remove its Record
+              from the TopRegister.
          </li>
           <li>
-              iv. If all TensorStacks are empty of Bits, return the final
-                  Sorted List. Otherwise, re-sort the TopRegister.
+              If all TensorStacks are empty of Bits, return the final Sorted
+              List. Otherwise, re-sort the TopRegister.
           </li>
       </ol>
 
   9. Otherwise (i.e. the top Byte or a Tensor that contains it is not empty):
       <ol>
           <li>
-              i. Update the top Byte's (or Tensor's) Record with its new
-                 TopBit.
+              Update the top Byte's (or Tensor's) Record with its new TopBit.
           </li>
           <li>
-              ii. Re-sort the top Byte's (or Tensor's) containing Tensor's
-                  Register.
+              Re-sort the top Byte's (or Tensor's) containing Tensor's
+              Register.
           </li>
           <li>
-              iii. Jump up a level to the Tensor that contains that Tensor,
-                   update the containing Tensor's Record with its new TopBit,
-                   and re-sort its Register. Do this recursively until the
-                   whole TensorStack is rebalanced.
+              Jump up a level to the Tensor that contains that Tensor, update
+              the containing Tensor's Record with its new TopBit, and re-sort
+              its Register. Do this recursively until the whole TensorStack is
+              rebalanced.
           </li>
           <li>
-              iv. Update the TensorStack's Record in the TopRegister with its
-                  new TopBit.
+              Update the TensorStack's Record in the TopRegister with its new
+              TopBit.
           </li>
-          <li>v. Re-sort the TopRegister.</li>
+          <li>Re-sort the TopRegister.</li>
       </ol>
 
   10. Repeat Steps 7-9 until the final Sorted List is returned.
