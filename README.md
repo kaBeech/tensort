@@ -1,9 +1,3 @@
-<style>
-    figcaption {
-        margin-top: 0;
-    }
-</style>
-
 # Tensort [![Hackage](https://img.shields.io/hackage/v/tensort.svg)](https://hackage.haskell.org/package/tensort)
 
 Tensort is a family of sorting algorithm that are tunable to adjust to the
@@ -27,11 +21,12 @@ we wish to do on the elements.
         202 positional errors, Mergesort makes 201, Bubblesort makes 4, Tensort
         makes 51, Mundane Robustsort makes 11, and Magic Robustsort makes
         [CENSORED]">
-    <figcaption>Read on for the full data, or 
+    <figcaption><i>
+        Read on for the full data, or 
         <a href="#comparing-it-all">
-            <i>click here to jump ahead to the spoilers</i>
+            click here to jump ahead to the spoilers
         </a>
-    </figcaption>
+    </i></figcaption>
 </figure>
 
 ## Table of Contents
