@@ -11,7 +11,13 @@ import Data.Tensort.Utils.Types
   )
 import Data.Time.Clock
 
-printLargeTimeAndErrorRateComparison :: [Int] -> Int -> Int -> Int -> Int -> IO ()
+printLargeTimeAndErrorRateComparison ::
+  [Int] ->
+  Int ->
+  Int ->
+  Int ->
+  Int ->
+  IO ()
 printLargeTimeAndErrorRateComparison [] _ _ _ _ = return ()
 printLargeTimeAndErrorRateComparison
   (lengthExponent : remainingLengthExponents)
