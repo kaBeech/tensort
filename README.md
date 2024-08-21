@@ -15,10 +15,12 @@ sorted list. These transformations provide opportunities to increase redundancy
 for improved robustness and can be leveraged to include any further processing
 we wish to do on the elements.
 
-Note: This project is still under construction. Everything works and performs
-excellently under Ackley's testing conditions. Still to add: documentation
-additions/revisions, convenience wrappers for the top-level functions, memes.
-There's likely a lot of room for improvement in the code as well.
+  ![When sorting a randomly shuffled deck of cards, Quicksort makes 202
+  positional errors, Mergesort makes 201, Bubblesort makes 4, Tensort makes 51,
+  Mundane Robustsort makes 11, and Magic Robustsort
+  makes [CENSORED]](./assets/images/deck_shuffle_chart_censored.svg "Read on
+  for the full data, or click here to jump ahead to the
+  spoilers(#comparing-it-all)")
 
 ## Table of Contents
 
@@ -57,7 +59,7 @@ There's likely a lot of room for improvement in the code as well.
 
   - [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by
   [David H. Ackley](https://github.com/DaveAckley)
-    
+
   - [Beyond Efficiency by Dave Ackley](https://futureofcoding.org/episodes/070)
   by Future of Coding ([Lu Wilson](https://github.com/TodePond),
   [Jimmy Miller](https://github.com/jimmyhmiller),
@@ -832,7 +834,40 @@ Now let's take a look at how everything compares. Here is a graph showing the
 benchmarking results for average error score and total runtime for our
 algorithms:
 
-...Coming Soon!
+  ![When sorting a randomly shuffled deck of cards, Quicksort makes 202
+  positional errors, Mergesort makes 201, Bubblesort makes 4, Tensort makes 51,
+  Mundane Robustsort makes 11, and Magic Robustsort
+  makes 1](./assets/images/deck_shuffle_chart_uncensored.svg "!")
+
+As shown above, when sorting a randomly shuffled deck of cards, Quicksort makes
+202 positional errors, Mergesort makes 201, Bubblesort makes 4, Logarithmic
+Tensort makes 51, Basic Mundane Robustsort makes 11, and Basic Magic Robustsort
+makes only 1!
+
+I'll note here that the results weren't quite as dramatic when adding in a
+stuck comparator (which gives the same answer it gave previously 50% of the
+time) in addition to the wonky one (which gives a random answer 10% of the time)
+. Our Recursive Magic Robustsort made an average of 292 positional errors,
+which well outperformed Mergesort's 747, but was still behind Bubblesort's 97.
+
+More benchmarking data can be found in the `data/` directory. Before we wrap
+up, let's look at the runtimes and average error scores (with a wonky
+comparator) for the largest input list (2048) we benchmarked before removing
+Bubblesort from the comparisons:
+
+    ----------------------------------------------------------
+     Algorithm    | Time            | Score    | n = 2048
+     Mergesort    | 0.002706653s    | 319199   |
+     Quicksort    | 0.002206037s    | 269252   |
+     Bubblesort   | 67.229769894s   | 707      |
+     TensortBL    | 0.056649886s    | 34223    |
+     RobustsortP  | 0.036861441s    | 21177    |
+     RobustsortB  | 0.038692015s    | 18025    |
+     RobustsortM  | 0.046679795s    | 3255     |
+     RobustsortRP | 0.229615609s    | 15254    |
+     RobustsortRB | 0.22648706s     | 10147    |
+     RobustsortRM | 0.249211013s    | 1824     |
+    ----------------------------------------------------------
 
 ## Library
 
