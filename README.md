@@ -619,8 +619,6 @@ that Bubblesort and Rotationsort will agree on [1,3,2] as the result, but it is
 very unlikely that they will agree on any other result that does not have the
 Top Bit in the correct position.
 
-#### Introducing Supersort
-
 <figure>
     <img src="https://m.media-amazon.com/images/M/MV5BMjE3NjgyODc4MV5BMl5BanBnXkFtZTcwMDYzMTk2Mw@@._V1_.jpg"
          alt="Michael Caine rushing past the Batmobile">
@@ -629,6 +627,8 @@ Top Bit in the correct position.
             Source
         </a></i></figcaption>
 </figure>
+
+#### Introducing Supersort
 
 Supersort is a SubAlgorithm that compares the results of two different
 sorting algorithms, in our case Bubblesort and Rotationsort. If both
@@ -737,6 +737,10 @@ Rotationsort.
 
 #### Recursion
 
+You'll remember that our standard Tensort uses a logarithmic Bytesize. Our base
+Robustsort uses a Bytesize of 3, but we can use a logarithmic Bytesize by
+adding recursion.
+
 <figure>
     <img src="https://m.media-amazon.com/images/M/MV5BZWUzM2NhMTMtM2U0Yy00MmE4LWI2OGItMWQyZjQ3MmRkMGVlXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg"
          alt="Michael Caine reaching into a cage to gently etrieve a bird. The
@@ -748,13 +752,7 @@ Rotationsort.
         </a></i></figcaption>
 </figure>
 
-You'll remember that our standard Tensort uses a logarithmic Bytesize. Our base
-Robustsort uses a Bytesize of 3, but we can use a logarithmic Bytesize by
-adding recursion.
-
-<!-- (image3) -->
-
-Let's take our base Robustsort example above and make it rhttps://m.media-amazon.com/images/M/MV5BMjE3NjgyODc4MV5BMl5BanBnXkFtZTcwMDYzMTk2Mw@@._V1_.jpgecursive.
+Let's take our base Robustsort example above and make it recursive.
 
 First, instead of using a 3-bit Bytesize, we will use a logarithmic Bytesize.
 Then, instead of using our Supersort directly as our SubAlgorithm, we will use
@@ -791,7 +789,6 @@ never re-running the same deterministic sub-algorithm in one specific context.
 Magicsort is an algorithm that will re-run Permutationsort only if it disagrees
 with an extremely reliable, theoretically non-deterministic algorithm - one
 that's so good it's robust against logic itself...
-4
 
 <figure>
     <img src="./assets/images/mc_confused.png"
@@ -800,6 +797,7 @@ that's so good it's robust against logic itself...
             Source
         </a></i></figcaption>
 </figure>
+...
 
 [Bogosort!](https://www.youtube.com/watch?v=kgBjXUE_Nwc&t=583)
 
@@ -907,7 +905,6 @@ algorithms:
          alt="When sorting a randomly shuffled deck of cards, Quicksort makes
         202 positional errors, Mergesort makes 201, Bubblesort makes 4, Tensort
         makes 51, Mundane Robustsort makes 11, and Magic Robustsort makes 1">
-    <figcaption><i>!</i></figcaption>
 </figure>
 
 As shown above, when sorting a randomly shuffled deck of cards, Quicksort makes
