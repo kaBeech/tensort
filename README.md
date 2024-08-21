@@ -21,7 +21,7 @@ we wish to do on the elements.
         202 positional errors, Mergesort makes 201, Bubblesort makes 4, Tensort
         makes 51, Mundane Robustsort makes 11, and Magic Robustsort makes
         [CENSORED]">
-    <figcaption>!Read on for the full data, or 
+    <figcaption>Read on for the full data, or 
         <a href="#comparing-it-all">
             click here to jump ahead to the spoilers
         </a>
