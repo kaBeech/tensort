@@ -56,8 +56,8 @@ we wish to do on the elements.
     - [Supersort Adjudication](#supersort-adjudication)
     - [Recursion](#recursion)
   - [Magicsort](#magicsort)
-    - [Magic Robustsort sub-algorithm
-       alterations](#magic-robustsort-sub-algorithm-alterations)
+    - [Magic Robustsort SubAlgorithm
+       alterations](#magic-robustsort-subalgorithm-alterations)
   - [A note about Mundane Robustsort
      SubAlgorithms](#a-note-about-mundane-robustsort-subalgorithms)
 - [Comparing it all](#comparing-it-all)
