@@ -690,8 +690,12 @@ of both accuracy in determining the TopBit and adhering to the general rules of
 this project while returning something besides [1,3,2] as its third most common
 result, [I'd love to hear about it](#contact)!
 
+
+      
+
 <figure>
     <img src="https://m.media-amazon.com/images/M/MV5BMjE3NjgyODc4MV5BMl5BanBnXkFtZTcwMDYzMTk2Mw@@._V1_.jpg"
+         width="400"
          alt="Michael Caine rushing past the Batmobile">
     <figcaption><i><a 
         href="https://www.imdb.com/name/nm0000323/mediaviewer/rm4040654848/">
