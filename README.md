@@ -237,7 +237,7 @@ Alright, let's get started! Ready, Sir Michael?
 ### Tensort
 
 #### Preface
-http://www.wikipedia.org/Michael_Caine
+
 Tensort is my original attempt to write the most robust sorting algorithm
 possible with O(n log n) average time efficiency while avoiding anything that
 Ackley might consider a "cheap hack." Starting out, my hope was that it would
