@@ -82,7 +82,7 @@ Because near the end of
 [Ivan](https://github.com/ivanreese) said "Why are we comparing Bubblesort
 versus Quicksort and Mergesort? Well, because no one's made Robustsort yet."
 
-And I thought, "Why not?"
+<center>And I thought, "Why not?"</center>
 
 ### But why would anyone care about this in the first place?
 
@@ -133,9 +133,9 @@ sometimes falter without:
     <img src="./assets/images/ackley_deps.png"
          alt="Comment from Ackley in the Beyond Efficiency code about Perl
         updates breaking their code">
-    <center><figcaption><i><a href="http://livingcomputation.com/robusort2.tar">
+    <figcaption><i><a href="http://livingcomputation.com/robusort2.tar">
             Source
-        </a></i></figcaption></center>
+        </a></i></figcaption>
 </figure>
 
       
