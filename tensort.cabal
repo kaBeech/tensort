@@ -95,10 +95,9 @@ library
 
     -- Modules exported by the library.
     exposed-modules:  Data.Tensort,
+                      Data.Robustsort,
                       Data.Tensort.Tensort,
                       Data.Tensort.Robustsort,
-                      Data.Tensort.Utils.Types,
-                      Data.Tensort.Utils.MkTsProps,
                       Data.Tensort.Subalgorithms.Bubblesort,
                       Data.Tensort.Subalgorithms.Exchangesort,
                       Data.Tensort.Subalgorithms.Rotationsort,
@@ -108,8 +107,11 @@ library
                       Data.Tensort.Subalgorithms.Magicsort,
                       Data.Tensort.OtherSorts.Mergesort,
                       Data.Tensort.OtherSorts.Quicksort,
-                      Data.Tensort.Utils.RandomizeList,
                       Data.Tensort.Utils.Check,
+                      Data.Tensort.Utils.MkTsProps,
+                      Data.Tensort.Utils.RandomizeList,
+                      Data.Tensort.Utils.Types,
+                      Data.Tensort.Utils.WrapSortAlg,
 
     -- Modules included in this library but not exported.
     other-modules:    Data.Tensort.Utils.Split,
