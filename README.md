@@ -516,39 +516,40 @@ more robustness!
 #### Preface
 
 In Beyond Efficiency, Ackley augmented Mergesort and Quicksort with what he
-called "cheap hacks" in order to give them a boost in robustness to get them to
-compare with Bubblesort. This amounted to adding a quorum system to the
-unpredictable comparison operator and choosing the most-agreed-upon answer.
+called "cheap hacks" in order to give them a boost in robustness in an attempt
+to get them to compare with Bubblesort. This amounted to adding a quorum system
+to the unpredictable comparison operator and choosing the most-agreed-upon
+answer.
 
-I agree that adding a quorum for the unpredictable comparison operator is a bit
-of a cheap hack, or at least a post-hoc solution to a known problem. Instead of
-retrying a specific component again because we know it to be unpredictable,
-let's build redundancy into the system at the (sub-)algorithmic level. A simple
-way to do this is by asking different components the same question and see if
-they agree.
+I agree that adding a quorum for the unpredictable comparison operator is at
+least a post-hoc solution to a known problem. Instead of retrying a specific
+component again because we know it to be unpredictable, let's build redundancy
+into the system at the (sub-)algorithmic level. A simple way to do this is by
+asking different components the same question and see if they agree.
 
-Robustsort is my attempt to make the most robust sorting algorithm possible
+Robustsort is my attempt to make the most robust sorting algorithm possible,
 utilizing some solution-checking on the (sub-)algorithmic level while still:
 
   - Keeping to O(n log n) average time efficiency
 
   - Never re-running a sub-algorithm that is expected to act deterministicly
-      on the same arguments looking for a non-deterministic result (i.e. expect
-      that if a components gives a wrong answer, running it again the same way
-      won't somehow yield a right answer)
+    on the same arguments looking for a non-deterministic result (i.e. expect
+    that if a component gives a wrong answer, running it again the same way
+    won't somehow yield a right answer)
 
-  - Using a minimal number of different sub-algorithms (i.e. doesn't just
-      use every sorting algorithm I can think of and compare all their results)
+  - Using a minimal number of different sub-algorithms (i.e. don't just use
+    every sorting algorithm that comes to mind and compare all their results)
 
 With those ground rules in place, let's get to Robustsort!
 
 #### Overview
 
 Once we have Tensort in our toolbox, the road to Robustsort is not long.
+
 Robustsort is a potentially recursive version of Tensort, but first we'll look
-at the basic variant: a 3-bit Tensort with a custom SubAlgorithm that compares
+at the basic variant: a 3-Bit Tensort with a custom SubAlgorithm that compares
 other sub-algorithms. For convenience, we will call this custom SubAlgorithm
-Supersort. We use a 3-bit Tensort here because there's something magical that
+Supersort. We use a 3-Bit Tensort here because there's something magical that
 happens around the number 3.
 
 Robust sorting algorithms tend to be slow. Bubblesort, for example, having an
@@ -557,8 +558,8 @@ Quicksort and Mergesort (which both have an average of O(n log n)).
 
 Here's the trick though: with small numbers the difference between these values
 is minimal. For example, when n=4, Mergesort will make 6 comparisons, while
-Bubblesort will make 12. A Byte holding 4 Bites is both small enough to run
-the Bubblesort quickly and large enough to allow multiple opportunities for a
+Bubblesort will make 12. A Byte holding 4 Bits is both small enough to run the
+Bubblesort quickly and large enough to allow multiple opportunities for a
 mistake to be corrected.
 
 In Robustsort, we choose a Bytesize of 3 because a list of 3 Bits has some
@@ -566,11 +567,11 @@ special properties. For one thing, sorting at this length greatly reduces the
 time it takes to run our slow-but-robust algorithms. For example, at this size,
 Bubblesort will make only 6 comparisons. Mergesort still makes 6 as well.
 
-Furthermore, when making a mistake while sorting 3 elements, the mistake
-will displace an element by only 1 or 2 positions at most, no matter which
-algorithm is used.
+Furthermore, when making a mistake while sorting a list of 3 elements, the
+mistake will displace an element by only 1 or 2 positions at most, no matter
+which algorithm is used.
 
-This is all to say that using a 3-bit Bytesize allows us to have our pick of
+This is all to say that using a 3-Bit Bytesize allows us to have our pick of
 sub-algorithms to compare with!
 
 #### Examining Bubblesort
@@ -810,7 +811,7 @@ adding recursion.
 
 Let's take our base Robustsort example above and make it recursive.
 
-First, instead of using a 3-bit Bytesize, we will use a logarithmic Bytesize.
+First, instead of using a 3-Bit Bytesize, we will use a logarithmic Bytesize.
 Then, instead of using our Supersort directly as our SubAlgorithm, we will use
 Robustsort itself to sort the records.
 
@@ -829,7 +830,7 @@ doesn't add another layer of recursion until the input list is is longer than
 lists as well.
 
 We now have a basic form of Robustsort: a potentially recursive Tensort with a
-3-bit base case using a Supersort adjudicating Bubblesort, Rotationsort, and
+3-Bit base case using a Supersort adjudicating Bubblesort, Rotationsort, and
 Permutationsort as its base SubAlgorithm.
 
 Well that's pretty cool! But I wonder... can we make this more robust, if
