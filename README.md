@@ -814,9 +814,9 @@ adding recursion.
 
 <figure>
     <img src="https://m.media-amazon.com/images/M/MV5BZWUzM2NhMTMtM2U0Yy00MmE4LWI2OGItMWQyZjQ3MmRkMGVlXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg"
-         alt="Michael Caine reaching into a cage to gently etrieve a bird. The
+         alt="Michael Caine reaching into a cage to gently retrieve a bird. The
               cage is in a larger structure of cages. The camera is viewing
-              from an adjacent cage and can see into multiple subsequent cages
+              from an adjacent cage and can see into multiple subsequent cages,
               giving the appearance of a recursive picture-in-picture effect">
     <figcaption><i><a href="https://www.imdb.com/name/nm0000323/mediaviewer/rm1461852929/">
             Source
@@ -841,17 +841,17 @@ The number 27 is chosen because we want a number that has a natural log that is
 close to 3 (27's is about 3.3) and since 3 ^ 3 = 27, it is easy to sort lists
 of 27 elements in groups of 3.
 
-This recursive version of Robustsort is more tailored to large input lists (it
-doesn't add another layer of recursion until the input list is is longer than
-500 billion elements), but differences can be noticed when sorting smaller
-lists as well.
+This recursive version of Robustsort is more tailored to large input lists (in
+fact, it doesn't add another layer of recursion until the input list is is
+longer than 500 billion elements), but differences can be noticed when sorting
+smaller lists as well.
 
-We now have a basic form of Robustsort: a potentially recursive Tensort with a
+We now have a simple form of Robustsort: a potentially recursive Tensort with a
 3-Bit base case using a Supersort adjudicating Bubblesort, Rotationsort, and
 Permutationsort as its base SubAlgorithm.
 
-Well that's pretty cool! But I wonder... can we make this more robust, if
-we relax the rules just a little more?
+Well that's pretty cool! But I wonder... can we make this more robust, if we
+relax the rules just a little more?
 
 Of course we can! And we will. To do so, we will replace Permutationsort with
 another newly-named sorting algorithm: Magicsort!
