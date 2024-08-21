@@ -1,6 +1,10 @@
 module Data.Tensort
-  ( module Data.Tensort.Tensort,
+  ( tensort,
   )
 where
 
-import Data.Tensort.Tensort
+import Data.Tensort.Tensort (tensortBL)
+import Data.Tensort.Utils.Types (Bit, Sortable (..), fromSortBit)
+
+tensort :: [Bit] -> [Bit]
+tensort xs = fromSortBit (tensortBL (SortBit xs))
