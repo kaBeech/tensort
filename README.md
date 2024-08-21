@@ -52,6 +52,8 @@ we wish to do on the elements.
 - [Comparing it all](#comparing-it-all)
 - [Library](#library)
 - [Development Environment](#development-environment)
+- [Contact](#contact)
+- [Thank you](#thank-you)
 
 ## Introduction
 
@@ -61,9 +63,9 @@ we wish to do on the elements.
   [David H. Ackley](https://github.com/DaveAckley)
 
   - [Beyond Efficiency by Dave Ackley](https://futureofcoding.org/episodes/070)
-  by Future of Coding ([Lu Wilson](https://github.com/TodePond),
-  [Jimmy Miller](https://github.com/jimmyhmiller),
-  [Ivan Reese](https://github.com/ivanreese))
+  by Future of Coding ([Lu Wilson](https://www.todepond.com/),
+  [Jimmy Miller](https://jimmyhmiller.github.io/),
+  [Ivan Reese](https://ivanish.ca/))
 
 ### Why?
 
@@ -176,10 +178,10 @@ David H. Ackley. Go read it!
 
 Please note that we will discuss a few algorithms that I've either made up or
 am just not familiar with by other names. If any of these algorithms have
-previously been named, please let me know. Prior to this project I really
-only had a rudimentary understanding of Insertionsort, Quicksort, Mergesort,
-Bubblesort and Bogosort, so it's entirely possible that I've reinvented a few
-things that already exist.
+previously been named, please [let me know](#contact). Prior to this project I
+really only had a rudimentary understanding of Insertionsort, Quicksort,
+Mergesort, Bubblesort and Bogosort, so it's entirely possible that I've
+reinvented a few things that already exist.
 
 It also may be helpful to note that this project was originally undertaken in
 an endeavor to come up with a solution naively, for the practice, before
@@ -207,11 +209,11 @@ be, if not competitive with Bubblesort in robustness, at least a major
 improvement over Quicksort and Mergesort.
 
 Again, I haven't studied sorting algorithms long, so if you know this algorithm
-under another name, please let me know! After settling on this algorithm, I
-looked into several other sorting algorithms for comparison and found a few
-that have some similarities with Tensort - significantly Blocksort, Bucketsort,
-and Patiencesort. If you are familiar with these algorithms, you may recognize
-that they each have a structure that aids in understanding them.
+under another name, please [let me know](#contact)! After settling on this
+algorithm, I looked into several other sorting algorithms for comparison and
+found a few that have some similarities with Tensort - significantly Blocksort,
+Bucketsort, and Patiencesort. If you are familiar with these algorithms, you
+may recognize that they each have a structure that aids in understanding them.
 
 Tensort uses an underlying structure as well. We will discuss this structure 
 before going over the algorithm's actual steps. If this doesn't make sense yet,
@@ -924,3 +926,34 @@ Note that these instructions don't make the assumptions listed above
     branch](https://git-scm.com/docs/git-checkout)
   * Uncomment the desired benchmarking process(es) in `app/Main.hs`
   * Run `cabal run`
+
+## Contact
+
+Questions and feedback are welcome!
+
+The easiest way to contact me is usually via
+[LinkedIn](https://www.linkedin.com/in/kyle-beechly), or you can try
+[email](mailto:tensort@kabeech.com).
+
+## Thank you!
+
+Thank you for reading! I've had so much fun working on this project. I hope
+you've enjoyed our time and that you'll continue thinking about tunable sorting
+and robustness in computing.
+
+I'd like to send a special thank you to the following people:
+
+  - [David H. Ackley](https://github.com/DaveAckley), obviously
+
+  - [Lu Wilson](https://www.todepond.com/),
+  [Jimmy Miller](https://jimmyhmiller.github.io/), and
+  [Ivan Reese](https://ivanish.ca/) of
+  [Future of Coding](https://futureofcoding.org/) (Check it out! They do my
+  favorite tech podcast)
+
+  - The Haskell community at large, specifically the 
+  [Haskell Subreddit](https://www.reddit.com/r/haskell/) and
+  [Portland Has Skill](https://github.com/kabeech/portland-has-skill)
+
+  - Countless friends, family, acquaintances, and strangers who've tolerated me
+  blathering on about sorting algorithms over the past few months💙
