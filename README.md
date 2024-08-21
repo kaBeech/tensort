@@ -58,6 +58,8 @@ we wish to do on the elements.
   - [Magicsort](#magicsort)
     - [Magic Robustsort sub-algorithm
        alterations](#magic-robustsort-sub-algorithm-alterations)
+  - [A note about Mundane Robustsort
+     SubAlgorithms](#a-note-about-mundane-robustsort-subalgorithms)
 - [Comparing it all](#comparing-it-all)
 - [Library](#library)
 - [Development Environment](#development-environment)
@@ -955,7 +957,7 @@ Second, we will replace Bubblesort with a Forward Ambidextrous Rotationsort.
 Finally, we will adjust our adjudication scheme, taking the Forward Ambidextrous
 Rotationsort's results if there is no agreement within Supersort.
 
-### A note on Robustsort and Bogosort
+### A note about Mundane Robustsort Subalgorithms
 
 It is perfectly valid to use Bogosort in place of Permutationsort in
 Robustsort's standard Supersort SubAlgorithm. It may even be argued that doing
@@ -963,23 +965,26 @@ so is more robust, since Bogosort barely even relies on logic. Here are some
 considerations to keep in mind:
 
   - Bogosort by nature re-runs on the same input multiple times. Depending on
-      viewpoint, this either violates the original rules I set forward or is a
-      major benefit.
+    viewpoint, this either violates the original rules I set forward or is a
+    major benefit
 
   - In testing, Robustsort with Bogosort tends to give more robust results,
-      though Robustsort with Permutationsort tends to run slightly faster.
+    though Robustsort with Permutationsort tends to run slightly faster
 
   - Permutationsort uses additional space due to computing all possible
-      permutations of the input and storing them in a list.
+    permutations of the input and storing them in a list
+
+  - If Permutaionsort incorrectly judges the correct permutation to be
+    incorrect, it must loop back over the entire list of permutations again
+    before it has another chance of giving the correct result
 
   - Bogosort could theoretically run forever without returning a result, even
-      when no errors occur.
+    when no errors occur
 
 ## Comparing it all
 
 Now let's take a look at how everything compares. Here is a graph showing the
-benchmarking results for average error score and total runtime for our
-algorithms:
+benchmarking results for average error score for our algorithms:
 
 <figure>
     <img src="./assets/images/deck_shuffle_chart_uncensored.svg"
