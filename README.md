@@ -218,8 +218,8 @@ I will also be joined by the spirit of Sir Michael Caine, who is here for two
 reasons. One is to keep an eye on me and make sure I don't go too overboard.
 More importantly, he's here as a bit of insurance to make sure you've read
 [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf). You
-can think of him as my version of the M&M's on Van Halen's concert rider (
-[the most famously robust rider in rock
+can think of him as my version of the M&M's on Van Halen's concert
+rider ([the most famously robust rider in rock
 history](https://en.wikipedia.org/wiki/Van_Halen#Contract_riders)). If you
 can't figure out why he's here, especially by the end of this README, go back
 and re-read the paper!
