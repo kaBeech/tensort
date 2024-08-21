@@ -2,7 +2,7 @@ module Main (main) where
 
 import Data.Tensort.OtherSorts.Mergesort (mergesort)
 import Data.Tensort.OtherSorts.Quicksort (quicksort)
-import Data.Tensort.Robustsort (robustsortB, robustsortM, robustsortP)
+import Data.Tensort.Robustsort (robustsortB, robustsortM, robustsortP, robustsortRB, robustsortRM, robustsortRP)
 import Data.Tensort.Subalgorithms.Bogosort (bogosort)
 import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 import Data.Tensort.Subalgorithms.Exchangesort (exchangesort)
@@ -50,10 +50,14 @@ main = do
   putStrLn "Standard Custom Bitsize Tensort returns a sorted array..."
   check result_is_sorted_custom_bitsize
   putStrLn "True!"
-  putStrLn "Standard Mundane Robustsort with Permutationsort adjudicator returns a sorted array..."
+  putStrLn
+    "Standard Mundane Robustsort with Permutationsort adjudicator returns a \
+    \sorted array..."
   check (result_is_sorted_bits robustsortP)
   putStrLn "True!"
-  putStrLn "Standard Mundane Robustsort with Bogosort adjudicator returns a sorted array..."
+  putStrLn
+    "Standard Mundane Robustsort with Bogosort adjudicator returns a sorted \
+    \array..."
   check (result_is_sorted_bits robustsortB)
   putStrLn "True!"
   putStrLn "Magic Robustsort returns a sorted array..."
@@ -74,19 +78,48 @@ main = do
   putStrLn "Custom Magic Robustsort returns a sorted array..."
   check (result_is_sorted_bits robustsortMagicCustomExample)
   putStrLn "True!"
+  putStrLn
+    "Recursive Mundane Robustsort with Permutationsort adjudicator \
+    \returns a sorted array..."
+  check (result_is_sorted_bits robustsortRP)
+  putStrLn "True!"
+  putStrLn
+    "Recursive Mundane Robustsort with Bogosort adjudicator returns \
+    \a sorted array..."
+  check (result_is_sorted_bits robustsortRB)
+  putStrLn "True!"
+  putStrLn "Recursive Magic Robustsort returns a sorted array..."
+  check (result_is_sorted_bits robustsortRM)
+  putStrLn "True!"
   putStrLn "All tests pass!"
 
 tensortCustomExample :: Sortable -> Sortable
 tensortCustomExample = tensort (mkTsProps 8 mergesort)
 
 supersortMundaneCustomExample :: Sortable -> Sortable
-supersortMundaneCustomExample = supersort (quicksort, magicsort, bubblesort, mundaneSuperStrat)
+supersortMundaneCustomExample =
+  supersort
+    ( quicksort,
+      magicsort,
+      bubblesort,
+      mundaneSuperStrat
+    )
 
 supersortMagicCustomExample :: Sortable -> Sortable
-supersortMagicCustomExample = supersort (bogosort, permutationsort, magicsort, magicSuperStrat)
+supersortMagicCustomExample =
+  supersort
+    ( bogosort,
+      permutationsort,
+      magicsort,
+      magicSuperStrat
+    )
 
 robustsortMundaneCustomExample :: Sortable -> Sortable
-robustsortMundaneCustomExample = tensort (mkTsProps 3 supersortMundaneCustomExample)
+robustsortMundaneCustomExample =
+  tensort
+    (mkTsProps 3 supersortMundaneCustomExample)
 
 robustsortMagicCustomExample :: Sortable -> Sortable
-robustsortMagicCustomExample = tensort (mkTsProps 3 supersortMagicCustomExample)
+robustsortMagicCustomExample =
+  tensort
+    (mkTsProps 3 supersortMagicCustomExample)
