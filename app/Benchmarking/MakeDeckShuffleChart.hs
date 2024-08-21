@@ -41,7 +41,7 @@ values =
 
 makeDeckShuffleChart :: IO ()
 makeDeckShuffleChart =
-  toFile def "data/WonkyComparator/chart_deck_shuffle_wonky.png" $ do
+  toFile def "data/WonkyComparator/chart_deck_shuffle_wonky.svg" $ do
     layout_title
       .= "Errors sorting a deck of cards with 10% failed comparisons"
     layout_title_style . font_size .= 15
