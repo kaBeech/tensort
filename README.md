@@ -729,19 +729,21 @@ Permutationsort is a simple, brute-force sorting algorithm.
 
 As a first step we generate all the different ways the elements could possibly
 be arranged in the list. Then we loop over this list of permutations until we
-find one that is in the right order. We check if a permutation is in the right
-order by comparing the first two elements. If the first element is smaller,
-we compare the next two elements, and so on until we either find two elements
-that are out of order or we reach the end of the list, confirming that the list
-is in order.
+find one that is in the right order.
+
+We check if a permutation is in the right order by comparing the first two
+elements. If the first element is greater, we move to the next permutation.
+Otherwise (i.e. the first element is smaller), we compare the next two
+elements, and so on until we either find two elements that are out of order or
+we reach the end of the list, confirming that the list is in order.
 
 Permutationsort is a good choice for our adjudication algorithm because A) the
-spread of outcomes is favorable for our needs, and B) it uses logic that is
+spread of outcomes is favorable for our needs and B) it uses logic that is
 completely different from Bubblesort and Rotationsort. Using different manners
-of reasoning to reach an agreed-upon answer increases the robustness of the
+of reasoning to reach an agreed-upon answer increases the robustness of a
 system.
 
-Here are the results of running Permutationsort 1000 times on Bytes of random
+Here are the results of running Permutationsort 1000 times on random
 permutations of [1,2,3] using a faulty comparator that gives a random result
 10% of the time:
 
