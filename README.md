@@ -583,8 +583,8 @@ We've said before that Bubblesort is likely to put the last element in the
 correct position of a list. Let's examine this in the context of Bubblesorting
 a 3-element list.
 
-I ran Bubblesort 1000 times on Bytes of random permutations of [1,2,3] using a
-faulty comparator that gives a random result 10% of the time when comparing two
+I ran Bubblesort 1000 times on random permutations of [1,2,3] using a faulty
+comparator that gives a random result 10% of the time when comparing two
 elements. Here is how often each outcome was returned:
 
     94.1% <- [1,2,3]
@@ -640,7 +640,7 @@ moving higher-value elements to the end. We do this because it yields a more
 favorable spread of results to combine with Bubblesort than a Forward
 Rotationsort does.
 
-Here are the results of running (Reverse) Rotationsort 1000 times on Bytes of random
+Here are the results of running (Reverse) Rotationsort 1000 times on random
 permutations of [1,2,3] using a faulty comparator that gives a random result
 10% of the time when comparing two elements:
 
@@ -720,8 +720,8 @@ Rotationsort because if for some reason the module that compares the full Bytes
 is also faulty (outside the scope of these benchmarks), Rotationsort is more
 likely to have an accurate result.
 
-Around 10% of the time, these sub-algorithms will disagree with each other.
-If this happens, we run our third sub-algorithm: Permutationsort.
+Around 10% of the time, these sub-algorithms will disagree with each other. If
+this happens, we run our third sub-algorithm: Permutationsort.
 
 #### Permutationsort
 
@@ -760,9 +760,8 @@ permutations of [1,2,3] using a faulty comparator that gives a random result
     0.8% <- [3,2,1]
 
 In these cases, 86% of the time the Top Bit was in the correct position.
-Notably the least likely outcome is a reverse-sorted Byte and the other
-possible incorrect outcomes are in approximately even distribution with
-each other.
+The least likely outcome is a reverse-sorted Byte and the other possible
+incorrect outcomes are in approximately even distribution with each other.
 
 #### Supersort Adjudication
 
@@ -776,33 +775,33 @@ Bubblesort or Rotationsort.
 
 Permutationsort and Bubblesort:
 
-    ~71.33% <- Agree Correctly
+    ~77.07% <- Agree Correctly
 
     ~28.13% <- Disagree
 
-    ~0.30% <- Agree Incorrectly - TopBit correct
+    ~0.14% <- Agree Incorrectly - TopBit correct
 
-    ~0.24% <- Agree Incorectly - TopBit incorrect
+    ~0.12% <- Agree Incorectly - TopBit incorrect
 
 Permutationsort and Rotationsort:
 
-    ~75.18% <- Agree Correctly
+    ~78.05% <- Agree Correctly
 
-    ~25.44% <- Disagree
+    ~21.74% <- Disagree
 
-    ~0.11% <- Agree Incorrectly - TopBit correct
+    ~0.14% <- Agree Incorrectly - TopBit correct
 
-    ~0.16% <- Agree Incorectly - TopBit incorrect
+    ~0.07% <- Agree Incorectly - TopBit incorrect
 
 If Permutationsort agrees with either Bubblesort or Rotationsort, then it's
 easy - just use that result!
 
 According to these results, Permutationsort is likely to disagree with both
-Bubblesort and Rotationsort about 7.16% of the time if all three are run
-independently. In practice this will happen more often than that because in
-order to reach the point of doing Permutationsort, either Bubblesort or
-Rotationsort must have sorted the list incorrectly (which makes them less
-likely to agree with Permutationsort).
+Bubblesort and Rotationsort about 6.12% of the time if all three are run
+independently. In practice, if Permutationsort is run at all it has a greater
+chance than that because in order to reach that point, first either Bubblesort
+or Rotationsort must have sorted the list incorrectly, which makes them less
+likely to agree with Permutationsort.
 
 In any case, if all three sub-algorithms disagree, use the results from
 Rotationsort.
@@ -886,7 +885,7 @@ agree on a result.
 
 Observant readers may have already deduced that Permutationsort functions
 nearly identically to Bogosort. Here are the results of running Bogosort 1000
-times on Bytes of random permutations of [1,2,3] using a faulty comparator that
+times on random permutations of [1,2,3] using a faulty comparator that
 gives a random result 10% of the time:
 
     81.3% <- [1,2,3]
@@ -912,7 +911,7 @@ Magicsort is based on the notion that if you happen to pull the right answer
 out of a hat once, it might be random chance, but if you do it twice, it might
 just be magic!
 
-Here are the results of running Magicsort 1000 times on Bytes of random
+Here are the results of running Magicsort 1000 times on random
 permutations of [1,2,3] using a faulty comparator that gives a random result
 10% of the time:
 
