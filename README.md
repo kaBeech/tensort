@@ -1,12 +1,12 @@
 # Tensort [![Hackage](https://img.shields.io/hackage/v/tensort.svg)](https://hackage.haskell.org/package/tensort)
 
-Tensort is a family of sorting algorithm that are tunable to adjust to the
+Tensort is a family of sorting algorithms that are tunable to adjust to the
 priorities of the task at hand.
 
 This project started as an exploration of what a sorting algorithm that
-prioritizes robustness would look like. As such it also describes and provides
+prioritizes robustness might look like. As such it also describes and provides
 implementations of Robustsort, a group of Tensort variants designed for
-robustness in conditions defined in David H. Ackley's
+robustness in conditions described in David H. Ackley's
 [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf).
 
 Simply put, Tensort takes an input list, transforms the list into a
@@ -24,7 +24,7 @@ we wish to do on the elements.
     <figcaption><i>
         Read on for the full data, or 
         <a href="#comparing-it-all">
-            click here to jump ahead to the spoilers
+            click here to jump to the comparison section for spoilers
         </a>
     </i></figcaption>
 </figure>
@@ -37,13 +37,14 @@ we wish to do on the elements.
   - [But why would anyone care about this in the first
     place?](#but-why-would-anyone-care-about-this-in-the-first-place)
   - [Why Haskell?](#why-haskell)
+  - [What's a tensor?](#whats-a-tensor)
 - [Project structure](#project-structure)
 - [Algorithms overview](#algorithms-overview)
   - [Tensort](#tensort)
     - [Preface](#preface)
     - [Structure](#structure)
     - [Algorithm](#algorithm)
-    - [What are the benefits?](#what-are-the-benefits)
+    - [Benefits](#benefits)
     - [Logarithmic Bytesize](#logarithmic-bytesize)
   - [Robustsort](#robustsort)
     - [Preface](#preface-1)
@@ -79,8 +80,8 @@ we wish to do on the elements.
 
 Because near the end of
 [that podcast episode](https://futureofcoding.org/episodes/070),
-[Ivan](https://github.com/ivanreese) said "Why are we comparing Bubblesort
-versus Quicksort and Mergesort? Well, because no one's made Robustsort yet."
+[Ivan](https://ivanish.ca/) said "Why are we comparing Bubblesort versus
+Quicksort and Mergesort? Well, because no one's made Robustsort yet."
 
 And I thought, "Why not?"
 
@@ -89,11 +90,11 @@ And I thought, "Why not?"
 Being adaptable to different scenarios, a tunable sorting algorithm has many
 potential applications. This README will focus on robustness in sorting.
 
-[Ackley](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) has some
-compelling things to say about why prioritizing robustness is important and
-useful. I'd highly recommend you read that paper!
+[Ackley](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) has compelling
+things to say about why prioritizing robustness is important and useful. I'd
+highly recommend reading that paper!
 
-Or listen to [this podcast](https://futureofcoding.org/episodes/070)!
+Or listening to [this podcast](https://futureofcoding.org/episodes/070)!
 
 If you want my elevator pitch, it's because we eventually want to build things
 like [Dyson Spheres](https://en.wikipedia.org/wiki/Dyson_sphere). Doing so will
@@ -125,9 +126,8 @@ progression precludes us from continuing to do so.
 1. Tensort can involve a lot of recursion, which Haskell handles well
 
 2. All the other benefits we get from using a purely functional language, such
-as strict dependency management, which
-[even the smartest among us](http://livingcomputation.com/robusort2.tar)
-sometimes falter without:
+as strict dependency management, which even the smartest among us sometimes
+falter without:
 
 <figure>
     <img src="./assets/images/ackley_deps.png"
@@ -146,29 +146,30 @@ sometimes falter without:
 
 If you want an in-depth explanation,
 [Wikipedia](https://en.wikipedia.org/wiki/Tensor) is usually a good starting
-place.comparing-it-all
+place.
 
 If you just want to understand Tensort, you can think of 'tensor' as a fancy
 word for a multi-dimensional array.
 
 Every tensor has a degree, which is the number of dimensions it has. A 0-degree
 tensor is a scalar (like an integer), a 1-degree tensor is a vector (like a
-list), and a 2-degree tensor is a matrix.
+list), a 2-degree tensor is a matrix, and so on.
 
 Each dimension of a tensor has a rank, which can be thought of as the length of
-the dimension. A tensor's shape can be described by a tensor denoting the ranks
-of each of its dimensions. For example. [1,2,3] is an instance of a 1-degree
-tensor. Its single dimension is 3 elements long, so it has a rank 3. Thus its
-shape is [3].
+that dimension. A tensor's shape can be described by another tensor that
+denotes the ranks of each of its dimensions. For example. [1,2,3] is an
+instance of a 1-degree tensor. Its single dimension is 3 elements long, so it
+has a rank 3. Thus its shape is [3].
 
 For another example, consider the following tensor which has the shape [3,2]:
-[[1,2,3],
- [4,5,6]]
 
-Tensort transforms a list into the highest-degree tensors possible while
-giving most of its dimensions a specified rank size to achieve maximum
-parallelism. This provides opportunities to add processing tailored to current
-goals while preserving time efficiency.
+    [[1,2,3],
+     [4,5,6]]
+
+Tensort transforms a list into a field of the highest-degree tensors possible
+while giving its dimensions a specified maximum rank size to achieve the
+densest possible cluster of short lists. This provides opportunities to add
+processing tailored to suit the current goals while preserving time efficiency.
 
 ## Project structure
 
@@ -199,13 +200,13 @@ really only had a rudimentary understanding of Insertionsort, Quicksort,
 Mergesort, Bubblesort and Bogosort, so it's entirely possible that I've
 reinvented a few things that already exist.
 
-It also may be helpful to note that this project was originally undertaken in
-an endeavor to come up with a solution naively, for the practice, before
+It may be helpful to note that this project was originally undertaken in an
+endeavor to come up with a solution naively, for the exercise, before
 researching other algorithms built to tackle the same problem. I did very
-briefly check out Ackley's
-[Demon Horde Sort](https://www.youtube.com/watch?v=helScS3coAE&t=260s),
-but only enough (about 5 seconds of that video) to verify that it is different
-from this algorithm. I've been purposefully avoiding learning much about Demon
+briefly check out Ackley's [Demon Horde
+Sort](https://www.youtube.com/watch?v=helScS3coAE&t=260s), but only enough
+(about 5 seconds of that video) to verify that it is different from this
+algorithm. I've been purposefully avoiding learning much about Demon
 Horde Sort before publishing v1.0.0.0 of this package, but Ackley is way
 smarter than me so if you do actually want a real, professional approach to
 robust sorting, Demon Horde Sort is likely the place to look.
@@ -244,18 +245,15 @@ Ackley might consider a "cheap hack." Starting out, my hope was that it would
 be, if not competitive with Bubblesort in robustness, at least a major
 improvement over Quicksort and Mergesort.
 
-Again, I haven't studied sorting algorithms long, so if you know this algorithm
-under another name, please [let me know](#contact)! After settling on this
-algorithm, I looked into several other sorting algorithms for comparison and
-found a few that have some similarities with Tensort - significantly Blocksort,
-Bucketsort, and Patiencesort. If you are familiar with these algorithms, you
-may recognize that they each have a structure that aids in understanding them.
+After settling on this algorithm, I looked into several other sorting
+algorithms for comparison and found a few that have some similarities with
+Tensort - notably Blocksort, Bucketsort, and Patiencesort. If you are familiar
+with these algorithms, you may recognize that they each have a structure that
+aids in understanding them.
 
 Tensort uses an underlying structure as well. We will discuss this structure 
 before going over the algorithm's actual steps. If this doesn't make sense yet,
 fear not!
-
-<!-- [image1] -->
 
 #### Structure
 
@@ -270,20 +268,21 @@ fear not!
   - Memory <- List of Bytes or other Tensors contained in the current Tensor
 
   - Register <- List of Records, each Record referencing one Byte or Tensor
-  in Memory
+    in Memory
 
   - Record <- Tuple of the Address and a copy of the TopBit of the referenced
-  Byte or Tensor
+    Byte or Tensor
 
   - Address <- Pointer to a Byte or Tensor in Memory
 
   - TopBit <- Value of the Bit at the top of the stack in a Byte or Tensor
 
   - TensorStack <- A top-level Tensor along with all the Bits, Bytes, and
-  Tensors contained within it. Structurally equivalent to a Tensor
+    Tensors contained within it. Structurally equivalent to a Tensor
 
   - TopRegister <- List of Records that is built after all Tensors are built.
-  Each Record references one TensorStack. Structurally equivalent to a Register
+    Each Record references one TensorStack. Structurally equivalent to a
+    Register
 
   - SubAlgorithm <- The sorting sub-algorithm used at various stages
 
@@ -311,15 +310,16 @@ is a tuple comprised of an Address and a TopBit
 The Address of a Record is an integer representing the index of the referenced
 Byte or Tensor in its containing Tensor's memory
 
-The TopBit in a Byte (which is copied into the Byte's referencing Record) is
+The TopBit of a Byte (which is copied into the Byte's referencing Record) is
 the Bit at the end of the Byte list. If everything functions correctly, this
 will be the highest value Bit in the Byte.
 
-The TopBit in a Tensor (which is also copied into the Tensor's referencing
-Record) is the TopBit of the Byte referenced by the Record at the end of the
-Register list of the Tensor referenced by the Record at the end of the
-Register list of the Tensor... and so on until the original (containing) Tensor
-is reached.
+The TopBit of a Tensor (which is copied into the Tensor's referencing Record)
+is the TopBit of the Byte referenced by the Record at the end of the Register
+list of the Tensor referenced by the Record at the end of the Register list of
+the Tensor... and so on until the original (containing) Tensor is reached. If 
+everything functions correctly, this TopBit will be the highest value Bit in
+the Byte.
 
 A TensorStack is a top-level Tensor (i.e. a Tensor not contained within another
 Tensor) along with all the Bits, Bytes, and Tensors it contains. Once the
@@ -333,7 +333,7 @@ each Record referencing one TensorStack.
 The sorting SubAlgorithm will be used any time we sort something within
 Tensort. The choice of this SubAlgorithm is very important. For reasons that
 will become clear soon, the SubAlgorithm for Standard Tensort will be
-Bubblesort, but the major part of Tensort's tunability is  the ability to
+Bubblesort, but the major part of Tensort's tunability is the ability to
 substitute another sorting algorithm based on current priorities.
 
 Now, on to the algorithm!
@@ -418,11 +418,12 @@ unexpected happens during an operation where we intend to add 124 to the final
 list and we add a different element instead, three of the best-case elements to
 have mistakenly added (121, 122, and 123) are impossible to have been selected.
 
-#### What are the benefits of using Tensort?
+#### Benefits
 
-The core idea of Tensort is breaking the input into smaller pieces across many
-dimensions and sorting the smaller pieces. Once we understand the overall
-structure, we can design a SubAlgorithm (and Bytesize) to suit our needs.
+Tensort is designed to be adaptable for different purposes. The core idea of
+Tensort is breaking the input into smaller pieces along many dimensions and
+sorting the smaller pieces. Once we understand the overall structure, we can
+design a SubAlgorithm (and Bytesize) to suit our needs.
 
 Standard Tensort leverages the robustness of Bubblesort while reducing the time
 required by never Bubblesorting the entire input.
