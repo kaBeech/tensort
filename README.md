@@ -1111,14 +1111,14 @@ I'd like to send a special thank you to the following people:
   - [David H. Ackley](https://livingcomputation.com/), obviously
 
   - [Lu Wilson](https://www.todepond.com/),
-  [Jimmy Miller](https://jimmyhmiller.github.io/), and
-  [Ivan Reese](https://ivanish.ca/) of
-  [Future of Coding](https://futureofcoding.org/) (Check it out! They do my
-  favorite tech podcast)
+    [Jimmy Miller](https://jimmyhmiller.github.io/), and
+    [Ivan Reese](https://ivanish.ca/) of
+    [Future of Coding](https://futureofcoding.org/) (Check it out! They do my
+    favorite tech podcast)
 
   - The Haskell community at large, specifically the 
-  [Haskell Subreddit](https://www.reddit.com/r/haskell/) and
-  [Portland Has Skill](https://github.com/kabeech/portland-has-skill)
+    [Haskell Subreddit](https://www.reddit.com/r/haskell/) and
+    [Portland Has Skill](https://github.com/kabeech/portland-has-skill)
 
   - Countless family, friends, acquaintances, and strangers who've tolerated me
-  blathering on about sorting algorithms over the past few months 💙
+    blathering on about sorting algorithms over the past few months 💙
