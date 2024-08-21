@@ -82,7 +82,7 @@ Because near the end of
 [Ivan](https://github.com/ivanreese) said "Why are we comparing Bubblesort
 versus Quicksort and Mergesort? Well, because no one's made Robustsort yet."
 
-<center>And I thought, "Why not?"</center>
+And I thought, "Why not?"
 
 ### But why would anyone care about this in the first place?
 
