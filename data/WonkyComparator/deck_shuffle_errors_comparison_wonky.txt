@@ -1,0 +1,14 @@
+Average card displacement over 1000 runs for each algorithm on lists of
+56 cards (integers) with a card comparator that gives a random result 10% of
+the time
+==========================================================
+Mergesort Errors:             202
+Quicksort Errors:             201
+Bubblesort Errors:            4
+TensortBL Errors:             51
+RobustsortP Errors:           15
+RobustsortB Errors:           11
+RobustsortM Errors:           1
+RobustsortRP Errors:          13
+RobustsortRB Errors:          8
+RobustsortRM Errors:          2
