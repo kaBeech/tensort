@@ -41,3 +41,26 @@
 ## 0.2.0.3 -- 2024-06-16
 
 * Improve testing compatibility (fix QuickCheck breaking Stackage build)
+
+## 1.0.0.0 -- 2024-08-21
+
+* Add Recursive Robustsort
+
+* Add Rotationsort
+
+* Fix Bubblesort to more closely match Ackley's non-'optimized' version
+
+* Add Benchmarking
+
+* Expand README
+
+* Replace Exchangesort with Rotationsort in Robustsort
+
+* Use Sortable type in Tensort and Robustsort so they can be used recursively
+
+* Add top-level Tensort and Robustsort functions wrapped in a type converter so
+  they can be easily used to sort Bits (Integers)
+
+* Add more helper functions
+
+* Many more updates to the algorithms - see README for details
