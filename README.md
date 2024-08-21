@@ -564,7 +564,7 @@ Bubblesort will make 12. A Byte holding 4 Bits is both small enough to run the
 Bubblesort quickly and large enough to allow multiple opportunities for a
 mistake to be corrected.
 
-In Robustsort, we choose a Bytesize of 3 because a list of 3 Bits has some
+In Robustsort we choose a Bytesize of 3 because a list of 3 Bits has some
 special properties. For one thing, sorting at this length greatly reduces the
 time it takes to run our slow-but-robust algorithms. For example, at this size,
 Bubblesort will make only 6 comparisons. Mergesort still makes 6 as well.
