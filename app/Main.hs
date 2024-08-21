@@ -11,10 +11,10 @@ import Benchmarking.PrintSubAlgErrorRateComparison
   )
 
 wonkyChance :: Int
-wonkyChance = 10
+wonkyChance = 10 -- Percent chance that comparing 2 Bits will yield a random result
 
 stuckChance :: Int
-stuckChance = 0
+stuckChance = 0 -- Percent chance that comparing 2 Bits will yield the same result as previously given
 
 main :: IO ()
 main = do
@@ -24,9 +24,9 @@ main = do
   -- printDeckShuffleErrors 1000 wonkyChance stuckChance
   -- printGreeting
   printLargeTimeAndErrorRateComparison
-    [3 .. 17]
-    100
-    1
+    [15 .. 17] -- n, where list size = 2^n
+    100 -- Number of runs per SortAlg/list length
+    1 -- Bubblesort cutoff - don't benchmark Bubblesort after this list length
     wonkyChance
     stuckChance
 
