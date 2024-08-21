@@ -45,5 +45,6 @@ makeDeckShuffleChart =
     layout_title
       .= "Errors sorting a deck of cards with 10% failed comparisons"
     layout_title_style . font_size .= 15
+    layout_all_font_styles . font_size .= 18
     layout_x_axis . laxis_generate .= autoIndexAxis (map fst values)
     plot (plotBars <$> bars titles (addIndexes (map snd values)))
