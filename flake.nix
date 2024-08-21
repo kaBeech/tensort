@@ -18,6 +18,7 @@
             ghc
             haskellPackages.cabal-install
             haskellPackages.doctest
+            zlib
           ];
 
           shellHook = ''
