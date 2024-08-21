@@ -8,7 +8,7 @@
    height="600.0000"
    version="1.1"
    id="svg63"
-   sodipodi:docname="chart_deck_shuffle_wonky.svg"
+   sodipodi:docname="deck_shuffle_chart_uncensored.svg"
    inkscape:version="1.3.2 (091e20ef0f, 2023-11-25)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -24,8 +24,8 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="1.3817989"
-     inkscape:cx="445.7957"
-     inkscape:cy="337.6034"
+     inkscape:cx="450.49972"
+     inkscape:cy="292.01066"
      inkscape:window-width="1876"
      inkscape:window-height="1006"
      inkscape:window-x="0"
@@ -33,7 +33,56 @@
      inkscape:window-maximized="1"
      inkscape:current-layer="svg63" />
   <defs
-     id="defs1" />
+     id="defs1">
+    <rect
+       x="437.02939"
+       y="219.77409"
+       width="280.69162"
+       height="68.801841"
+       id="rect66" />
+    <rect
+       x="97.172925"
+       y="109.89411"
+       width="44.628759"
+       height="31.090587"
+       id="rect64" />
+    <rect
+       x="93.266106"
+       y="103.33563"
+       width="48.001288"
+       height="28.925158"
+       id="rect63" />
+    <rect
+       x="97.172928"
+       y="109.89411"
+       width="44.628757"
+       height="31.090588"
+       id="rect64-3" />
+    <rect
+       x="97.172928"
+       y="109.89411"
+       width="44.628757"
+       height="31.090588"
+       id="rect64-9" />
+    <rect
+       x="97.172928"
+       y="109.89411"
+       width="44.628757"
+       height="31.090588"
+       id="rect64-9-4" />
+    <rect
+       x="97.172928"
+       y="109.89411"
+       width="44.628757"
+       height="31.090588"
+       id="rect64-9-0" />
+    <rect
+       x="97.172928"
+       y="109.89411"
+       width="44.628757"
+       height="31.090588"
+       id="rect64-9-1" />
+  </defs>
   <g
      stroke-linejoin="bevel"
      fill-opacity="1.0"
@@ -953,4 +1002,78 @@
      d="m 685.70864,559.69275 -0.2629,-17.90442"
      id="path63"
      sodipodi:nodetypes="cc" />
+  <text
+     xml:space="preserve"
+     id="text63"
+     style="white-space:pre;shape-inside:url(#rect63);display:inline;fill:#000000;stroke-width:1.5;stroke-dasharray:none" />
+  <text
+     xml:space="preserve"
+     id="text64"
+     style="white-space:pre;shape-inside:url(#rect64);display:inline;fill:#000000;stroke-width:1.5;stroke-dasharray:none"
+     transform="translate(-8)"><tspan
+       x="97.173828"
+       y="124.05078"
+       id="tspan3"><tspan
+         style="font-weight:200;font-size:16px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Ultra-Light'"
+         id="tspan1">202</tspan></tspan></text>
+  <text
+     xml:space="preserve"
+     id="text64-1"
+     style="white-space:pre;shape-inside:url(#rect64-3);display:inline;fill:#000000;stroke-width:1.5;stroke-dasharray:none"
+     transform="translate(110.6543,0.82422)"><tspan
+       x="97.173828"
+       y="124.05078"
+       id="tspan5"><tspan
+         style="font-weight:200;font-size:16px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Ultra-Light'"
+         id="tspan4">201</tspan></tspan></text>
+  <text
+     xml:space="preserve"
+     id="text64-19"
+     style="white-space:pre;shape-inside:url(#rect64-9);display:inline;fill:#000000;stroke-width:1.5;stroke-dasharray:none"
+     transform="translate(234.85135,386.36411)"><tspan
+       x="97.173828"
+       y="124.05078"
+       id="tspan7"><tspan
+         style="font-weight:200;font-size:16px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Ultra-Light'"
+         id="tspan6">4</tspan></tspan></text>
+  <text
+     xml:space="preserve"
+     id="text64-19-0"
+     style="white-space:pre;shape-inside:url(#rect64-9-4);display:inline;fill:#000000;stroke-width:1.5;stroke-dasharray:none"
+     transform="translate(343.13137,291.83431)"><tspan
+       x="97.173828"
+       y="124.05078"
+       id="tspan9"><tspan
+         style="font-weight:200;font-size:16px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Ultra-Light'"
+         id="tspan8">51</tspan></tspan></text>
+  <text
+     xml:space="preserve"
+     id="text64-19-3"
+     style="white-space:pre;shape-inside:url(#rect64-9-0);display:inline;fill:#000000;stroke-width:1.5;stroke-dasharray:none"
+     transform="translate(457.7129,375.35395)"><tspan
+       x="97.173828"
+       y="124.05078"
+       id="tspan11"><tspan
+         style="font-weight:200;font-size:16px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Ultra-Light'"
+         id="tspan10">11</tspan></tspan></text>
+  <text
+     xml:space="preserve"
+     id="text64-19-5"
+     style="white-space:pre;shape-inside:url(#rect64-9-1);display:inline;fill:#000000;stroke-width:1.5;stroke-dasharray:none"
+     transform="translate(581.71018,396.63451)"><tspan
+       x="97.173828"
+       y="124.05078"
+       id="tspan13"><tspan
+         style="font-weight:200;font-size:16px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Ultra-Light'"
+         id="tspan12">1</tspan></tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:200;font-stretch:normal;font-size:16px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Ultra-Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#f9f9f9;stroke:#e6e6e6;stroke-width:1.5;stroke-dasharray:none;stroke-opacity:1"
+     x="884.7276"
+     y="377.01364"
+     id="text67"><tspan
+       sodipodi:role="line"
+       id="tspan67"
+       x="884.7276"
+       y="377.01364">`1</tspan></text>
 </svg>
