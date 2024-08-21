@@ -55,7 +55,8 @@ we wish to do on the elements.
     - [Supersort Adjudication](#supersort-adjudication)
     - [Recursion](#recursion)
   - [Magicsort](#magicsort)
-  - [Magic Robustsort sub-algorithm alterations](#magic-robustsort-sub-algorithm-alterations)
+  - [Magic Robustsort sub-algorithm
+    alterations](#magic-robustsort-sub-algorithm-alterations)
 - [Comparing it all](#comparing-it-all)
 - [Library](#library)
 - [Development Environment](#development-environment)
@@ -67,7 +68,7 @@ we wish to do on the elements.
 ### Inspiration
 
   - [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by
-  [David H. Ackley](https://github.com/DaveAckley)
+  [David H. Ackley](https://livingcomputation.com/)
 
   - [Beyond Efficiency by Dave Ackley](https://futureofcoding.org/episodes/070)
   by Future of Coding ([Lu Wilson](https://www.todepond.com/),
@@ -128,8 +129,14 @@ as strict dependency management, which
 [even the smartest among us](http://livingcomputation.com/robusort2.tar)
 sometimes falter without:
 
-  ![Comment from Ackley in the Beyond Efficiency code about Perl updates
-  breaking their code](./assets/images/ackley_deps.png)
+<figure>
+    <img src="./assets/images/ackley_deps.png"
+         alt="Comment from Ackley in the Beyond Efficiency code about Perl
+        updates breaking their code">
+    <figcaption><i><a href="http://livingcomputation.com/robusort2.tar">
+            Source
+        </a></i></figcaption>
+</figure>
 
 3. [Obviously](https://www.youtube.com/shorts/LGZKXZQeEBg)
 
@@ -953,7 +960,7 @@ and robustness in computing.
 
 I'd like to send a special thank you to the following people:
 
-  - [David H. Ackley](https://github.com/DaveAckley), obviously
+  - [David H. Ackley](https://livingcomputation.com/), obviously
 
   - [Lu Wilson](https://www.todepond.com/),
   [Jimmy Miller](https://jimmyhmiller.github.io/), and
