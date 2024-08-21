@@ -35,7 +35,7 @@ we wish to do on the elements.
   - [Inspiration](#inspiration)
   - [Why?](#why)
   - [But why would anyone care about this in the first
-    place?](#but-why-would-anyone-care-about-this-in-the-first-place)
+     place?](#but-why-would-anyone-care-about-this-in-the-first-place)
   - [Why Haskell?](#why-haskell)
   - [What's a tensor?](#whats-a-tensor)
 - [Project structure](#project-structure)
@@ -56,8 +56,8 @@ we wish to do on the elements.
     - [Supersort Adjudication](#supersort-adjudication)
     - [Recursion](#recursion)
   - [Magicsort](#magicsort)
-  - [Magic Robustsort sub-algorithm
-    alterations](#magic-robustsort-sub-algorithm-alterations)
+    - [Magic Robustsort sub-algorithm
+       alterations](#magic-robustsort-sub-algorithm-alterations)
 - [Comparing it all](#comparing-it-all)
 - [Library](#library)
 - [Development Environment](#development-environment)
@@ -883,10 +883,14 @@ checks if they agree. If they do, the result is used and if not, both
 algorithms are run again. This process is repeated until the two algorithms
 agree on a result.
 
+Magicsort is based on the notion that if you happen to pull the right answer
+out of a hat once, it might be random chance, but if you do it twice, it might
+just be magic!
+
 Observant readers may have already deduced that Permutationsort functions
 nearly identically to Bogosort. Here are the results of running Bogosort 1000
-times on random permutations of [1,2,3] using a faulty comparator that
-gives a random result 10% of the time:
+times on random permutations of [1,2,3] using a faulty comparator that gives a
+random result 10% of the time:
 
     81.3% <- [1,2,3]
 
@@ -898,7 +902,7 @@ gives a random result 10% of the time:
 
     5.7% <- [2,3,1]
 
-    0.8% <- [3,2,1]
+    0.4% <- [3,2,1]
 
 In these cases, 84.3% of the time the Top Bit was in the correct position.
 Even though both Bogosort and Permutationsort were ran with the same random
@@ -907,13 +911,9 @@ slightly different. Still, the least likely outcome for Bogosort is also a
 reverse-sorted Byte and the other possible incorrect outcomes are in
 approximately even distribution with each other.
 
-Magicsort is based on the notion that if you happen to pull the right answer
-out of a hat once, it might be random chance, but if you do it twice, it might
-just be magic!
-
-Here are the results of running Magicsort 1000 times on random
-permutations of [1,2,3] using a faulty comparator that gives a random result
-10% of the time:
+Here are the results of running Magicsort 1000 times on random permutations of
+[1,2,3] using a faulty comparator that gives a random result 10% of the time
+when comparing two elements:
 
     ~94.0% <- [1,2,3] (Correct)
 
@@ -927,9 +927,13 @@ permutations of [1,2,3] using a faulty comparator that gives a random result
 
     ~0.1% <- [3,2,1] (Reverse)
 
-94% of the time we got the absolutely correct answer! In total, 95.5% of the
-time we got the Top Bit in the correct position and only 1.6% of the time did
-we get the bottom value in the top position.
+In total, 95.5% of the time we got the TopBit in the correct position, 0.1% of
+the time we got a reverse-sorted list, and the other results are in almost
+exactly even distribution with each other.
+
+You may note that [1,3,2] (the most common problematic result from earlier)
+was second least common result. This is likely a fluke, but it's still pretty
+neat.
 
 The downside here is that Magisort can take a long time to run. Thankfully,
 Magicsort will only be run in our algorithm if Bubblesort and Rotationsort
@@ -937,7 +941,7 @@ disagree on an answer, and even then it only has 3 elements to sort. Overall,
 the Robustsort we're building that uses Magicsort will still have an average of
 O(n log n) time efficiency.
 
-### Magic Robustsort SubAlgorithm alterations
+#### Magic Robustsort SubAlgorithm alterations
 
 We will also make a few adjustments to our SubAlgorithms for Magic Robustsort.
 
