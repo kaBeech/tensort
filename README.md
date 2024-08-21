@@ -1012,7 +1012,7 @@ More benchmarking data can be found in the `data/` directory. Before we wrap
 up, let's look at the runtimes and average error scores (with a wonky
 comparator) for the largest input list (2048) I benchmarked before removing
 Bubblesort from the comparisons (you may have to scroll to view the entire
-information:
+information):
 
     ----------------------------------------------------------
      Algorithm    | Time            | Score    | n = 2048
