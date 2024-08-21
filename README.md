@@ -1087,8 +1087,9 @@ Note that these instructions don't make the assumptions listed above
 ### Print Benchmarking Data
 
   * [Checkout to the 'benchmarking'
-    branch](https://git-scm.com/docs/git-checkout)
+     branch](https://git-scm.com/docs/git-checkout)
   * Uncomment the desired benchmarking process(es) in `app/Main.hs`
+  * Tweak any settings desired
   * Run `cabal run`
 
 ## Contact
