@@ -35,4 +35,7 @@ printGreeting =
   print
     "Welcome! To run the benchmarks, please uncomment the \
     \desired function in `app/Main.hs`, tweak any settings desired, and run \
-    \the program."
+    \the program. \n\
+    \ \n\
+    \If creating a chart, you may need to run `cabal install` to get the \
+    \current dependencies"
