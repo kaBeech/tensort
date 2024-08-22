@@ -23,7 +23,7 @@ import Data.Tensort.Utils.Types
     fromSBitRecs,
   )
 
--- | Sort a list of Sortables using a custom Tensort algorithm
+-- | Sort a Sortable list using a custom Tensort algorithm
 --
 --   Takes TensortProps and a Sortable and returns a sorted Sortable
 
@@ -55,7 +55,7 @@ tensort tsProps (SortRec xs) = do
   let topTensor = reduceTensorStacks tsProps tensorStacks
   fromSBitRecs (getSortedBitsFromTensor (subAlgorithm tsProps) topTensor)
 
--- | Sort a list of Sortables using a Standard Tensort algorithm with a 4-Bit
+-- | Sort a Sortable list using a Standard Tensort algorithm with a 4-Bit
 --   Bytesize
 
 -- | ==== __Examples__
@@ -67,7 +67,7 @@ tensort tsProps (SortRec xs) = do
 tensortB4 :: Sortable -> Sortable
 tensortB4 = tensort (mkTsProps 4 bubblesort)
 
--- | Sort a list of Sortables using a Standard Tensort algorithm with a custom
+-- | Sort a Sortable list using a Standard Tensort algorithm with a custom
 --   Bytesize
 
 -- | ==== __Examples__
@@ -79,7 +79,7 @@ tensortB4 = tensort (mkTsProps 4 bubblesort)
 tensortBN :: Int -> Sortable -> Sortable
 tensortBN n = tensort (mkTsProps n bubblesort)
 
--- | Sort a list of Sortables using a Standard Logarithmic Tensort algorithm
+-- | Sort a Sortable list using a Standard Logarithmic Tensort algorithm
 
 -- | ==== __Examples__
 -- >>> tensortBL (SortBit [16, 23, 4, 8, 15, 42])
