@@ -252,12 +252,6 @@ getRegisterFromTensorsR tensorsR = acc tensorsR []
 -- SBitBit 38
 getTopBitFromTensorStack :: STensor -> SBit
 getTopBitFromTensorStack (STensorBit tensor) =
-  getTopBitFromTensorStackB tensor
+  SBitBit (snd (last (fst tensor)))
 getTopBitFromTensorStack (STensorRec tensorR) =
-  getTopBitFromTensorStackR tensorR
-
-getTopBitFromTensorStackB :: Tensor -> SBit
-getTopBitFromTensorStackB (register, _) = SBitBit (snd (last register))
-
-getTopBitFromTensorStackR :: TensorR -> SBit
-getTopBitFromTensorStackR (registerR, _) = SBitRec (snd (last registerR))
+  SBitRec (snd (last (fst tensorR)))
