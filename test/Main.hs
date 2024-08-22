@@ -24,6 +24,7 @@ import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 import Data.Tensort.Subalgorithms.Exchangesort (exchangesort)
 import Data.Tensort.Subalgorithms.Magicsort (magicsort)
 import Data.Tensort.Subalgorithms.Permutationsort (permutationsort)
+import Data.Tensort.Subalgorithms.Rotationsort (rotationsort, rotationsortAmbi, rotationsortReverse, rotationsortReverseAmbi)
 import Data.Tensort.Subalgorithms.Supersort
   ( magicSuperStrat,
     mundaneSuperStrat,
@@ -35,10 +36,10 @@ import Data.Tensort.Utils.Types (Bit, SortAlg, Sortable)
 import SortSpec
   ( result_is_sorted_bits,
     result_is_sorted_bits_only,
-    result_is_sorted_bits_only_short,
     result_is_sorted_custom_bitsize,
     result_is_sorted_records,
     result_is_sorted_records_short,
+    result_is_sorted_records_tiny,
   )
 import TestCheck (check)
 
@@ -48,6 +49,7 @@ main :: IO ()
 main = do
   mapM_ qcheckSortable sortingAlgorithmsSortable
   mapM_ qcheckSortableShort sortingAlgorithmsSortableShort
+  mapM_ qcheckSortableTiny sortingAlgorithmsSortableTiny
   mapM_ qcheckBits sortingAlgorithmsBits
   putStrLn "Running test suite!"
   putStrLn "Standard Custom Bitsize Tensort returns a sorted array..."
@@ -99,16 +101,16 @@ qcheckSortableShort (sort, sortName) = do
   check (result_is_sorted_records_short sort)
   putStrLn "True!"
 
+qcheckSortableTiny :: (SortAlg, String) -> IO ()
+qcheckSortableTiny (sort, sortName) = do
+  putStrLn (sortName ++ " returns a sorted array..")
+  check (result_is_sorted_records_tiny sort)
+  putStrLn "True!"
+
 qcheckBits :: ([Bit] -> [Bit], String) -> IO ()
 qcheckBits (sort, sortName) = do
   putStrLn (sortName ++ " returns a sorted array..")
   check (result_is_sorted_bits_only sort)
-  putStrLn "True!"
-
-_qcheckBitsShort :: ([Bit] -> [Bit], String) -> IO ()
-_qcheckBitsShort (sort, sortName) = do
-  putStrLn (sortName ++ " returns a sorted array..")
-  check (result_is_sorted_bits_only_short sort)
   putStrLn "True!"
 
 sortingAlgorithmsSortable :: [(SortAlg, String)]
@@ -140,6 +142,14 @@ sortingAlgorithmsSortableShort =
     (robustsortM, "Magic Robustsort"),
     (supersortMundaneCustomExample, "Custom Mundane Supersort"),
     (supersortMagicCustomExample, "Custom Magic Supersort")
+  ]
+
+sortingAlgorithmsSortableTiny :: [(SortAlg, String)]
+sortingAlgorithmsSortableTiny =
+  [ (rotationsort, "Rotationsort"),
+    (rotationsortReverse, "Reverse Rotationsort"),
+    (rotationsortAmbi, "Ambidextrous Rotationsort"),
+    (rotationsortReverseAmbi, "Reverse Ambidextrous Rotationsort")
   ]
 
 sortingAlgorithmsBits :: [([Bit] -> [Bit], String)]
