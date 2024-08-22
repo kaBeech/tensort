@@ -3,6 +3,8 @@ module SortSpec
     result_is_sorted_records,
     result_is_sorted_records_short,
     result_is_sorted_custom_bitsize,
+    result_is_sorted_bits_only,
+    result_is_sorted_bits_only_short,
   )
 where
 
@@ -41,4 +43,20 @@ result_is_sorted_custom_bitsize n unsortedList =
     1000000
     ( (length unsortedList < 15) && (n > 1) ==>
         isSorted (tensortBN n (SortBit unsortedList))
+    )
+
+result_is_sorted_bits_only :: ([Bit] -> [Bit]) -> [Bit] -> Property
+result_is_sorted_bits_only sort unsortedList =
+  within
+    1000000
+    ( (length unsortedList < 10) ==>
+        isSorted (SortBit (sort unsortedList))
+    )
+
+result_is_sorted_bits_only_short :: ([Bit] -> [Bit]) -> [Bit] -> Property
+result_is_sorted_bits_only_short sort unsortedList =
+  within
+    1000000
+    ( (length unsortedList < 6) ==>
+        isSorted (SortBit (sort unsortedList))
     )
