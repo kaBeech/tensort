@@ -1,3 +1,5 @@
+-- | This module provides variations of the Robustsort algorithm using the
+--   Sortable type
 module Data.Tensort.Robustsort
   ( robustsortP,
     robustsortB,
@@ -27,9 +29,21 @@ import Data.Tensort.Tensort (tensort)
 import Data.Tensort.Utils.MkTsProps (mkTsProps)
 import Data.Tensort.Utils.Types (SortAlg, Sortable (..))
 
+-- | Takes a Sortable and returns a sorted Sortable using a Recursive Mundane
+--   Robustsort algorithm with a Permutationsort adjudicator
+
+-- | ==== __Examples__
+--  >>> robustsortRP (SortBit [16, 23, 4, 8, 15, 42])
+--  SortBit [4,8,15,16,23,42]
 robustsortRP :: Sortable -> Sortable
 robustsortRP = robustsortRCustom robustsortP
 
+-- | Takes a Sortable and returns a sorted Sortable using a Basic Mundane
+--   Robustsort algorithm with a Permutationsort adjudicator
+
+-- | ==== __Examples__
+-- >>> robustsortP (SortBit [16, 23, 4, 8, 15, 42])
+-- SortBit [4,8,15,16,23,42]
 robustsortP :: Sortable -> Sortable
 robustsortP = tensort (mkTsProps 3 supersortP)
 
@@ -42,9 +56,21 @@ supersortP =
       mundaneSuperStrat
     )
 
+-- | Takes a Sortable and returns a sorted Sortable using a Recursive Mundane
+--   Robustsort algorithm with a Bogosort adjudicator
+
+-- | ==== __Examples__
+-- >>> robustsortRB (SortBit [16, 23, 4, 8, 15, 42])
+-- SortBit [4,8,15,16,23,42]
 robustsortRB :: Sortable -> Sortable
 robustsortRB = robustsortRCustom robustsortB
 
+-- | Takes a Sortable and returns a sorted Sortable using a Basic Mundane
+--   Robustsort algorithm with a Bogosort adjudicator
+
+-- | ==== __Examples__
+-- >>> robustsortB (SortBit [16, 23, 4, 8, 15, 42])
+-- SortBit [4,8,15,16,23,42]
 robustsortB :: Sortable -> Sortable
 robustsortB = tensort (mkTsProps 3 supersortB)
 
@@ -57,9 +83,21 @@ supersortB =
       mundaneSuperStrat
     )
 
+-- | Takes a Sortable and returns a sorted Sortable using a Recursive Magic
+--   Robustsort algorithm
+
+-- | ==== __Examples__
+-- >>> robustsortRM (SortBit [16, 23, 4, 8, 15, 42])
+-- SortBit [4,8,15,16,23,42]
 robustsortRM :: Sortable -> Sortable
 robustsortRM = robustsortRCustom robustsortM
 
+-- | Takes a Sortable and returns a sorted Sortable using a Basic Magic
+--   Robustsort algorithm
+
+-- | ==== __Examples__
+-- >>> robustsortM (SortBit [16, 23, 4, 8, 15, 42])
+-- SortBit [4,8,15,16,23,42]
 robustsortM :: Sortable -> Sortable
 robustsortM = tensort (mkTsProps 3 supersortM)
 
@@ -72,6 +110,7 @@ supersortM =
       magicSuperStrat
     )
 
+-- | Used for making recursive Robustsort algorithms
 robustsortRCustom :: SortAlg -> Sortable -> Sortable
 robustsortRCustom baseSortAlg xs =
   tensort
