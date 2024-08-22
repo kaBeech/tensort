@@ -1,5 +1,8 @@
 -- | Module for creating Tensors from Bytes and Tensors
 --
+--   Functions ending in "B" are for sorting Bits in a base (non-recursive)
+--   Tensort variant
+--
 --   Functions ending in "R" are for sorting Records when used in a recursive
 --   Tensort variant
 --
@@ -55,12 +58,12 @@ import Data.Tensort.Utils.Types
 -- STensorsBit [([(0,3),(1,7)],ByteMem [[1,3],[5,7]]),([(0,4),(1,8)],ByteMem [[2,4],[6,8]])]
 createInitialTensors :: TensortProps -> SBytes -> STensors
 createInitialTensors tsProps (SBytesBit bytes) =
-  STensorsBit (createInitialTensorsBits tsProps bytes)
+  STensorsBit (createInitialTensorsB tsProps bytes)
 createInitialTensors tsProps (SBytesRec recs) =
-  STensorsRec (createInitialTensorsRecs tsProps recs)
+  STensorsRec (createInitialTensorsR tsProps recs)
 
-createInitialTensorsBits :: TensortProps -> [Byte] -> [Tensor]
-createInitialTensorsBits tsProps bytes =
+createInitialTensorsB :: TensortProps -> [Byte] -> [Tensor]
+createInitialTensorsB tsProps bytes =
   foldr acc [] (splitEvery (bytesize tsProps) bytes)
   where
     acc :: [Byte] -> [Tensor] -> [Tensor]
@@ -70,8 +73,8 @@ createInitialTensorsBits tsProps bytes =
                (getTensorFromBytes (subAlgorithm tsProps) (SBytesBit byte))
            ]
 
-createInitialTensorsRecs :: TensortProps -> [ByteR] -> [TensorR]
-createInitialTensorsRecs tsProps bytesR =
+createInitialTensorsR :: TensortProps -> [ByteR] -> [TensorR]
+createInitialTensorsR tsProps bytesR =
   foldr acc [] (splitEvery (bytesize tsProps) bytesR)
   where
     acc :: [ByteR] -> [TensorR] -> [TensorR]
@@ -252,12 +255,6 @@ getRegisterFromTensorsR tensorsR = acc tensorsR []
 -- SBitBit 38
 getTopBitFromTensorStack :: STensor -> SBit
 getTopBitFromTensorStack (STensorBit tensor) =
-  getTopBitFromTensorStackB tensor
+  SBitBit (snd (last (fst tensor)))
 getTopBitFromTensorStack (STensorRec tensorR) =
-  getTopBitFromTensorStackR tensorR
-
-getTopBitFromTensorStackB :: Tensor -> SBit
-getTopBitFromTensorStackB (register, _) = SBitBit (snd (last register))
-
-getTopBitFromTensorStackR :: TensorR -> SBit
-getTopBitFromTensorStackR (registerR, _) = SBitRec (snd (last registerR))
+  SBitRec (snd (last (fst tensorR)))

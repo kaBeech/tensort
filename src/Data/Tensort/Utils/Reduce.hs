@@ -1,6 +1,9 @@
 -- | This module provides functions to reduce a list of TensorStacks into a
 --   more compact list of TensorStacks
 --
+--   Functions ending in "B" are for sorting Bits in a base (non-recursive)
+--   Tensort variant
+--
 --   Functions ending in "R" are for sorting Records when used in a recursive
 --   Tensort variant
 --

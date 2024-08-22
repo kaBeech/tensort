@@ -15,6 +15,11 @@ sorted list. These transformations provide opportunities to increase redundancy
 for improved robustness and can be leveraged to include any further processing
 we wish to do on the elements.
 
+
+      
+
+
+
 <figure>
     <img src="./assets/images/deck_shuffle_chart_censored.svg "
          alt="When sorting a randomly shuffled deck of cards, Quicksort makes
@@ -36,8 +41,8 @@ we wish to do on the elements.
   - [Why?](#why)
   - [But why would anyone care about this in the first
      place?](#but-why-would-anyone-care-about-this-in-the-first-place)
-  - [Why Haskell?](#why-haskell)
   - [What's a tensor?](#whats-a-tensor)
+  - [Why Haskell?](#why-haskell)
 - [Project structure](#project-structure)
 - [Algorithms overview](#algorithms-overview)
   - [Tensort](#tensort)
@@ -123,27 +128,6 @@ As Ackley asserts, as a culture we have tended to prioritize correctness and
 efficiency to the detriment of robustness. The rate of our technological
 progression precludes us from continuing to do so.
 
-### Why Haskell?
-
-1. Tensort can involve a lot of recursion, which Haskell handles well
-
-2. All the other benefits we get from using a purely functional language, such
-as strict dependency management, which even the smartest among us sometimes
-falter without:
-
-<figure>
-    <img src="./assets/images/ackley_deps.png"
-         alt="Comment from Ackley in the Beyond Efficiency code about Perl
-        updates breaking their code">
-    <figcaption><i><a href="http://livingcomputation.com/robusort2.tar">
-            Source
-        </a></i></figcaption>
-</figure>
-
-      
-
-3. [Obviously](https://www.youtube.com/shorts/LGZKXZQeEBg)
-
 ### What's a tensor?
 
 If you want an in-depth explanation,
@@ -172,6 +156,27 @@ Tensort transforms a list into a field of the highest-degree tensors possible
 while giving its dimensions a specified maximum rank size to achieve the
 densest possible cluster of short lists. This provides opportunities to add
 processing tailored to suit the current goals while preserving time efficiency.
+
+### Why Haskell?
+
+1. Tensort can involve a lot of recursion, which Haskell handles well
+
+2. All the other benefits we get from using a purely functional language, such
+as strict dependency management, which even the smartest among us sometimes
+falter without:
+
+<figure>
+    <img src="./assets/images/ackley_deps.png"
+         alt="Comment from Ackley in the Beyond Efficiency code about Perl
+        updates breaking their code">
+    <figcaption><i><a href="http://livingcomputation.com/robusort2.tar">
+            Source
+        </a></i></figcaption>
+</figure>
+
+      
+
+3. [Obviously](https://www.youtube.com/shorts/LGZKXZQeEBg)
 
 ## Project structure
 
@@ -988,6 +993,11 @@ considerations to keep in mind:
 
 Now let's take a look at how everything compares. Here is a graph showing the
 benchmarking results for average error score for our algorithms:
+
+
+      
+
+
 
 <figure>
     <img src="./assets/images/deck_shuffle_chart_uncensored.svg"

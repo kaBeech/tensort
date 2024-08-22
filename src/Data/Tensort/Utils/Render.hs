@@ -1,5 +1,8 @@
 -- | Module for rendering a sorted list of Bits from a list of TensorStacks
 --
+--   Functions ending in "B" are for sorting Bits in a base (non-recursive)
+--   Tensort variant
+--
 --   Functions ending in "R" are for sorting Records when used in a recursive
 --   Tensort variant
 --
@@ -49,7 +52,7 @@ getSortedBitsFromTensorB subAlg tensorRaw = acc tensorRaw []
   where
     acc :: TensorStack -> [SBit] -> [SBit]
     acc tensor sortedBits = do
-      let (nextBit, tensor') = removeTopBitFromTensor subAlg tensor
+      let (nextBit, tensor') = removeTopBitFromTensorB subAlg tensor
       let nextBit' = SBitBit nextBit
       if isNothing tensor'
         then nextBit' : sortedBits
@@ -75,13 +78,13 @@ getSortedBitsFromTensorR subAlg tensorRaw = acc tensorRaw []
 
 -- | ==== __Examples__
 --   >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
---   >>> removeTopBitFromTensor bubblesort ([(0,5),(1,7)],ByteMem [[1,5],[3,7]])
+--   >>> removeTopBitFromTensorB bubblesort ([(0,5),(1,7)],ByteMem [[1,5],[3,7]])
 --   (7,Just ([(1,3),(0,5)],ByteMem [[1,5],[3]]))
-removeTopBitFromTensor :: SortAlg -> Tensor -> (Bit, Maybe Tensor)
-removeTopBitFromTensor subAlg (register, memory) = do
+removeTopBitFromTensorB :: SortAlg -> Tensor -> (Bit, Maybe Tensor)
+removeTopBitFromTensorB subAlg (register, memory) = do
   let topRecord = last register
   let topAddress = fst topRecord
-  let (topBit, memory') = removeBitFromMemory subAlg memory topAddress
+  let (topBit, memory') = removeBitFromMemoryB subAlg memory topAddress
   if isNothing memory'
     then (topBit, Nothing)
     else
@@ -113,8 +116,8 @@ removeTopBitFromTensorR subAlg (register, memory) = do
           )
       )
 
-removeBitFromMemory :: SortAlg -> Memory -> Int -> (Bit, Maybe Memory)
-removeBitFromMemory subAlg (ByteMem bytes) i = do
+removeBitFromMemoryB :: SortAlg -> Memory -> Int -> (Bit, Maybe Memory)
+removeBitFromMemoryB subAlg (ByteMem bytes) i = do
   let topByte = bytes !! i
   let topBit = last topByte
   let topByte' = init topByte
@@ -131,9 +134,9 @@ removeBitFromMemory subAlg (ByteMem bytes) i = do
       let topByte'' = fromSortBit (subAlg (SortBit topByte'))
       let bytes' = take i bytes ++ [topByte''] ++ drop (i + 1) bytes
       (topBit, Just (ByteMem bytes'))
-removeBitFromMemory subAlg (TensorMem tensors) i = do
+removeBitFromMemoryB subAlg (TensorMem tensors) i = do
   let topTensor = tensors !! i
-  let (topBit, topTensor') = removeTopBitFromTensor subAlg topTensor
+  let (topBit, topTensor') = removeTopBitFromTensorB subAlg topTensor
   if isNothing topTensor'
     then do
       let tensors' = take i tensors ++ drop (i + 1) tensors

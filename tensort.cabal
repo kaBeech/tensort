@@ -20,7 +20,7 @@ name:               tensort
 -- PVP summary:     +-+------- breaking API changes
 --                  | | +----- non-breaking API additions
 --                  | | | +--- code changes with no API change
-version:            1.0.1.1
+version:            1.0.1.2
 
 tested-with:        GHC==9.8.2, 
                     GHC==9.6.4, 
@@ -77,10 +77,13 @@ build-type:         Simple
 
 -- Extra doc files to be distributed with the package, such as a CHANGELOG or a README.
 extra-doc-files:    README.md,
-                    CHANGELOG.md
+                    CHANGELOG.md,
 
 -- Extra source files to be distributed with the package, such as examples, or a tutorial module.
--- extra-source-files:
+extra-source-files: assets/images/*.png,
+                    assets/images/*.svg,
+                    data/WonkyComparator/*.txt,
+                    data/WonkyStuckComparator/*.txt,
 
 source-repository head
     type:           git

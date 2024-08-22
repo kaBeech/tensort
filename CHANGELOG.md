@@ -76,3 +76,11 @@
 ## 1.0.1.1 -- 2024-08-22
 
 * Make all pictures in README viewable on Hackage
+
+## 1.0.1.2 -- 2024-08-22
+
+* Include benchmarking results and README images in package
+
+* Improve flow in README
+
+* Cleanup code and documentation a bit
