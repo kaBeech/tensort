@@ -1,3 +1,5 @@
+-- | This module provides variations of the Robustsort algorithm using the
+--   Sortable type
 module Data.Tensort.Robustsort
   ( robustsortP,
     robustsortB,
@@ -28,8 +30,14 @@ import Data.Tensort.Subalgorithms.Supersort
   )
 import Data.Tensort.Tensort (tensort)
 import Data.Tensort.Utils.MkTsProps (mkTsProps)
-import Data.Tensort.Utils.Types (SortAlg, Sortable, WonkyState, fromSortBit)
+import Data.Tensort.Utils.Types (SortAlg, Sortable (..), WonkyState, fromSortBit)
 
+-- | Takes a Sortable and returns a sorted Sortable using a Recursive Mundane
+--   Robustsort algorithm with a Permutationsort adjudicator
+
+-- | ==== __Examples__
+--  >>> robustsortRP (SortBit [16, 23, 4, 8, 15, 42])
+--  SortBit [4,8,15,16,23,42]
 robustsortRP :: WonkyState -> Sortable -> (Sortable, WonkyState)
 robustsortRP = robustsortRCustom robustsortP
 
@@ -45,6 +53,12 @@ supersortP =
       mundaneSuperStrat
     )
 
+-- | Takes a Sortable and returns a sorted Sortable using a Recursive Mundane
+--   Robustsort algorithm with a Bogosort adjudicator
+
+-- | ==== __Examples__
+-- >>> robustsortRB (SortBit [16, 23, 4, 8, 15, 42])
+-- SortBit [4,8,15,16,23,42]
 robustsortRB :: WonkyState -> Sortable -> (Sortable, WonkyState)
 robustsortRB = robustsortRCustom robustsortB
 
@@ -60,6 +74,12 @@ supersortB =
       mundaneSuperStrat
     )
 
+-- | Takes a Sortable and returns a sorted Sortable using a Recursive Magic
+--   Robustsort algorithm
+
+-- | ==== __Examples__
+-- >>> robustsortRM (SortBit [16, 23, 4, 8, 15, 42])
+-- SortBit [4,8,15,16,23,42]
 robustsortRM :: WonkyState -> Sortable -> (Sortable, WonkyState)
 robustsortRM = robustsortRCustom robustsortM
 
@@ -75,6 +95,7 @@ supersortM =
       magicSuperStrat
     )
 
+-- | Used for making recursive Robustsort algorithms
 robustsortRCustom ::
   SortAlg ->
   WonkyState ->
@@ -90,7 +111,8 @@ robustsortRCustom baseSortAlg wonkySt xs =
     xs
 
 getLnBytesize :: Sortable -> Int
-getLnBytesize xs = getLn (length (fromSortBit xs))
+getLnBytesize (SortBit xs) = getLn (length xs)
+getLnBytesize (SortRec xs) = getLn (length xs)
 
 getLn :: Int -> Int
 getLn x = ceiling (log (fromIntegral x) :: Double)

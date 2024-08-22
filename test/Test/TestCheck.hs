@@ -1,4 +1,4 @@
-module TestCheck (isPass, check) where
+module Test.TestCheck (isPass, check) where
 
 import Control.Monad (unless)
 import System.Exit

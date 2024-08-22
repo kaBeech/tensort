@@ -1,11 +1,11 @@
 module Benchmarking.MakeDeckShuffleChart (makeDeckShuffleChart) where
 
 import Benchmarking.Score (getTotalErrorsScore)
-import Data.Tensort (tensortBL)
 import Data.Tensort.OtherSorts.Mergesort (mergesort)
 import Data.Tensort.OtherSorts.Quicksort (quicksort)
 import Data.Tensort.Robustsort (robustsortB, robustsortM)
 import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
+import Data.Tensort.Tensort (tensortBL)
 import Data.Tensort.Utils.Types (SortAlg)
 import Graphics.Rendering.Chart.Backend.Diagrams
 import Graphics.Rendering.Chart.Easy

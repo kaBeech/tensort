@@ -1,8 +1,19 @@
+-- | This module provides the bubblesort function for sorting lists using the
+--   Sortable type
 module Data.Tensort.Subalgorithms.Exchangesort (exchangesort) where
 
 import Data.Tensort.Utils.ComparisonFunctions (greaterThanBit, greaterThanRecord)
 import Data.Tensort.Utils.Types (Sortable (..), WonkyState)
 
+-- | Takes a Sortable and returns a sorted Sortable using an Exchangesort
+--   algorithm
+
+-- | ==== __Examples__
+-- >>> exchangesort (SortBit [16, 23, 4, 8, 15, 42])
+-- SortBit [4,8,15,16,23,42]
+--
+-- >>> exchangesort (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
+-- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 exchangesort :: WonkyState -> Sortable -> (Sortable, WonkyState)
 exchangesort wonkySt (SortBit bits) = do
   let (result, wonkySt') = exchangesortIterable greaterThanBit wonkySt bits 0 (length bits - 1)
