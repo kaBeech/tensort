@@ -1,7 +1,7 @@
 -- | This module provides functions to reduce a list of TensorStacks into a
 --   more compact list of TensorStacks
 --
---   Functions ending in 'R' are for sorting Records when used in a recursive
+--   Functions ending in "R" are for sorting Records when used in a recursive
 --   Tensort variant
 --
 --   TODO: See if we can clean up the type conversion here

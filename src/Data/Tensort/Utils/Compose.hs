@@ -1,6 +1,6 @@
 -- | Module for creating Tensors from Bytes and Tensors
 --
---   Functions ending in 'R' are for sorting Records when used in a recursive
+--   Functions ending in "R" are for sorting Records when used in a recursive
 --   Tensort variant
 --
 --   TODO: See if we can clean up the type conversion here
