@@ -30,7 +30,7 @@ import Data.Tensort.Subalgorithms.Supersort
   )
 import Data.Tensort.Tensort (tensort)
 import Data.Tensort.Utils.MkTsProps (mkTsProps)
-import Data.Tensort.Utils.Types (SortAlg, Sortable (..), WonkyState, fromSortBit)
+import Data.Tensort.Utils.Types (SortAlg, Sortable (..), WonkyState)
 
 -- | Takes a Sortable and returns a sorted Sortable using a Recursive Mundane
 --   Robustsort algorithm with a Permutationsort adjudicator
