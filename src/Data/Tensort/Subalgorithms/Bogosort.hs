@@ -1,9 +1,19 @@
+-- | This module provides the bogosort function for sorting lists using the
+--   Sortable type
 module Data.Tensort.Subalgorithms.Bogosort (bogosort, bogosortSeeded) where
 
 import Data.Tensort.Utils.Check (isSorted)
 import Data.Tensort.Utils.RandomizeList (randomizeList)
 import Data.Tensort.Utils.Types (Sortable (..))
 
+-- | Takes a Sortable and returns a sorted Sortable using a Bogosort algorithm
+
+-- | ==== __Examples__
+-- >>> bogosort (SortBit [16, 23, 4, 8, 15, 42])
+-- SortBit [4,8,15,16,23,42]
+--
+-- >>> bogosort (SortRec [(16, 23), (4, 8), (15, 42)])
+-- SortRec [(4,8),(16,23),(15,42)]
 bogosort :: Sortable -> Sortable
 bogosort = bogosortSeeded 143
 
