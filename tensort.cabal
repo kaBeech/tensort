@@ -153,8 +153,6 @@ executable tensort
     -- Other library packages from which modules are imported.
     build-depends:
         base,
-        tensort,
-        time >= 1.2.0.3 && < 1.15,
 
     -- Directories containing source files.
     hs-source-dirs:   app
