@@ -2,7 +2,20 @@ module Data.Tensort.Utils.Reduce (reduceTensorStacks) where
 
 import Data.Tensort.Utils.Compose (createTensor)
 import Data.Tensort.Utils.Split (splitEvery)
-import Data.Tensort.Utils.Types (Memory (..), MemoryR (..), SMemory (..), STensorStack, STensorStacks, STensors (..), TensorStack, TensorStackR, TensortProps (..), WonkyState, fromSTensorBit, fromSTensorRec)
+import Data.Tensort.Utils.Types
+  ( Memory (..),
+    MemoryR (..),
+    SMemory (..),
+    STensorStack,
+    STensorStacks,
+    STensors (..),
+    TensorStack,
+    TensorStackR,
+    TensortProps (..),
+    WonkyState,
+    fromSTensorBit,
+    fromSTensorRec,
+  )
 
 -- | Take a list of TensorStacks and group them together in new
 --   TensorStacks, each containing bytesize number of Tensors (former
