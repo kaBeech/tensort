@@ -24,7 +24,7 @@ import Data.Tensort.Utils.WrapSortAlg (wrapSortAlg)
 -- | Takes a list of Bits and returns a sorted list of Bits using a Basic
 --   Mundane Robustsort algorithm with a Permutationsort adjudicator
 --
--- | This is a convenience function that wraps the
+--   This is a convenience function that wraps the
 --   'Data.Tensort.Robustsort.robustsortP' function
 
 -- | ==== __Examples__
@@ -36,7 +36,7 @@ robustsortP = wrapSortAlg Data.Tensort.Robustsort.robustsortP
 -- | Takes a list of Bits and returns a sorted list of Bits using a Basic
 --   Mundane Robustsort algorithm with a Bogosort adjudicator
 --
--- | This is a convenience function that wraps the
+--   This is a convenience function that wraps the
 --   'Data.Tensort.Robustsort.robustsortB' function
 
 -- | ==== __Examples__
@@ -48,7 +48,7 @@ robustsortB = wrapSortAlg Data.Tensort.Robustsort.robustsortB
 -- | Takes a list of Bits and returns a sorted list of Bits using a Basic
 --   Magic Robustsort algorithm
 --
--- | This is a convenience function that wraps the
+--   This is a convenience function that wraps the
 --   'Data.Tensort.Robustsort.robustsortM' function
 
 -- | ==== __Examples__
@@ -60,10 +60,10 @@ robustsortM = wrapSortAlg Data.Tensort.Robustsort.robustsortM
 -- | Takes a list of Bits and returns a sorted list of Bits using a Recursive
 --   Mundane Robustsort algorithm with a Permutationsort adjudicator
 --
---  | This is a convenience function that wraps the
---    'Data.Tensort.Robustsort.robustsortRP' function
+--   This is a convenience function that wraps the
+--   'Data.Tensort.Robustsort.robustsortRP' function
 
---  | ==== __Examples__
+-- | ==== __Examples__
 --  >>> robustsortRP [16, 23, 4, 8, 15, 42]
 --  [4,8,15,16,23,42]
 robustsortRP :: [Bit] -> [Bit]
@@ -72,8 +72,8 @@ robustsortRP = wrapSortAlg Data.Tensort.Robustsort.robustsortRP
 -- | Takes a list of Bits and returns a sorted list of Bits using a Recursive
 --  Mundane Robustsort algorithm with a Bogosort adjudicator
 --
---  | This is a convenience function that wraps the
---  'Data.Tensort.Robustsort.robustsortRB' function
+--   This is a convenience function that wraps the
+--   'Data.Tensort.Robustsort.robustsortRB' function
 
 --  | ==== __Examples__
 --  >>> robustsortRB [16, 23, 4, 8, 15, 42]
@@ -84,7 +84,7 @@ robustsortRB = wrapSortAlg Data.Tensort.Robustsort.robustsortRB
 -- | Takes a list of Bits and returns a sorted list of Bits using a Recursive
 --   Magic Robustsort algorithm
 --
---   | This is a convenience function that wraps the
+--   This is a convenience function that wraps the
 --   'Data.Tensort.Robustsort.robustsortRM' function
 
 --   | ==== __Examples__

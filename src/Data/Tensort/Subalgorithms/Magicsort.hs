@@ -11,7 +11,7 @@ import Data.Tensort.Utils.Types (Sortable (..))
 
 -- | Takes a Sortable and returns a sorted Sortable
 --
--- | Adjudicates between three other sorting algorithms to return a robust
+--   Adjudicates between three other sorting algorithms to return a robust
 --   solution
 
 -- | ==== __Examples__
