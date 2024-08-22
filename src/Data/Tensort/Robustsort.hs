@@ -25,7 +25,7 @@ import Data.Tensort.Subalgorithms.Supersort
   )
 import Data.Tensort.Tensort (tensort)
 import Data.Tensort.Utils.MkTsProps (mkTsProps)
-import Data.Tensort.Utils.Types (SortAlg, Sortable, fromSortBit)
+import Data.Tensort.Utils.Types (SortAlg, Sortable (..), fromSortBit, fromSortRec)
 
 robustsortRP :: Sortable -> Sortable
 robustsortRP = robustsortRCustom robustsortP
@@ -82,7 +82,8 @@ robustsortRCustom baseSortAlg xs =
     xs
 
 getLnBytesize :: Sortable -> Int
-getLnBytesize xs = getLn (length (fromSortBit xs))
+getLnBytesize (SortBit xs) = getLn (length xs)
+getLnBytesize (SortRec xs) = getLn (length xs)
 
 getLn :: Int -> Int
 getLn x = ceiling (log (fromIntegral x) :: Double)
