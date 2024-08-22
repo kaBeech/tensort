@@ -1,3 +1,8 @@
+-- | This module provides Rotationsort variants for sorting lists using the
+--   Sortable type
+--
+-- | I was having some issues with the swaps for larger input lists, so for now
+--   these functions are only implemented for lists of length 3 or less.
 module Data.Tensort.Subalgorithms.Rotationsort
   ( rotationsort,
     rotationsortAmbi,
@@ -12,9 +17,18 @@ import Data.Tensort.Utils.ComparisonFunctions
   )
 import Data.Tensort.Utils.Types (Sortable (..))
 
--- I was having some issues with the swaps for larger input lists, so
--- for now this is only implemented for lists of length 3 or less.
+-- | Takes a Sortable and returns a sorted Sortable using a Rotationsort
+--  algorithm
+--
+--  I was having some issues with the swaps for larger input lists, so for now
+--  this function is only implemented for lists of length 3 or less.
 
+-- | ==== __Examples__
+-- >>> rotationsort (SortBit [1,3,2])
+-- SortBit [1,2,3]
+--
+-- >>> rotationsort (SortRec [(3, 1), (1, 3), (2, 2)])
+-- SortRec [(3,1),(2,2),(1,3)]
 rotationsort :: Sortable -> Sortable
 rotationsort (SortBit bits) =
   let result =
@@ -25,6 +39,18 @@ rotationsort (SortRec recs) =
         rotationsortIterable greaterThanOrEqualRecord recs 0 False False
    in SortRec result
 
+-- | Takes a Sortable and returns a sorted Sortable using an Ambidextrous
+--   Rotationsort algorithm
+--
+--  I was having some issues with the swaps for larger input lists, so for now
+--  this function is only implemented for lists of length 3 or less.
+
+-- | ==== __Examples__
+-- >>> rotationsortAmbi (SortBit [1,3,2])
+-- SortBit [1,2,3]
+--
+-- >>> rotationsortAmbi (SortRec [(3, 1), (1, 3), (2, 2)])
+-- SortRec [(3,1),(2,2),(1,3)]
 rotationsortAmbi :: Sortable -> Sortable
 rotationsortAmbi (SortBit bits) =
   let result =
@@ -35,6 +61,18 @@ rotationsortAmbi (SortRec recs) =
         rotationsortIterable greaterThanOrEqualRecord recs 0 True False
    in SortRec result
 
+-- | Takes a Sortable and returns a sorted Sortable using a Reverse
+--   Rotationsort algorithm
+--
+--   I was having some issues with the swaps for larger input lists, so for now
+--   this function is only implemented for lists of length 3 or less.
+
+-- | ==== __Examples__
+-- >>> rotationsortReverse (SortBit [1,3,2])
+-- SortBit [1,2,3]
+--
+-- >>> rotationsortReverse (SortRec [(3, 1), (1, 3), (2, 2)])
+-- SortRec [(3,1),(2,2),(1,3)]
 rotationsortReverse :: Sortable -> Sortable
 rotationsortReverse (SortBit bits) =
   let result =
@@ -55,6 +93,18 @@ rotationsortReverse (SortRec recs) =
           True
    in SortRec result
 
+-- | Takes a Sortable and returns a sorted Sortable using an Ambidextrous
+--   Reverse Rotationsort algorithm
+--
+--   I was having some issues with the swaps for larger input lists, so for now
+--   this function is only implemented for lists of length 3 or less.
+
+-- | ==== __Examples__
+-- >>> rotationsortReverseAmbi (SortBit [1,3,2])
+-- SortBit [1,2,3]
+--
+-- >>> rotationsortReverseAmbi (SortRec [(3, 1), (1, 3), (2, 2)])
+-- SortRec [(3,1),(2,2),(1,3)]
 rotationsortReverseAmbi :: Sortable -> Sortable
 rotationsortReverseAmbi (SortBit bits) =
   let result =

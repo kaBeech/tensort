@@ -1,8 +1,18 @@
+-- | This module provides the mergesort function for sorting lists using the
+--   Sortable type
 module Data.Tensort.OtherSorts.Mergesort (mergesort) where
 
 import Data.Tensort.Utils.ComparisonFunctions (lessThanBit, lessThanRecord)
-import Data.Tensort.Utils.Types (Record, Sortable (..), Bit)
+import Data.Tensort.Utils.Types (Bit, Record, Sortable (..))
 
+-- | Takes a Sortable and returns a sorted Sortable using a Mergesort algorithm
+
+-- | ==== __Examples__
+--  >>> mergesort (SortBit [16, 23, 4, 8, 15, 42])
+--  SortBit [4,8,15,16,23,42]
+--
+--  >>> mergesort (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
+--  SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 mergesort :: Sortable -> Sortable
 mergesort (SortBit xs) = SortBit (mergesortBits xs)
 mergesort (SortRec xs) = SortRec (mergesortRecs xs)

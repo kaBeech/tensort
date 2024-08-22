@@ -1,8 +1,18 @@
+-- | This module provides the quicksort function for sorting lists using the
+--   Sortable type
 module Data.Tensort.OtherSorts.Quicksort (quicksort) where
 
 import Data.Tensort.Utils.ComparisonFunctions (greaterThanBit, greaterThanRecord)
 import Data.Tensort.Utils.Types (Bit, Record, Sortable (..))
 
+-- | Takes a Sortable and returns a sorted Sortable using a Quicksort algorithm
+
+-- | ==== __Examples__
+--  >>> quicksort (SortBit [16, 23, 4, 8, 15, 42])
+--  SortBit [4,8,15,16,23,42]
+--
+--  >>> quicksort (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
+--  SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 quicksort :: Sortable -> Sortable
 quicksort (SortBit []) = SortBit []
 quicksort (SortBit [x]) = SortBit [x]
