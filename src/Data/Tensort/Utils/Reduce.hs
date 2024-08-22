@@ -60,5 +60,5 @@ reduceTensorStacksRSinglePass tsProps wonkySt tensorStacks = foldr acc ([], wonk
   where
     acc :: [TensorStackR] -> ([TensorStackR], WonkyState) -> ([TensorStackR], WonkyState)
     acc tensorStack (newTensorStacks, wonkySt') = do
-      let (result, wonkySt'') = createTensor (subAlgorithm tsProps) wonkySt (SMemoryRec (TensorMemR tensorStack))
+      let (result, wonkySt'') = createTensor (subAlgorithm tsProps) wonkySt' (SMemoryRec (TensorMemR tensorStack))
       (newTensorStacks ++ [fromSTensorRec result], wonkySt'')
