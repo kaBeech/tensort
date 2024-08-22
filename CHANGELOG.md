@@ -83,4 +83,4 @@
 
 * Improve flow in README
 
-* Cleanup code a bit
+* Cleanup code and documentation a bit
