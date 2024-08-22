@@ -108,6 +108,7 @@ library
                       Data.Tensort.OtherSorts.Mergesort,
                       Data.Tensort.OtherSorts.Quicksort,
                       Data.Tensort.Utils.Check,
+                      Data.Tensort.Utils.LogNat,
                       Data.Tensort.Utils.MkTsProps,
                       Data.Tensort.Utils.RandomizeList,
                       Data.Tensort.Utils.Types,

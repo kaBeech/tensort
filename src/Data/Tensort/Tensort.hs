@@ -11,15 +11,21 @@ where
 import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 import Data.Tensort.Utils.Compose (createInitialTensors)
 import Data.Tensort.Utils.Convert (rawToBytes)
+import Data.Tensort.Utils.LogNat (getLnBytesize)
 import Data.Tensort.Utils.MkTsProps (mkTsProps)
 import Data.Tensort.Utils.RandomizeList (randomizeList)
 import Data.Tensort.Utils.Reduce (reduceTensorStacks)
 import Data.Tensort.Utils.Render (getSortedBitsFromTensor)
-import Data.Tensort.Utils.Types (Sortable (..), TensortProps (..), fromSBitBits, fromSBitRecs)
+import Data.Tensort.Utils.Types
+  ( Sortable (..),
+    TensortProps (..),
+    fromSBitBits,
+    fromSBitRecs,
+  )
 
 -- | Sort a list of Sortables using a custom Tensort algorithm
 --
--- | Takes TensortProps and a Sortable and returns a sorted Sortable
+--   Takes TensortProps and a Sortable and returns a sorted Sortable
 
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
@@ -82,15 +88,4 @@ tensortBN n = tensort (mkTsProps n bubblesort)
 -- >>> tensortBL (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
 -- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 tensortBL :: Sortable -> Sortable
-tensortBL xs = tensort (mkTsProps (calculateBytesize xs) bubblesort) xs
-
--- | Calculate a logarithmic Bytesize from a Sortable
-
--- | ==== __Examples__
--- >>> calculateBytesize (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
--- 2
-calculateBytesize :: Sortable -> Int
-calculateBytesize (SortBit xs) =
-  ceiling (log (fromIntegral (length xs)) :: Double)
-calculateBytesize (SortRec xs) =
-  ceiling (log (fromIntegral (length xs)) :: Double)
+tensortBL xs = tensort (mkTsProps (getLnBytesize xs) bubblesort) xs
