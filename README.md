@@ -15,13 +15,10 @@ sorted list. These transformations provide opportunities to increase redundancy
 for improved robustness and can be leveraged to include any further processing
 we wish to do on the elements.
 
-
       
 
-
-
 <figure>
-    <img src="./assets/images/deck_shuffle_chart_censored.svg "
+    <img src="./assets/images/deck_shuffle_chart_censored.svg"
          alt="When sorting a randomly shuffled deck of cards, Quicksort makes
         202 positional errors, Mergesort makes 201, Bubblesort makes 4, Tensort
         makes 51, Mundane Robustsort makes 11, and Magic Robustsort makes
@@ -33,6 +30,8 @@ we wish to do on the elements.
         </a>
     </i></figcaption>
 </figure>
+
+      
 
 ## Table of Contents
 
@@ -165,6 +164,8 @@ processing tailored to suit the current goals while preserving time efficiency.
 as strict dependency management, which even the smartest among us sometimes
 falter without:
 
+      
+
 <figure>
     <img src="./assets/images/ackley_deps.png"
          alt="Comment from Ackley in the Beyond Efficiency code about Perl
@@ -233,6 +234,8 @@ can't figure out why he's here, especially by the end of this README, go back
 and re-read the paper!
 
 Alright, let's get started! Ready, Sir Michael?
+
+      
 
 <figure>
     <img src="https://m.media-amazon.com/images/M/MV5BMzU2Nzk5NjA1M15BMl5BanBnXkFtZTYwNjcyNDU2._V1_.jpg"
@@ -508,6 +511,8 @@ pretty happy with that!
 But now that we understand Tensort's basic structure, let's tune it for even
 more robustness!
 
+      
+
 <figure>
     <img src="https://m.media-amazon.com/images/M/MV5BNjk2MTMzNTA4MF5BMl5BanBnXkFtZTcwMTM0OTk1Mw@@._V1_.jpg"
          alt="Michael Caine sitting at a desk in front of a chalkboard full of
@@ -695,7 +700,6 @@ of both accuracy in determining the TopBit and adhering to the general rules of
 this project while returning something besides [1,3,2] as its third most common
 result, [I'd love to hear about it](#contact)!
 
-
       
 
 <figure>
@@ -822,6 +826,8 @@ You'll remember that our standard Tensort uses a logarithmic Bytesize. Our base
 Robustsort uses a Bytesize of 3, but we can use a logarithmic Bytesize by
 adding recursion.
 
+      
+
 <figure>
     <img src="https://m.media-amazon.com/images/M/MV5BZWUzM2NhMTMtM2U0Yy00MmE4LWI2OGItMWQyZjQ3MmRkMGVlXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg"
          alt="Michael Caine reaching into a cage to gently retrieve a bird. The
@@ -832,7 +838,6 @@ adding recursion.
             Source
         </a></i></figcaption>
 </figure>
-
 
       
 
@@ -874,6 +879,8 @@ Magicsort is an algorithm that will re-run Permutationsort only if it disagrees
 with an extremely reliable, theoretically non-deterministic algorithm - one
 that's so good it's robust against logic itself...
 
+      
+
 <figure>
     <img src="./assets/images/mc_confused.png"
          alt="Michael Caine and Mike Meyers looking taken aback">
@@ -882,9 +889,7 @@ that's so good it's robust against logic itself...
         </a></i></figcaption>
 </figure>
 
-
       
-
 
 ...[Bogosort!](https://www.youtube.com/watch?v=kgBjXUE_Nwc&t=583)
 
@@ -994,10 +999,7 @@ considerations to keep in mind:
 Now let's take a look at how everything compares. Here is a graph showing the
 benchmarking results for average error score for our algorithms:
 
-
       
-
-
 
 <figure>
     <img src="./assets/images/deck_shuffle_chart_uncensored.svg"
@@ -1005,6 +1007,8 @@ benchmarking results for average error score for our algorithms:
         202 positional errors, Mergesort makes 201, Bubblesort makes 4, Tensort
         makes 51, Mundane Robustsort makes 11, and Magic Robustsort makes 1">
 </figure>
+
+      
 
 As shown above, when sorting a randomly shuffled deck of cards, Quicksort makes
 202 positional errors, Mergesort makes 201, Bubblesort makes 4, Logarithmic
@@ -1038,8 +1042,12 @@ information):
      RobustsortRM | 0.249211013s    | 1824     |
     ----------------------------------------------------------
 
+      
+
 Well, there it is! I'm pretty happy with the results. What do you think, Sir
 Michael?
+
+      
 
 <figure>
     <img src="./assets/images/mc_doors.png"
@@ -1048,6 +1056,8 @@ Michael?
             Source
         </a></i></figcaption>
 </figure>
+
+      
 
 ## Library
 
