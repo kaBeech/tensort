@@ -25,7 +25,7 @@ import Data.Tensort.Subalgorithms.Supersort
   )
 import Data.Tensort.Tensort (tensort)
 import Data.Tensort.Utils.MkTsProps (mkTsProps)
-import Data.Tensort.Utils.Types (SortAlg, Sortable (..), fromSortBit, fromSortRec)
+import Data.Tensort.Utils.Types (SortAlg, Sortable (..))
 
 robustsortRP :: Sortable -> Sortable
 robustsortRP = robustsortRCustom robustsortP

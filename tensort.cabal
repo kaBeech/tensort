@@ -170,8 +170,10 @@ test-suite tensort-test
     default-language: Haskell2010
 
     -- Modules included in this executable, other than Main.
-    other-modules:    TestCheck,
-                      SortSpec,
+    other-modules:    Test.QCheck,
+                      Test.SortingAlgorithms,
+                      Test.SortSpec,
+                      Test.TestCheck,
                       
 
     -- LANGUAGE extensions used by modules in this package.
