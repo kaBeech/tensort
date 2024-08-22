@@ -76,3 +76,7 @@
 ## 1.0.1.1 -- 2024-08-22
 
 * Make all pictures in README viewable on Hackage
+
+## X.X.X.X -- XXXX-XX-XX
+
+* Improve flow in README
