@@ -108,6 +108,7 @@ library
                       Data.Tensort.OtherSorts.Mergesort,
                       Data.Tensort.OtherSorts.Quicksort,
                       Data.Tensort.Utils.Check,
+                      Data.Tensort.Utils.LogNat,
                       Data.Tensort.Utils.MkTsProps,
                       Data.Tensort.Utils.RandomizeList,
                       Data.Tensort.Utils.Types,
@@ -153,8 +154,6 @@ executable tensort
     -- Other library packages from which modules are imported.
     build-depends:
         base,
-        tensort,
-        time >= 1.2.0.3 && < 1.15,
 
     -- Directories containing source files.
     hs-source-dirs:   app

@@ -20,7 +20,7 @@ we wish to do on the elements.
          alt="When sorting a randomly shuffled deck of cards, Quicksort makes
         202 positional errors, Mergesort makes 201, Bubblesort makes 4, Tensort
         makes 51, Mundane Robustsort makes 11, and Magic Robustsort makes
-        [CENSORED]">
+        [SPOILERS]">
     <figcaption><i>
         Read on for the full data, or 
         <a href="#comparing-it-all">

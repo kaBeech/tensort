@@ -8,7 +8,7 @@
    height="600.0000"
    version="1.1"
    id="svg63"
-   sodipodi:docname="chart_censored.svg"
+   sodipodi:docname="deck_shuffle_chart_censored.svg"
    inkscape:version="1.3.2 (091e20ef0f, 2023-11-25)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -24,8 +24,8 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="1.3817989"
-     inkscape:cx="420.82825"
-     inkscape:cy="-38.717646"
+     inkscape:cx="421.19009"
+     inkscape:cy="313.72148"
      inkscape:window-width="1876"
      inkscape:window-height="1006"
      inkscape:window-x="0"
@@ -1013,9 +1013,9 @@
      transform="translate(-8)"><tspan
        x="97.173828"
        y="124.05078"
-       id="tspan3"><tspan
+       id="tspan16"><tspan
          style="font-weight:200;font-size:16px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Ultra-Light'"
-         id="tspan1">202</tspan></tspan></text>
+         id="tspan2">202</tspan></tspan></text>
   <text
      xml:space="preserve"
      id="text64-1"
@@ -1023,9 +1023,9 @@
      transform="translate(110.6543,0.82422)"><tspan
        x="97.173828"
        y="124.05078"
-       id="tspan5"><tspan
+       id="tspan18"><tspan
          style="font-weight:200;font-size:16px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Ultra-Light'"
-         id="tspan4">201</tspan></tspan></text>
+         id="tspan17">201</tspan></tspan></text>
   <text
      xml:space="preserve"
      id="text64-19"
@@ -1033,9 +1033,9 @@
      transform="translate(234.85135,386.36411)"><tspan
        x="97.173828"
        y="124.05078"
-       id="tspan7"><tspan
+       id="tspan20"><tspan
          style="font-weight:200;font-size:16px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Ultra-Light'"
-         id="tspan6">4</tspan></tspan></text>
+         id="tspan19">4</tspan></tspan></text>
   <text
      xml:space="preserve"
      id="text64-19-0"
@@ -1043,9 +1043,9 @@
      transform="translate(343.13137,291.83431)"><tspan
        x="97.173828"
        y="124.05078"
-       id="tspan9"><tspan
+       id="tspan22"><tspan
          style="font-weight:200;font-size:16px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Ultra-Light'"
-         id="tspan8">51</tspan></tspan></text>
+         id="tspan21">51</tspan></tspan></text>
   <text
      xml:space="preserve"
      id="text64-19-3"
@@ -1053,9 +1053,9 @@
      transform="translate(457.7129,375.35395)"><tspan
        x="97.173828"
        y="124.05078"
-       id="tspan11"><tspan
+       id="tspan24"><tspan
          style="font-weight:200;font-size:16px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Ultra-Light'"
-         id="tspan10">11</tspan></tspan></text>
+         id="tspan23">11</tspan></tspan></text>
   <text
      xml:space="preserve"
      id="text64-19-5"
@@ -1063,9 +1063,9 @@
      transform="translate(579.71018,390.63451)"><tspan
        x="97.173828"
        y="124.05078"
-       id="tspan13"><tspan
+       id="tspan26"><tspan
          style="font-size:16px;font-family:Sans;-inkscape-font-specification:'Sans, Normal'"
-         id="tspan12">1</tspan></tspan></text>
+         id="tspan25">1</tspan></tspan></text>
   <rect
      style="fill:#000000;stroke-width:1.37833;stroke-dasharray:none"
      id="rect65"
@@ -1077,12 +1077,12 @@
      xml:space="preserve"
      id="text65"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:32px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;shape-inside:url(#rect66);fill:#000000;stroke-width:1.5;stroke-dasharray:none"
-     transform="matrix(-0.01684342,-1.7840031,2.8668697,-0.01048136,16.873825,1283.6904)"><tspan
+     transform="matrix(-0.01675612,-2.2111866,2.8520098,-0.01299115,20.341437,1487.355)"><tspan
        x="437.0293"
        y="248.08594"
-       id="tspan15"><tspan
+       id="tspan28"><tspan
          style="font-weight:bold;-inkscape-font-specification:'Sans, Bold';fill:#f9f9f9;stroke:#e5e5e5"
-         id="tspan14">CENSORED</tspan></tspan></text>
+         id="tspan27">SPOILERS</tspan></tspan></text>
   <text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:200;font-stretch:normal;font-size:16px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Ultra-Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#f9f9f9;stroke:#e6e6e6;stroke-width:1.5;stroke-dasharray:none;stroke-opacity:1"

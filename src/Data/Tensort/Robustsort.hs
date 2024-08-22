@@ -26,6 +26,7 @@ import Data.Tensort.Subalgorithms.Supersort
     supersort,
   )
 import Data.Tensort.Tensort (tensort)
+import Data.Tensort.Utils.LogNat (getLn, getLnBytesize)
 import Data.Tensort.Utils.MkTsProps (mkTsProps)
 import Data.Tensort.Utils.Types (SortAlg, Sortable (..))
 
@@ -35,6 +36,9 @@ import Data.Tensort.Utils.Types (SortAlg, Sortable (..))
 -- | ==== __Examples__
 --  >>> robustsortRP (SortBit [16, 23, 4, 8, 15, 42])
 --  SortBit [4,8,15,16,23,42]
+--
+--  >>> robustsortRP (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
+--  SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 robustsortRP :: Sortable -> Sortable
 robustsortRP = robustsortRCustom robustsortP
 
@@ -44,6 +48,9 @@ robustsortRP = robustsortRCustom robustsortP
 -- | ==== __Examples__
 -- >>> robustsortP (SortBit [16, 23, 4, 8, 15, 42])
 -- SortBit [4,8,15,16,23,42]
+--
+-- >>> robustsortP (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
+-- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 robustsortP :: Sortable -> Sortable
 robustsortP = tensort (mkTsProps 3 supersortP)
 
@@ -62,6 +69,9 @@ supersortP =
 -- | ==== __Examples__
 -- >>> robustsortRB (SortBit [16, 23, 4, 8, 15, 42])
 -- SortBit [4,8,15,16,23,42]
+--
+-- >>> robustsortRB (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
+-- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 robustsortRB :: Sortable -> Sortable
 robustsortRB = robustsortRCustom robustsortB
 
@@ -71,6 +81,9 @@ robustsortRB = robustsortRCustom robustsortB
 -- | ==== __Examples__
 -- >>> robustsortB (SortBit [16, 23, 4, 8, 15, 42])
 -- SortBit [4,8,15,16,23,42]
+--
+-- >>> robustsortB (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
+-- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 robustsortB :: Sortable -> Sortable
 robustsortB = tensort (mkTsProps 3 supersortB)
 
@@ -89,6 +102,9 @@ supersortB =
 -- | ==== __Examples__
 -- >>> robustsortRM (SortBit [16, 23, 4, 8, 15, 42])
 -- SortBit [4,8,15,16,23,42]
+--
+-- >>> robustsortRM (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
+-- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 robustsortRM :: Sortable -> Sortable
 robustsortRM = robustsortRCustom robustsortM
 
@@ -98,6 +114,9 @@ robustsortRM = robustsortRCustom robustsortM
 -- | ==== __Examples__
 -- >>> robustsortM (SortBit [16, 23, 4, 8, 15, 42])
 -- SortBit [4,8,15,16,23,42]
+--
+-- >>> robustsortM (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
+-- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 robustsortM :: Sortable -> Sortable
 robustsortM = tensort (mkTsProps 3 supersortM)
 
@@ -110,7 +129,29 @@ supersortM =
       magicSuperStrat
     )
 
--- | Used for making recursive Robustsort algorithms
+-- | Used for making recursive Robustsort variants
+--
+--   Takes the base SortAlg you want to use and a Sortable and returns a sorted
+--   Sortable.
+--
+--   Uses a Logarithmic bytesize to determine when to stop recursing and use
+--   the base SortAlg to sort the records.
+--
+--   Uses the base SortAlg once the bytesize is less than or equal to 27. This
+--   number is chosen because it is the natural logarithm of 27 is close to
+--   3 (it's abuot 3.3) and the square root of 27 is 3, so it's likely to be an
+--   efficient choice.
+--
+--   This confiuguration is tailored to using a standard basic Robustsort
+--   algorithm (i.e. with a Bytesize of 3) as the base SortAlg. You're welcome
+--   to experiment with weirder setups too!
+--
+-- ==== __Examples__
+-- >>> robustsortRCustom robustsortB (SortBit [16, 23, 4, 8, 15, 42])
+-- SortBit [4,8,15,16,23,42]
+--
+-- >>> robustsortRCustom robustsortB (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
+-- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 robustsortRCustom :: SortAlg -> Sortable -> Sortable
 robustsortRCustom baseSortAlg xs =
   tensort
@@ -119,13 +160,6 @@ robustsortRCustom baseSortAlg xs =
         (robustsortRecursive (getLnBytesize xs) baseSortAlg)
     )
     xs
-
-getLnBytesize :: Sortable -> Int
-getLnBytesize (SortBit xs) = getLn (length xs)
-getLnBytesize (SortRec xs) = getLn (length xs)
-
-getLn :: Int -> Int
-getLn x = ceiling (log (fromIntegral x) :: Double)
 
 robustsortRecursive :: Int -> SortAlg -> SortAlg
 robustsortRecursive bytesize baseSortAlg

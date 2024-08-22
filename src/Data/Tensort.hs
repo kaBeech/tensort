@@ -12,7 +12,7 @@ import Data.Tensort.Utils.WrapSortAlg (wrapSortAlg)
 -- | Takes a list of Bits and returns a sorted list of Bits using a Standard
 --   Logarithmic Tensort algorithm
 --
--- | This is a convenience function that wraps the 'tensortBL' function
+--   This is a convenience function that wraps the 'tensortBL' function
 
 -- | ==== __Examples__
 --   >>> tensort [16, 23, 4, 8, 15, 42]
