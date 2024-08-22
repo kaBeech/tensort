@@ -65,8 +65,10 @@
 
 * Many more updates to the algorithms - see README for details
 
-## 1.0.1.0 -- XXXX-XX-XX
+## 1.0.1.0 -- 2024-08-22
 
 * Export more functions for building custom Tensort variants
 
-* Cleanup code and documentation
+* Cleanup and improve documentation
+
+* Cleanup code a bit

@@ -20,7 +20,7 @@ name:               tensort
 -- PVP summary:     +-+------- breaking API changes
 --                  | | +----- non-breaking API additions
 --                  | | | +--- code changes with no API change
-version:            1.0.0.0
+version:            1.0.1.0
 
 tested-with:        GHC==9.8.2, 
                     GHC==9.6.4, 
@@ -154,6 +154,7 @@ executable tensort
     -- Other library packages from which modules are imported.
     build-depends:
         base,
+        tensort,
 
     -- Directories containing source files.
     hs-source-dirs:   app
