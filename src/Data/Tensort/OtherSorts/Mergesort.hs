@@ -11,8 +11,8 @@ import Data.Tensort.Utils.Types (Bit, Record, Sortable (..))
 --  >>> mergesort (SortBit [16, 23, 4, 8, 15, 42])
 --  SortBit [4,8,15,16,23,42]
 --
---  >>> mergesort (SortRec [(16, 23), (4, 8), (15, 42)])
---  SortRec [(4,8),(16,23),(15,42)]
+--  >>> mergesort (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
+--  SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 mergesort :: Sortable -> Sortable
 mergesort (SortBit xs) = SortBit (mergesortBits xs)
 mergesort (SortRec xs) = SortRec (mergesortRecs xs)

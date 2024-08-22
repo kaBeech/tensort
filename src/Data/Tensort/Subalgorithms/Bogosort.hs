@@ -13,8 +13,8 @@ import Data.Tensort.Utils.Types (Sortable (..))
 -- >>> bogosort (SortBit [16, 23, 4, 8, 15, 42])
 -- SortBit [4,8,15,16,23,42]
 --
--- >>> bogosort (SortRec [(16, 23), (4, 8), (15, 42)])
--- SortRec [(4,8),(16,23),(15,42)]
+-- >>> bogosort (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
+-- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 bogosort :: Sortable -> Sortable
 bogosort = bogosortSeeded 143
 
@@ -25,8 +25,8 @@ bogosort = bogosortSeeded 143
 -- >>> bogosortSeeded 42 (SortBit [16, 23, 4, 8, 15, 42])
 -- SortBit [4,8,15,16,23,42]
 --
--- >>> bogosortSeeded 24 (SortRec [(16, 23), (4, 8), (15, 42)])
--- SortRec [(4,8),(16,23),(15,42)]
+-- >>> bogosortSeeded 24 (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
+-- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 bogosortSeeded :: Int -> Sortable -> Sortable
 bogosortSeeded seed xs
   | isSorted xs = xs

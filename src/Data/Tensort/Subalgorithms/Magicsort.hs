@@ -18,8 +18,8 @@ import Data.Tensort.Utils.Types (Sortable (..))
 -- >>> magicsort (SortBit [16, 23, 4, 8, 15, 42])
 -- SortBit [4,8,15,16,23,42]
 --
--- >>> magicsort (SortRec [(16, 23), (4, 8), (15, 42)])
--- SortRec [(4,8),(16,23),(15,42)]
+-- >>> magicsort (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
+-- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 magicsort :: Sortable -> Sortable
 magicsort xs = do
   let result1 = permutationsort xs

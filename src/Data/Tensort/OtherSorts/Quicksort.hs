@@ -11,8 +11,8 @@ import Data.Tensort.Utils.Types (Bit, Record, Sortable (..))
 --  >>> quicksort (SortBit [16, 23, 4, 8, 15, 42])
 --  SortBit [4,8,15,16,23,42]
 --
---  >>> quicksort (SortRec [(16, 23), (4, 8), (15, 42)])
---  SortRec [(4,8),(16,23),(15,42)]
+--  >>> quicksort (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
+--  SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 quicksort :: Sortable -> Sortable
 quicksort (SortBit []) = SortBit []
 quicksort (SortBit [x]) = SortBit [x]
