@@ -15,6 +15,11 @@ sorted list. These transformations provide opportunities to increase redundancy
 for improved robustness and can be leveraged to include any further processing
 we wish to do on the elements.
 
+
+      
+
+
+
 <figure>
     <img src="./assets/images/deck_shuffle_chart_censored.svg "
          alt="When sorting a randomly shuffled deck of cards, Quicksort makes
@@ -988,6 +993,11 @@ considerations to keep in mind:
 
 Now let's take a look at how everything compares. Here is a graph showing the
 benchmarking results for average error score for our algorithms:
+
+
+      
+
+
 
 <figure>
     <img src="./assets/images/deck_shuffle_chart_uncensored.svg"
