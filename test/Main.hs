@@ -8,7 +8,7 @@ import Test.SortingAlgorithms
 import Test.TestCheck (check)
 
 -- | This suite of QuickCheck tests contains  a guard that will cause the test
---   `suite to fail if any of the individual tests fail
+--   suite to fail if any of the individual tests fail
 main :: IO ()
 main = do
   mapM_ qcheckSortable sortingAlgorithmsSortable
