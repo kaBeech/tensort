@@ -1,7 +1,19 @@
+-- | Module for converting raw input data to SBytes
+--
+--   TODO: See if we can clean up the type conversion here
 module Data.Tensort.Utils.Convert (rawToBytes) where
 
 import Data.Tensort.Utils.Split (splitEvery)
-import Data.Tensort.Utils.Types (Bit, Byte, Record, SBytes (SBytesBit, SBytesRec), Sortable (..), TensortProps (..), fromSortBit, fromSortRec)
+import Data.Tensort.Utils.Types
+  ( Bit,
+    Byte,
+    Record,
+    SBytes (SBytesBit, SBytesRec),
+    Sortable (..),
+    TensortProps (..),
+    fromSortBit,
+    fromSortRec,
+  )
 
 -- | Convert a list of Bits to a list of Bytes of given bytesize, sorting
 --   each byte with the given subalgorithm.
@@ -19,10 +31,12 @@ rawBitsToBytes :: TensortProps -> [Bit] -> [Byte]
 rawBitsToBytes tsProps bits = foldr acc [] (splitEvery (bytesize tsProps) bits)
   where
     acc :: [Bit] -> [Byte] -> [Byte]
-    acc byte bytes = bytes ++ [fromSortBit (subAlgorithm tsProps (SortBit byte))]
+    acc byte bytes =
+      bytes ++ [fromSortBit (subAlgorithm tsProps (SortBit byte))]
 
 rawRecsToBytes :: TensortProps -> [Record] -> [[Record]]
 rawRecsToBytes tsProps recs = foldr acc [] (splitEvery (bytesize tsProps) recs)
   where
     acc :: [Record] -> [[Record]] -> [[Record]]
-    acc rbyte rbytes = rbytes ++ [fromSortRec (subAlgorithm tsProps (SortRec rbyte))]
+    acc rbyte rbytes =
+      rbytes ++ [fromSortRec (subAlgorithm tsProps (SortRec rbyte))]

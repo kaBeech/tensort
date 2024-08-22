@@ -1,3 +1,9 @@
+-- | Module for creating Tensors from Bytes and Tensors
+--
+--   Functions ending in 'R' are for sorting Records when used in a recursive
+--   Tensort variant
+--
+--   TODO: See if we can clean up the type conversion here
 module Data.Tensort.Utils.Compose
   ( createInitialTensors,
     createTensor,
@@ -54,16 +60,26 @@ createInitialTensors tsProps (SBytesRec recs) =
   STensorsRec (createInitialTensorsRecs tsProps recs)
 
 createInitialTensorsBits :: TensortProps -> [Byte] -> [Tensor]
-createInitialTensorsBits tsProps bytes = foldr acc [] (splitEvery (bytesize tsProps) bytes)
+createInitialTensorsBits tsProps bytes =
+  foldr acc [] (splitEvery (bytesize tsProps) bytes)
   where
     acc :: [Byte] -> [Tensor] -> [Tensor]
-    acc byte tensorStacks = tensorStacks ++ [fromSTensorBit (getTensorFromBytes (subAlgorithm tsProps) (SBytesBit byte))]
+    acc byte tensorStacks =
+      tensorStacks
+        ++ [ fromSTensorBit
+               (getTensorFromBytes (subAlgorithm tsProps) (SBytesBit byte))
+           ]
 
 createInitialTensorsRecs :: TensortProps -> [ByteR] -> [TensorR]
-createInitialTensorsRecs tsProps bytesR = foldr acc [] (splitEvery (bytesize tsProps) bytesR)
+createInitialTensorsRecs tsProps bytesR =
+  foldr acc [] (splitEvery (bytesize tsProps) bytesR)
   where
     acc :: [ByteR] -> [TensorR] -> [TensorR]
-    acc byteR tensorStacks = tensorStacks ++ [fromSTensorRec (getTensorFromBytes (subAlgorithm tsProps) (SBytesRec byteR))]
+    acc byteR tensorStacks =
+      tensorStacks
+        ++ [ fromSTensorRec
+               (getTensorFromBytes (subAlgorithm tsProps) (SBytesRec byteR))
+           ]
 
 -- | Create a Tensor from a Memory
 --   Aliases to getTensorFromBytes for ByteMem and getTensorFromTensors for
@@ -73,12 +89,16 @@ createTensor subAlg (SMemoryBit memory) = createTensorB subAlg memory
 createTensor subAlg (SMemoryRec memoryR) = createTensorR subAlg memoryR
 
 createTensorB :: SortAlg -> Memory -> STensor
-createTensorB subAlg (ByteMem bytes) = getTensorFromBytes subAlg (SBytesBit bytes)
-createTensorB subAlg (TensorMem tensors) = getTensorFromTensors subAlg (STensorsBit tensors)
+createTensorB subAlg (ByteMem bytes) =
+  getTensorFromBytes subAlg (SBytesBit bytes)
+createTensorB subAlg (TensorMem tensors) =
+  getTensorFromTensors subAlg (STensorsBit tensors)
 
 createTensorR :: SortAlg -> MemoryR -> STensor
-createTensorR subAlg (ByteMemR bytesR) = getTensorFromBytes subAlg (SBytesRec bytesR)
-createTensorR subAlg (TensorMemR tensorsR) = getTensorFromTensors subAlg (STensorsRec tensorsR)
+createTensorR subAlg (ByteMemR bytesR) =
+  getTensorFromBytes subAlg (SBytesRec bytesR)
+createTensorR subAlg (TensorMemR tensorsR) =
+  getTensorFromTensors subAlg (STensorsRec tensorsR)
 
 -- | Convert a list of Bytes to a Tensor
 
@@ -96,8 +116,10 @@ createTensorR subAlg (TensorMemR tensorsR) = getTensorFromTensors subAlg (STenso
 -- >>> getTensorFromBytes bubblesort (SBytesBit [[2,4,6,8],[1,3,5,7]])
 -- STensorBit ([(1,7),(0,8)],ByteMem [[2,4,6,8],[1,3,5,7]])
 getTensorFromBytes :: SortAlg -> SBytes -> STensor
-getTensorFromBytes subAlg (SBytesBit bytes) = STensorBit (getTensorFromBytesB subAlg bytes)
-getTensorFromBytes subAlg (SBytesRec recs) = STensorRec (getTensorFromBytesR subAlg recs)
+getTensorFromBytes subAlg (SBytesBit bytes) =
+  STensorBit (getTensorFromBytesB subAlg bytes)
+getTensorFromBytes subAlg (SBytesRec recs) =
+  STensorRec (getTensorFromBytesR subAlg recs)
 
 getTensorFromBytesB :: SortAlg -> [Byte] -> Tensor
 getTensorFromBytesB subAlg bytes = do
@@ -108,20 +130,24 @@ getTensorFromBytesB subAlg bytes = do
     acc :: [Byte] -> [Record] -> Int -> [Record]
     acc [] register _ = register
     acc ([] : remainingBytes) register i = acc remainingBytes register (i + 1)
-    acc (byte : remainingBytes) register i = acc remainingBytes (register ++ [(i, last byte)]) (i + 1)
+    acc (byte : remainingBytes) register i =
+      acc remainingBytes (register ++ [(i, last byte)]) (i + 1)
 
 getTensorFromBytesR :: SortAlg -> [ByteR] -> TensorR
 getTensorFromBytesR subAlg bytesR = do
   let registerR = acc bytesR [] 0
   let simplifiedRegiser = simplifyRegister registerR
   let simplifiedRegiser' = fromSortRec (subAlg (SortRec simplifiedRegiser))
-  let registerR' = applySortingFromSimplifiedRegister simplifiedRegiser' registerR
+  let registerR' =
+        applySortingFromSimplifiedRegister simplifiedRegiser' registerR
   (registerR', ByteMemR bytesR)
   where
     acc :: [ByteR] -> [RecordR] -> Int -> [RecordR]
     acc [] register _ = register
-    acc ([] : remainingBytesR) registerR i = acc remainingBytesR registerR (i + 1)
-    acc (byteR : remainingBytesR) registerR i = acc remainingBytesR (registerR ++ [(i, last byteR)]) (i + 1)
+    acc ([] : remainingBytesR) registerR i =
+      acc remainingBytesR registerR (i + 1)
+    acc (byteR : remainingBytesR) registerR i =
+      acc remainingBytesR (registerR ++ [(i, last byteR)]) (i + 1)
 
 -- | Create a TensorStack with the collated and sorted References from the
 --   Tensors as the Register and the original Tensors as the data
@@ -131,18 +157,33 @@ getTensorFromBytesR subAlg bytesR = do
 -- >>> getTensorFromTensors bubblesort (STensorsBit [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(1,14),(0,17)],ByteMem [[16,17],[12,14]])])
 -- STensorBit ([(1,17),(0,18)],TensorMem [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(1,14),(0,17)],ByteMem [[16,17],[12,14]])])
 getTensorFromTensors :: SortAlg -> STensors -> STensor
-getTensorFromTensors subAlg (STensorsBit tensors) = STensorBit (getTensorFromTensorsB subAlg tensors)
-getTensorFromTensors subAlg (STensorsRec tensors) = STensorRec (getTensorFromTensorsR subAlg tensors)
+getTensorFromTensors subAlg (STensorsBit tensors) =
+  STensorBit (getTensorFromTensorsB subAlg tensors)
+getTensorFromTensors subAlg (STensorsRec tensors) =
+  STensorRec (getTensorFromTensorsR subAlg tensors)
 
 getTensorFromTensorsB :: SortAlg -> [Tensor] -> Tensor
-getTensorFromTensorsB subAlg tensors = (fromSortRec (subAlg (SortRec (fromSRecordArrayBit (getRegisterFromTensors (STensorsBit tensors))))), TensorMem tensors)
+getTensorFromTensorsB subAlg tensors =
+  ( fromSortRec
+      ( subAlg
+          ( SortRec
+              ( fromSRecordArrayBit
+                  (getRegisterFromTensors (STensorsBit tensors))
+              )
+          )
+      ),
+    TensorMem tensors
+  )
 
 getTensorFromTensorsR :: SortAlg -> [TensorR] -> TensorR
 getTensorFromTensorsR subAlg tensorsR = do
   let registerR = getRegisterFromTensors (STensorsRec tensorsR)
   let simplifiedRegiser = simplifyRegister (fromSRecordArrayRec registerR)
   let simplifiedRegiser' = fromSortRec (subAlg (SortRec simplifiedRegiser))
-  let registerR' = applySortingFromSimplifiedRegister simplifiedRegiser' (fromSRecordArrayRec registerR)
+  let registerR' =
+        applySortingFromSimplifiedRegister
+          simplifiedRegiser'
+          (fromSRecordArrayRec registerR)
   (registerR', TensorMemR tensorsR)
 
 -- | For each Tensor, produces a Record by combining the top bit of the
@@ -164,7 +205,17 @@ getRegisterFromTensorsB tensors = acc tensors []
     acc :: [Tensor] -> [SRecord] -> [SRecord]
     acc [] records = records
     acc (([], _) : remainingTensors) records = acc remainingTensors records
-    acc (tensor : remainingTensors) records = acc remainingTensors (records ++ [SRecordBit (i, fromSBitBit (getTopBitFromTensorStack (STensorBit tensor)))])
+    acc (tensor : remainingTensors) records =
+      acc
+        remainingTensors
+        ( records
+            ++ [ SRecordBit
+                   ( i,
+                     fromSBitBit
+                       (getTopBitFromTensorStack (STensorBit tensor))
+                   )
+               ]
+        )
       where
         i = length records
 
@@ -174,7 +225,17 @@ getRegisterFromTensorsR tensorsR = acc tensorsR []
     acc :: [TensorR] -> [SRecord] -> [SRecord]
     acc [] records = records
     acc (([], _) : remainingTensorsR) records = acc remainingTensorsR records
-    acc (tensorR : remainingTensorsR) records = acc remainingTensorsR (records ++ [SRecordRec (i, fromSBitRec (getTopBitFromTensorStack (STensorRec tensorR)))])
+    acc (tensorR : remainingTensorsR) records =
+      acc
+        remainingTensorsR
+        ( records
+            ++ [ SRecordRec
+                   ( i,
+                     fromSBitRec
+                       (getTopBitFromTensorStack (STensorRec tensorR))
+                   )
+               ]
+        )
       where
         i = length records
 
@@ -190,8 +251,10 @@ getRegisterFromTensorsR tensorsR = acc tensorsR []
 -- >>> getTopBitFromTensorStack (STensorBit ([(0,28),(1,38)],TensorMem [([(0,27),(1,28)],TensorMem [([(0,23),(1,27)],ByteMem [[21,23],[25,27]]),([(0,24),(1,28)],ByteMem [[22,24],[26,28]])]),([(1,37),(0,38)],TensorMem [([(0,33),(1,38)],ByteMem [[31,33],[35,38]]),([(0,34),(1,37)],ByteMem [[32,14],[36,37]])])]))
 -- SBitBit 38
 getTopBitFromTensorStack :: STensor -> SBit
-getTopBitFromTensorStack (STensorBit tensor) = getTopBitFromTensorStackB tensor
-getTopBitFromTensorStack (STensorRec tensorR) = getTopBitFromTensorStackR tensorR
+getTopBitFromTensorStack (STensorBit tensor) =
+  getTopBitFromTensorStackB tensor
+getTopBitFromTensorStack (STensorRec tensorR) =
+  getTopBitFromTensorStackR tensorR
 
 getTopBitFromTensorStackB :: Tensor -> SBit
 getTopBitFromTensorStackB (register, _) = SBitBit (snd (last register))
