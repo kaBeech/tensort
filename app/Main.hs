@@ -22,13 +22,13 @@ main = do
   -- printSubAlgErrorRateComparison 1000 wonkyChance stuckChance
   -- printErrorSpread 1000 wonkyChance stuckChance
   -- printDeckShuffleErrors 1000 wonkyChance stuckChance
-  -- printGreeting
-  printLargeTimeAndErrorRateComparison
-    [15 .. 17] -- n, where list size = 2^n
-    100 -- Number of runs per SortAlg/list length
-    1 -- Bubblesort cutoff - don't benchmark Bubblesort after this list length
-    wonkyChance
-    stuckChance
+  -- printLargeTimeAndErrorRateComparison
+  --   [3 .. 14] -- n, where list size = 2^n
+  --   100 -- Number of runs per SortAlg/list length
+  --   1024 -- Bubblesort cutoff - don't benchmark Bubblesort after this list length
+  --   wonkyChance
+  --   stuckChance
+  printGreeting
 
 printGreeting :: IO ()
 printGreeting =
