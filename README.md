@@ -267,34 +267,34 @@ fear not!
 
 #### Structure
 
-  - Bit <- Element of the list to be sorted
+    Bit <- Element of the list to be sorted
 
-  - Byte <- List of Bits
+    Byte <- List of Bits
 
-  - Bytesize <- Maximum length of a Byte
+    Bytesize <- Maximum length of a Byte
 
-  - Tensor <- Tuple of a Register list and a Memory list
+    Tensor <- Tuple of a Register list and a Memory list
 
-  - Memory <- List of Bytes or other Tensors contained in the current Tensor
+    Memory <- List of Bytes or other Tensors contained in the current Tensor
 
-  - Register <- List of Records, each Record referencing one Byte or Tensor
+    Register <- List of Records, each Record referencing one Byte or Tensor
     in Memory
 
-  - Record <- Tuple of the Address and a copy of the TopBit of the referenced
+    Record <- Tuple of the Address and a copy of the TopBit of the referenced
     Byte or Tensor
 
-  - Address <- Pointer to a Byte or Tensor in Memory
+    Address <- Pointer to a Byte or Tensor in Memory
 
-  - TopBit <- Value of the Bit at the top of the stack in a Byte or Tensor
+    TopBit <- Value of the Bit at the top of the stack in a Byte or Tensor
 
-  - TensorStack <- A top-level Tensor along with all the Bits, Bytes, and
+    TensorStack <- A top-level Tensor along with all the Bits, Bytes, and
     Tensors contained within it. Structurally equivalent to a Tensor
 
-  - TopRegister <- List of Records that is built after all Tensors are built.
+    TopRegister <- List of Records that is built after all Tensors are built.
     Each Record references one TensorStack. Structurally equivalent to a
     Register
 
-  - SubAlgorithm <- The sorting sub-algorithm used at various stages
+    SubAlgorithm <- The sorting sub-algorithm used at various stages
 
 In Tensort, the smallest unit of information is a Bit. Each Bit stores one
 element of the list to be sorted. A group of Bits is known as a Byte.
