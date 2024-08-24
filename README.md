@@ -997,7 +997,8 @@ considerations to keep in mind:
 ## Comparing it all
 
 Now let's take a look at how everything compares. Here is a graph showing the
-benchmarking results for average error score for our algorithms:
+benchmarking results for average error score (over 1000 runs) for our
+algorithms:
 
       
 
