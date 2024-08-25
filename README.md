@@ -142,7 +142,7 @@ list), a 2-degree tensor is a matrix, and so on.
 
 Each dimension of a tensor has a rank, which can be thought of as the length of
 that dimension. A tensor's shape can be described by another tensor that
-denotes the ranks of each of its dimensions. For example. [1,2,3] is an
+denotes the ranks of each of its dimensions. For example, [1,2,3] is an
 instance of a 1-degree tensor. Its single dimension is 3 elements long, so it
 has a rank 3. Thus its shape is [3].
 
@@ -776,7 +776,7 @@ permutations of [1,2,3] using a faulty comparator that gives a random result
 In these cases, 86% of the time the Top Bit was in the correct position.
 The least likely outcome is a reverse-sorted Byte and the other possible
 incorrect outcomes are in approximately even distribution with each other.
-
+https://hachyderm.io/@kaBeech
 #### Supersort Adjudication
 
 Supposing that our results from Bubblesort and Rotationsort disagree and we now
@@ -1121,8 +1121,9 @@ Note that these instructions don't make the assumptions listed above
 
 Questions and feedback are welcome!
 
-The easiest way to contact me is usually via
+The easiest way to contact me currently is likely via
 [LinkedIn](https://www.linkedin.com/in/kyle-beechly), or you can try
+[Mastodon](https://hachyderm.io/@kaBeech) or
 [email](mailto:tensort@kabeech.com).
 
 ## Thank you!
