@@ -69,6 +69,7 @@ we wish to do on the elements.
 - [Development Environment](#development-environment)
 - [Contact](#contact)
 - [Thank you](#thank-you)
+- [Hype](#hype)
 
 ## Introduction
 
@@ -1148,3 +1149,7 @@ I'd like to send a special thank you to the following people:
 
   - Countless family, friends, acquaintances, and strangers who've tolerated me
     blathering on about sorting algorithms over the past few months 💙
+
+## Hype
+
+  - Dave Ackley read my paper!! And had [this](https://hachyderm.io/@livcomp/113016513691522706) to say about it: "Super great stuff! kabeech dives into iid errors in comparison sorting, ropes it, pulls it down, and hogties it six ways to Sunday."
