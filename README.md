@@ -171,7 +171,9 @@ falter without:
     <img src="./assets/images/ackley_deps.png"
          alt="Comment from Ackley in the Beyond Efficiency code about Perl
         updates breaking their code">
-    <figcaption><i><a href="http://livingcomputation.com/robusort2.tar">
+    <figcaption><i><a href="http://livingcomputation.com/robusort2.tar" 
+                      rel="noopener noreferrer"
+                      target="_blank">
             Source
         </a></i></figcaption>
 </figure>
@@ -209,20 +211,30 @@ really only had a rudimentary understanding of Insertionsort, Quicksort,
 Mergesort, Bubblesort and Bogosort, so it's entirely possible that I've
 reinvented a few things that already exist.
 
-It may be helpful to note that this project was originally undertaken in an
-endeavor to come up with a solution naively, for the exercise, before
-researching other algorithms built to tackle the same problem. I did very
-briefly check out Ackley's [Demon Horde
-Sort](https://www.youtube.com/watch?v=helScS3coAE&t=260s), but only enough
-(about 5 seconds of that video) to verify that it is different from this
-algorithm. I've been purposefully avoiding learning much about Demon
-Horde Sort before publishing v1.0.0.0 of this package, but Ackley is way
-smarter than me so if you do actually want a real, professional approach to
-robust sorting, Demon Horde Sort is likely the place to look.
-
 The algorithms used here that I have made up or renamed are, in order of
 introduction, Tensort, Robustsort, Rotationsort, Permutationsort, and
 Magicsort.
+
+-------
+
+<i>
+  It may be helpful to note that this project was originally undertaken in an
+  endeavor to come up with a solution naively, for the exercise, before
+  researching other algorithms built to tackle the same problem. Another
+  notable example of a robust sorting algotithm is Ackley's
+    <a href="https://www.youtube.com/watch?v=helScS3coAE&t=260s" 
+       rel="noopener noreferrer"
+       target="_blank">
+      Demon Horde Sort
+    </a>, 
+  which I purposefully avoiding learning much about before publishing v1.0.0.0 
+  of this package. Demon Horde Sort is more truly robust than Tensort, being
+  resiliant against far more types of unexpected conditions than just a wonky
+  comparator. It's really cool, I encourage you to check out that video when
+  you're done here!
+</i>
+
+-------
 
 I will also be joined by the spirit of Sir Michael Caine, who is here for two
 reasons. One is to keep an eye on me and make sure I don't go too overboard.
@@ -241,7 +253,9 @@ Alright, let's get started! Ready, Sir Michael?
 <figure>
     <img src="https://m.media-amazon.com/images/M/MV5BMzU2Nzk5NjA1M15BMl5BanBnXkFtZTYwNjcyNDU2._V1_.jpg"
          alt="Sir Michael Caine, ready to go!">
-    <figcaption><i><a href="https://www.imdb.com/name/nm0000323/mediaviewer/rm1782683648/">
+    <figcaption><i><a href="https://www.imdb.com/name/nm0000323/mediaviewer/rm1782683648/" 
+                      rel="noopener noreferrer"
+                      target="_blank">
             Source
         </a></i></figcaption>
 </figure>
@@ -518,7 +532,9 @@ more robustness!
     <img src="https://m.media-amazon.com/images/M/MV5BNjk2MTMzNTA4MF5BMl5BanBnXkFtZTcwMTM0OTk1Mw@@._V1_.jpg"
          alt="Michael Caine sitting at a desk in front of a chalkboard full of
         mathematical formulae and architectural drawings">
-    <figcaption><i><a href="https://www.imdb.com/name/nm0000323/mediaviewer/rm3619586816/">
+    <figcaption><i><a href="https://www.imdb.com/name/nm0000323/mediaviewer/rm3619586816/" 
+                      rel="noopener noreferrer"
+                      target="_blank">
             Source
         </a></i></figcaption>
 </figure>
@@ -708,7 +724,9 @@ result, [I'd love to hear about it](#contact)!
          width="400"
          alt="Michael Caine rushing past the Batmobile">
     <figcaption><i><a 
-        href="https://www.imdb.com/name/nm0000323/mediaviewer/rm4040654848/">
+        href="https://www.imdb.com/name/nm0000323/mediaviewer/rm4040654848/" 
+        rel="noopener noreferrer"
+        target="_blank">
             Source
         </a></i></figcaption>
 </figure>
@@ -835,7 +853,9 @@ adding recursion.
               cage is in a larger structure of cages. The camera is viewing
               from an adjacent cage and can see into multiple subsequent cages,
               giving the appearance of a recursive picture-in-picture effect">
-    <figcaption><i><a href="https://www.imdb.com/name/nm0000323/mediaviewer/rm1461852929/">
+    <figcaption><i><a href="https://www.imdb.com/name/nm0000323/mediaviewer/rm1461852929/" 
+                      rel="noopener noreferrer"
+                      target="_blank">
             Source
         </a></i></figcaption>
 </figure>
@@ -885,7 +905,9 @@ that's so good it's robust against logic itself...
 <figure>
     <img src="./assets/images/mc_confused.png"
          alt="Michael Caine and Mike Meyers looking taken aback">
-    <figcaption><i><a href="https://www.imdb.com/video/vi3757292825/">
+    <figcaption><i><a href="https://www.imdb.com/video/vi3757292825/" 
+                      rel="noopener noreferrer"
+                      target="_blank">
             Source
         </a></i></figcaption>
 </figure>
@@ -1054,7 +1076,9 @@ Michael?
 <figure>
     <img src="./assets/images/mc_doors.png"
          alt="Michael Caine looking upset with Michael Standing">
-    <figcaption><i><a href="https://www.imdb.com/video/vi3792027161/">
+    <figcaption><i><a href="https://www.imdb.com/video/vi3792027161/" 
+                      rel="noopener noreferrer"
+                      target="_blank">
             Source
         </a></i></figcaption>
 </figure>
