@@ -230,8 +230,9 @@ Magicsort.
   which I purposefully avoiding learning much about before publishing v1.0.0.0 
   of this package. Demon Horde Sort is more truly robust than Tensort, being
   resiliant against far more types of unexpected conditions than just a wonky
-  comparator. It's really cool, I encourage you to check out that video when
-  you're done here!
+  comparator. It's really cool and a lot closer to what I expect computinig to
+  look like in the future - I encourage you to check out that video when you're
+  done here!
 </i>
 
 -------
