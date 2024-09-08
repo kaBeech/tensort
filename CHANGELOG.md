@@ -88,3 +88,7 @@
 ## X.X.X.X -- XXXX.XX.XX
 
 * Adjust README formatting
+
+* Add Hype section to README
+
+* Some code cleanup
