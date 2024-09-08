@@ -7,7 +7,7 @@ This project started as an exploration of what a sorting algorithm that
 prioritizes robustness might look like. As such it also describes and provides
 implementations of Robustsort, a group of Tensort variants designed for
 robustness in conditions described in David H. Ackley's
-[Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf).
+[Beyond Efficiency](https://web.archive.org/web/20240809143400/https://www.cs.unm.edu/~ackley/be-201301131528.pdf).
 
 Simply put, Tensort takes an input list, transforms the list into a
 multi-dimensional tensor field, then transforms that tensor field back into a
@@ -69,12 +69,13 @@ we wish to do on the elements.
 - [Development Environment](#development-environment)
 - [Contact](#contact)
 - [Thank you](#thank-you)
+- [Hype](#hype)
 
 ## Introduction
 
 ### Inspiration
 
-  - [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by
+  - [Beyond Efficiency](https://web.archive.org/web/20240809143400/https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by
   [David H. Ackley](https://livingcomputation.com/)
 
   - [Beyond Efficiency by Dave Ackley](https://futureofcoding.org/episodes/070)
@@ -96,7 +97,7 @@ And I thought, "Why not?"
 Being adaptable to different scenarios, a tunable sorting algorithm has many
 potential applications. This README will focus on robustness in sorting.
 
-[Ackley](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) has compelling
+[Ackley](https://web.archive.org/web/20240809143400/https://www.cs.unm.edu/~ackley/be-201301131528.pdf) has compelling
 things to say about why prioritizing robustness is important and useful. I'd
 highly recommend reading that paper!
 
@@ -142,7 +143,7 @@ list), a 2-degree tensor is a matrix, and so on.
 
 Each dimension of a tensor has a rank, which can be thought of as the length of
 that dimension. A tensor's shape can be described by another tensor that
-denotes the ranks of each of its dimensions. For example. [1,2,3] is an
+denotes the ranks of each of its dimensions. For example, [1,2,3] is an
 instance of a 1-degree tensor. Its single dimension is 3 elements long, so it
 has a rank 3. Thus its shape is [3].
 
@@ -170,7 +171,9 @@ falter without:
     <img src="./assets/images/ackley_deps.png"
          alt="Comment from Ackley in the Beyond Efficiency code about Perl
         updates breaking their code">
-    <figcaption><i><a href="http://livingcomputation.com/robusort2.tar">
+    <figcaption><i><a href="http://livingcomputation.com/robusort2.tar" 
+                      rel="noopener noreferrer"
+                      target="_blank">
             Source
         </a></i></figcaption>
 </figure>
@@ -198,7 +201,7 @@ Bubblesort and Mergesort, and
 Quicksort.
 
 It also assumes you've read
-[Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by
+[Beyond Efficiency](https://web.archive.org/web/20240809143400/https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by
 David H. Ackley. Go read it! It's short!
 
 Please note that we will discuss a few algorithms that I've either made up or
@@ -208,25 +211,36 @@ really only had a rudimentary understanding of Insertionsort, Quicksort,
 Mergesort, Bubblesort and Bogosort, so it's entirely possible that I've
 reinvented a few things that already exist.
 
-It may be helpful to note that this project was originally undertaken in an
-endeavor to come up with a solution naively, for the exercise, before
-researching other algorithms built to tackle the same problem. I did very
-briefly check out Ackley's [Demon Horde
-Sort](https://www.youtube.com/watch?v=helScS3coAE&t=260s), but only enough
-(about 5 seconds of that video) to verify that it is different from this
-algorithm. I've been purposefully avoiding learning much about Demon
-Horde Sort before publishing v1.0.0.0 of this package, but Ackley is way
-smarter than me so if you do actually want a real, professional approach to
-robust sorting, Demon Horde Sort is likely the place to look.
-
 The algorithms used here that I have made up or renamed are, in order of
 introduction, Tensort, Robustsort, Rotationsort, Permutationsort, and
 Magicsort.
 
+-------
+
+<i>
+  It may be helpful to note that this project was originally undertaken in an
+  endeavor to come up with a solution naively, for the exercise, before
+  researching other algorithms built to tackle the same problem. Another
+  notable example of a robust sorting algotithm is Ackley's
+    <a href="https://www.youtube.com/watch?v=helScS3coAE&t=260s" 
+       rel="noopener noreferrer"
+       target="_blank">
+      Demon Horde Sort
+    </a>, 
+  which I purposefully avoiding learning much about before publishing v1.0.0.0 
+  of this package. Demon Horde Sort is more truly robust than Tensort, being
+  resiliant against far more types of unexpected conditions than just a wonky
+  comparator. It's really cool and a lot closer to what I expect computinig to
+  look like in the future - I encourage you to check out that video when you're
+  done here!
+</i>
+
+-------
+
 I will also be joined by the spirit of Sir Michael Caine, who is here for two
 reasons. One is to keep an eye on me and make sure I don't go too overboard.
 More importantly, he's here as a bit of insurance to make sure you've read
-[Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf). You
+[Beyond Efficiency](https://web.archive.org/web/20240809143400/https://www.cs.unm.edu/~ackley/be-201301131528.pdf). You
 can think of him as my version of the M&M's on Van Halen's concert
 rider ([the most famously robust rider in rock
 history](https://en.wikipedia.org/wiki/Van_Halen#Contract_riders)). If you
@@ -240,7 +254,9 @@ Alright, let's get started! Ready, Sir Michael?
 <figure>
     <img src="https://m.media-amazon.com/images/M/MV5BMzU2Nzk5NjA1M15BMl5BanBnXkFtZTYwNjcyNDU2._V1_.jpg"
          alt="Sir Michael Caine, ready to go!">
-    <figcaption><i><a href="https://www.imdb.com/name/nm0000323/mediaviewer/rm1782683648/">
+    <figcaption><i><a href="https://www.imdb.com/name/nm0000323/mediaviewer/rm1782683648/" 
+                      rel="noopener noreferrer"
+                      target="_blank">
             Source
         </a></i></figcaption>
 </figure>
@@ -267,34 +283,34 @@ fear not!
 
 #### Structure
 
-  - Bit <- Element of the list to be sorted
+    Bit <- Element of the list to be sorted
 
-  - Byte <- List of Bits
+    Byte <- List of Bits
 
-  - Bytesize <- Maximum length of a Byte
+    Bytesize <- Maximum length of a Byte
 
-  - Tensor <- Tuple of a Register list and a Memory list
+    Tensor <- Tuple of a Register list and a Memory list
 
-  - Memory <- List of Bytes or other Tensors contained in the current Tensor
+    Memory <- List of Bytes or other Tensors contained in the current Tensor
 
-  - Register <- List of Records, each Record referencing one Byte or Tensor
+    Register <- List of Records, each Record referencing one Byte or Tensor
     in Memory
 
-  - Record <- Tuple of the Address and a copy of the TopBit of the referenced
+    Record <- Tuple of the Address and a copy of the TopBit of the referenced
     Byte or Tensor
 
-  - Address <- Pointer to a Byte or Tensor in Memory
+    Address <- Pointer to a Byte or Tensor in Memory
 
-  - TopBit <- Value of the Bit at the top of the stack in a Byte or Tensor
+    TopBit <- Value of the Bit at the top of the stack in a Byte or Tensor
 
-  - TensorStack <- A top-level Tensor along with all the Bits, Bytes, and
+    TensorStack <- A top-level Tensor along with all the Bits, Bytes, and
     Tensors contained within it. Structurally equivalent to a Tensor
 
-  - TopRegister <- List of Records that is built after all Tensors are built.
+    TopRegister <- List of Records that is built after all Tensors are built.
     Each Record references one TensorStack. Structurally equivalent to a
     Register
 
-  - SubAlgorithm <- The sorting sub-algorithm used at various stages
+    SubAlgorithm <- The sorting sub-algorithm used at various stages
 
 In Tensort, the smallest unit of information is a Bit. Each Bit stores one
 element of the list to be sorted. A group of Bits is known as a Byte.
@@ -517,7 +533,9 @@ more robustness!
     <img src="https://m.media-amazon.com/images/M/MV5BNjk2MTMzNTA4MF5BMl5BanBnXkFtZTcwMTM0OTk1Mw@@._V1_.jpg"
          alt="Michael Caine sitting at a desk in front of a chalkboard full of
         mathematical formulae and architectural drawings">
-    <figcaption><i><a href="https://www.imdb.com/name/nm0000323/mediaviewer/rm3619586816/">
+    <figcaption><i><a href="https://www.imdb.com/name/nm0000323/mediaviewer/rm3619586816/" 
+                      rel="noopener noreferrer"
+                      target="_blank">
             Source
         </a></i></figcaption>
 </figure>
@@ -707,7 +725,9 @@ result, [I'd love to hear about it](#contact)!
          width="400"
          alt="Michael Caine rushing past the Batmobile">
     <figcaption><i><a 
-        href="https://www.imdb.com/name/nm0000323/mediaviewer/rm4040654848/">
+        href="https://www.imdb.com/name/nm0000323/mediaviewer/rm4040654848/" 
+        rel="noopener noreferrer"
+        target="_blank">
             Source
         </a></i></figcaption>
 </figure>
@@ -776,7 +796,7 @@ permutations of [1,2,3] using a faulty comparator that gives a random result
 In these cases, 86% of the time the Top Bit was in the correct position.
 The least likely outcome is a reverse-sorted Byte and the other possible
 incorrect outcomes are in approximately even distribution with each other.
-
+https://hachyderm.io/@kaBeech
 #### Supersort Adjudication
 
 Supposing that our results from Bubblesort and Rotationsort disagree and we now
@@ -834,7 +854,9 @@ adding recursion.
               cage is in a larger structure of cages. The camera is viewing
               from an adjacent cage and can see into multiple subsequent cages,
               giving the appearance of a recursive picture-in-picture effect">
-    <figcaption><i><a href="https://www.imdb.com/name/nm0000323/mediaviewer/rm1461852929/">
+    <figcaption><i><a href="https://www.imdb.com/name/nm0000323/mediaviewer/rm1461852929/" 
+                      rel="noopener noreferrer"
+                      target="_blank">
             Source
         </a></i></figcaption>
 </figure>
@@ -884,7 +906,9 @@ that's so good it's robust against logic itself...
 <figure>
     <img src="./assets/images/mc_confused.png"
          alt="Michael Caine and Mike Meyers looking taken aback">
-    <figcaption><i><a href="https://www.imdb.com/video/vi3757292825/">
+    <figcaption><i><a href="https://www.imdb.com/video/vi3757292825/" 
+                      rel="noopener noreferrer"
+                      target="_blank">
             Source
         </a></i></figcaption>
 </figure>
@@ -997,7 +1021,8 @@ considerations to keep in mind:
 ## Comparing it all
 
 Now let's take a look at how everything compares. Here is a graph showing the
-benchmarking results for average error score for our algorithms:
+benchmarking results for average error score (over 1000 runs) for our
+algorithms:
 
       
 
@@ -1052,7 +1077,9 @@ Michael?
 <figure>
     <img src="./assets/images/mc_doors.png"
          alt="Michael Caine looking upset with Michael Standing">
-    <figcaption><i><a href="https://www.imdb.com/video/vi3792027161/">
+    <figcaption><i><a href="https://www.imdb.com/video/vi3792027161/" 
+                      rel="noopener noreferrer"
+                      target="_blank">
             Source
         </a></i></figcaption>
 </figure>
@@ -1120,8 +1147,9 @@ Note that these instructions don't make the assumptions listed above
 
 Questions and feedback are welcome!
 
-The easiest way to contact me is usually via
+The easiest way to contact me currently is likely via
 [LinkedIn](https://www.linkedin.com/in/kyle-beechly), or you can try
+[Mastodon](https://hachyderm.io/@kaBeech) or
 [email](mailto:tensort@kabeech.com).
 
 ## Thank you!
@@ -1146,3 +1174,7 @@ I'd like to send a special thank you to the following people:
 
   - Countless family, friends, acquaintances, and strangers who've tolerated me
     blathering on about sorting algorithms over the past few months 💙
+
+## Hype
+
+  - Dave Ackley read my paper!! And had [this](https://hachyderm.io/@livcomp/113016513691522706) to say about it: "Super great stuff! kabeech dives into iid errors in comparison sorting, ropes it, pulls it down, and hogties it six ways to Sunday."

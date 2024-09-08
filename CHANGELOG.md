@@ -84,3 +84,7 @@
 * Improve flow in README
 
 * Cleanup code and documentation a bit
+
+## X.X.X.X -- XXXX.XX.XX
+
+* Adjust README formatting
