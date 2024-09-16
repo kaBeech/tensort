@@ -225,9 +225,7 @@ Magicsort.
   notable example of a robust sorting algotithm is Ackley's
     <a href="https://www.youtube.com/watch?v=helScS3coAE&t=260s" 
        rel="noopener noreferrer"
-       target="_blank">
-      Demon Horde Sort
-    </a>, 
+       target="_blank">Demon Horde Sort</a>, 
   which I purposefully avoiding learning much about before publishing v1.0.0.0 
   of this package. Demon Horde Sort is more truly robust than Tensort, being
   resiliant against far more types of unexpected conditions than just a wonky
