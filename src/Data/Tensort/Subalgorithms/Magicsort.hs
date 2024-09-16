@@ -1,5 +1,4 @@
--- | This module provides the magicsort function for sorting lists using the
---   Sortable type.
+-- | This module provides the magicsort function for sorting Sortable lists
 module Data.Tensort.Subalgorithms.Magicsort
   ( magicsort,
   )

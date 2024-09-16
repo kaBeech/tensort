@@ -1,5 +1,4 @@
--- | This module provides the bubblesort function for sorting lists using the
---   Sortable type.
+-- | This module provides the bubblesort function for sorting Sortable lists
 module Data.Tensort.Subalgorithms.Exchangesort (exchangesort) where
 
 import Data.Tensort.Utils.ComparisonFunctions (greaterThanBit, greaterThanRecord)

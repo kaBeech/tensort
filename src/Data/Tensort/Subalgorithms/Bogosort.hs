@@ -1,5 +1,4 @@
--- | This module provides the bogosort function for sorting lists using the
---   Sortable type.
+-- | This module provides the bogosort function for sorting Sortable lists
 module Data.Tensort.Subalgorithms.Bogosort (bogosort, bogosortSeeded) where
 
 import Data.Tensort.Utils.Check (isSorted)
