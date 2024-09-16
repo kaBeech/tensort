@@ -85,7 +85,7 @@
 
 * Cleanup code and documentation a bit
 
-## X.X.X.X -- XXXX.XX.XX
+## 1.0.1.3 -- 2024-09-16
 
 * Adjust README formatting
 
