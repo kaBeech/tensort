@@ -1,5 +1,5 @@
 -- | This module provides functions for creating Supersort variants for
---   adjudicating between 3 sorting algorithms
+--   adjudicating between 3 sorting algorithms.
 module Data.Tensort.Subalgorithms.Supersort
   ( supersort,
     mundaneSuperStrat,
@@ -14,10 +14,11 @@ import Data.Tensort.Utils.Types
   )
 
 -- | Used for creating a Supersort algorithm that adjudicates between 3 sorting
---   algorithms
+--   algorithms.
 --
 --   Takes 3 sorting algorithms and a SuperStrat and returns a SortAlg that
---   adjudicates between the 3 sorting algorithms using the provided SuperStrat
+--   adjudicates between the 3 sorting algorithms using the provided
+--   SuperStrat.
 
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
