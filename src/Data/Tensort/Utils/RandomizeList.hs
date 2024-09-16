@@ -1,5 +1,5 @@
--- | This module prvodies the randomizeList function, which randomizes Sortable
---   lists.
+-- | This module prvodies the randomizeList function, which randomizes the
+--   order of elements in Sortable lists.
 module Data.Tensort.Utils.RandomizeList (randomizeList) where
 
 import Data.Tensort.Utils.Types (Sortable (..))
