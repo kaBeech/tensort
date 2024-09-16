@@ -25,7 +25,8 @@ import Data.Tensort.Utils.Types
 
 -- | Sort a Sortable list using a custom Tensort algorithm
 --
---   Takes TensortProps and a Sortable and returns a sorted Sortable
+--   Takes TensortProps (Bytesize and SubAlgorithm) and a Sortable and returns
+--   a sorted Sortable
 
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
