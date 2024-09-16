@@ -1179,4 +1179,13 @@ I'd like to send a special thank you to the following people:
 
 ## Hype
 
-  - Dave Ackley read my paper!! And had [this](https://hachyderm.io/@livcomp/113016513691522706) to say about it: "Super great stuff! kabeech dives into iid errors in comparison sorting, ropes it, pulls it down, and hogties it six ways to Sunday."
+  - Dave Ackley read my paper!! And had 
+    [this](https://hachyderm.io/@livcomp/113016513691522706) to say about it:
+    "Super great stuff! kabeech dives into iid errors in comparison sorting,
+    ropes it, pulls it down, and hogties it six ways to Sunday."
+
+  - Ivan Reese also had
+    [very kind](https://futureofcoding.slack.com/archives/CCL5VVBAN/p1724550313800559?thread_ts=1724444821.212869&cid=CCL5VVBAN)
+    things to say: "Hats off Kyle. You've made something very cool and
+    technical and fascinating, but also woven charm and joy into its
+    presentation. Beautiful."
