@@ -1,5 +1,5 @@
--- | This module provides the quicksort function for sorting lists using the
---   Sortable type
+-- | This module provides an implementation of the quicksort algorithm suitable
+--   for sorting lists using the Sortable type
 module Data.Tensort.OtherSorts.Quicksort (quicksort) where
 
 import Data.Tensort.Utils.ComparisonFunctions (greaterThanBit, greaterThanRecord)
