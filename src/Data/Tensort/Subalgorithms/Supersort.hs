@@ -1,5 +1,5 @@
 -- | This module provides functions for creating Supersort variants for
---   adjudicating between 3 sorting algorithms that use the Sortable type
+--   adjudicating between 3 sorting algorithms
 module Data.Tensort.Subalgorithms.Supersort
   ( supersort,
     mundaneSuperStrat,
