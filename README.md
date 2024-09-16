@@ -7,7 +7,7 @@ This project started as an exploration of what a sorting algorithm that
 prioritizes robustness might look like. As such it also describes and provides
 implementations of Robustsort, a group of Tensort variants designed for
 robustness in conditions described in David H. Ackley's
-[Beyond Efficiency](https://web.archive.org/web/20240809143400/https://www.cs.unm.edu/~ackley/be-201301131528.pdf).
+[Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf).
 
 Simply put, Tensort takes an input list, transforms the list into a
 multi-dimensional tensor field, then transforms that tensor field back into a
@@ -75,8 +75,9 @@ we wish to do on the elements.
 
 ### Inspiration
 
-  - [Beyond Efficiency](https://web.archive.org/web/20240809143400/https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by
-  [David H. Ackley](https://livingcomputation.com/)
+  - [Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf)
+  ([archived](https://web.archive.org/web/20240809143400/https://www.cs.unm.edu/~ackley/be-201301131528.pdf))
+  by [David H. Ackley](https://livingcomputation.com/)
 
   - [Beyond Efficiency by Dave Ackley](https://futureofcoding.org/episodes/070)
   by Future of Coding ([Lu Wilson](https://www.todepond.com/),
@@ -201,7 +202,7 @@ Bubblesort and Mergesort, and
 Quicksort.
 
 It also assumes you've read
-[Beyond Efficiency](https://web.archive.org/web/20240809143400/https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by
+[Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf) by
 David H. Ackley. Go read it! It's short!
 
 Please note that we will discuss a few algorithms that I've either made up or
@@ -240,7 +241,7 @@ Magicsort.
 I will also be joined by the spirit of Sir Michael Caine, who is here for two
 reasons. One is to keep an eye on me and make sure I don't go too overboard.
 More importantly, he's here as a bit of insurance to make sure you've read
-[Beyond Efficiency](https://web.archive.org/web/20240809143400/https://www.cs.unm.edu/~ackley/be-201301131528.pdf). You
+[Beyond Efficiency](https://www.cs.unm.edu/~ackley/be-201301131528.pdf). You
 can think of him as my version of the M&M's on Van Halen's concert
 rider ([the most famously robust rider in rock
 history](https://en.wikipedia.org/wiki/Van_Halen#Contract_riders)). If you
