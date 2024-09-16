@@ -1,5 +1,5 @@
 -- | This module provides the bubblesort function for sorting lists using the
---   Sortable type
+--   Sortable type.
 module Data.Tensort.Subalgorithms.Bubblesort (bubblesort) where
 
 import Data.Tensort.Utils.ComparisonFunctions
@@ -9,7 +9,7 @@ import Data.Tensort.Utils.ComparisonFunctions
 import Data.Tensort.Utils.Types (Sortable (..))
 
 -- | Takes a Sortable and returns a sorted Sortable using a Bubblesort
--- algorithm
+--   algorithm.
 
 -- | ==== __Examples__
 -- >>> bubblesort (SortBit [16, 23, 4, 8, 15, 42])
