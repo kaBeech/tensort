@@ -13,7 +13,10 @@ import Data.Tensort.Utils.Types
     SupersortStrat,
   )
 
--- | Takes 3 sorting algorithms and a SuperStrat and returns a SortAlg that
+-- | Used for creating a Supersort algorithm that adjudicates between 3 sorting
+--   algorithms
+--
+--   Takes 3 sorting algorithms and a SuperStrat and returns a SortAlg that
 --   adjudicates between the 3 sorting algorithms using the provided SuperStrat
 
 -- | ==== __Examples__
