@@ -15,7 +15,7 @@ import Data.Tensort.Utils.Types (Sortable (..))
 -- >>> bubblesort (SortBit [16, 23, 4, 8, 15, 42])
 -- SortBit [4,8,15,16,23,42]
 --
--- >>> bubblesort (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
+-- >>> bubblesort (SortRec [(1, 16), (5, 23), (2, 4), (3, 8), (0, 15), (4, 42)])
 -- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 bubblesort :: Sortable -> Sortable
 bubblesort (SortBit bits) =
