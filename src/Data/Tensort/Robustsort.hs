@@ -138,11 +138,11 @@ supersortM =
 --   the base SortAlg to sort the records.
 --
 --   Uses the base SortAlg once the bytesize is less than or equal to 27. This
---   number is chosen because it is the natural logarithm of 27 is close to
---   3 (it's abuot 3.3) and the square root of 27 is 3, so it's likely to be an
---   efficient choice.
+--   number is chosen because the natural logarithm of 27 is close to 3 (it's
+--   about 3.3) and the cube root of 27 is 3, so it's likely to be an efficient
+--   choice.
 --
---   This confiuguration is tailored to using a standard basic Robustsort
+--   This configuration is tailored to using a standard basic Robustsort
 --   algorithm (i.e. with a Bytesize of 3) as the base SortAlg. You're welcome
 --   to experiment with weirder setups too!
 --
