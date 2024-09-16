@@ -81,6 +81,9 @@ tensortBN :: Int -> Sortable -> Sortable
 tensortBN n = tensort (mkTsProps n bubblesort)
 
 -- | Sort a Sortable list using a Standard Logarithmic Tensort algorithm
+--
+--   Standard Logarithmic Tensort uses a Bytesize that approximates the natural
+--   logarithm of the length of the input list and a Bubblesort subalgorithm
 
 -- | ==== __Examples__
 -- >>> tensortBL (SortBit [16, 23, 4, 8, 15, 42])
