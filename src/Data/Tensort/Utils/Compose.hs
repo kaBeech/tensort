@@ -1,12 +1,12 @@
--- | Module for creating Tensors from Bytes and Tensors
+-- | Module for creating Tensors from Bytes and Tensors.
 --
 --   Functions ending in "B" are for sorting Bits in a base (non-recursive)
---   Tensort variant
+--   Tensort variant.
 --
 --   Functions ending in "R" are for sorting Records when used in a recursive
---   Tensort variant
+--   Tensort variant.
 --
---   TODO: See if we can clean up the type conversion here
+--   TODO: See if we can clean up the type conversion here.
 module Data.Tensort.Utils.Compose
   ( createInitialTensors,
     createTensor,
@@ -49,7 +49,7 @@ import Data.Tensort.Utils.Types
 
 -- | This is accomplished by making a Tensor for each Byte, converting that
 --   Tensor into a TensorStack (these are equivalent terms - see type
---   definitions for more info) and collating the TensorStacks into a list
+--   definitions for more info) and collating the TensorStacks into a list.
 
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
@@ -84,9 +84,10 @@ createInitialTensorsR tsProps bytesR =
                (getTensorFromBytes (subAlgorithm tsProps) (SBytesRec byteR))
            ]
 
--- | Create a Tensor from a Memory
+-- | Create a Tensor from a Memory.
+--
 --   Aliases to getTensorFromBytes for ByteMem and getTensorFromTensors for
---   TensorMem
+--   TensorMem.
 createTensor :: SortAlg -> SMemory -> STensor
 createTensor subAlg (SMemoryBit memory) = createTensorB subAlg memory
 createTensor subAlg (SMemoryRec memoryR) = createTensorR subAlg memoryR
@@ -103,16 +104,16 @@ createTensorR subAlg (ByteMemR bytesR) =
 createTensorR subAlg (TensorMemR tensorsR) =
   getTensorFromTensors subAlg (STensorsRec tensorsR)
 
--- | Convert a list of Bytes to a Tensor
+-- | Convert a list of Bytes to a Tensor.
 
 -- | We do this by loading the list of Bytes into the new Tensor's Memory
---   and adding a sorted Register containing References to each Byte in Memory
+--   and adding a sorted Register containing References to each Byte in Memory.
 
 -- | Each Record contains an Address pointing to the index of the referenced
 --   Byte and a TopBit containing the value of the last (i.e. highest) Bit in
---   the referenced Byte
+--   the referenced Byte.
 
--- | The Register is sorted by the TopBits of each Record
+-- | The Register is sorted by the TopBits of each Record.
 
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
@@ -153,7 +154,7 @@ getTensorFromBytesR subAlg bytesR = do
       acc remainingBytesR (registerR ++ [(i, last byteR)]) (i + 1)
 
 -- | Create a TensorStack with the collated and sorted References from the
---   Tensors as the Register and the original Tensors as the data
+--   Tensors as its Register and the original Tensors as its Memory.
 
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
@@ -246,13 +247,13 @@ getRegisterFromTensorsR tensorsR = acc tensorsR []
       where
         i = length records
 
--- | Get the top Bit from a TensorStack
+-- | Get the top Bit from a TensorStack.
 
 -- | The top Bit is the last Bit in the last Byte referenced in the last record
 --   of the Tensor referenced in the last record of the last Tensor of...
---   and so on until you reach the top level of the TensorStack
+--   and so on until you reach the top level of the TensorStack.
 
--- | This is also expected to be the highest value in the TensorStack
+-- | This is also expected to be the highest value in the TensorStack.
 
 -- | ==== __Examples__
 -- >>> getTopBitFromTensorStack (STensorBit ([(0,28),(1,38)],TensorMem [([(0,27),(1,28)],TensorMem [([(0,23),(1,27)],ByteMem [[21,23],[25,27]]),([(0,24),(1,28)],ByteMem [[22,24],[26,28]])]),([(1,37),(0,38)],TensorMem [([(0,33),(1,38)],ByteMem [[31,33],[35,38]]),([(0,34),(1,37)],ByteMem [[32,14],[36,37]])])]))
