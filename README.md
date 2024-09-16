@@ -170,8 +170,11 @@ falter without:
 
 <figure>
     <img src="./assets/images/ackley_deps.png"
-         alt="Comment from Ackley in the Beyond Efficiency code about Perl
-        updates breaking their code">
+         alt="A screenshot from Ackley's code referenced in 'Beyond Efficiency':
+             'Written by Dave Ackley in 2011-2012 and placed in the public
+              domain. Gah!  Perl has messed with its sorting algorithms in
+              COMPLETELY NON-BACKWARD-COMPATIBLE WAYS!  So require our version
+              (more or less, anyway) to try to stabilize these results!'">
     <figcaption><i><a href="http://livingcomputation.com/robusort2.tar" 
                       rel="noopener noreferrer"
                       target="_blank">
