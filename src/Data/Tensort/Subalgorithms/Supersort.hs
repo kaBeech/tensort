@@ -40,8 +40,8 @@ supersort (subAlg1, subAlg2, subAlg3, superStrat) xs = do
     then result1
     else superStrat (result1, result2, subAlg3 xs)
 
--- | Takes 3 SortAlgs and adjudicates between them to find a common result to
---   increase robustness
+-- | Takes 3 SortAlgs and adjudicates between them to find a common result.
+--   Optimized for use in Mundane Robustsort variants.
 
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
@@ -56,12 +56,12 @@ supersort (subAlg1, subAlg2, subAlg3, superStrat) xs = do
 mundaneSuperStrat :: SupersortStrat
 mundaneSuperStrat (result1, result2, result3) = if result2 == result3 then result2 else result1
 
--- | Takes 3 SortAlgs and adjudicates between them to find a common result to
---   increase robustness
+-- | Takes 3 SortAlgs and adjudicates between them to find a common result.
+--   Optimized for use in Magic Robustsort variants.
 --
 --   Previously we used different SuperStrats for Mundane and Magic Supersorts.
 --   Currently there is no need to differentiate, but we keep this here for
---   backwards compatibility and in case this changes again in the future
+--   backwards compatibility and in case this changes again in the future.
 
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
