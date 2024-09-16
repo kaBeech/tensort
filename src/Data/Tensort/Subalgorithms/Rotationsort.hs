@@ -1,5 +1,4 @@
--- | This module provides Rotationsort variants for sorting lists using the
---   Sortable type
+-- | This module provides Rotationsort variants for sorting Sortable lists.
 --
 -- | I was having some issues with the swaps for larger input lists, so for now
 --   these functions are only implemented for lists of length 3 or less.
@@ -18,7 +17,7 @@ import Data.Tensort.Utils.ComparisonFunctions
 import Data.Tensort.Utils.Types (Sortable (..))
 
 -- | Takes a Sortable and returns a sorted Sortable using a Rotationsort
---  algorithm
+--  algorithm.
 --
 --  I was having some issues with the swaps for larger input lists, so for now
 --  this function is only implemented for lists of length 3 or less.
@@ -40,7 +39,7 @@ rotationsort (SortRec recs) =
    in SortRec result
 
 -- | Takes a Sortable and returns a sorted Sortable using an Ambidextrous
---   Rotationsort algorithm
+--   Rotationsort algorithm.
 --
 --  I was having some issues with the swaps for larger input lists, so for now
 --  this function is only implemented for lists of length 3 or less.
@@ -62,7 +61,7 @@ rotationsortAmbi (SortRec recs) =
    in SortRec result
 
 -- | Takes a Sortable and returns a sorted Sortable using a Reverse
---   Rotationsort algorithm
+--   Rotationsort algorithm.
 --
 --   I was having some issues with the swaps for larger input lists, so for now
 --   this function is only implemented for lists of length 3 or less.
@@ -94,7 +93,7 @@ rotationsortReverse (SortRec recs) =
    in SortRec result
 
 -- | Takes a Sortable and returns a sorted Sortable using an Ambidextrous
---   Reverse Rotationsort algorithm
+--   Reverse Rotationsort algorithm.
 --
 --   I was having some issues with the swaps for larger input lists, so for now
 --   this function is only implemented for lists of length 3 or less.
