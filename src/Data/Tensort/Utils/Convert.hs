@@ -1,6 +1,6 @@
--- | Module for converting raw input data to SBytes
+-- | Module for converting raw input data into SBytes.
 --
---   TODO: See if we can clean up the type conversion here
+--   TODO: See if we can clean up the type conversion here.
 module Data.Tensort.Utils.Convert (rawToBytes) where
 
 import Data.Tensort.Utils.Split (splitEvery)
@@ -16,7 +16,7 @@ import Data.Tensort.Utils.Types
   )
 
 -- | Convert a list of Bits to a list of Bytes of given bytesize, sorting
---   each byte with the given subalgorithm.
+--   each Byte with the given subalgorithm.
 
 -- | ==== __Examples__
 --   >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
