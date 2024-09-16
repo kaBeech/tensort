@@ -189,11 +189,15 @@ getTensorFromTensorsR subAlg tensorsR = do
           (fromSRecordArrayRec registerR)
   (registerR', TensorMemR tensorsR)
 
--- | For each Tensor, produces a Record by combining the top bit of the
---  Tensor with an index value for its Address
+-- | Used in creating a Register for a newly-created Tensor which encloses
+--   other Tensors.
+--
+--   Takes a list of Tensors to be processed into the enclosing Tensor's
+--   memory. For each Tensor in the list, produces a Record by combining the
+--   top bit of the Tensor with an index value for its Address.
 
 -- | Note that this output is not sorted. Sorting is done in the
---   getTensorFromTensors function
+--   getTensorFromTensors function.
 
 -- | ==== __Examples__
 -- >>> getRegisterFromTensors (STensorsBit [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(0,14),(1,17)],ByteMem [[12,14],[16,17]]),([(0,3),(1,7)],ByteMem [[1,3],[5,7]]),([(0,4),(1,8)],ByteMem [[2,4],[6,8]])])
