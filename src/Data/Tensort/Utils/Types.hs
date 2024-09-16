@@ -1,46 +1,46 @@
 {-# LANGUAGE GADTs #-}
 
--- | This module provides types used in the Tensort package
+-- | This module provides types used in the Tensort package.
 --
 --   Since these packages are only for sorting Ints currently, every data
---   type is a structure of Ints
+--   type is a structure of Ints.
 module Data.Tensort.Utils.Types where
 
 -- | TensortProps contains the Bytesize and SubAlgorithm used in a Tensort
---   algorithm
+--   algorithm.
 data TensortProps = TensortProps {bytesize :: Int, subAlgorithm :: SortAlg}
 
--- | A Bit is a single element of the list to be sorted. For
---   our current purposes that means it is an Int
+-- | A Bit is a single element of the list to be sorted. For our current
+--   purposes that means it is an Int.
 
---   The definition of a Bit may be expanded in the future to include any Ord
+--   The definition of a Bit may be expanded in the future to include any Ord.
 type Bit = Int
 
--- | A Byte is a list of Bits standardized to a fixed maximum length (Bytesize)
+-- | A Byte is a list of Bits standardized to a fixed maximum length (Bytesize).
 
 --   The length should be set either in or upstream of any function that uses
---   Bytes
+--   Bytes.
 type Byte = [Bit]
 
--- | An Address is a index number pointing to data stored in Memory
+-- | An Address is a index number pointing to data stored in Memory.
 type Address = Int
 
 -- | A TopBit contains a copy of the last (i.e. highest) Bit in a Byte or
---   Tensor
+--   Tensor.
 type TopBit = Bit
 
 -- | A Record is an element in a Tensor's Register
---   containing an Address pointer and a TopBit value
+--   containing an Address pointer and a TopBit value.
 
 --   A Record's Address is an index number pointing to a Byte or Tensor in
---   the Tensor's Memory
+--   the Tensor's Memory.
 
 --   A Record's TopBit is a copy of the last (i.e. highest) Bit in the Byte or
---   Tensor that the Record references
+--   Tensor that the Record references.
 type Record = (Address, TopBit)
 
 -- | A Register is a list of Records allowing for easy access to data in a
---   Tensor's Memory
+--   Tensor's Memory.
 type Register = [Record]
 
 -- | A Memory contains the data to be sorted, either in the form of Bytes or
@@ -65,20 +65,20 @@ type Tensor = (Register, Memory)
 --   TensorStacks.
 type TensorStack = Tensor
 
--- | We use a Sortable type to sort Bits and Records
+-- | We use a Sortable type to sort list of Bits and lists of Records.
 data Sortable
   = SortBit [Bit]
   | SortRec [Record]
   deriving (Show, Eq, Ord)
 
--- | Converts a Sortable list to a list of Bits
+-- | Converts a Sortable list to a list of Bits.
 fromSortBit :: Sortable -> [Bit]
 fromSortBit (SortBit bits) = bits
 fromSortBit (SortRec _) =
   error
     "From fromSortBit: This is for sorting Bits - you gave me Records"
 
--- | Converts a Sortable list to a list of Records
+-- | Converts a Sortable list to a list of Records.
 fromSortRec :: Sortable -> [Record]
 fromSortRec (SortRec recs) = recs
 fromSortRec (SortBit _) =
@@ -86,18 +86,18 @@ fromSortRec (SortBit _) =
     "From fromSortRec: This is for sorting Records - you gave me Bits"
 
 -- | A sorting algorithm is a function that takes a Sortable and returns a
---   sorted Sortable
+--   sorted Sortable.
 type SortAlg = Sortable -> Sortable
 
 -- | SupersortProps consist of three sorting algorithms to adjuditcate between
---   and a SupersortStrat that does the adjudication
+--   and a SupersortStrat that does the adjudication.
 type SupersortProps = (SortAlg, SortAlg, SortAlg, SupersortStrat)
 
 -- | A SupersortStrat takes three Sortables and determines which of the three
---   is most likely to be in the correct order
+--   is most likely to be in the correct order.
 type SupersortStrat = (Sortable, Sortable, Sortable) -> Sortable
 
--- | Convers a Maybe into a value or throws an error if the Maybe is Nothing
+-- | Converts a Maybe into a value or throws an error if the Maybe is Nothing.
 fromJust :: Maybe a -> a
 fromJust (Just x) = x
 fromJust Nothing = error "fromJust: Nothing"
@@ -107,57 +107,57 @@ fromJust Nothing = error "fromJust: Nothing"
 --------------------------------------
 
 -- | This is a `Bit` type that is used when sorting Records in a recursive
---   Tensort variant
+--   Tensort variant.
 type BitR = Record
 
 -- | This is a conversion type that allows for sorting both Bits and Records.
---   It is useful in recursive Tensort variants
+--   It is useful in recursive Tensort variants.
 data SBit
   = SBitBit Bit
   | SBitRec Record
   deriving (Show, Eq, Ord)
 
--- | Converts an SBit to a Bit
+-- | Converts an SBit into a Bit.
 fromSBitBit :: SBit -> Bit
 fromSBitBit (SBitBit bit) = bit
 fromSBitBit (SBitRec _) =
   error
     "From fromSBitBit: This is for sorting Bits - you gave me Records"
 
--- | Converts an SBit to a Record
+-- | Converts an SBit into a Record.
 fromSBitRec :: SBit -> Record
 fromSBitRec (SBitRec record) = record
 fromSBitRec (SBitBit _) =
   error
     "From fromSBitRec: This is for sorting Records - you gave me Bits"
 
--- | Converts a list of Bits to a Sortable
+-- | Converts a list of Bits into a Sortable.
 fromSBitBits :: [SBit] -> Sortable
 fromSBitBits = SortBit . map fromSBitBit
 
--- | Converts a list of Records to a Sortable
+-- | Converts a list of Records into a Sortable.
 fromSBitRecs :: [SBit] -> Sortable
 fromSBitRecs = SortRec . map fromSBitRec
 
 -- | This is a `Byte` type that is used when sorting Records in a recursive
---   Tensort variant
+--   Tensort variant.
 type ByteR = [Record]
 
 -- | This is a conversion type that allows for sorting both Bits and Records.
---   It is useful in recursive Tensort variants
+--   It is useful in recursive Tensort variants.
 data SBytes
   = SBytesBit [Byte]
   | SBytesRec [ByteR]
   deriving (Show, Eq, Ord)
 
--- | Converts an SBytes list to a list of Bytes
+-- | Converts an SBytes list into a list of Bytes.
 fromSBytesBit :: SBytes -> [[Bit]]
 fromSBytesBit (SBytesBit bits) = bits
 fromSBytesBit (SBytesRec _) =
   error
     "From fromSBytesBit: This is for sorting Bits - you gave me Records"
 
--- | Converts an SBytes list to a list of ByteRs
+-- | Converts an SBytes list into a list of ByteRs.
 fromSBytesRec :: SBytes -> [[Record]]
 fromSBytesRec (SBytesRec recs) = recs
 fromSBytesRec (SBytesBit _) =
@@ -165,28 +165,28 @@ fromSBytesRec (SBytesBit _) =
     "From fromSBytesRec: This is for sorting Records - you gave me Bits"
 
 -- | This is a `TopBit` type that is used when sorting Records in a recursive
---   Tensort variant
+--   Tensort variant.
 type TopBitR = Record
 
 -- | This is a `Record` type that is used when sorting Records in a recursive
---   Tensort variant
+--   Tensort variant.
 type RecordR = (Address, TopBitR)
 
 -- | This is a conversion type that allows for sorting both Records and Bits.
---   It is useful in recursive Tensort variants
+--   It is useful in recursive Tensort variants.
 data SRecord
   = SRecordBit Record
   | SRecordRec RecordR
   deriving (Show, Eq, Ord)
 
--- | Converts an SRecord to a Record
+-- | Converts an SRecord into a Record.
 fromSRecordBit :: SRecord -> Record
 fromSRecordBit (SRecordBit record) = record
 fromSRecordBit (SRecordRec _) =
   error
     "From fromSRecordBit: This is for sorting Records - you gave me Bits"
 
--- | Converts an SRecord to a RecordR
+-- | Converts an SRecord into a RecordR.
 fromSRecordRec :: SRecord -> RecordR
 fromSRecordRec (SRecordRec record) = record
 fromSRecordRec (SRecordBit _) =
@@ -194,60 +194,60 @@ fromSRecordRec (SRecordBit _) =
     "From fromSRecordRec: This is for sorting Bits - you gave me Records"
 
 -- | This is a conversion type that allows for sorting both Records and Bits.
---   It is useful in recursive Tensort variants
+--   It is useful in recursive Tensort variants.
 data SRecords
   = SRecordsBit [Record]
   | SRecordsRec [RecordR]
   deriving (Show, Eq, Ord)
 
--- | Converts an SRecords list to a list of Records
+-- | Converts an SRecords list into a list of Records.
 fromSRecordsBit :: SRecords -> [Record]
 fromSRecordsBit (SRecordsBit records) = records
 fromSRecordsBit (SRecordsRec _) =
   error
     "From fromSRecordsBit: This is for sorting Records - you gave me Bits"
 
--- | Converts an SRecords list to a list of RecordRs
+-- | Converts an SRecords list into a list of RecordRs.
 fromSRecordsRec :: SRecords -> [RecordR]
 fromSRecordsRec (SRecordsRec records) = records
 fromSRecordsRec (SRecordsBit _) =
   error
     "From fromSRecordsRec: This is for sorting Bits - you gave me Records"
 
--- | Converts a list of SRecords to a list of Records
+-- | Converts a list of SRecords into a list of Records.
 fromSRecordArrayBit :: [SRecord] -> [Record]
 fromSRecordArrayBit = map fromSRecordBit
 
--- | Converts a list of SRecords to a list of RecordRs
+-- | Converts a list of SRecords into a list of RecordRs.
 fromSRecordArrayRec :: [SRecord] -> [RecordR]
 fromSRecordArrayRec = map fromSRecordRec
 
 -- | This is a `Register` type that is used when sorting Records in a recursive
---   Tensort variant
+--   Tensort variant.
 type RegisterR = [RecordR]
 
 -- | This is a `Memory` type that is used when sorting Records in a recursive
---   Tensort variant
+--   Tensort variant.
 data MemoryR
   = ByteMemR [ByteR]
   | TensorMemR [TensorR]
   deriving (Show, Eq, Ord)
 
 -- | This is a conversion type that allows for sorting both Bits and Records.
---   It is useful in recursive Tensort variants
+--   It is useful in recursive Tensort variants.
 data SMemory
   = SMemoryBit Memory
   | SMemoryRec MemoryR
   deriving (Show, Eq, Ord)
 
--- | Converts an SMemory to a Memory
+-- | Converts an SMemory to a Memory.
 fromSMemoryBit :: SMemory -> Memory
 fromSMemoryBit (SMemoryBit memory) = memory
 fromSMemoryBit (SMemoryRec _) =
   error
     "From fromSTensorsRec: This is for sorting Bits - you gave me Records"
 
--- | Converts an SMemory to a MemoryR
+-- | Converts an SMemory to a MemoryR.
 fromSMemoryRec :: SMemory -> MemoryR
 fromSMemoryRec (SMemoryRec memory) = memory
 fromSMemoryRec (SMemoryBit _) =
@@ -255,24 +255,24 @@ fromSMemoryRec (SMemoryBit _) =
     "From fromSMemoryRec: This is for sorting Records - you gave me Bits"
 
 -- | This is a `Tensor` type that is used when sorting Records in a recursive
---   Tensort variant
+--   Tensort variant.
 type TensorR = (RegisterR, MemoryR)
 
 -- | This is a conversion type that allows for sorting both Bits and Records.
---   It is useful in recursive Tensort variants
+--   It is useful in recursive Tensort variants.
 data STensor
   = STensorBit Tensor
   | STensorRec TensorR
   deriving (Show, Eq, Ord)
 
--- | Converts an STensor to a Tensor
+-- | Converts an STensor into a Tensor.
 fromSTensorBit :: STensor -> Tensor
 fromSTensorBit (STensorBit tensor) = tensor
 fromSTensorBit (STensorRec _) =
   error
     "From fromSTensorBit: This is for sorting Tensors - you gave me Records"
 
--- | Converts an STensor to a TensorR
+-- | Converts an STensor into a TensorR.
 fromSTensorRec :: STensor -> TensorR
 fromSTensorRec (STensorRec tensor) = tensor
 fromSTensorRec (STensorBit _) =
@@ -280,20 +280,20 @@ fromSTensorRec (STensorBit _) =
     "From fromSTensorRec: This is for sorting Records - you gave me Tensors"
 
 -- | This is a conversion type that allows for sorting both Bits and Records.
---   It is useful in recursive Tensort variants
+--   It is useful in recursive Tensort variants.
 data STensors
   = STensorsBit [Tensor]
   | STensorsRec [TensorR]
   deriving (Show, Eq, Ord)
 
--- | Converts an STensors list to a list of Tensors
+-- | Converts an STensors list into a list of Tensors.
 fromSTensorsBit :: STensors -> [Tensor]
 fromSTensorsBit (STensorsBit tensors) = tensors
 fromSTensorsBit (STensorsRec _) =
   error
     "From fromSTensorsBit: This is for sorting Tensors - you gave me Records"
 
--- | Converts an STensors list to a list of TensorRs
+-- | Converts an STensors list into a list of TensorRs.
 fromSTensorsRec :: STensors -> [TensorR]
 fromSTensorsRec (STensorsRec tensors) = tensors
 fromSTensorsRec (STensorsBit _) =
@@ -301,13 +301,13 @@ fromSTensorsRec (STensorsBit _) =
     "From fromSTensorsRec: This is for sorting Records - you gave me Tensors"
 
 -- | This is a `TensorStack` type that is used when sorting Records in a
---   recursive Tensort variant
+--   recursive Tensort variant.
 type TensorStackR = TensorR
 
 -- | This is a conversion type that allows for sorting both Tensors and
---   Records. It is useful in recursive Tensort variants
+--   Records. It is useful in recursive Tensort variants.
 type STensorStack = STensor
 
 -- | This is a conversion type that allows for sorting both Tensors and
---   Records. It is useful in recursive Tensort variants
+--   Records. It is useful in recursive Tensort variants.
 type STensorStacks = STensors

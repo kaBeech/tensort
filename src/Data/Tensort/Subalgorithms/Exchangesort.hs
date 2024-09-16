@@ -1,12 +1,11 @@
--- | This module provides the bubblesort function for sorting lists using the
---   Sortable type
+-- | This module provides the bubblesort function for sorting Sortable lists
 module Data.Tensort.Subalgorithms.Exchangesort (exchangesort) where
 
 import Data.Tensort.Utils.ComparisonFunctions (greaterThanBit, greaterThanRecord)
 import Data.Tensort.Utils.Types (Sortable (..))
 
 -- | Takes a Sortable and returns a sorted Sortable using an Exchangesort
---   algorithm
+--   algorithm.
 
 -- | ==== __Examples__
 -- >>> exchangesort (SortBit [16, 23, 4, 8, 15, 42])

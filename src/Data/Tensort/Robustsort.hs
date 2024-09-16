@@ -1,5 +1,5 @@
 -- | This module provides variations of the Robustsort algorithm using the
---   Sortable type
+--   custom Sortable type for inputs and outputs
 module Data.Tensort.Robustsort
   ( robustsortP,
     robustsortB,
@@ -138,11 +138,11 @@ supersortM =
 --   the base SortAlg to sort the records.
 --
 --   Uses the base SortAlg once the bytesize is less than or equal to 27. This
---   number is chosen because it is the natural logarithm of 27 is close to
---   3 (it's abuot 3.3) and the square root of 27 is 3, so it's likely to be an
---   efficient choice.
+--   number is chosen because the natural logarithm of 27 is close to 3 (it's
+--   about 3.3) and the cube root of 27 is 3, so it's likely to be an efficient
+--   choice.
 --
---   This confiuguration is tailored to using a standard basic Robustsort
+--   This configuration is tailored to using a standard basic Robustsort
 --   algorithm (i.e. with a Bytesize of 3) as the base SortAlg. You're welcome
 --   to experiment with weirder setups too!
 --
@@ -161,6 +161,13 @@ robustsortRCustom baseSortAlg xs =
     )
     xs
 
+-- | Used to create SubAlgorithms for use in recursive Robustsort variants. See
+--   also `robustsortRCustom`.
+--
+--   Creates an algorithm that recursively applies Tensort with a Bytesize that
+--   approximates the natural logarithm of the length of the input list until
+--   the Bytesize is less than or equal to 27. At this point, the baseSortAlg
+--   is used to sort the records.
 robustsortRecursive :: Int -> SortAlg -> SortAlg
 robustsortRecursive bytesize baseSortAlg
   -- ln (532048240602) ~= 27
@@ -168,8 +175,8 @@ robustsortRecursive bytesize baseSortAlg
   -- 3 ^ 3 = 27
   -- So this is saying, if we have a bitesize of 532,048,240,602 or less, use
   -- one more iteration of Tensort to sort the records. This last iteration
-  -- will use the baseSortAlg (which by default is a standard version of
-  -- Robustsort with a bytesize of 3) to sort its records.
+  -- will use the baseSortAlg (such as the basic version of Robustsort with
+  -- bytesize of 3 used in this module) to sort its records.
   | bytesize <= 27 = baseSortAlg
   | otherwise =
       tensort

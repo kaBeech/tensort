@@ -1,5 +1,5 @@
--- | This module provides the permutationsort function for sorting lists using the
---   Sortable type
+-- | This module provides the permutationsort function for sorting Sortable
+--   lists
 module Data.Tensort.Subalgorithms.Permutationsort (permutationsort) where
 
 import Data.List (permutations)
@@ -12,7 +12,7 @@ import Data.Tensort.Utils.Types
     fromSortRec,
   )
 
--- | Takes a Sortable and returns a sorted Sortable using a Permutationsort
+-- | Takes a Sortable and returns a sorted Sortable using Permutationsort
 --   algorithm
 
 -- | ==== __Examples__

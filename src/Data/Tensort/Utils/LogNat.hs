@@ -1,10 +1,10 @@
 -- | This module provides functions for calculating the natural logarithms in
---   a way useful for creating logarithmic Bytesizes
+--   a way useful for creating logarithmic Bytesizes.
 module Data.Tensort.Utils.LogNat (getLnBytesize, getLn) where
 
 import Data.Tensort.Utils.Types (Sortable (..))
 
--- | Calculate a suitable logarithmic Bytesize from a Sortable
+-- | Calculates a suitable logarithmic Bytesize for a given Sortable list.
 
 -- | ==== __Examples__
 -- >>> getLnBytesize (SortBit [1 .. 27])
@@ -16,8 +16,8 @@ getLnBytesize :: Sortable -> Int
 getLnBytesize (SortBit xs) = getLn (length xs)
 getLnBytesize (SortRec xs) = getLn (length xs)
 
--- | Calculate a the natural logarithm of an Int, rounded up to the nearest
---   integer
+-- | Calculates the natural logarithm of an integer, rounded up to the nearest
+--   integer.
 --
 -- | ==== __Examples__
 -- >>> getLn 27

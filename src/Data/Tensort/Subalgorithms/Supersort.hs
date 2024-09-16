@@ -1,5 +1,5 @@
 -- | This module provides functions for creating Supersort variants for
---   adjudicating between 3 sorting algorithms that use the Sortable type
+--   adjudicating between 3 sorting algorithms.
 module Data.Tensort.Subalgorithms.Supersort
   ( supersort,
     mundaneSuperStrat,
@@ -13,8 +13,12 @@ import Data.Tensort.Utils.Types
     SupersortStrat,
   )
 
--- | Takes 3 sorting algorithms and a SuperStrat and returns a SortAlg that
---   adjudicates between the 3 sorting algorithms using the provided SuperStrat
+-- | Used for creating a Supersort algorithm that adjudicates between 3 sorting
+--   algorithms.
+--
+--   Takes 3 sorting algorithms and a SuperStrat and returns a SortAlg that
+--   adjudicates between the 3 sorting algorithms using the provided
+--   SuperStrat.
 
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
@@ -37,8 +41,8 @@ supersort (subAlg1, subAlg2, subAlg3, superStrat) xs = do
     then result1
     else superStrat (result1, result2, subAlg3 xs)
 
--- | Takes 3 SortAlgs and adjudicates between them to find a common result to
---   increase robustness
+-- | Takes 3 SortAlgs and adjudicates between them to find a common result.
+--   Optimized for use in Mundane Robustsort variants.
 
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
@@ -53,12 +57,12 @@ supersort (subAlg1, subAlg2, subAlg3, superStrat) xs = do
 mundaneSuperStrat :: SupersortStrat
 mundaneSuperStrat (result1, result2, result3) = if result2 == result3 then result2 else result1
 
--- | Takes 3 SortAlgs and adjudicates between them to find a common result to
---   increase robustness
+-- | Takes 3 SortAlgs and adjudicates between them to find a common result.
+--   Optimized for use in Magic Robustsort variants.
 --
 --   Previously we used different SuperStrats for Mundane and Magic Supersorts.
 --   Currently there is no need to differentiate, but we keep this here for
---   backwards compatibility and in case this changes again in the future
+--   backwards compatibility and in case this changes again in the future.
 
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)

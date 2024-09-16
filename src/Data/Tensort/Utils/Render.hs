@@ -1,12 +1,12 @@
--- | Module for rendering a sorted list of Bits from a list of TensorStacks
+-- | Module for rendering a sorted list of Bits from a list of TensorStacks.
 --
 --   Functions ending in "B" are for sorting Bits in a base (non-recursive)
---   Tensort variant
+--   Tensort variant.
 --
 --   Functions ending in "R" are for sorting Records when used in a recursive
---   Tensort variant
+--   Tensort variant.
 --
---   TODO: See if we can clean up the type conversion here
+--   TODO: See if we can clean up the type conversion here.
 module Data.Tensort.Utils.Render (getSortedBitsFromTensor) where
 
 import Data.Maybe (isNothing)
@@ -33,7 +33,7 @@ import Data.Tensort.Utils.Types
     fromSortRec,
   )
 
--- | Compile a sorted list of Bits from a list of TensorStacks
+-- | Compile a sorted list of Bits from a list of TensorStacks.
 
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
@@ -71,10 +71,10 @@ getSortedBitsFromTensorR subAlg tensorRaw = acc tensorRaw []
         else do
           acc (fromJust tensor') (nextBit' : sortedBits)
 
--- | For use in compiling a list of Tensors into a sorted list of Bits
+-- | For use in compiling a list of Tensors into a sorted list of Bits.
 --
 -- | Removes the top Bit from a Tensor, rebalances the Tensor and returns
---   the removed Bit along with the rebalanced Tensor
+--   the removed Bit along with the rebalanced Tensor.
 
 -- | ==== __Examples__
 --   >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)

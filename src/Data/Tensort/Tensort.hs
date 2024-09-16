@@ -1,5 +1,5 @@
 -- | This module provides variations of the Tensort algorithm using the
---   Sortable type
+--   custom Sortable type for inputs and outputs
 module Data.Tensort.Tensort
   ( tensort,
     tensortB4,
@@ -25,7 +25,8 @@ import Data.Tensort.Utils.Types
 
 -- | Sort a Sortable list using a custom Tensort algorithm
 --
---   Takes TensortProps and a Sortable and returns a sorted Sortable
+--   Takes TensortProps (Bytesize and SubAlgorithm) and a Sortable and returns
+--   a sorted Sortable
 
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
@@ -80,6 +81,9 @@ tensortBN :: Int -> Sortable -> Sortable
 tensortBN n = tensort (mkTsProps n bubblesort)
 
 -- | Sort a Sortable list using a Standard Logarithmic Tensort algorithm
+--
+--   Standard Logarithmic Tensort uses a Bytesize that approximates the natural
+--   logarithm of the length of the input list and a Bubblesort subalgorithm
 
 -- | ==== __Examples__
 -- >>> tensortBL (SortBit [16, 23, 4, 8, 15, 42])

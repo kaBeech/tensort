@@ -1,3 +1,5 @@
+-- | This module provides a function to split a list into chunks of a given
+--   size.
 module Data.Tensort.Utils.Split (splitEvery) where
 
 -- | Split a list into chunks of a given size.

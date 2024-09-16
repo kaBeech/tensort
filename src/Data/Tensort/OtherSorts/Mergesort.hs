@@ -1,11 +1,12 @@
--- | This module provides the mergesort function for sorting lists using the
---   Sortable type
+-- | This module provides an implementation of the mergesort algorithm suitable
+--   for sorting lists using the Sortable type.
 module Data.Tensort.OtherSorts.Mergesort (mergesort) where
 
 import Data.Tensort.Utils.ComparisonFunctions (lessThanBit, lessThanRecord)
 import Data.Tensort.Utils.Types (Bit, Record, Sortable (..))
 
--- | Takes a Sortable and returns a sorted Sortable using a Mergesort algorithm
+-- | Takes a Sortable and returns a sorted Sortable using a Mergesort
+--   algorithm.
 
 -- | ==== __Examples__
 --  >>> mergesort (SortBit [16, 23, 4, 8, 15, 42])

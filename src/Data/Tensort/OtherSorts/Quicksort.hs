@@ -1,11 +1,12 @@
--- | This module provides the quicksort function for sorting lists using the
---   Sortable type
+-- | This module provides an implementation of the quicksort algorithm suitable
+--   for sorting lists using the Sortable type.
 module Data.Tensort.OtherSorts.Quicksort (quicksort) where
 
 import Data.Tensort.Utils.ComparisonFunctions (greaterThanBit, greaterThanRecord)
 import Data.Tensort.Utils.Types (Bit, Record, Sortable (..))
 
--- | Takes a Sortable and returns a sorted Sortable using a Quicksort algorithm
+-- | Takes a Sortable and returns a sorted Sortable using a Quicksort
+--   algorithm.
 
 -- | ==== __Examples__
 --  >>> quicksort (SortBit [16, 23, 4, 8, 15, 42])

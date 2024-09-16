@@ -1,13 +1,13 @@
 -- | This module provides functions to reduce a list of TensorStacks into a
---   more compact list of TensorStacks
+--   more compact list of TensorStacks.
 --
 --   Functions ending in "B" are for sorting Bits in a base (non-recursive)
---   Tensort variant
+--   Tensort variant.
 --
 --   Functions ending in "R" are for sorting Records when used in a recursive
---   Tensort variant
+--   Tensort variant.
 --
---   TODO: See if we can clean up the type conversion here
+--   TODO: See if we can clean up the type conversion here.
 module Data.Tensort.Utils.Reduce (reduceTensorStacks) where
 
 import Data.Tensort.Utils.Compose (createTensor)
@@ -28,9 +28,9 @@ import Data.Tensort.Utils.Types
 
 -- | Take a list of TensorStacks and group them together in new
 --   TensorStacks, each containing bytesize number of Tensors (former
---   TensorStacks), until the number of TensorStacks is equal to the bytesize
+--   TensorStacks), until the number of TensorStacks is equal to the bytesize.
 
---   The Registers of the new TensorStacks are bubblesorted, as usual
+--   The Registers of the new TensorStacks are bubblesorted, as usual.
 
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
@@ -63,11 +63,11 @@ reduceTensorStacksR tsProps tensorStacks = do
         (SMemoryRec (TensorMemR newTensorStacks))
     else reduceTensorStacksR tsProps newTensorStacks
 
--- | Take a list of TensorStacks  and group them together in new
+-- | Take a list of TensorStacks and group them together in new
 --   TensorStacks each containing bytesize number of Tensors (former
---   TensorStacks)
+--   TensorStacks).
 
---   The Registers of the new TensorStacks are bubblesorted, as usual
+--   The Registers of the new TensorStacks are bubblesorted, as usual.
 
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)

@@ -170,8 +170,11 @@ falter without:
 
 <figure>
     <img src="./assets/images/ackley_deps.png"
-         alt="Comment from Ackley in the Beyond Efficiency code about Perl
-        updates breaking their code">
+         alt="A screenshot from Ackley's code referenced in 'Beyond Efficiency':
+             'Written by Dave Ackley in 2011-2012 and placed in the public
+              domain. Gah!  Perl has messed with its sorting algorithms in
+              COMPLETELY NON-BACKWARD-COMPATIBLE WAYS!  So require our version
+              (more or less, anyway) to try to stabilize these results!'">
     <figcaption><i><a href="http://livingcomputation.com/robusort2.tar" 
                       rel="noopener noreferrer"
                       target="_blank">
@@ -1176,4 +1179,13 @@ I'd like to send a special thank you to the following people:
 
 ## Hype
 
-  - Dave Ackley read my paper!! And had [this](https://hachyderm.io/@livcomp/113016513691522706) to say about it: "Super great stuff! kabeech dives into iid errors in comparison sorting, ropes it, pulls it down, and hogties it six ways to Sunday."
+  - Dave Ackley read my paper!! And had 
+    [this](https://hachyderm.io/@livcomp/113016513691522706) to say about it:
+    "Super great stuff! kabeech dives into iid errors in comparison sorting,
+    ropes it, pulls it down, and hogties it six ways to Sunday."
+
+  - Ivan Reese also had
+    [very kind](https://futureofcoding.slack.com/archives/CCL5VVBAN/p1724550313800559?thread_ts=1724444821.212869&cid=CCL5VVBAN)
+    things to say: "Hats off Kyle. You've made something very cool and
+    technical and fascinating, but also woven charm and joy into its
+    presentation. Beautiful."
