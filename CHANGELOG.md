@@ -91,4 +91,4 @@
 
 * Add Hype section to README
 
-* Some code cleanup
+* Some code and documentation cleanup
