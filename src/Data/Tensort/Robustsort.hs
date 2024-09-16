@@ -161,6 +161,13 @@ robustsortRCustom baseSortAlg xs =
     )
     xs
 
+-- | Used to create SubAlgorithms for use in recursive Robustsort variants. See
+--   also `robustsortRCustom`.
+--
+--   Creates an algorithm that recursively applies Tensort with a Bytesize that
+--   approximates the natural logarithm of the length of the input list until
+--   the Bytesize is less than or equal to 27. At this point, the baseSortAlg
+--   is used to sort the records.
 robustsortRecursive :: Int -> SortAlg -> SortAlg
 robustsortRecursive bytesize baseSortAlg
   -- ln (532048240602) ~= 27
@@ -168,8 +175,8 @@ robustsortRecursive bytesize baseSortAlg
   -- 3 ^ 3 = 27
   -- So this is saying, if we have a bitesize of 532,048,240,602 or less, use
   -- one more iteration of Tensort to sort the records. This last iteration
-  -- will use the baseSortAlg (which by default is a standard version of
-  -- Robustsort with a bytesize of 3) to sort its records.
+  -- will use the baseSortAlg (such as the basic version of Robustsort with
+  -- bytesize of 3 used in this module) to sort its records.
   | bytesize <= 27 = baseSortAlg
   | otherwise =
       tensort
