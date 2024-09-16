@@ -1,5 +1,5 @@
 -- | This module provides variations of the Tensort algorithm using the
---   Sortable type
+--   custom Sortable type for inputs and outputs
 module Data.Tensort.Tensort
   ( tensort,
     tensortB4,
