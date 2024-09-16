@@ -65,7 +65,7 @@ type Tensor = (Register, Memory)
 --   TensorStacks.
 type TensorStack = Tensor
 
--- | We use a Sortable type to sort Bits and Records
+-- | We use a Sortable type to sort list of Bits and lists of Records
 data Sortable
   = SortBit [Bit]
   | SortRec [Record]
