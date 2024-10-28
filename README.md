@@ -1,4 +1,15 @@
 # Tensort [![Hackage](https://img.shields.io/hackage/v/tensort.svg)](https://hackage.haskell.org/package/tensort)
+<i>
+ "Super great stuff! kabeech dives into iid errors in comparison sorting, ropes
+ it, pulls it down, and hogties it six ways to Sunday." - 
+    <a href="https://hachyderm.io/@livcomp/113016513691522706" 
+       rel="noopener noreferrer"
+       target="_blank">David H. Ackley
+    </a>
+ 
+</i>
+
+-------
 
 Tensort is a family of sorting algorithms that are tunable to adjust to the
 priorities of the task at hand.
