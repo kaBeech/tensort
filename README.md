@@ -809,7 +809,7 @@ permutations of [1,2,3] using a faulty comparator that gives a random result
 In these cases, 86% of the time the Top Bit was in the correct position.
 The least likely outcome is a reverse-sorted Byte and the other possible
 incorrect outcomes are in approximately even distribution with each other.
-https://hachyderm.io/@kaBeech
+
 #### Supersort Adjudication
 
 Supposing that our results from Bubblesort and Rotationsort disagree and we now
