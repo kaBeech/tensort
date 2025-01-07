@@ -97,4 +97,6 @@
 
 * Bump version constraints on random
 
+* Test with new versions of GHC
+
 * Fix typos and make minor changes to README
