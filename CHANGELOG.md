@@ -95,7 +95,7 @@
 
 ## 1.0.1.4 -- 2025-01-07
 
-* Bump version constraints on random
+* Bump version constraints on base and random
 
 * Test with new versions of GHC
 
