@@ -92,3 +92,9 @@
 * Add Hype section to README
 
 * Some code and documentation cleanup
+
+## 1.0.1.4 -- 2025-01-07
+
+* Bump version constraints on random
+
+* Fix typos and make minor changes to README
