@@ -23,6 +23,7 @@ name:               tensort
 version:            1.0.1.4
 
 tested-with:        GHC==9.12.1, 
+                    GHC==9.10.1, 
                     GHC==9.8.4, 
                     GHC==9.6.4, 
                     GHC==9.4.8,
@@ -131,7 +132,7 @@ library
     -- other-extensions:
 
     -- Other library packages from which modules are imported.
-    build-depends:    base >=4.3.0.0 && <= 4.20.0.1,
+    build-depends:    base >=4.3.0.0 && < 4.22,
                       mtl >= 2.2.2  && < 2.4,
                       random >= 1.0.0.3 && < 1.4,
                       random-shuffle >= 0.0.4 && < 0.1,
