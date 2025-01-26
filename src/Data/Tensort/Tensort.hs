@@ -15,7 +15,7 @@ import Data.Tensort.Utils.LogNat (getLnBytesize)
 import Data.Tensort.Utils.MkTsProps (mkTsProps)
 import Data.Tensort.Utils.RandomizeList (randomizeList)
 import Data.Tensort.Utils.Reduce (reduceTensorStacks)
-import Data.Tensort.Utils.Render (getSortedBitsFromTensor)
+import Data.Tensort.Utils.Render (getSortedBits)
 import Data.Tensort.Utils.Types
   ( Sortable (..),
     TensortProps (..),
@@ -40,21 +40,23 @@ tensort :: TensortProps -> Sortable -> Sortable
 tensort _ (SortBit []) = SortBit []
 tensort _ (SortBit [x]) = SortBit [x]
 tensort tsProps (SortBit [x, y]) = subAlgorithm tsProps (SortBit [x, y])
-tensort tsProps (SortBit xs) =
-  let bits = randomizeList 143 (SortBit xs)
-      bytes = rawToBytes tsProps bits
-      tensorStacks = createInitialTensors tsProps bytes
-      topTensor = reduceTensorStacks tsProps tensorStacks
-   in fromSBitBits (getSortedBitsFromTensor (subAlgorithm tsProps) topTensor)
+tensort tsProps (SortBit xs) = fromSBitBits $ getSortedBits subAlg topTensor
+  where
+    subAlg = subAlgorithm tsProps
+    topTensor = reduceTensorStacks tsProps tensorStacks
+    tensorStacks = createInitialTensors tsProps bytes
+    bytes = rawToBytes tsProps bits
+    bits = randomizeList 143 (SortBit xs)
 tensort _ (SortRec []) = SortRec []
 tensort _ (SortRec [x]) = SortRec [x]
 tensort tsProps (SortRec [x, y]) = subAlgorithm tsProps (SortRec [x, y])
-tensort tsProps (SortRec xs) =
-  let recs = randomizeList 143 (SortRec xs)
-      bytes = rawToBytes tsProps recs
-      tensorStacks = createInitialTensors tsProps bytes
-      topTensor = reduceTensorStacks tsProps tensorStacks
-   in fromSBitRecs (getSortedBitsFromTensor (subAlgorithm tsProps) topTensor)
+tensort tsProps (SortRec xs) = fromSBitRecs $ getSortedBits subAlg topTensor
+  where
+    subAlg = subAlgorithm tsProps
+    topTensor = reduceTensorStacks tsProps tensorStacks
+    tensorStacks = createInitialTensors tsProps bytes
+    bytes = rawToBytes tsProps recs
+    recs = randomizeList 143 (SortRec xs)
 
 -- | Sort a Sortable list using a Standard Tensort algorithm with a 4-Bit
 --   Bytesize
