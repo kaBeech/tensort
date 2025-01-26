@@ -24,19 +24,25 @@ import Data.Tensort.Utils.Types
 --   >>> rawBitsToBytes (mkTsProps 4 bubblesort) [5,1,3,7,8,2,4,6]
 --   [[2,4,6,8],[1,3,5,7]]
 rawToBytes :: TensortProps -> Sortable -> SBytes
-rawToBytes tsProps (SortBit xs) = SBytesBit (rawBitsToBytes tsProps xs)
-rawToBytes tsProps (SortRec xs) = SBytesRec (rawRecsToBytes tsProps xs)
+rawToBytes tsProps (SortBit xs) = SBytesBit $ rawBitsToBytes tsProps xs
+rawToBytes tsProps (SortRec xs) = SBytesRec $ rawRecsToBytes tsProps xs
 
 rawBitsToBytes :: TensortProps -> [Bit] -> [Byte]
-rawBitsToBytes tsProps bits = foldr acc [] (splitEvery (bytesize tsProps) bits)
+rawBitsToBytes tsProps bits = foldr acc [] bytes
   where
+    bytes = splitEvery (bytesize tsProps) bits
     acc :: [Bit] -> [Byte] -> [Byte]
-    acc byte bytes =
-      bytes ++ [fromSortBit (subAlgorithm tsProps (SortBit byte))]
+    acc byte bytesSorted =
+      bytesSorted ++ [byteSorted]
+      where
+        byteSorted = fromSortBit . subAlgorithm tsProps $ SortBit byte
 
 rawRecsToBytes :: TensortProps -> [Record] -> [[Record]]
-rawRecsToBytes tsProps recs = foldr acc [] (splitEvery (bytesize tsProps) recs)
+rawRecsToBytes tsProps recs = foldr acc [] rbytes
   where
+    rbytes = splitEvery (bytesize tsProps) recs
     acc :: [Record] -> [[Record]] -> [[Record]]
-    acc rbyte rbytes =
-      rbytes ++ [fromSortRec (subAlgorithm tsProps (SortRec rbyte))]
+    acc rbyte rbytesSorted =
+      rbytesSorted ++ [rbyteSorted]
+      where
+        rbyteSorted = fromSortRec . subAlgorithm tsProps $ SortRec rbyte
