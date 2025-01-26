@@ -34,12 +34,13 @@ supersort ::
   (SortAlg, SortAlg, SortAlg, SupersortStrat) ->
   Sortable ->
   Sortable
-supersort (subAlg1, subAlg2, subAlg3, superStrat) xs = do
-  let result1 = subAlg1 xs
-  let result2 = subAlg2 xs
+supersort (subAlg1, subAlg2, subAlg3, superStrat) xs =
   if result1 == result2
     then result1
     else superStrat (result1, result2, subAlg3 xs)
+  where
+    result1 = subAlg1 xs
+    result2 = subAlg2 xs
 
 -- | Takes 3 SortAlgs and adjudicates between them to find a common result.
 --   Optimized for use in Mundane Robustsort variants.
@@ -55,7 +56,8 @@ supersort (subAlg1, subAlg2, subAlg3, superStrat) xs = do
 -- >>> supersort (mergesort, bubblesort, permutationsort, mundaneSuperStrat) (SortRec [(16, 23), (4, 8), (15, 42)])
 -- SortRec [(4,8),(16,23),(15,42)]
 mundaneSuperStrat :: SupersortStrat
-mundaneSuperStrat (result1, result2, result3) = if result2 == result3 then result2 else result1
+mundaneSuperStrat (result1, result2, result3) =
+  if result2 == result3 then result2 else result1
 
 -- | Takes 3 SortAlgs and adjudicates between them to find a common result.
 --   Optimized for use in Magic Robustsort variants.
