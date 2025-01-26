@@ -22,21 +22,19 @@ import Data.Tensort.Utils.Types
 -- >>> permutationsort (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
 -- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 permutationsort :: Sortable -> Sortable
-permutationsort (SortBit xs) = SortBit (acc (permutations x) [])
+permutationsort (SortBit xs) = SortBit $ acc (permutations xs) []
   where
-    x = xs
     acc :: [[Bit]] -> [Bit] -> [Bit]
     acc [] unsortedPermutations =
-      fromSortBit (permutationsort (SortBit unsortedPermutations))
+      fromSortBit . permutationsort $ SortBit unsortedPermutations
     acc (permutation : remainingPermutations) unsortedPermutations
       | isSorted (SortBit permutation) = permutation
       | otherwise = acc remainingPermutations unsortedPermutations
-permutationsort (SortRec xs) = SortRec (acc (permutations x) [])
+permutationsort (SortRec xs) = SortRec $ acc (permutations xs) []
   where
-    x = xs
     acc :: [[Record]] -> [Record] -> [Record]
     acc [] unsortedPermutations =
-      fromSortRec (permutationsort (SortRec unsortedPermutations))
+      fromSortRec . permutationsort $ SortRec unsortedPermutations
     acc (permutation : remainingPermutations) unsortedPermutations
       | isSorted (SortRec permutation) = permutation
       | otherwise = acc remainingPermutations unsortedPermutations
