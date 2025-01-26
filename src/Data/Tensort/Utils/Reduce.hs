@@ -44,24 +44,24 @@ reduceTensorStacks tsProps (STensorsRec tensorStacks) =
   reduceTensorStacksR tsProps tensorStacks
 
 reduceTensorStacksB :: TensortProps -> [TensorStack] -> STensorStack
-reduceTensorStacksB tsProps tensorStacks = do
-  let newTensorStacks = reduceTensorStacksSinglePass tsProps tensorStacks
+reduceTensorStacksB tsProps tensorStacks =
   if length newTensorStacks <= bytesize tsProps
-    then
-      createTensor
-        (subAlgorithm tsProps)
-        (SMemoryBit (TensorMem newTensorStacks))
+    then createTensor subAlg memory
     else reduceTensorStacksB tsProps newTensorStacks
+  where
+    subAlg = subAlgorithm tsProps
+    memory = SMemoryBit $ TensorMem tensorStacks
+    newTensorStacks = reduceTensorStacksSinglePass tsProps tensorStacks
 
 reduceTensorStacksR :: TensortProps -> [TensorStackR] -> STensorStack
-reduceTensorStacksR tsProps tensorStacks = do
-  let newTensorStacks = reduceTensorStacksRSinglePass tsProps tensorStacks
+reduceTensorStacksR tsProps tensorStacks =
   if length newTensorStacks <= bytesize tsProps
-    then
-      createTensor
-        (subAlgorithm tsProps)
-        (SMemoryRec (TensorMemR newTensorStacks))
+    then createTensor subAlg memoryR
     else reduceTensorStacksR tsProps newTensorStacks
+  where
+    subAlg = subAlgorithm tsProps
+    memoryR = SMemoryRec $ TensorMemR tensorStacks
+    newTensorStacks = reduceTensorStacksRSinglePass tsProps tensorStacks
 
 -- | Take a list of TensorStacks and group them together in new
 --   TensorStacks each containing bytesize number of Tensors (former
@@ -79,31 +79,33 @@ reduceTensorStacksSinglePass ::
   [TensorStack] ->
   [TensorStack]
 reduceTensorStacksSinglePass tsProps tensorStacks =
-  foldr acc [] (splitEvery (bytesize tsProps) tensorStacks)
+  foldr acc [] tensorStacks'
   where
+    tensorStacks' = splitEvery (bytesize tsProps) tensorStacks
     acc :: [TensorStack] -> [TensorStack] -> [TensorStack]
     acc tensorStack newTensorStacks =
       newTensorStacks
-        ++ [ fromSTensorBit
-               ( createTensor
-                   (subAlgorithm tsProps)
-                   (SMemoryBit (TensorMem tensorStack))
-               )
-           ]
+        ++ [newTensorStack]
+      where
+        newTensorStack = fromSTensorBit tensor
+        tensor = createTensor subAlg memory
+        subAlg = subAlgorithm tsProps
+        memory = SMemoryBit $ TensorMem tensorStack
 
 reduceTensorStacksRSinglePass ::
   TensortProps ->
   [TensorStackR] ->
   [TensorStackR]
 reduceTensorStacksRSinglePass tsProps tensorStacks =
-  foldr acc [] (splitEvery (bytesize tsProps) tensorStacks)
+  foldr acc [] tensorStacks'
   where
+    tensorStacks' = splitEvery (bytesize tsProps) tensorStacks
     acc :: [TensorStackR] -> [TensorStackR] -> [TensorStackR]
     acc tensorStack newTensorStacks =
       newTensorStacks
-        ++ [ fromSTensorRec
-               ( createTensor
-                   (subAlgorithm tsProps)
-                   (SMemoryRec (TensorMemR tensorStack))
-               )
-           ]
+        ++ [newTensorStackR]
+      where
+        newTensorStackR = fromSTensorRec tensor
+        tensor = createTensor subAlg memoryR
+        subAlg = subAlgorithm tsProps
+        memoryR = SMemoryRec $ TensorMemR tensorStack
