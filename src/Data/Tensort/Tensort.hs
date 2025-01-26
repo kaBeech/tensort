@@ -68,7 +68,7 @@ tensort tsProps (SortRec xs) = fromSBitRecs $ getSortedBits subAlg topTensor
 -- >>> tensortB4 (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
 -- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 tensortB4 :: Sortable -> Sortable
-tensortB4 = tensort (mkTsProps 4 bubblesort)
+tensortB4 = tensort $ mkTsProps 4 bubblesort
 
 -- | Sort a Sortable list using a Standard Tensort algorithm with a custom
 --   Bytesize
@@ -80,7 +80,7 @@ tensortB4 = tensort (mkTsProps 4 bubblesort)
 -- >>> tensortBN 3 (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
 -- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 tensortBN :: Int -> Sortable -> Sortable
-tensortBN n = tensort (mkTsProps n bubblesort)
+tensortBN n = tensort $ mkTsProps n bubblesort
 
 -- | Sort a Sortable list using a Standard Logarithmic Tensort algorithm
 --
@@ -94,4 +94,6 @@ tensortBN n = tensort (mkTsProps n bubblesort)
 -- >>> tensortBL (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
 -- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 tensortBL :: Sortable -> Sortable
-tensortBL xs = tensort (mkTsProps (getLnBytesize xs) bubblesort) xs
+tensortBL xs = tensort tsProps xs
+  where
+    tsProps = mkTsProps (getLnBytesize xs) bubblesort
