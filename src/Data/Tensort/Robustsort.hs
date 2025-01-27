@@ -153,13 +153,11 @@ supersortM =
 -- >>> robustsortRCustom robustsortB (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
 -- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 robustsortRCustom :: SortAlg -> Sortable -> Sortable
-robustsortRCustom baseSortAlg xs =
-  tensort
-    ( mkTsProps
-        (getLnBytesize xs)
-        (robustsortRecursive (getLnBytesize xs) baseSortAlg)
-    )
-    xs
+robustsortRCustom baseSortAlg xs = tensort tsProps xs
+  where
+    tsProps = mkTsProps bytesize subAlg
+    bytesize = getLnBytesize xs
+    subAlg = robustsortRecursive bytesize baseSortAlg
 
 -- | Used to create SubAlgorithms for use in recursive Robustsort variants. See
 --   also `robustsortRCustom`.
@@ -178,9 +176,8 @@ robustsortRecursive bytesize baseSortAlg
   -- will use the baseSortAlg (such as the basic version of Robustsort with
   -- bytesize of 3 used in this module) to sort its records.
   | bytesize <= 27 = baseSortAlg
-  | otherwise =
-      tensort
-        ( mkTsProps
-            (getLn bytesize)
-            (robustsortRecursive (getLn bytesize) baseSortAlg)
-        )
+  | otherwise = tensort tsProps
+  where
+    tsProps = mkTsProps bytesize' baseSortAlg'
+    bytesize' = getLn bytesize
+    baseSortAlg' = robustsortRecursive bytesize' baseSortAlg

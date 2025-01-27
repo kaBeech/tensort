@@ -13,8 +13,8 @@ import Data.Tensort.Utils.Types (Sortable (..))
 -- >>> getLnBytesize  (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
 -- 2
 getLnBytesize :: Sortable -> Int
-getLnBytesize (SortBit xs) = getLn (length xs)
-getLnBytesize (SortRec xs) = getLn (length xs)
+getLnBytesize (SortBit xs) = getLn $ length xs
+getLnBytesize (SortRec xs) = getLn $ length xs
 
 -- | Calculates the natural logarithm of an integer, rounded up to the nearest
 --   integer.
@@ -23,4 +23,4 @@ getLnBytesize (SortRec xs) = getLn (length xs)
 -- >>> getLn 27
 -- 4
 getLn :: Int -> Int
-getLn x = ceiling (log (fromIntegral x) :: Double)
+getLn x = ceiling $ log (fromIntegral x :: Double)

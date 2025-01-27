@@ -18,13 +18,11 @@ import Data.Tensort.Utils.Types (Sortable (..))
 -- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 bubblesort :: Sortable -> Sortable
 bubblesort (SortBit bits) =
-  SortBit
-    ( bublesortIterable greaterThanBit bits 0 (length bits)
-    )
+  SortBit $
+    bublesortIterable greaterThanBit bits 0 (length bits)
 bubblesort (SortRec recs) =
-  SortRec
-    ( bublesortIterable greaterThanRecord recs 0 (length recs)
-    )
+  SortRec $
+    bublesortIterable greaterThanRecord recs 0 (length recs)
 
 bublesortIterable :: (Ord a) => (a -> a -> Bool) -> [a] -> Int -> Int -> [a]
 bublesortIterable greaterThan xs currentIndex i
@@ -34,12 +32,13 @@ bublesortIterable greaterThan xs currentIndex i
   | currentIndex > length xs - 2 =
       bublesortIterable greaterThan xs 0 (i - 1)
   | otherwise =
-      let left = take currentIndex xs
-          right = drop (currentIndex + 2) xs
-          x = xs !! currentIndex
-          y = xs !! (currentIndex + 1)
-          leftElemGreater = greaterThan x y
-          swappedXs = left ++ [y] ++ [x] ++ right
-       in if leftElemGreater
-            then bublesortIterable greaterThan swappedXs (currentIndex + 1) i
-            else bublesortIterable greaterThan xs (currentIndex + 1) i
+      if leftElemGreater
+        then bublesortIterable greaterThan swappedXs (currentIndex + 1) i
+        else bublesortIterable greaterThan xs (currentIndex + 1) i
+  where
+    left = take currentIndex xs
+    right = drop (currentIndex + 2) xs
+    x = xs !! currentIndex
+    y = xs !! (currentIndex + 1)
+    leftElemGreater = greaterThan x y
+    swappedXs = left ++ [y] ++ [x] ++ right

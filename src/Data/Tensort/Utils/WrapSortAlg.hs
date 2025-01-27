@@ -16,4 +16,4 @@ import Data.Tensort.Utils.Types (Bit, SortAlg, Sortable (SortBit), fromSortBit)
 --  >>> (wrapSortAlg robustsortM) [16, 23, 4, 8, 15, 42]
 --  [4,8,15,16,23,42]
 wrapSortAlg :: SortAlg -> ([Bit] -> [Bit])
-wrapSortAlg sortAlg xs = fromSortBit (sortAlg (SortBit xs))
+wrapSortAlg sortAlg = fromSortBit . sortAlg . SortBit

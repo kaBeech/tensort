@@ -26,15 +26,11 @@ simplifyRegister = map (Data.Bifunctor.second snd)
 --  original RegisterR in the same order as the simplified, sorted Register
 --  and returns the sorted RegisterR.
 applySortingFromSimplifiedRegister :: [Record] -> [RecordR] -> [RecordR]
-applySortingFromSimplifiedRegister
-  sortedSimplifiedRegister
-  unsortedRegiserR = do
-    let registerR = acc sortedSimplifiedRegister [] unsortedRegiserR
-    registerR
-    where
-      acc :: [Record] -> [RecordR] -> [RecordR] -> [RecordR]
-      acc [] sortedRegisterR _ = sortedRegisterR
-      acc (record : remainingRecords) sortedRegisterR unsortedRegiserR' = do
-        let i = fst record
-        let recordR = head (filter (\(i', _) -> i' == i) unsortedRegiserR')
-        acc remainingRecords (sortedRegisterR ++ [recordR]) unsortedRegiserR'
+applySortingFromSimplifiedRegister sortedSimplifiedRegister = acc sortedSimplifiedRegister []
+  where
+    acc :: [Record] -> [RecordR] -> [RecordR] -> [RecordR]
+    acc [] sortedRegisterR _ = sortedRegisterR
+    acc (record : remainingRecords) sortedRegisterR unsortedRegiserR' = do
+      let i = fst record
+      let recordR = head (filter (\(i', _) -> i' == i) unsortedRegiserR')
+      acc remainingRecords (sortedRegisterR ++ [recordR]) unsortedRegiserR'
