@@ -1,20 +1,14 @@
 {-# LANGUAGE GADTs #-}
 
 -- | This module provides types used in the Tensort package.
---
---   Since these packages are only for sorting Ints currently, every data
---   type is a structure of Ints.
 module Data.Tensort.Utils.Types where
 
 -- | TensortProps contains the Bytesize and SubAlgorithm used in a Tensort
 --   algorithm.
 data TensortProps = TensortProps {bytesize :: Int, subAlgorithm :: SortAlg}
 
--- | A Bit is a single element of the list to be sorted. For our current
---   purposes that means it is an Int.
-
---   The definition of a Bit may be expanded in the future to include any Ord.
-type Bit = Int
+-- | A Bit is a single element of the list to be sorted.
+type Bit = Ordering
 
 -- | A Byte is a list of Bits standardized to a fixed maximum length (Bytesize).
 
