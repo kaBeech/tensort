@@ -10,7 +10,7 @@ where
 
 import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 import Data.Tensort.Utils.Compose (createInitialTensors)
-import Data.Tensort.Utils.Convert (rawToBytes)
+import Data.Tensort.Utils.Convert (rawBitsToBytes)
 import Data.Tensort.Utils.LogNat (getLnBytesize)
 import Data.Tensort.Utils.MkTsProps (mkTsProps)
 import Data.Tensort.Utils.RandomizeList (randomizeList)
@@ -45,7 +45,7 @@ tensort tsProps (SortBit xs) = fromSBitBits $ getSortedBits subAlg topTensor
     subAlg = subAlgorithm tsProps
     topTensor = reduceTensorStacks tsProps tensorStacks
     tensorStacks = createInitialTensors tsProps bytes
-    bytes = rawToBytes tsProps bits
+    bytes = rawBitsToBytes tsProps bits
     bits = randomizeList 143 (SortBit xs)
 tensort _ (SortRec []) = SortRec []
 tensort _ (SortRec [x]) = SortRec [x]
@@ -55,7 +55,7 @@ tensort tsProps (SortRec xs) = fromSBitRecs $ getSortedBits subAlg topTensor
     subAlg = subAlgorithm tsProps
     topTensor = reduceTensorStacks tsProps tensorStacks
     tensorStacks = createInitialTensors tsProps bytes
-    bytes = rawToBytes tsProps recs
+    bytes = rawBitsToBytes tsProps recs
     recs = randomizeList 143 (SortRec xs)
 
 -- | Sort a Sortable list using a Standard Tensort algorithm with a 4-Bit
