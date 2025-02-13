@@ -7,11 +7,7 @@ module Data.Tensort.Subalgorithms.Supersort
   )
 where
 
-import Data.Tensort.Utils.Types
-  ( SortAlg,
-    Sortable (..),
-    SupersortStrat,
-  )
+import Data.Tensort.Utils.Types (SupersortStrat)
 
 -- | Used for creating a Supersort algorithm that adjudicates between 3 sorting
 --   algorithms.
@@ -26,14 +22,15 @@ import Data.Tensort.Utils.Types
 -- >>> import Data.Tensort.OtherSorts.Mergesort (mergesort)
 --
 -- >>> supersort (mergesort, bubblesort, permutationsort, mundaneSuperStrat) (SortBit [16, 23, 4, 8, 15, 42])
--- SortBit [4,8,15,16,23,42]
+-- [4,8,15,16,23,42]
 --
 -- >>> supersort (mergesort, bubblesort, permutationsort, mundaneSuperStrat) (SortRec [(16, 23), (4, 8), (15, 42)])
--- SortRec [(4,8),(16,23),(15,42)]
+-- [(4,8),(16,23),(15,42)]
 supersort ::
-  (SortAlg, SortAlg, SortAlg, SupersortStrat) ->
-  Sortable ->
-  Sortable
+  (Ord a) =>
+  ([a] -> [a], [a] -> [a], [a] -> [a], SupersortStrat) ->
+  [a] ->
+  [a]
 supersort (subAlg1, subAlg2, subAlg3, superStrat) xs =
   if result1 == result2
     then result1
@@ -72,9 +69,9 @@ mundaneSuperStrat (result1, result2, result3) =
 -- >>> import Data.Tensort.Subalgorithms.Permutationsort (permutationsort)
 --
 -- >>> supersort (mergesort, bubblesort, permutationsort, magicSuperStrat) (SortBit [16, 23, 4, 8, 15, 42])
--- SortBit [4,8,15,16,23,42]
+-- [4,8,15,16,23,42]
 --
 -- >>> supersort (mergesort, bubblesort, permutationsort, magicSuperStrat) (SortRec [(16, 23), (4, 8), (15, 42)])
--- SortRec [(4,8),(16,23),(15,42)]
+-- [(4,8),(16,23),(15,42)]
 magicSuperStrat :: SupersortStrat
 magicSuperStrat = mundaneSuperStrat
