@@ -60,24 +60,7 @@ type Tensor = (Register, Memory)
 type TensorStack = Tensor
 
 -- | We use a Sortable type to sort list of Bits and lists of Records.
-data Sortable
-  = SortBit [Bit]
-  | SortRec [Record]
-  deriving (Show, Eq, Ord)
-
--- | Converts a Sortable list to a list of Bits.
-fromSortBit :: Sortable -> [Bit]
-fromSortBit (SortBit bits) = bits
-fromSortBit (SortRec _) =
-  error
-    "From fromSortBit: This is for sorting Bits - you gave me Records"
-
--- | Converts a Sortable list to a list of Records.
-fromSortRec :: Sortable -> [Record]
-fromSortRec (SortRec recs) = recs
-fromSortRec (SortBit _) =
-  error
-    "From fromSortRec: This is for sorting Records - you gave me Bits"
+type Sortable = [Bit]
 
 -- | A sorting algorithm is a function that takes a Sortable and returns a
 --   sorted Sortable.
@@ -127,11 +110,11 @@ fromSBitRec (SBitBit _) =
 
 -- | Converts a list of Bits into a Sortable.
 fromSBitBits :: [SBit] -> Sortable
-fromSBitBits = SortBit . map fromSBitBit
+fromSBitBits = map fromSBitBit
 
 -- | Converts a list of Records into a Sortable.
 fromSBitRecs :: [SBit] -> Sortable
-fromSBitRecs = SortRec . map fromSBitRec
+fromSBitRecs = map fromSBitRec
 
 -- | This is a `Byte` type that is used when sorting Records in a recursive
 --   Tensort variant.
