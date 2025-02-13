@@ -1102,7 +1102,7 @@ Michael?
 ## Library
 
 This package provides implementations of the following algorithms wrapped for
-integer sorting:
+Ord sorting:
 
   - Standard Logarithmic Tensort
 
