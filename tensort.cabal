@@ -120,7 +120,6 @@ library
 
     -- Modules included in this library but not exported.
     other-modules:    Data.Tensort.Utils.Split,
-                      Data.Tensort.Utils.ComparisonFunctions,
                       Data.Tensort.Utils.Convert,
                       Data.Tensort.Utils.Compose,
                       Data.Tensort.Utils.Reduce,
