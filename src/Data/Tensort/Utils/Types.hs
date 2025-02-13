@@ -59,20 +59,17 @@ type Tensor = (Register, Memory)
 --   TensorStacks.
 type TensorStack = Tensor
 
--- | We use a Sortable type to sort list of Bits and lists of Records.
-type Sortable = [Bit]
-
 -- | A sorting algorithm is a function that takes a list of ordered elements
 --   and returns that list sorted.
 type SortAlg a = [a] -> [a]
 
 -- | SupersortProps consist of three sorting algorithms to adjuditcate between
 --   and a SupersortStrat that does the adjudication.
-type SupersortProps = (SortAlg, SortAlg, SortAlg, SupersortStrat)
+type SupersortProps a = (SortAlg a, SortAlg a, SortAlg a, SupersortStrat a)
 
 -- | A SupersortStrat takes three Sortables and determines which of the three
 --   is most likely to be in the correct order.
-type SupersortStrat = (Sortable, Sortable, Sortable) -> Sortable
+type SupersortStrat a = ([a], [a], [a]) -> [a]
 
 -- | Converts a Maybe into a value or throws an error if the Maybe is Nothing.
 fromJust :: Maybe a -> a
