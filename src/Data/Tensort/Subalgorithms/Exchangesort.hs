@@ -1,4 +1,4 @@
--- | This module provides the bubblesort function for sorting Sortable lists
+-- | This module provides the exchangesort function for sorting Sortable lists
 module Data.Tensort.Subalgorithms.Exchangesort (exchangesort) where
 
 -- | Takes a Sortable and returns a sorted Sortable using an Exchangesort
