@@ -84,35 +84,6 @@ fromJust Nothing = error "fromJust: Nothing"
 --   Tensort variant.
 type BitR = Record
 
--- | This is a conversion type that allows for sorting both Bits and Records.
---   It is useful in recursive Tensort variants.
-data SBit
-  = SBitBit Bit
-  | SBitRec Record
-  deriving (Show, Eq, Ord)
-
--- | Converts an SBit into a Bit.
-fromSBitBit :: SBit -> Bit
-fromSBitBit (SBitBit bit) = bit
-fromSBitBit (SBitRec _) =
-  error
-    "From fromSBitBit: This is for sorting Bits - you gave me Records"
-
--- | Converts an SBit into a Record.
-fromSBitRec :: SBit -> Record
-fromSBitRec (SBitRec record) = record
-fromSBitRec (SBitBit _) =
-  error
-    "From fromSBitRec: This is for sorting Records - you gave me Bits"
-
--- | Converts a list of Bits into a Sortable.
-fromSBitBits :: [SBit] -> Sortable
-fromSBitBits = map fromSBitBit
-
--- | Converts a list of Records into a Sortable.
-fromSBitRecs :: [SBit] -> Sortable
-fromSBitRecs = map fromSBitRec
-
 -- | This is a `Byte` type that is used when sorting Records in a recursive
 --   Tensort variant.
 type ByteR = [Record]
