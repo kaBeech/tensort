@@ -31,7 +31,7 @@ type TopBit = Bit
 
 --   A Record's TopBit is a copy of the last (i.e. highest) Bit in the Byte or
 --   Tensor that the Record references.
-type Record = (Address, TopBit)
+type Record = (TopBit, Address)
 
 -- | A Register is a list of Records allowing for easy access to data in a
 --   Tensor's Memory.
