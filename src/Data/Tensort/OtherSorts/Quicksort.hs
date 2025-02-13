@@ -1,57 +1,34 @@
 -- | This module provides an implementation of the quicksort algorithm suitable
---   for sorting lists using the Sortable type.
+--   for sorting lists.
 module Data.Tensort.OtherSorts.Quicksort (quicksort) where
 
-import Data.Tensort.Utils.ComparisonFunctions (greaterThanBit, greaterThanRecord)
-import Data.Tensort.Utils.Types (Bit, Record, Sortable (..))
-
--- | Takes a Sortable and returns a sorted Sortable using a Quicksort
+-- | Takes a list and returns a sorted list using a Quicksort
 --   algorithm.
 
 -- | ==== __Examples__
---  >>> quicksort (SortBit [16, 23, 4, 8, 15, 42])
---  SortBit [4,8,15,16,23,42]
+--  >>> quicksort [16, 23, 4, 8, 15, 42]
+--  [4,8,15,16,23,42]
 --
---  >>> quicksort (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
---  SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
-quicksort :: Sortable -> Sortable
-quicksort (SortBit []) = SortBit []
-quicksort (SortBit [x]) = SortBit [x]
-quicksort (SortBit xs) = SortBit (quicksortBits xs)
-quicksort (SortRec []) = SortRec []
-quicksort (SortRec [x]) = SortRec [x]
-quicksort (SortRec xs) = SortRec (quicksortRecs xs)
+--  >>> quicksort [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
+--  [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+quicksort :: (Ord a) => [a] -> [a]
+quicksort [] = []
+quicksort [x] = [x]
+quicksort xs = quicksort' xs
 
-quicksortBits :: [Bit] -> [Bit]
-quicksortBits [] = []
-quicksortBits [x] = [x]
-quicksortBits xs =
+quicksort' :: (Ord a) => [a] -> [a]
+quicksort' [] = []
+quicksort' [x] = [x]
+quicksort' xs =
   let (lower, pivot, upper) = getPartitionsBits xs
-   in quicksortBits lower ++ [pivot] ++ quicksortBits upper
+   in quicksort' lower ++ [pivot] ++ quicksort' upper
 
-getPartitionsBits :: [Bit] -> ([Bit], Bit, [Bit])
+getPartitionsBits :: (Ord a) => [a] -> ([a], a, [a])
 getPartitionsBits [] = error "From getPartitionsBits: empty input list"
 getPartitionsBits [x] = ([], x, [])
 getPartitionsBits (x : xs) = foldr acc ([], x, []) xs
   where
-    acc :: Bit -> ([Bit], Bit, [Bit]) -> ([Bit], Bit, [Bit])
+    acc :: (Ord a) => a -> ([a], a, [a]) -> ([a], a, [a])
     acc y (lower, pivot, upper)
-      | greaterThanBit y pivot = (lower, pivot, y : upper)
-      | otherwise = (y : lower, pivot, upper)
-
-quicksortRecs :: [Record] -> [Record]
-quicksortRecs [] = []
-quicksortRecs [x] = [x]
-quicksortRecs xs =
-  let (lower, pivot, upper) = getPartitionsRecs xs
-   in quicksortRecs lower ++ [pivot] ++ quicksortRecs upper
-
-getPartitionsRecs :: [Record] -> ([Record], Record, [Record])
-getPartitionsRecs [] = error "From getPartitionsRecs: empty input list"
-getPartitionsRecs [x] = ([], x, [])
-getPartitionsRecs (x : xs) = foldr acc ([], x, []) xs
-  where
-    acc :: Record -> ([Record], Record, [Record]) -> ([Record], Record, [Record])
-    acc y (lower, pivot, upper)
-      | greaterThanRecord y pivot = (lower, pivot, y : upper)
+      | y > pivot = (lower, pivot, y : upper)
       | otherwise = (y : lower, pivot, upper)
