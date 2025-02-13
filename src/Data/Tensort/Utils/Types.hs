@@ -5,7 +5,7 @@ module Data.Tensort.Utils.Types where
 
 -- | TensortProps contains the Bytesize and SubAlgorithm used in a Tensort
 --   algorithm.
-data TensortProps = TensortProps {bytesize :: Int, subAlgorithm :: SortAlg}
+data TensortProps a = TensortProps {bytesize :: Int, subAlgorithm :: SortAlg a}
 
 -- | A Bit is a single element of the list to be sorted.
 type Bit = Ordering
@@ -62,17 +62,17 @@ type TensorStack = Tensor
 -- | We use a Sortable type to sort list of Bits and lists of Records.
 type Sortable = [Bit]
 
--- | A sorting algorithm is a function that takes a Sortable and returns a
---   sorted Sortable.
--- type SortAlg = (Ord a) => [a] -> [a]
+-- | A sorting algorithm is a function that takes a list of ordered elements
+--   and returns that list sorted.
+type SortAlg a = [a] -> [a]
 
 -- | SupersortProps consist of three sorting algorithms to adjuditcate between
 --   and a SupersortStrat that does the adjudication.
--- type SupersortProps = (SortAlg, SortAlg, SortAlg, SupersortStrat)
+type SupersortProps = (SortAlg, SortAlg, SortAlg, SupersortStrat)
 
 -- | A SupersortStrat takes three Sortables and determines which of the three
 --   is most likely to be in the correct order.
--- type SupersortStrat = (Sortable, Sortable, Sortable) -> Sortable
+type SupersortStrat = (Sortable, Sortable, Sortable) -> Sortable
 
 -- | Converts a Maybe into a value or throws an error if the Maybe is Nothing.
 fromJust :: Maybe a -> a
