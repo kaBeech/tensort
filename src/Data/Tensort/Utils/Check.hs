@@ -11,7 +11,7 @@ module Data.Tensort.Utils.Check (isSorted) where
 --
 -- >>> isSorted (SortBit [0, 1, 2, 4, 3])
 -- False
-isSorted :: [Ordering] -> Bool
+isSorted :: (Ord a) => [a] -> Bool
 isSorted [] = True
 isSorted [_] = True
 isSorted (x : y : remainingElements) =
