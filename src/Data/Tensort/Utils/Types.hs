@@ -5,7 +5,11 @@ module Data.Tensort.Utils.Types where
 
 -- | TensortProps contains the Bytesize and SubAlgorithm used in a Tensort
 --   algorithm.
-data TensortProps a = TensortProps {bytesize :: Int, subAlgorithm :: SortAlg a}
+data TensortProps = TensortProps
+  { bytesize :: Int,
+    subAlgorithmBits :: SortAlg Bit,
+    subAlgorithmRecs :: SortAlg Record
+  }
 
 -- | A Bit is a single element of the list to be sorted.
 type Bit = Ordering

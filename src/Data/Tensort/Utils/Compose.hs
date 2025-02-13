@@ -35,7 +35,7 @@ import Data.Tensort.Utils.Types
 -- >>> import Data.Tensort.Utils.MkTsProps (mkTsProps)
 -- >>> createInitialTensors (mkTsProps 2 bubblesort) (SBytesBit [[2,4],[6,8],[1,3],[5,7]])
 -- STensorsBit [([(0,3),(1,7)],ByteMem [[1,3],[5,7]]),([(0,4),(1,8)],ByteMem [[2,4],[6,8]])]
-createInitialTensors :: TensortProps Record -> [Byte] -> [Tensor]
+createInitialTensors :: TensortProps -> [Byte] -> [Tensor]
 createInitialTensors tsProps bytes =
   foldr acc [] (splitEvery (bytesize tsProps) bytes)
   where
@@ -44,18 +44,18 @@ createInitialTensors tsProps bytes =
       tensorStacks
         ++ [tensorStack]
       where
-        tensorStack = getTensorFromBytes subAlg byte
-        subAlg = subAlgorithm tsProps
+        tensorStack = getTensorFromBytes subAlgR byte
+        subAlgR = subAlgorithmRecs tsProps
 
 -- | Create a Tensor from a Memory.
 --
 --   Aliases to getTensorFromBytes for ByteMem and getTensorFromTensors for
 --   TensorMem.
 createTensor :: SortAlg Record -> Memory -> Tensor
-createTensor subAlg (ByteMem bytes) =
-  getTensorFromBytes subAlg bytes
-createTensor subAlg (TensorMem tensors) =
-  getTensorFromTensors subAlg tensors
+createTensor subAlgR (ByteMem bytes) =
+  getTensorFromBytes subAlgR bytes
+createTensor subAlgR (TensorMem tensors) =
+  getTensorFromTensors subAlgR tensors
 
 -- | Convert a list of Bytes to a Tensor.
 
@@ -73,9 +73,9 @@ createTensor subAlg (TensorMem tensors) =
 -- >>> getTensorFromBytes bubblesort (SBytesBit [[2,4,6,8],[1,3,5,7]])
 -- STensorBit ([(1,7),(0,8)],ByteMem [[2,4,6,8],[1,3,5,7]])
 getTensorFromBytes :: SortAlg Record -> [Byte] -> Tensor
-getTensorFromBytes subAlg bytes = (register', ByteMem bytes)
+getTensorFromBytes subAlgR bytes = (register', ByteMem bytes)
   where
-    register' = subAlg register
+    register' = subAlgR register
     register = acc bytes [] 0
     acc :: [Byte] -> [Record] -> Int -> [Record]
     acc [] regi _ = regi
@@ -93,9 +93,9 @@ getTensorFromBytes subAlg bytes = (register', ByteMem bytes)
 -- >>> getTensorFromTensors bubblesort (STensorsBit [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(1,14),(0,17)],ByteMem [[16,17],[12,14]])])
 -- STensorBit ([(1,17),(0,18)],TensorMem [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(1,14),(0,17)],ByteMem [[16,17],[12,14]])])
 getTensorFromTensors :: SortAlg Record -> [Tensor] -> Tensor
-getTensorFromTensors subAlg tensors = (sortedRegister, TensorMem tensors)
+getTensorFromTensors subAlgR tensors = (sortedRegister, TensorMem tensors)
   where
-    sortedRegister = subAlg unsortedRegister
+    sortedRegister = subAlgR unsortedRegister
     unsortedRegister = getRegisterFromTensors tensors
 
 -- | Used in creating a Register for a newly-created Tensor which encloses
