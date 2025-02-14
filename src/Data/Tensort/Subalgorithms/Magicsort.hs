@@ -15,7 +15,7 @@ import Data.Tensort.Subalgorithms.Permutationsort (permutationsort)
 
 -- | ==== __Examples__
 -- >>> magicsort [16, 23, 4, 8, 15, 42]
--- SortBit [4,8,15,16,23,42]
+-- [4,8,15,16,23,42]
 --
 -- >>> magicsort [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15), (4, 42)]
 -- [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
