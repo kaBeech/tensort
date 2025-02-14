@@ -55,13 +55,17 @@ data Memory
 --   contains.
 
 --   The Register is a list of Records referencing the top Bits in Memory.
-type Tensor = (Register, Memory)
+type Tensor a = (Register a, Memory a)
+
+fromTensor :: Tensor a -> ([(TopBit a, Address)], Memory a)
+fromTensor (r, ByteMem m) = (map fromRecord r, ByteMem m)
+fromTensor (r, TensorMem m) = (map fromRecord r, TensorMem m)
 
 -- | A TensorStack is a top-level Tensor. In the final stages of Tensort, the
 --   number of TensorStacks will be equal to (or sometimes less than) the
 --   bytesize, but before that time there are expected to be many more
 --   TensorStacks.
-type TensorStack = Tensor
+type TensorStack a = Tensor a
 
 -- | A sorting algorithm is a function that takes a list of ordered elements
 --   and returns that list sorted.
