@@ -101,8 +101,12 @@
 
 - Fix typos and make minor changes to README
 
-## 2.0.0.0 -- TBA
+## 1.1.0.0 -- 2025-02-14
 
 - Add support for sorting all Ord types
+
+- Expand types used in testing
+
 - Remove types and functions no longer used
+
 - Immensely cleanup the code
