@@ -28,11 +28,11 @@ import Data.Tensort.Utils.Types
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 -- >>> import Data.Tensort.Utils.MkTsProps (mkTsProps)
--- >>> tensort (mkTsProps 2 bubblesort) (SortBit [16, 23, 4, 8, 15, 42])
--- SortBit [4,8,15,16,23,42]
+-- >>> tensort (mkTsProps 2 bubblesort) [16, 23, 4, 8, 15, 42]
+-- [4,8,15,16,23,42]
 --
--- >>> tensort (mkTsProps 2 bubblesort) (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
--- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+-- >>> tensort (mkTsProps 2 bubblesort) [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
+-- [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 tensort :: (Ord a) => TensortProps a -> [Bit a] -> [Bit a]
 tensort _ [] = []
 tensort _ [x] = [x]
@@ -49,11 +49,11 @@ tensort tsProps xs = getSortedBits subAlg topTensor
 --   Bytesize
 
 -- | ==== __Examples__
--- >>> tensortB4 (SortBit [16, 23, 4, 8, 15, 42])
--- SortBit [4,8,15,16,23,42]
+-- >>> tensortB4 [16, 23, 4, 8, 15, 42]
+-- [4,8,15,16,23,42]
 --
--- >>> tensortB4 (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
--- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+-- >>> tensortB4 [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
+-- [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 tensortB4 :: (Ord a) => [Bit a] -> [Bit a]
 tensortB4 = tensort $ mkTsProps 4 bubblesort
 
@@ -61,11 +61,11 @@ tensortB4 = tensort $ mkTsProps 4 bubblesort
 --   Bytesize
 
 -- | ==== __Examples__
--- >>> tensortBN 3 (SortBit [16, 23, 4, 8, 15, 42])
--- SortBit [4,8,15,16,23,42]
+-- >>> tensortBN 3 [16, 23, 4, 8, 15, 42]
+-- [4,8,15,16,23,42]
 --
--- >>> tensortBN 3 (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
--- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+-- >>> tensortBN 3 [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
+-- [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 tensortBN :: (Ord a) => Int -> [Bit a] -> [Bit a]
 tensortBN n = tensort $ mkTsProps n bubblesort
 
@@ -75,11 +75,11 @@ tensortBN n = tensort $ mkTsProps n bubblesort
 --   logarithm of the length of the input list and a Bubblesort subalgorithm
 
 -- | ==== __Examples__
--- >>> tensortBL (SortBit [16, 23, 4, 8, 15, 42])
--- SortBit [4,8,15,16,23,42]
+-- >>> tensortBL [16, 23, 4, 8, 15, 42]
+-- [4,8,15,16,23,42]
 --
--- >>> tensortBL (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
--- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+-- >>> tensortBL [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
+-- [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 tensortBL :: (Ord a) => [Bit a] -> [Bit a]
 tensortBL xs = tensort tsProps xs
   where
