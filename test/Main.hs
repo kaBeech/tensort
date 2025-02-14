@@ -11,11 +11,11 @@ import Test.TestCheck (check)
 --   suite to fail if any of the individual tests fail
 main :: IO ()
 main = do
-  mapM_ qcheckBitsInt sortingAlgorithmsSortable
-  mapM_ qcheckRecsInt sortingAlgorithmsSortable
-  mapM_ qcheckRecsShortInt sortingAlgorithmsSortableShort
-  mapM_ qcheckRecsTinyInt sortingAlgorithmsSortableTiny
-  mapM_ qcheckBitsOnlyInt sortingAlgorithmsBits
+  mapM_ qcheckBitsInt sortingAlgorithms
+  mapM_ qcheckRecsInt sortingAlgorithms
+  mapM_ qcheckRecsShortInt sortingAlgorithmsShort
+  mapM_ qcheckRecsTinyInt sortingAlgorithmsTiny
+  mapM_ qcheckBitsOnlyInt sortingAlgorithmsBitsOnly
   putStrLn "Running test suite!"
   putStrLn "Standard Custom Bitsize Tensort returns a sorted array..."
   check result_is_sorted_custom_bitsize_ints

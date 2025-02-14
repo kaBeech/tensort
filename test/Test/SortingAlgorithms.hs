@@ -1,8 +1,8 @@
 module Test.SortingAlgorithms
-  ( sortingAlgorithmsSortable,
-    sortingAlgorithmsSortableShort,
-    sortingAlgorithmsSortableTiny,
-    sortingAlgorithmsBits,
+  ( sortingAlgorithms,
+    sortingAlgorithmsShort,
+    sortingAlgorithmsTiny,
+    sortingAlgorithmsBitsOnly,
   )
 where
 
@@ -71,8 +71,8 @@ robustsortMagicCustomExample =
   tensort
     (mkTsProps 3 supersortMagicCustomExample)
 
-sortingAlgorithmsSortable :: (Ord a) => [(SortAlg a, String)]
-sortingAlgorithmsSortable =
+sortingAlgorithms :: (Ord a) => [(SortAlg a, String)]
+sortingAlgorithms =
   [ (quicksort, "Quicksort"),
     (mergesort, "Mergesort"),
     (bubblesort, "Bubblesort"),
@@ -91,8 +91,8 @@ sortingAlgorithmsSortable =
     (robustsortRM, "Recursive Magic Robustsort")
   ]
 
-sortingAlgorithmsSortableShort :: (Ord a) => [(SortAlg a, String)]
-sortingAlgorithmsSortableShort =
+sortingAlgorithmsShort :: (Ord a) => [(SortAlg a, String)]
+sortingAlgorithmsShort =
   [ (bogosort, "Bogosort"),
     (magicsort, "Magicsort"),
     (robustsortP, "Standard Mundane Robustsort with Permutationsort adjudicator"),
@@ -102,16 +102,16 @@ sortingAlgorithmsSortableShort =
     (supersortMagicCustomExample, "Custom Magic Supersort")
   ]
 
-sortingAlgorithmsSortableTiny :: (Ord a) => (Ord a) => [(SortAlg a, String)]
-sortingAlgorithmsSortableTiny =
+sortingAlgorithmsTiny :: (Ord a) => (Ord a) => [(SortAlg a, String)]
+sortingAlgorithmsTiny =
   [ (rotationsort, "Rotationsort"),
     (rotationsortReverse, "Reverse Rotationsort"),
     (rotationsortAmbi, "Ambidextrous Rotationsort"),
     (rotationsortReverseAmbi, "Reverse Ambidextrous Rotationsort")
   ]
 
-sortingAlgorithmsBits :: (Ord a) => [([a] -> [a], String)]
-sortingAlgorithmsBits =
+sortingAlgorithmsBitsOnly :: (Ord a) => [([a] -> [a], String)]
+sortingAlgorithmsBitsOnly =
   [ (Data.Tensort.tensort, "Top-level Tensort"),
     ( Data.Robustsort.robustsortP,
       "Top-level Mundane Robustsort with Permutationsort adjudicator"
