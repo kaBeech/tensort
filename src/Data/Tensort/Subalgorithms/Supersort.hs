@@ -21,11 +21,11 @@ import Data.Tensort.Utils.Types (SortAlg, SupersortStrat)
 -- >>> import Data.Tensort.Subalgorithms.Permutationsort (permutationsort)
 -- >>> import Data.Tensort.OtherSorts.Mergesort (mergesort)
 --
--- >>> supersort (mergesort, bubblesort, permutationsort, mundaneSuperStrat) [16, 23, 4, 8, 15, 42]
+-- >>> supersort (mergesort, bubblesort, permutationsort, mundaneSuperStrat) ([16, 23, 4, 8, 15, 42] :: [Int])
 -- [4,8,15,16,23,42]
 --
--- >>> supersort (mergesort, bubblesort, permutationsort, mundaneSuperStrat) [(16, 23), (4, 8), (15, 42)]
--- [(4,8),(16,23),(15,42)]
+-- >>> supersort (mergesort, bubblesort, permutationsort, mundaneSuperStrat) ([(16, 23), (4, 8), (15, 42)] :: [(Int, Int)])
+-- [(4,8),(15,42),(16,23)]
 supersort ::
   (Ord a) =>
   (SortAlg a, SortAlg a, SortAlg a, SupersortStrat a) ->
@@ -47,11 +47,11 @@ supersort (subAlg1, subAlg2, subAlg3, superStrat) xs =
 -- >>> import Data.Tensort.OtherSorts.Mergesort (mergesort)
 -- >>> import Data.Tensort.Subalgorithms.Permutationsort (permutationsort)
 --
--- >>> supersort (mergesort, bubblesort, permutationsort, mundaneSuperStrat) [16, 23, 4, 8, 15, 42]
+-- >>> supersort (mergesort, bubblesort, permutationsort, mundaneSuperStrat) ([16, 23, 4, 8, 15, 42] :: [Int])
 -- [4,8,15,16,23,42]
 --
--- >>> supersort (mergesort, bubblesort, permutationsort, mundaneSuperStrat) [(16, 23), (4, 8), (15, 42)]
--- [(4,8),(16,23),(15,42)]
+-- >>> supersort (mergesort, bubblesort, permutationsort, mundaneSuperStrat) ([(16, 23), (4, 8), (15, 42)] :: [(Int, Int)])
+-- [(4,8),(15,42),(16,23)]
 mundaneSuperStrat :: (Ord a) => SupersortStrat a
 mundaneSuperStrat (result1, result2, result3) =
   if result2 == result3 then result2 else result1
@@ -68,10 +68,10 @@ mundaneSuperStrat (result1, result2, result3) =
 -- >>> import Data.Tensort.OtherSorts.Mergesort (mergesort)
 -- >>> import Data.Tensort.Subalgorithms.Permutationsort (permutationsort)
 --
--- >>> supersort (mergesort, bubblesort, permutationsort, magicSuperStrat) [16, 23, 4, 8, 15, 42]
+-- >>> supersort (mergesort, bubblesort, permutationsort, magicSuperStrat) ([16, 23, 4, 8, 15, 42] :: [Int])
 -- [4,8,15,16,23,42]
 --
--- >>> supersort (mergesort, bubblesort, permutationsort, magicSuperStrat) [(16, 23), (4, 8), (15, 42)]
--- [(4,8),(16,23),(15,42)]
+-- >>> supersort (mergesort, bubblesort, permutationsort, magicSuperStrat) ([(16, 23), (4, 8), (15, 42)] :: [(Int, Int)])
+-- [(4,8),(15,42),(16,23)]
 magicSuperStrat :: (Ord a) => SupersortStrat a
 magicSuperStrat = mundaneSuperStrat
