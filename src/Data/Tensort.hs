@@ -7,7 +7,6 @@ where
 
 import Data.Tensort.Tensort (tensortBL)
 import Data.Tensort.Utils.Types (Bit)
-import Data.Tensort.Utils.WrapSortAlg (wrapSortAlg)
 
 -- | Takes a list of Bits and returns a sorted list of Bits using a Standard
 --   Logarithmic Tensort algorithm
@@ -17,5 +16,5 @@ import Data.Tensort.Utils.WrapSortAlg (wrapSortAlg)
 -- | ==== __Examples__
 --   >>> tensort [16, 23, 4, 8, 15, 42]
 --   [4,8,15,16,23,42]
-tensort :: [Bit] -> [Bit]
-tensort = wrapSortAlg tensortBL
+tensort :: (Ord a) => [Bit a] -> [Bit a]
+tensort = tensortBL
