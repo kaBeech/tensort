@@ -1,3 +1,9 @@
+-- | This module is a hack used so that we can sort lists of both types [Bit a]
+--   and [Record a] with the same SortAlg supplied in TensortProps without
+--   resorting to the totally WET code we had before.
+--
+--   It seems possible to work around this at the type level, so I expect to
+--   remove it in the future.
 module Data.Tensort.Utils.SortRecs (sortRecs) where
 
 import Data.List (delete)
