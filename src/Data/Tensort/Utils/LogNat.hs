@@ -19,5 +19,5 @@ getLnBytesize xs = getLn $ length xs
 -- | ==== __Examples__
 -- >>> getLn (27 :: Int)
 -- 4
-getLn :: Int -> Int
+getLn :: (Ord a, Integral a) => a -> a
 getLn x = ceiling $ log (fromIntegral x :: Double)
