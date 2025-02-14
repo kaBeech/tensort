@@ -5,11 +5,11 @@ module Data.Tensort.OtherSorts.Mergesort (mergesort) where
 --   algorithm.
 
 -- | ==== __Examples__
---  >>> mergesort [16, 23, 4, 8, 15, 42]
+--  >>> mergesort ([16, 23, 4, 8, 15, 42] :: [Int])
 --  [4,8,15,16,23,42]
 --
---  >>> mergesort [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
---  [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+--  >>> mergesort ([(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)] :: [(Int, Int)])
+--  [(0,15),(1,16),(2,4),(3,8),(4,42),(5,23)]
 mergesort :: (Ord a) => [a] -> [a]
 mergesort = mergesortStack . map (: [])
 
