@@ -1,10 +1,4 @@
 -- | Module for creating Tensors from Bytes and Tensors.
---
---   Functions ending in "B" are for sorting Bits in a base (non-recursive)
---   Tensort variant.
---
---   Functions ending in "R" are for sorting Records when used in a recursive
---   Tensort variant.
 module Data.Tensort.Utils.Compose
   ( createInitialTensors,
     createTensor,
