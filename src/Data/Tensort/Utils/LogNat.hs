@@ -2,7 +2,7 @@
 --   a way useful for creating logarithmic Bytesizes.
 module Data.Tensort.Utils.LogNat (getLnBytesize, getLn) where
 
--- | Calculates a suitable logarithmic Bytesize for a given Sortable list.
+-- | Calculates a suitable logarithmic Bytesize for a given list.
 
 -- | ==== __Examples__
 -- >>> getLnBytesize [1 .. 27]
