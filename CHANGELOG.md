@@ -101,7 +101,8 @@
 
 - Fix typos and make minor changes to README
 
-## 1.0.2.0 -- TBA
+## 2.0.0.0 -- TBA
 
 - Add support for sorting all Ord types
+- Remove types and functions no longer used
 - Immensely cleanup the code

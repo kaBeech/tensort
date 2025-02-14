@@ -1,12 +1,4 @@
 -- | Module for rendering a sorted list of Bits from a list of TensorStacks.
---
---   Functions ending in "B" are for sorting Bits in a base (non-recursive)
---   Tensort variant.
---
---   Functions ending in "R" are for sorting Records when used in a recursive
---   Tensort variant.
---
---   TODO: See if we can clean up the type conversion here.
 module Data.Tensort.Utils.Render (getSortedBits) where
 
 import Data.Maybe (isNothing)
@@ -26,10 +18,11 @@ import Data.Tensort.Utils.Types
 
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
--- >>> getSortedBits bubblesort (STensorBit ([(0,5),(1,7)],ByteMem [[1,5],[3,7]]))
--- [SBitBit 1,SBitBit 3,SBitBit 5,SBitBit 7]
--- >>> getSortedBits bubblesort (STensorBit ([(0,8),(1,18)],TensorMem [([(0,7),(1,8)],TensorMem [([(0,3),(1,7)],ByteMem [[1,3],[5,7]]),([(0,4),(1,8)],ByteMem [[2,4],[6,8]])]),([(1,17),(0,18)],TensorMem [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(0,14),(1,17)],ByteMem [[12,14],[16,17]])])]))
--- [SBitBit 1,SBitBit 2,SBitBit 3,SBitBit 4,SBitBit 5,SBitBit 6,SBitBit 7,SBitBit 8,SBitBit 11,SBitBit 12,SBitBit 13,SBitBit 14,SBitBit 15,SBitBit 16,SBitBit 17,SBitBit 18]
+-- >>> import Data.Tensort.Utils.Types (Record (..))
+-- >>> getSortedBits bubblesort (Tensor ([Record (0,5),Record (1,7)],ByteMem [[1,5],[3,7]]))
+-- [1,3,5,7]
+-- >>> getSortedBits bubblesort (Tensor ([(0,8),(1,18)],TensorMem [([(0,7),(1,8)],TensorMem [([(0,3),(1,7)],ByteMem [[1,3],[5,7]]),([(0,4),(1,8)],ByteMem [[2,4],[6,8]])]),([(1,17),(0,18)],TensorMem [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(0,14),(1,17)],ByteMem [[12,14],[16,17]])])]))
+-- [1,2,3,4,5,6,7,8,11,12,13,14,15,16,17,18]
 getSortedBits :: (Ord a) => SortAlg a -> Tensor a -> [a]
 getSortedBits subAlg tensorRaw = acc (fromTensor tensorRaw) []
   where
@@ -48,7 +41,8 @@ getSortedBits subAlg tensorRaw = acc (fromTensor tensorRaw) []
 
 -- | ==== __Examples__
 --   >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
---   >>> removeTopBit bubblesort ([(0,5),(1,7)],ByteMem [[1,5],[3,7]])
+--   >>> import Data.Tensort.Utils.Types (Record (..))
+--   >>> removeTopBit bubblesort ([Record (0,5),Record (1,7)],ByteMem [[1,5],[3,7]])
 --   (7,Just ([(1,3),(0,5)],ByteMem [[1,5],[3]]))
 removeTopBit :: (Ord a) => SortAlg a -> (Register a, Memory a) -> (TopBit a, Maybe (Register a, Memory a))
 removeTopBit subAlg (register, memory) =
