@@ -23,4 +23,4 @@ rawBitsToBytes tsProps bits = foldr acc [] bytes
     acc byte bytesSorted =
       bytesSorted ++ [byteSorted]
       where
-        byteSorted = subAlgorithmBits tsProps byte
+        byteSorted = subAlgorithm tsProps byte
