@@ -29,18 +29,6 @@ import Data.Tensort.Utils.LogNat (getLn, getLnBytesize)
 import Data.Tensort.Utils.MkTsProps (mkTsProps)
 import Data.Tensort.Utils.Types (Bit, SortAlg)
 
--- | Takes a list and returns a sorted list using a Recursive Mundane
---   Robustsort algorithm with a Permutationsort adjudicator
-
--- | ==== __Examples__
---  >>> robustsortRP ([16, 23, 4, 8, 15, 42] :: [Int])
---  [4,8,15,16,23,42]
---
---  >>> robustsortRP ([(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)] :: [(Int, Int)])
---  [(0,15),(1,16),(2,4),(3,8),(4,42),(5,23)]
-robustsortRP :: (Ord a) => [Bit a] -> [Bit a]
-robustsortRP = robustsortRCustom robustsortP
-
 -- | Takes a list and returns a sorted list using a Basic Mundane
 --   Robustsort algorithm with a Permutationsort adjudicator
 
@@ -63,16 +51,16 @@ supersortP =
     )
 
 -- | Takes a list and returns a sorted list using a Recursive Mundane
---   Robustsort algorithm with a Bogosort adjudicator
+--   Robustsort algorithm with a Permutationsort adjudicator
 
 -- | ==== __Examples__
--- >>> robustsortRB ([16, 23, 4, 8, 15, 42] :: [Int])
--- [4,8,15,16,23,42]
+--  >>> robustsortRP ([16, 23, 4, 8, 15, 42] :: [Int])
+--  [4,8,15,16,23,42]
 --
--- >>> robustsortRB ([(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)] :: [(Int, Int)])
--- [(0,15),(1,16),(2,4),(3,8),(4,42),(5,23)]
-robustsortRB :: (Ord a) => [Bit a] -> [Bit a]
-robustsortRB = robustsortRCustom robustsortB
+--  >>> robustsortRP ([(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)] :: [(Int, Int)])
+--  [(0,15),(1,16),(2,4),(3,8),(4,42),(5,23)]
+robustsortRP :: (Ord a) => [Bit a] -> [Bit a]
+robustsortRP = robustsortRCustom robustsortP
 
 -- | Takes a list and returns a sorted list using a Basic Mundane
 --   Robustsort algorithm with a Bogosort adjudicator
@@ -95,17 +83,17 @@ supersortB =
       mundaneSuperStrat
     )
 
--- | Takes a list and returns a sorted list using a Recursive Magic
---   Robustsort algorithm
+-- | Takes a list and returns a sorted list using a Recursive Mundane
+--   Robustsort algorithm with a Bogosort adjudicator
 
 -- | ==== __Examples__
--- >>> robustsortRM ([16, 23, 4, 8, 15, 42] :: [Int])
+-- >>> robustsortRB ([16, 23, 4, 8, 15, 42] :: [Int])
 -- [4,8,15,16,23,42]
 --
--- >>> robustsortRM ([(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)] :: [(Int, Int)])
+-- >>> robustsortRB ([(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)] :: [(Int, Int)])
 -- [(0,15),(1,16),(2,4),(3,8),(4,42),(5,23)]
-robustsortRM :: (Ord a) => [Bit a] -> [Bit a]
-robustsortRM = robustsortRCustom robustsortM
+robustsortRB :: (Ord a) => [Bit a] -> [Bit a]
+robustsortRB = robustsortRCustom robustsortB
 
 -- | Takes a list and returns a sorted list using a Basic Magic
 --   Robustsort algorithm
@@ -127,6 +115,18 @@ supersortM =
       magicsort,
       magicSuperStrat
     )
+
+-- | Takes a list and returns a sorted list using a Recursive Magic
+--   Robustsort algorithm
+
+-- | ==== __Examples__
+-- >>> robustsortRM ([16, 23, 4, 8, 15, 42] :: [Int])
+-- [4,8,15,16,23,42]
+--
+-- >>> robustsortRM ([(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)] :: [(Int, Int)])
+-- [(0,15),(1,16),(2,4),(3,8),(4,42),(5,23)]
+robustsortRM :: (Ord a) => [Bit a] -> [Bit a]
+robustsortRM = robustsortRCustom robustsortM
 
 -- | Used for making recursive Robustsort variants
 --
