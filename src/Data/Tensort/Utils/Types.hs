@@ -5,20 +5,20 @@ module Data.Tensort.Utils.Types where
 
 -- | TensortProps contains the Bytesize and SubAlgorithm used in a Tensort
 --   algorithm.
-data TensortProps = TensortProps
+data TensortProps a = TensortProps
   { bytesize :: Int,
-    subAlgorithmBits :: SortAlg Bit,
-    subAlgorithmRecs :: SortAlg Record
+    subAlgorithmBits :: SortAlg (Bit a),
+    subAlgorithmRecs :: SortAlg (Record a)
   }
 
 -- | A Bit is a single element of the list to be sorted.
-type Bit = Ordering
+newtype Bit a = Bit a deriving (Show, Eq, Ord)
 
 -- | A Byte is a list of Bits standardized to a fixed maximum length (Bytesize).
 
 --   The length should be set either in or upstream of any function that uses
 --   Bytes.
-type Byte = [Bit]
+type Byte a = [Bit a]
 
 -- | An Address is a index number pointing to data stored in Memory.
 type Address = Int
