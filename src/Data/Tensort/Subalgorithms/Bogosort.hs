@@ -3,7 +3,6 @@ module Data.Tensort.Subalgorithms.Bogosort (bogosort, bogosortSeeded) where
 
 import Data.Tensort.Utils.Check (isSorted)
 import Data.Tensort.Utils.RandomizeList (randomizeList)
-import Data.Tensort.Utils.Types (Sortable (..))
 
 -- | Takes a Sortable and returns a sorted Sortable using a Bogosort algorithm.
 
@@ -13,7 +12,7 @@ import Data.Tensort.Utils.Types (Sortable (..))
 --
 -- >>> bogosort (SortRec [(1, 16), (5, 23), (2, 4), (3, 8), (0, 15), (4, 42)])
 -- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
-bogosort :: Sortable -> Sortable
+bogosort :: (Ord a) => [a] -> [a]
 bogosort = bogosortSeeded 143
 
 -- | Takes a seed for use in random generation and a Sortable and returns a
@@ -25,7 +24,7 @@ bogosort = bogosortSeeded 143
 --
 -- >>> bogosortSeeded 24 (SortRec [(1, 16), (5, 23), (2, 4), (3, 8), (0, 15), (4, 42)])
 -- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
-bogosortSeeded :: Int -> Sortable -> Sortable
+bogosortSeeded :: (Ord a) => Int -> [a] -> [a]
 bogosortSeeded seed xs
   | isSorted xs = xs
   | otherwise = bogosortSeeded (seed + 1) (randomizeList seed xs)
