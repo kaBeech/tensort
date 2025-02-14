@@ -1,15 +1,15 @@
--- | This module provides the exchangesort function for sorting Sortable lists
+-- | This module provides the exchangesort function for sorting lists
 module Data.Tensort.Subalgorithms.Exchangesort (exchangesort) where
 
--- | Takes a Sortable and returns a sorted Sortable using an Exchangesort
+-- | Takes a list and returns a sorted list using an Exchangesort
 --   algorithm.
 
 -- | ==== __Examples__
--- >>> exchangesort (SortBit [16, 23, 4, 8, 15, 42])
--- SortBit [4,8,15,16,23,42]
+-- >>> exchangesort [16, 23, 4, 8, 15, 42]
+-- [4,8,15,16,23,42]
 --
--- >>> exchangesort (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
--- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+-- >>> exchangesort [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
+-- [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 exchangesort :: (Ord a) => [a] -> [a]
 exchangesort bits = exchangesort' bits 0 (length bits - 1)
 
