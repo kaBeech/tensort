@@ -3,7 +3,7 @@
 module Main (main) where
 
 import Test.QCheck
-import Test.SortSpec (result_is_sorted_custom_bitsize)
+import Test.SortSpec (result_is_sorted_custom_bitsize_ints)
 import Test.SortingAlgorithms
 import Test.TestCheck (check)
 
@@ -11,12 +11,13 @@ import Test.TestCheck (check)
 --   suite to fail if any of the individual tests fail
 main :: IO ()
 main = do
-  mapM_ qcheckSortable sortingAlgorithmsSortable
-  mapM_ qcheckSortableShort sortingAlgorithmsSortableShort
-  mapM_ qcheckSortableTiny sortingAlgorithmsSortableTiny
-  mapM_ qcheckBits sortingAlgorithmsBits
+  mapM_ qcheckBitsInt sortingAlgorithmsSortable
+  mapM_ qcheckRecsInt sortingAlgorithmsSortable
+  mapM_ qcheckRecsShortInt sortingAlgorithmsSortableShort
+  mapM_ qcheckRecsTinyInt sortingAlgorithmsSortableTiny
+  mapM_ qcheckBitsOnlyInt sortingAlgorithmsBits
   putStrLn "Running test suite!"
   putStrLn "Standard Custom Bitsize Tensort returns a sorted array..."
-  check result_is_sorted_custom_bitsize
+  check result_is_sorted_custom_bitsize_ints
   putStrLn "True!"
   putStrLn "All tests pass!"
