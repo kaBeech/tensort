@@ -110,3 +110,7 @@
 - Remove types and functions no longer used
 
 - Immensely cleanup the code
+
+## X.X.X.X -- 2025-02-14
+
+- Fix copyright date in cabal file
