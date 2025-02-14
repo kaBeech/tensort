@@ -5,7 +5,6 @@ import Data.Maybe (isNothing)
 import Data.Tensort.Utils.Compose (createTensor)
 import Data.Tensort.Utils.Types
   ( Memory (..),
-    Record (..),
     Register,
     SortAlg,
     Tensor (..),
@@ -19,6 +18,7 @@ import Data.Tensort.Utils.Types
 
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
+-- >>> import Data.Tensort.Utils.Types (Record (..))
 -- >>> getSortedBits bubblesort (Tensor ([Record (0,5),Record (1,7)],ByteMem [[1,5],[3,7]]))
 -- [1,3,5,7]
 -- >>> getSortedBits bubblesort (Tensor ([(0,8),(1,18)],TensorMem [([(0,7),(1,8)],TensorMem [([(0,3),(1,7)],ByteMem [[1,3],[5,7]]),([(0,4),(1,8)],ByteMem [[2,4],[6,8]])]),([(1,17),(0,18)],TensorMem [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(0,14),(1,17)],ByteMem [[12,14],[16,17]])])]))
@@ -41,6 +41,7 @@ getSortedBits subAlg tensorRaw = acc (fromTensor tensorRaw) []
 
 -- | ==== __Examples__
 --   >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
+--   >>> import Data.Tensort.Utils.Types (Record (..))
 --   >>> removeTopBit bubblesort ([Record (0,5),Record (1,7)],ByteMem [[1,5],[3,7]])
 --   (7,Just ([(1,3),(0,5)],ByteMem [[1,5],[3]]))
 removeTopBit :: (Ord a) => SortAlg a -> (Register a, Memory a) -> (TopBit a, Maybe (Register a, Memory a))
