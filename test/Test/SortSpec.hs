@@ -11,6 +11,10 @@ module Test.SortSpec
     result_is_sorted_custom_bitsize_ints,
     result_is_sorted_bits_only_ints,
     result_is_sorted_bits_only_ints_short,
+    result_is_sorted_chars,
+    result_is_sorted_strings,
+    result_is_sorted_lists,
+    result_is_sorted_generic,
   )
 where
 
@@ -80,6 +84,34 @@ result_is_sorted_bits_only_ints_short sort unsortedList =
   within limitStd (constraint ==> success)
   where
     constraint = length unsortedList < 6
+    success = isSorted $ sort unsortedList
+
+result_is_sorted_chars :: SortAlg Char -> [Char] -> Property
+result_is_sorted_chars sort unsortedList =
+  within limitStd (constraint ==> success)
+  where
+    constraint = length unsortedList < 10
+    success = isSorted $ sort unsortedList
+
+result_is_sorted_strings :: SortAlg String -> [String] -> Property
+result_is_sorted_strings sort unsortedList =
+  within limitStd (constraint ==> success)
+  where
+    constraint = length unsortedList < 10
+    success = isSorted $ sort unsortedList
+
+result_is_sorted_lists :: (Ord a) => SortAlg [a] -> [[a]] -> Property
+result_is_sorted_lists sort unsortedList =
+  within limitStd (constraint ==> success)
+  where
+    constraint = length unsortedList < 10
+    success = isSorted $ sort unsortedList
+
+result_is_sorted_generic :: (Ord a) => SortAlg a -> [a] -> Property
+result_is_sorted_generic sort unsortedList =
+  within limitStd (constraint ==> success)
+  where
+    constraint = length unsortedList < 10
     success = isSorted $ sort unsortedList
 
 limitStd :: Int

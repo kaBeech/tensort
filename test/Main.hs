@@ -16,6 +16,19 @@ main = do
   mapM_ qcheckRecsShortInt sortingAlgorithmsShort
   mapM_ qcheckRecsTinyInt sortingAlgorithmsTiny
   mapM_ qcheckBitsOnlyInt sortingAlgorithmsBitsOnly
+  mapM_ qcheckBitsInteger sortingAlgorithms
+  mapM_ qcheckBitsFloat sortingAlgorithms
+  mapM_ qcheckBitsDouble sortingAlgorithms
+  mapM_ qcheckBitsRational sortingAlgorithms
+  mapM_ qcheckBitsChar sortingAlgorithms
+  mapM_ qcheckBitsString sortingAlgorithms
+  mapM_ qcheckBitsBool sortingAlgorithms
+  mapM_ qcheckBitsWord sortingAlgorithms
+  mapM_ qcheckBitsOrdering sortingAlgorithms
+  mapM_ qcheckBitsMaybe sortingAlgorithms
+  mapM_ qcheckBitsEither sortingAlgorithms
+  mapM_ qcheckBitsTuple sortingAlgorithms
+  mapM_ qcheckBitsList sortingAlgorithms
   putStrLn "Running test suite!"
   putStrLn "Standard Custom Bitsize Tensort returns a sorted array..."
   check result_is_sorted_custom_bitsize_ints
