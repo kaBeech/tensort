@@ -7,8 +7,7 @@ module Data.Tensort.Utils.Types where
 --   algorithm.
 data TensortProps a = TensortProps
   { bytesize :: Int,
-    subAlgorithmBits :: SortAlg (Bit a),
-    subAlgorithmRecs :: SortAlg (Record a)
+    subAlgorithm :: SortAlg a
   }
 
 -- | A Bit is a single element of the list to be sorted.
