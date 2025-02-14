@@ -2,14 +2,14 @@
 --   elements is sorted in ascending order.
 module Data.Tensort.Utils.Check (isSorted) where
 
--- | Takes a Sortable list and returns True if the list is sorted in ascending
+-- | Takes a list and returns True if the list is sorted in ascending
 --   order and False otherwise.
 
 -- | ==== __Examples__
--- >>> isSorted (SortBit [0, 1, 2, 3, 4])
+-- >>> isSorted [0, 1, 2, 3, 4]
 -- True
 --
--- >>> isSorted (SortBit [0, 1, 2, 4, 3])
+-- >>> isSorted [0, 1, 2, 4, 3]
 -- False
 isSorted :: (Ord a) => [a] -> Bool
 isSorted [] = True
