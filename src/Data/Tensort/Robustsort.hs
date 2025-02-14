@@ -33,11 +33,11 @@ import Data.Tensort.Utils.Types (Bit, SortAlg)
 --   Robustsort algorithm with a Permutationsort adjudicator
 
 -- | ==== __Examples__
---  >>> robustsortRP (SortBit [16, 23, 4, 8, 15, 42])
---  SortBit [4,8,15,16,23,42]
+--  >>> robustsortRP [16, 23, 4, 8, 15, 42]
+--  [4,8,15,16,23,42]
 --
---  >>> robustsortRP (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
---  SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+--  >>> robustsortRP [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
+--  [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 robustsortRP :: (Ord a) => [Bit a] -> [Bit a]
 robustsortRP = robustsortRCustom robustsortP
 
@@ -45,11 +45,11 @@ robustsortRP = robustsortRCustom robustsortP
 --   Robustsort algorithm with a Permutationsort adjudicator
 
 -- | ==== __Examples__
--- >>> robustsortP (SortBit [16, 23, 4, 8, 15, 42])
--- SortBit [4,8,15,16,23,42]
+-- >>> robustsortP [16, 23, 4, 8, 15, 42]
+-- [4,8,15,16,23,42]
 --
--- >>> robustsortP (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
--- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+-- >>> robustsortP [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
+-- [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 robustsortP :: (Ord a) => [Bit a] -> [Bit a]
 robustsortP = tensort (mkTsProps 3 supersortP)
 
@@ -66,11 +66,11 @@ supersortP =
 --   Robustsort algorithm with a Bogosort adjudicator
 
 -- | ==== __Examples__
--- >>> robustsortRB (SortBit [16, 23, 4, 8, 15, 42])
--- SortBit [4,8,15,16,23,42]
+-- >>> robustsortRB [16, 23, 4, 8, 15, 42]
+-- [4,8,15,16,23,42]
 --
--- >>> robustsortRB (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
--- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+-- >>> robustsortRB [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
+-- [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 robustsortRB :: (Ord a) => [Bit a] -> [Bit a]
 robustsortRB = robustsortRCustom robustsortB
 
@@ -78,11 +78,11 @@ robustsortRB = robustsortRCustom robustsortB
 --   Robustsort algorithm with a Bogosort adjudicator
 
 -- | ==== __Examples__
--- >>> robustsortB (SortBit [16, 23, 4, 8, 15, 42])
--- SortBit [4,8,15,16,23,42]
+-- >>> robustsortB [16, 23, 4, 8, 15, 42]
+-- [4,8,15,16,23,42]
 --
--- >>> robustsortB (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
--- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+-- >>> robustsortB [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
+-- [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 robustsortB :: (Ord a) => [Bit a] -> [Bit a]
 robustsortB = tensort (mkTsProps 3 supersortB)
 
@@ -99,11 +99,11 @@ supersortB =
 --   Robustsort algorithm
 
 -- | ==== __Examples__
--- >>> robustsortRM (SortBit [16, 23, 4, 8, 15, 42])
--- SortBit [4,8,15,16,23,42]
+-- >>> robustsortRM [16, 23, 4, 8, 15, 42]
+-- [4,8,15,16,23,42]
 --
--- >>> robustsortRM (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
--- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+-- >>> robustsortRM [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
+-- [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 robustsortRM :: (Ord a) => [Bit a] -> [Bit a]
 robustsortRM = robustsortRCustom robustsortM
 
@@ -111,11 +111,11 @@ robustsortRM = robustsortRCustom robustsortM
 --   Robustsort algorithm
 
 -- | ==== __Examples__
--- >>> robustsortM (SortBit [16, 23, 4, 8, 15, 42])
--- SortBit [4,8,15,16,23,42]
+-- >>> robustsortM [16, 23, 4, 8, 15, 42]
+-- [4,8,15,16,23,42]
 --
--- >>> robustsortM (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
--- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+-- >>> robustsortM [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
+-- [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 robustsortM :: (Ord a) => [Bit a] -> [Bit a]
 robustsortM = tensort (mkTsProps 3 supersortM)
 
@@ -146,11 +146,11 @@ supersortM =
 --   to experiment with weirder setups too!
 --
 -- ==== __Examples__
--- >>> robustsortRCustom robustsortB (SortBit [16, 23, 4, 8, 15, 42])
--- SortBit [4,8,15,16,23,42]
+-- >>> robustsortRCustom robustsortB [16, 23, 4, 8, 15, 42]
+-- [4,8,15,16,23,42]
 --
--- >>> robustsortRCustom robustsortB (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
--- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+-- >>> robustsortRCustom robustsortB [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
+-- [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
 robustsortRCustom :: (Ord a) => SortAlg (Bit a) -> [Bit a] -> [Bit a]
 robustsortRCustom baseSortAlg xs = tensort tsProps xs
   where
