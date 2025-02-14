@@ -65,11 +65,11 @@ data Memory a
 --   contains.
 
 --   The Register is a list of Records referencing the top Bits in Memory.
-type Tensor a = (Register a, Memory a)
+newtype Tensor a = Tensor (Register a, Memory a) deriving (Show, Eq, Ord)
 
-fromTensor :: Tensor a -> ([(TopBit a, Address)], Memory a)
-fromTensor (r, ByteMem m) = (map fromRecord r, ByteMem m)
-fromTensor (r, TensorMem m) = (map fromRecord r, TensorMem m)
+fromTensor :: Tensor a -> (Register a, Memory a)
+fromTensor (Tensor (r, ByteMem m)) = (r, ByteMem m)
+fromTensor (Tensor (r, TensorMem m)) = (r, TensorMem m)
 
 -- | A TensorStack is a top-level Tensor. In the final stages of Tensort, the
 --   number of TensorStacks will be equal to (or sometimes less than) the
