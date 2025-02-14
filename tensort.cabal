@@ -20,7 +20,7 @@ name:               tensort
 -- PVP summary:     +-+------- breaking API changes
 --                  | | +----- non-breaking API additions
 --                  | | | +--- code changes with no API change
-version:            1.0.1.4
+version:            1.1.0.0
 
 tested-with:        GHC==9.12.1, 
                     GHC==9.10.1, 
