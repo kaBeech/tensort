@@ -11,7 +11,7 @@ data TensortProps a = TensortProps
   }
 
 -- | A Bit is a single element of the list to be sorted.
-newtype Bit a = Bit a deriving (Show, Eq, Ord)
+type Bit a = a
 
 -- | A Byte is a list of Bits standardized to a fixed maximum length (Bytesize).
 
