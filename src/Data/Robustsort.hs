@@ -26,7 +26,7 @@ import qualified Data.Tensort.Robustsort
 --   'Data.Tensort.Robustsort.robustsortP' function
 
 -- | ==== __Examples__
---   >>> robustsortP [16, 23, 4, 8, 15, 42]
+--   >>> robustsortP ([16, 23, 4, 8, 15, 42] :: [Int])
 --   [4,8,15,16,23,42]
 robustsortP :: (Ord a) => [a] -> [a]
 robustsortP = Data.Tensort.Robustsort.robustsortP
@@ -38,7 +38,7 @@ robustsortP = Data.Tensort.Robustsort.robustsortP
 --   'Data.Tensort.Robustsort.robustsortB' function
 
 -- | ==== __Examples__
---  >>> robustsortB [16, 23, 4, 8, 15, 42]
+--  >>> robustsortB ([16, 23, 4, 8, 15, 42] :: [Int])
 --  [4,8,15,16,23,42]
 robustsortB :: (Ord a) => [a] -> [a]
 robustsortB = Data.Tensort.Robustsort.robustsortB
@@ -50,7 +50,7 @@ robustsortB = Data.Tensort.Robustsort.robustsortB
 --   'Data.Tensort.Robustsort.robustsortM' function
 
 -- | ==== __Examples__
---  >>> robustsortM [16, 23, 4, 8, 15, 42]
+--  >>> robustsortM ([16, 23, 4, 8, 15, 42] :: [Int])
 --  [4,8,15,16,23,42]
 robustsortM :: (Ord a) => [a] -> [a]
 robustsortM = Data.Tensort.Robustsort.robustsortM
@@ -62,7 +62,7 @@ robustsortM = Data.Tensort.Robustsort.robustsortM
 --   'Data.Tensort.Robustsort.robustsortRP' function
 
 -- | ==== __Examples__
---  >>> robustsortRP [16, 23, 4, 8, 15, 42]
+--  >>> robustsortRP ([16, 23, 4, 8, 15, 42] :: [Int])
 --  [4,8,15,16,23,42]
 robustsortRP :: (Ord a) => [a] -> [a]
 robustsortRP = Data.Tensort.Robustsort.robustsortRP
@@ -74,7 +74,7 @@ robustsortRP = Data.Tensort.Robustsort.robustsortRP
 --   'Data.Tensort.Robustsort.robustsortRB' function
 
 --  | ==== __Examples__
---  >>> robustsortRB [16, 23, 4, 8, 15, 42]
+--  >>> robustsortRB ([16, 23, 4, 8, 15, 42] :: [Int])
 --  [4,8,15,16,23,42]
 robustsortRB :: (Ord a) => [a] -> [a]
 robustsortRB = Data.Tensort.Robustsort.robustsortRB
@@ -86,7 +86,7 @@ robustsortRB = Data.Tensort.Robustsort.robustsortRB
 --   'Data.Tensort.Robustsort.robustsortRM' function
 
 --   | ==== __Examples__
---   >>> robustsortRM [16, 23, 4, 8, 15, 42]
+--   >>> robustsortRM ([16, 23, 4, 8, 15, 42] :: [Int])
 --   [4,8,15,16,23,42]
 robustsortRM :: (Ord a) => [a] -> [a]
 robustsortRM = Data.Tensort.Robustsort.robustsortRM
