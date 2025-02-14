@@ -28,7 +28,7 @@ import Data.Tensort.Subalgorithms.Supersort
 import Data.Tensort.Tensort (tensort)
 import Data.Tensort.Utils.LogNat (getLn, getLnBytesize)
 import Data.Tensort.Utils.MkTsProps (mkTsProps)
-import Data.Tensort.Utils.Types (SortAlg, Sortable (..))
+import Data.Tensort.Utils.Types (Bit, Record, SortAlg)
 
 -- | Takes a Sortable and returns a sorted Sortable using a Recursive Mundane
 --   Robustsort algorithm with a Permutationsort adjudicator
@@ -39,7 +39,7 @@ import Data.Tensort.Utils.Types (SortAlg, Sortable (..))
 --
 --  >>> robustsortRP (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
 --  SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
-robustsortRP :: Sortable -> Sortable
+robustsortRP :: [Bit a] -> [Bit a]
 robustsortRP = robustsortRCustom robustsortP
 
 -- | Takes a Sortable and returns a sorted Sortable using a Basic Mundane
@@ -51,10 +51,10 @@ robustsortRP = robustsortRCustom robustsortP
 --
 -- >>> robustsortP (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
 -- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
-robustsortP :: Sortable -> Sortable
-robustsortP = tensort (mkTsProps 3 supersortP)
+robustsortP :: [Bit a] -> [Bit a]
+robustsortP = tensort (mkTsProps 3 supersortP supersortP)
 
-supersortP :: Sortable -> Sortable
+supersortP :: [Bit a] -> [Bit a]
 supersortP =
   supersort
     ( rotationsortReverse,
@@ -72,7 +72,7 @@ supersortP =
 --
 -- >>> robustsortRB (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
 -- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
-robustsortRB :: Sortable -> Sortable
+robustsortRB :: [Bit a] -> [Bit a]
 robustsortRB = robustsortRCustom robustsortB
 
 -- | Takes a Sortable and returns a sorted Sortable using a Basic Mundane
@@ -84,10 +84,10 @@ robustsortRB = robustsortRCustom robustsortB
 --
 -- >>> robustsortB (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
 -- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
-robustsortB :: Sortable -> Sortable
+robustsortB :: [Bit a] -> [Bit a]
 robustsortB = tensort (mkTsProps 3 supersortB)
 
-supersortB :: Sortable -> Sortable
+supersortB :: [Bit a] -> [Bit a]
 supersortB =
   supersort
     ( rotationsortReverse,
@@ -105,7 +105,7 @@ supersortB =
 --
 -- >>> robustsortRM (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
 -- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
-robustsortRM :: Sortable -> Sortable
+robustsortRM :: [Bit a] -> [Bit a]
 robustsortRM = robustsortRCustom robustsortM
 
 -- | Takes a Sortable and returns a sorted Sortable using a Basic Magic
@@ -117,10 +117,10 @@ robustsortRM = robustsortRCustom robustsortM
 --
 -- >>> robustsortM (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
 -- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
-robustsortM :: Sortable -> Sortable
+robustsortM :: [Bit a] -> [Bit a]
 robustsortM = tensort (mkTsProps 3 supersortM)
 
-supersortM :: Sortable -> Sortable
+supersortM :: [Bit a] -> [Bit a]
 supersortM =
   supersort
     ( rotationsortAmbi,
@@ -152,12 +152,13 @@ supersortM =
 --
 -- >>> robustsortRCustom robustsortB (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
 -- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
-robustsortRCustom :: SortAlg -> Sortable -> Sortable
-robustsortRCustom baseSortAlg xs = tensort tsProps xs
+robustsortRCustom :: SortAlg (Bit a) -> SortAlg (Record a) -> [Bit a] -> [Bit a]
+robustsortRCustom baseSortAlgB baseSortAlgR xs = tensort tsProps xs
   where
-    tsProps = mkTsProps bytesize subAlg
+    tsProps = mkTsProps bytesize subAlgB subAlgR
     bytesize = getLnBytesize xs
-    subAlg = robustsortRecursive bytesize baseSortAlg
+    subAlgB = robustsortRecursive bytesize baseSortAlgB
+    subAlgR = robustsortRecursive bytesize baseSortAlgR
 
 -- | Used to create SubAlgorithms for use in recursive Robustsort variants. See
 --   also `robustsortRCustom`.
@@ -166,7 +167,7 @@ robustsortRCustom baseSortAlg xs = tensort tsProps xs
 --   approximates the natural logarithm of the length of the input list until
 --   the Bytesize is less than or equal to 27. At this point, the baseSortAlg
 --   is used to sort the records.
-robustsortRecursive :: Int -> SortAlg -> SortAlg
+robustsortRecursive :: Int -> SortAlg a -> SortAlg a
 robustsortRecursive bytesize baseSortAlg
   -- ln (532048240602) ~= 27
   -- ln (27) ~= 3
@@ -178,6 +179,6 @@ robustsortRecursive bytesize baseSortAlg
   | bytesize <= 27 = baseSortAlg
   | otherwise = tensort tsProps
   where
-    tsProps = mkTsProps bytesize' baseSortAlg'
+    tsProps = mkTsProps bytesize' baseSortAlg' baseSortAlg'
     bytesize' = getLn bytesize
     baseSortAlg' = robustsortRecursive bytesize' baseSortAlg
