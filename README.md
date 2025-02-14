@@ -120,7 +120,7 @@ like [Dyson Spheres](https://en.wikipedia.org/wiki/Dyson_sphere). Doing so will
 involve massively distributed systems that are constantly pelted by radiation.
 In such circumstances, robustness is key.
 
-Another example I like to consider is artificial cognition. When working
+Another example I like to consider is artificial intelligence. When working
 in a non-deterministic system (or a system so complex as to be considered
 non-deterministic), it can be helpful to have systems in place to verify that
 the answer we come to is valid.
@@ -174,14 +174,14 @@ processing tailored to suit the current goals while preserving time efficiency.
 <i>
   <a href="https://github.com/fNBU" rel="noopener noreferrer" target="_blank">
   Someone very smart</a> pointed out to me that, while what I'm calling
-  'tensors' in Tensort may satisfy the technical definition (or at least come
-  close), I don't need to go all the way to tensors to satisfy this use case
-  and could just call them 'multidimensional arrays'.
+    'tensors' in Tensort may satisfy the technical definition (or at least come
+    close), I don't need to go all the way to tensors to satisfy this use case
+    and could just call them 'multidimensional arrays'.
 </i>
 
 <i>
   While I am sympathetic to this point, I like the 'tensor' phrasing for these
-  reasons:
+    reasons:
 </i>
 
 <i>
@@ -194,6 +194,12 @@ processing tailored to suit the current goals while preserving time efficiency.
 <i>
   2. 'Tensort' rolls off the tongue more neatly than
        'Multidimensionalarraysort'.
+</i>
+
+<i>
+  Looking back, 'Dimensionsort' may have been an even more fitting name, but
+    I came up with that months after this project was published, so here we are
+    =)
 </i>
 
 -------
