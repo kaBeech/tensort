@@ -5,10 +5,10 @@ module Data.Tensort.Utils.LogNat (getLnBytesize, getLn) where
 -- | Calculates a suitable logarithmic Bytesize for a given list.
 
 -- | ==== __Examples__
--- >>> getLnBytesize [1 .. 27]
+-- >>> getLnBytesize ([1 .. 27] :: [Int])
 -- 4
 --
--- >>> getLnBytesize  [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
+-- >>> getLnBytesize  ([(1, 16), (5, 23), (2, 4), (3, 8), (0, 15) , (4, 42)] :: [(Int, Int)])
 -- 2
 getLnBytesize :: (Ord a) => [a] -> Int
 getLnBytesize xs = getLn $ length xs
@@ -17,7 +17,7 @@ getLnBytesize xs = getLn $ length xs
 --   integer.
 --
 -- | ==== __Examples__
--- >>> getLn 27
+-- >>> getLn (27 :: Int)
 -- 4
 getLn :: Int -> Int
 getLn x = ceiling $ log (fromIntegral x :: Double)
