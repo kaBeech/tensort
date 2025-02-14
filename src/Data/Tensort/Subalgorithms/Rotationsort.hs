@@ -17,11 +17,11 @@ where
 --  this function is only implemented for lists of length 3 or less.
 
 -- | ==== __Examples__
--- >>> rotationsort [1,3,2]
+-- >>> rotationsort ([1,3,2] :: [Int])
 -- [1,2,3]
 --
--- >>> rotationsort [(3, 1), (1, 3), (2, 2)]
--- [(3,1),(2,2),(1,3)]
+-- >>> rotationsort ([(3, 1), (1, 3), (2, 2)] :: [(Int, Int)])
+-- [(1,3),(2,2),(3,1)]
 rotationsort :: (Ord a) => [a] -> [a]
 rotationsort bits = rotationsort' bits 0 False False
 
@@ -32,11 +32,11 @@ rotationsort bits = rotationsort' bits 0 False False
 --  this function is only implemented for lists of length 3 or less.
 
 -- | ==== __Examples__
--- >>> rotationsortAmbi [1,3,2]
+-- >>> rotationsortAmbi ([1,3,2] :: [Int])
 -- [1,2,3]
 --
--- >>> rotationsortAmbi [(3, 1), (1, 3), (2, 2)]
--- [(3,1),(2,2),(1,3)]
+-- >>> rotationsortAmbi ([(3, 1), (1, 3), (2, 2)] :: [(Int, Int)])
+-- [(1,3),(2,2),(3,1)]
 rotationsortAmbi :: (Ord a) => [a] -> [a]
 rotationsortAmbi bits = rotationsort' bits 0 True False
 
@@ -47,11 +47,11 @@ rotationsortAmbi bits = rotationsort' bits 0 True False
 --   this function is only implemented for lists of length 3 or less.
 
 -- | ==== __Examples__
--- >>> rotationsortReverse [1,3,2]
+-- >>> rotationsortReverse ([1,3,2] :: [Int])
 -- [1,2,3]
 --
--- >>> rotationsortReverse [(3, 1), (1, 3), (2, 2)]
--- [(3,1),(2,2),(1,3)]
+-- >>> rotationsortReverse ([(3, 1), (1, 3), (2, 2)] :: [(Int, Int)])
+-- [(1,3),(2,2),(3,1)]
 rotationsortReverse :: (Ord a) => [a] -> [a]
 rotationsortReverse bits = rotationsort' bits (length bits - 1) False True
 
@@ -62,11 +62,11 @@ rotationsortReverse bits = rotationsort' bits (length bits - 1) False True
 --   this function is only implemented for lists of length 3 or less.
 
 -- | ==== __Examples__
--- >>> rotationsortReverseAmbi [1,3,2]
+-- >>> rotationsortReverseAmbi ([1,3,2] :: [Int])
 -- [1,2,3]
 --
--- >>> rotationsortReverseAmbi [(3, 1), (1, 3), (2, 2)]
--- [(3,1),(2,2),(1,3)]
+-- >>> rotationsortReverseAmbi ([(3, 1), (1, 3), (2, 2)] :: [(Int, Int)])
+-- [(1,3),(2,2),(3,1)]
 rotationsortReverseAmbi :: (Ord a) => [a] -> [a]
 rotationsortReverseAmbi bits = rotationsort' bits (length bits - 1) True True
 
