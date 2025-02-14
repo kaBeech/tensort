@@ -35,7 +35,15 @@ type TopBit = Bit
 
 --   A Record's TopBit is a copy of the last (i.e. highest) Bit in the Byte or
 --   Tensor that the Record references.
-newtype Record a = Record (TopBit a, Address) deriving (Show, Eq, Ord)
+
+--   Records are ordered by their TopBits.
+newtype Record a = Record (TopBit a, Address) deriving (Show)
+
+instance (Eq a) => Eq (Record a) where
+  (Record (tb1, _)) == (Record (tb2, _)) = tb1 == tb2
+
+instance (Ord a) => Ord (Record a) where
+  compare (Record (tb1, _)) (Record (tb2, _)) = compare tb1 tb2
 
 fromRecord :: Record a -> (TopBit a, Address)
 fromRecord (Record (tb, a)) = (tb, a)
