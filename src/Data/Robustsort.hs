@@ -1,5 +1,5 @@
--- | This module provides convenience functions that wraps common Robustsort
---   functions to sort lists of Bits without dealing with type conversion
+-- | This module provides common Robustsort functions defined without reference
+--   to Bits
 module Data.Robustsort
   ( robustsortP,
     robustsortB,
@@ -18,7 +18,6 @@ import qualified Data.Tensort.Robustsort
     robustsortRM,
     robustsortRP,
   )
-import Data.Tensort.Utils.Types (Bit)
 
 -- | Takes a list of Bits and returns a sorted list of Bits using a Basic
 --   Mundane Robustsort algorithm with a Permutationsort adjudicator
@@ -29,7 +28,7 @@ import Data.Tensort.Utils.Types (Bit)
 -- | ==== __Examples__
 --   >>> robustsortP [16, 23, 4, 8, 15, 42]
 --   [4,8,15,16,23,42]
-robustsortP :: [Bit] -> [Bit]
+robustsortP :: (Ord a) => [a] -> [a]
 robustsortP = Data.Tensort.Robustsort.robustsortP
 
 -- | Takes a list of Bits and returns a sorted list of Bits using a Basic
@@ -41,7 +40,7 @@ robustsortP = Data.Tensort.Robustsort.robustsortP
 -- | ==== __Examples__
 --  >>> robustsortB [16, 23, 4, 8, 15, 42]
 --  [4,8,15,16,23,42]
-robustsortB :: [Bit] -> [Bit]
+robustsortB :: (Ord a) => [a] -> [a]
 robustsortB = Data.Tensort.Robustsort.robustsortB
 
 -- | Takes a list of Bits and returns a sorted list of Bits using a Basic
@@ -53,7 +52,7 @@ robustsortB = Data.Tensort.Robustsort.robustsortB
 -- | ==== __Examples__
 --  >>> robustsortM [16, 23, 4, 8, 15, 42]
 --  [4,8,15,16,23,42]
-robustsortM :: [Bit] -> [Bit]
+robustsortM :: (Ord a) => [a] -> [a]
 robustsortM = Data.Tensort.Robustsort.robustsortM
 
 -- | Takes a list of Bits and returns a sorted list of Bits using a Recursive
@@ -65,7 +64,7 @@ robustsortM = Data.Tensort.Robustsort.robustsortM
 -- | ==== __Examples__
 --  >>> robustsortRP [16, 23, 4, 8, 15, 42]
 --  [4,8,15,16,23,42]
-robustsortRP :: [Bit] -> [Bit]
+robustsortRP :: (Ord a) => [a] -> [a]
 robustsortRP = Data.Tensort.Robustsort.robustsortRP
 
 -- | Takes a list of Bits and returns a sorted list of Bits using a Recursive
@@ -77,7 +76,7 @@ robustsortRP = Data.Tensort.Robustsort.robustsortRP
 --  | ==== __Examples__
 --  >>> robustsortRB [16, 23, 4, 8, 15, 42]
 --  [4,8,15,16,23,42]
-robustsortRB :: [Bit] -> [Bit]
+robustsortRB :: (Ord a) => [a] -> [a]
 robustsortRB = Data.Tensort.Robustsort.robustsortRB
 
 -- | Takes a list of Bits and returns a sorted list of Bits using a Recursive
@@ -89,5 +88,5 @@ robustsortRB = Data.Tensort.Robustsort.robustsortRB
 --   | ==== __Examples__
 --   >>> robustsortRM [16, 23, 4, 8, 15, 42]
 --   [4,8,15,16,23,42]
-robustsortRM :: [Bit] -> [Bit]
+robustsortRM :: (Ord a) => [a] -> [a]
 robustsortRM = Data.Tensort.Robustsort.robustsortRM
