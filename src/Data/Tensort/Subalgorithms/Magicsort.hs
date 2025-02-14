@@ -19,7 +19,7 @@ import Data.Tensort.Subalgorithms.Permutationsort (permutationsort)
 --
 -- >>> magicsort [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15), (4, 42)]
 -- [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
-magicsort :: (Ord a) => a -> a
+magicsort :: (Ord a) => [a] -> [a]
 magicsort xs =
   if result1 == result2
     then result1
