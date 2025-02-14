@@ -14,7 +14,7 @@ import Data.Tensort.Utils.Types
 -- | ==== __Examples__
 --   >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 --   >>> import Data.Tensort.Utils.MkTsProps (mkTsProps)
---   >>> rawBitsToBytes (mkTsProps 4 bubblesort) [5,1,3,7,8,2,4,6]
+--   >>> rawBitsToBytes (mkTsProps 4 bubblesort) ([5,1,3,7,8,2,4,6] :: [Int])
 --   [[2,4,6,8],[1,3,5,7]]
 rawBitsToBytes :: TensortProps a -> [Bit a] -> [Byte a]
 rawBitsToBytes tsProps bits = foldr acc [] bytes
