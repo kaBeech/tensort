@@ -29,8 +29,8 @@ import Data.Tensort.Utils.Types
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 -- >>> import Data.Tensort.Utils.MkTsProps (mkTsProps)
--- >>> createInitialTensors (mkTsProps 2 bubblesort) [[2,4],[6,8],[1,3],[5,7]]
--- [([(0,3),(1,7)],ByteMem [[1,3],[5,7]]),([(0,4),(1,8)],ByteMem [[2,4],[6,8]])]
+-- >>> createInitialTensors (mkTsProps 2 bubblesort) [[2,4] :: [Int],[6,8] :: [Int],[1,3] :: [Int],[5,7] :: [Int]]
+-- [Tensor ([Record (3,0),Record (7,1)],ByteMem [[1,3],[5,7]]),Tensor ([Record (4,0),Record (8,1)],ByteMem [[2,4],[6,8]])]
 createInitialTensors :: (Ord a) => TensortProps a -> [Byte a] -> [Tensor a]
 createInitialTensors tsProps bytes =
   foldr acc [] (splitEvery (bytesize tsProps) bytes)
@@ -63,8 +63,8 @@ createTensor subAlg (TensorMem tensors) = getTensorFromTensors subAlg tensors
 
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
--- >>> getTensorFromBytes bubblesort [[2,4,6,8],[1,3,5,7]]
--- ([(1,7),(0,8)],ByteMem [[2,4,6,8],[1,3,5,7]])
+-- >>> getTensorFromBytes bubblesort [[2,4,6,8] :: [Int],[1,3,5,7] :: [Int]]
+-- Tensor ([Record (7,1),Record (8,0)],ByteMem [[2,4,6,8],[1,3,5,7]])
 getTensorFromBytes :: (Ord a) => SortAlg a -> [Byte a] -> Tensor a
 getTensorFromBytes subAlg bytes = Tensor (register', ByteMem bytes)
   where
@@ -82,8 +82,8 @@ getTensorFromBytes subAlg bytes = Tensor (register', ByteMem bytes)
 
 -- | ==== __Examples__
 -- >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
--- >>> getTensorFromTensors bubblesort [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(1,14),(0,17)],ByteMem [[16,17],[12,14]])]
--- ([(1,17),(0,18)],TensorMem [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(1,14),(0,17)],ByteMem [[16,17],[12,14]])])
+-- >>> getTensorFromTensors bubblesort [Tensor ([Record (0,13),Record (1,18)],ByteMem [[11,13] :: [Int],[15,18] :: [Int]]),Tensor ([Record (1,14),Record (0,17)],ByteMem [[16,17] :: [Int],[12,14] :: [Int]])]
+-- Tensor ([Record (0,1),Record (1,0)],TensorMem [Tensor ([Record (0,13),Record (1,18)],ByteMem [[11,13],[15,18]]),Tensor ([Record (1,14),Record (0,17)],ByteMem [[16,17],[12,14]])])
 getTensorFromTensors :: (Ord a) => SortAlg a -> [Tensor a] -> Tensor a
 getTensorFromTensors subAlg tensors = Tensor (sortedRegister, TensorMem tensors)
   where
@@ -101,8 +101,8 @@ getTensorFromTensors subAlg tensors = Tensor (sortedRegister, TensorMem tensors)
 --   getTensorFromTensors function.
 
 -- | ==== __Examples__
--- >>> getRegisterFromTensors [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(0,14),(1,17)],ByteMem [[12,14],[16,17]]),([(0,3),(1,7)],ByteMem [[1,3],[5,7]]),([(0,4),(1,8)],ByteMem [[2,4],[6,8]])]
--- [(0,18),(1,17),(2,7),(3,8)]
+-- >>> getRegisterFromTensors [Tensor ([Record (0 :: Int,13),Record (1 :: Int,18)],ByteMem [[11,13] :: [Int],[15,18] :: [Int]]),Tensor ([Record (0 :: Int,14),Record (1 :: Int,17)],ByteMem [[12,14] :: [Int],[16,17] :: [Int]]),Tensor ([Record (0 :: Int,3),Record (1 :: Int,7)],ByteMem [[1,3] :: [Int],[5,7] :: [Int]]),Tensor ([Record (0 :: Int,4),Record (1 :: Int,8)],ByteMem [[2,4] :: [Int],[6,8] :: [Int]])]
+-- [Record (1,0),Record (1,1),Record (1,2),Record (1,3)]
 getRegisterFromTensors :: [Tensor a] -> [Record a]
 getRegisterFromTensors tensors = acc tensors []
   where
@@ -125,8 +125,8 @@ getRegisterFromTensors tensors = acc tensors []
 -- | This is also expected to be the highest value in the TensorStack.
 
 -- | ==== __Examples__
--- >>> getTopBitFromTensorStack ([(0,28),(1,38)],TensorMem [([(0,27),(1,28)],TensorMem [([(0,23),(1,27)],ByteMem [[21,23],[25,27]]),([(0,24),(1,28)],ByteMem [[22,24],[26,28]])]),([(1,37),(0,38)],TensorMem [([(0,33),(1,38)],ByteMem [[31,33],[35,38]]),([(0,34),(1,37)],ByteMem [[32,14],[36,37]])])])
--- 38
+-- >>> getTopBitFromTensorStack ([Record (0 :: Int,28),Record (1 :: Int,38)],TensorMem [Tensor ([Record (0 :: Int,27),Record (1 :: Int,28)],TensorMem [Tensor ([Record (0 :: Int,23),Record (1 :: Int,27)],ByteMem [[21,23] :: [Int],[25,27] :: [Int]]),Tensor ([Record (0 :: Int,24),Record (1 :: Int,28)],ByteMem [[22,24] :: [Int],[26,28] :: [Int]])]),Tensor ([Record (1 :: Int,37),Record (0 :: Int,38)],TensorMem [Tensor ([Record (0 :: Int,33),Record (1 :: Int,38)],ByteMem [[31,33] :: [Int],[35,38] :: [Int]]),Tensor ([Record (0 :: Int,34),Record (1 :: Int,37)],ByteMem [[32,14] :: [Int],[36,37] :: [Int]])])])
+-- 1
 getTopBitFromTensorStack :: (Register a, Memory a) -> Bit a
 getTopBitFromTensorStack tensor =
   let register = fst tensor
