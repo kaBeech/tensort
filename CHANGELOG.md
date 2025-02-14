@@ -111,6 +111,8 @@
 
 - Immensely cleanup the code
 
-## X.X.X.X -- 2025-02-14
+## X.X.X.X -- YYYY-MM-DD
+
+- Update README
 
 - Fix copyright date in cabal file
