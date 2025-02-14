@@ -13,7 +13,7 @@ import Data.Tensort.Tensort (tensortBL)
 --   This is a convenience function that wraps the 'tensortBL' function
 
 -- | ==== __Examples__
---   >>> tensort [16, 23, 4, 8, 15, 42]
+--   >>> tensort ([16, 23, 4, 8, 15, 42] :: [Int])
 --   [4,8,15,16,23,42]
 tensort :: (Ord a) => [a] -> [a]
 tensort = tensortBL
