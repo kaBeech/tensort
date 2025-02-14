@@ -1,5 +1,4 @@
--- | This module provides variations of the Robustsort algorithm using the
---   custom Sortable type for inputs and outputs
+-- | This module provides variations of the Robustsort algorithm
 module Data.Tensort.Robustsort
   ( robustsortP,
     robustsortB,
@@ -28,33 +27,33 @@ import Data.Tensort.Subalgorithms.Supersort
 import Data.Tensort.Tensort (tensort)
 import Data.Tensort.Utils.LogNat (getLn, getLnBytesize)
 import Data.Tensort.Utils.MkTsProps (mkTsProps)
-import Data.Tensort.Utils.Types (SortAlg, Sortable (..))
+import Data.Tensort.Utils.Types (Bit, SortAlg)
 
--- | Takes a Sortable and returns a sorted Sortable using a Recursive Mundane
+-- | Takes a list and returns a sorted list using a Recursive Mundane
 --   Robustsort algorithm with a Permutationsort adjudicator
 
 -- | ==== __Examples__
---  >>> robustsortRP (SortBit [16, 23, 4, 8, 15, 42])
---  SortBit [4,8,15,16,23,42]
+--  >>> robustsortRP [16, 23, 4, 8, 15, 42]
+--  [4,8,15,16,23,42]
 --
---  >>> robustsortRP (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
---  SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
-robustsortRP :: Sortable -> Sortable
+--  >>> robustsortRP [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
+--  [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+robustsortRP :: (Ord a) => [Bit a] -> [Bit a]
 robustsortRP = robustsortRCustom robustsortP
 
--- | Takes a Sortable and returns a sorted Sortable using a Basic Mundane
+-- | Takes a list and returns a sorted list using a Basic Mundane
 --   Robustsort algorithm with a Permutationsort adjudicator
 
 -- | ==== __Examples__
--- >>> robustsortP (SortBit [16, 23, 4, 8, 15, 42])
--- SortBit [4,8,15,16,23,42]
+-- >>> robustsortP [16, 23, 4, 8, 15, 42]
+-- [4,8,15,16,23,42]
 --
--- >>> robustsortP (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
--- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
-robustsortP :: Sortable -> Sortable
+-- >>> robustsortP [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
+-- [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+robustsortP :: (Ord a) => [Bit a] -> [Bit a]
 robustsortP = tensort (mkTsProps 3 supersortP)
 
-supersortP :: Sortable -> Sortable
+supersortP :: (Ord a) => [Bit a] -> [Bit a]
 supersortP =
   supersort
     ( rotationsortReverse,
@@ -63,31 +62,31 @@ supersortP =
       mundaneSuperStrat
     )
 
--- | Takes a Sortable and returns a sorted Sortable using a Recursive Mundane
+-- | Takes a list and returns a sorted list using a Recursive Mundane
 --   Robustsort algorithm with a Bogosort adjudicator
 
 -- | ==== __Examples__
--- >>> robustsortRB (SortBit [16, 23, 4, 8, 15, 42])
--- SortBit [4,8,15,16,23,42]
+-- >>> robustsortRB [16, 23, 4, 8, 15, 42]
+-- [4,8,15,16,23,42]
 --
--- >>> robustsortRB (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
--- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
-robustsortRB :: Sortable -> Sortable
+-- >>> robustsortRB [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
+-- [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+robustsortRB :: (Ord a) => [Bit a] -> [Bit a]
 robustsortRB = robustsortRCustom robustsortB
 
--- | Takes a Sortable and returns a sorted Sortable using a Basic Mundane
+-- | Takes a list and returns a sorted list using a Basic Mundane
 --   Robustsort algorithm with a Bogosort adjudicator
 
 -- | ==== __Examples__
--- >>> robustsortB (SortBit [16, 23, 4, 8, 15, 42])
--- SortBit [4,8,15,16,23,42]
+-- >>> robustsortB [16, 23, 4, 8, 15, 42]
+-- [4,8,15,16,23,42]
 --
--- >>> robustsortB (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
--- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
-robustsortB :: Sortable -> Sortable
+-- >>> robustsortB [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
+-- [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+robustsortB :: (Ord a) => [Bit a] -> [Bit a]
 robustsortB = tensort (mkTsProps 3 supersortB)
 
-supersortB :: Sortable -> Sortable
+supersortB :: (Ord a) => [Bit a] -> [Bit a]
 supersortB =
   supersort
     ( rotationsortReverse,
@@ -96,31 +95,31 @@ supersortB =
       mundaneSuperStrat
     )
 
--- | Takes a Sortable and returns a sorted Sortable using a Recursive Magic
+-- | Takes a list and returns a sorted list using a Recursive Magic
 --   Robustsort algorithm
 
 -- | ==== __Examples__
--- >>> robustsortRM (SortBit [16, 23, 4, 8, 15, 42])
--- SortBit [4,8,15,16,23,42]
+-- >>> robustsortRM [16, 23, 4, 8, 15, 42]
+-- [4,8,15,16,23,42]
 --
--- >>> robustsortRM (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
--- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
-robustsortRM :: Sortable -> Sortable
+-- >>> robustsortRM [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
+-- [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+robustsortRM :: (Ord a) => [Bit a] -> [Bit a]
 robustsortRM = robustsortRCustom robustsortM
 
--- | Takes a Sortable and returns a sorted Sortable using a Basic Magic
+-- | Takes a list and returns a sorted list using a Basic Magic
 --   Robustsort algorithm
 
 -- | ==== __Examples__
--- >>> robustsortM (SortBit [16, 23, 4, 8, 15, 42])
--- SortBit [4,8,15,16,23,42]
+-- >>> robustsortM [16, 23, 4, 8, 15, 42]
+-- [4,8,15,16,23,42]
 --
--- >>> robustsortM (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
--- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
-robustsortM :: Sortable -> Sortable
+-- >>> robustsortM [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
+-- [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+robustsortM :: (Ord a) => [Bit a] -> [Bit a]
 robustsortM = tensort (mkTsProps 3 supersortM)
 
-supersortM :: Sortable -> Sortable
+supersortM :: (Ord a) => [Bit a] -> [Bit a]
 supersortM =
   supersort
     ( rotationsortAmbi,
@@ -131,8 +130,8 @@ supersortM =
 
 -- | Used for making recursive Robustsort variants
 --
---   Takes the base SortAlg you want to use and a Sortable and returns a sorted
---   Sortable.
+--   Takes the base SortAlg you want to use and a list and returns a sorted
+--   list.
 --
 --   Uses a Logarithmic bytesize to determine when to stop recursing and use
 --   the base SortAlg to sort the records.
@@ -147,12 +146,12 @@ supersortM =
 --   to experiment with weirder setups too!
 --
 -- ==== __Examples__
--- >>> robustsortRCustom robustsortB (SortBit [16, 23, 4, 8, 15, 42])
--- SortBit [4,8,15,16,23,42]
+-- >>> robustsortRCustom robustsortB [16, 23, 4, 8, 15, 42]
+-- [4,8,15,16,23,42]
 --
--- >>> robustsortRCustom robustsortB (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
--- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
-robustsortRCustom :: SortAlg -> Sortable -> Sortable
+-- >>> robustsortRCustom robustsortB [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
+-- [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+robustsortRCustom :: (Ord a) => SortAlg (Bit a) -> [Bit a] -> [Bit a]
 robustsortRCustom baseSortAlg xs = tensort tsProps xs
   where
     tsProps = mkTsProps bytesize subAlg
@@ -166,7 +165,7 @@ robustsortRCustom baseSortAlg xs = tensort tsProps xs
 --   approximates the natural logarithm of the length of the input list until
 --   the Bytesize is less than or equal to 27. At this point, the baseSortAlg
 --   is used to sort the records.
-robustsortRecursive :: Int -> SortAlg -> SortAlg
+robustsortRecursive :: (Ord a) => Int -> SortAlg (Bit a) -> SortAlg (Bit a)
 robustsortRecursive bytesize baseSortAlg
   -- ln (532048240602) ~= 27
   -- ln (27) ~= 3

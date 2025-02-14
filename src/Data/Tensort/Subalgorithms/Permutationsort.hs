@@ -1,40 +1,24 @@
--- | This module provides the permutationsort function for sorting Sortable
---   lists
+-- | This module provides the permutationsort function for sorting lists
 module Data.Tensort.Subalgorithms.Permutationsort (permutationsort) where
 
 import Data.List (permutations)
 import Data.Tensort.Utils.Check (isSorted)
-import Data.Tensort.Utils.Types
-  ( Bit,
-    Record,
-    Sortable (..),
-    fromSortBit,
-    fromSortRec,
-  )
 
--- | Takes a Sortable and returns a sorted Sortable using Permutationsort
+-- | Takes a list and returns a sorted list using Permutationsort
 --   algorithm
 
 -- | ==== __Examples__
--- >>> permutationsort (SortBit [16, 23, 4, 8, 15, 42])
--- SortBit [4,8,15,16,23,42]
+-- >>> permutationsort [16, 23, 4, 8, 15, 42]
+-- [4,8,15,16,23,42]
 --
--- >>> permutationsort (SortRec [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)])
--- SortRec [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
-permutationsort :: Sortable -> Sortable
-permutationsort (SortBit xs) = SortBit $ acc (permutations xs) []
+-- >>> permutationsort [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
+-- [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+permutationsort :: (Ord a) => [a] -> [a]
+permutationsort xs = acc (permutations xs) []
   where
-    acc :: [[Bit]] -> [Bit] -> [Bit]
+    acc :: (Ord a) => [[a]] -> [a] -> [a]
     acc [] unsortedPermutations =
-      fromSortBit . permutationsort $ SortBit unsortedPermutations
+      permutationsort unsortedPermutations
     acc (permutation : remainingPermutations) unsortedPermutations
-      | isSorted (SortBit permutation) = permutation
-      | otherwise = acc remainingPermutations unsortedPermutations
-permutationsort (SortRec xs) = SortRec $ acc (permutations xs) []
-  where
-    acc :: [[Record]] -> [Record] -> [Record]
-    acc [] unsortedPermutations =
-      fromSortRec . permutationsort $ SortRec unsortedPermutations
-    acc (permutation : remainingPermutations) unsortedPermutations
-      | isSorted (SortRec permutation) = permutation
+      | isSorted permutation = permutation
       | otherwise = acc remainingPermutations unsortedPermutations

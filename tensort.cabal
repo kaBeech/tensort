@@ -115,17 +115,15 @@ library
                       Data.Tensort.Utils.LogNat,
                       Data.Tensort.Utils.MkTsProps,
                       Data.Tensort.Utils.RandomizeList,
+                      Data.Tensort.Utils.SortRecs,
                       Data.Tensort.Utils.Types,
-                      Data.Tensort.Utils.WrapSortAlg,
 
     -- Modules included in this library but not exported.
     other-modules:    Data.Tensort.Utils.Split,
-                      Data.Tensort.Utils.ComparisonFunctions,
                       Data.Tensort.Utils.Convert,
                       Data.Tensort.Utils.Compose,
                       Data.Tensort.Utils.Reduce,
                       Data.Tensort.Utils.Render,
-                      Data.Tensort.Utils.SimplifyRegister,
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:

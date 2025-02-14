@@ -1,13 +1,11 @@
--- | This module provides convenience functions that wraps common Tensort
---   functions to sort lists of Bits without dealing with type conversion
+-- | This module provides common Tensort functions defined without reference to
+--   Bits
 module Data.Tensort
   ( tensort,
   )
 where
 
 import Data.Tensort.Tensort (tensortBL)
-import Data.Tensort.Utils.Types (Bit)
-import Data.Tensort.Utils.WrapSortAlg (wrapSortAlg)
 
 -- | Takes a list of Bits and returns a sorted list of Bits using a Standard
 --   Logarithmic Tensort algorithm
@@ -17,5 +15,5 @@ import Data.Tensort.Utils.WrapSortAlg (wrapSortAlg)
 -- | ==== __Examples__
 --   >>> tensort [16, 23, 4, 8, 15, 42]
 --   [4,8,15,16,23,42]
-tensort :: [Bit] -> [Bit]
-tensort = wrapSortAlg tensortBL
+tensort :: (Ord a) => [a] -> [a]
+tensort = tensortBL

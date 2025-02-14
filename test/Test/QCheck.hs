@@ -1,42 +1,48 @@
 module Test.QCheck
-  ( qcheckSortable,
-    qcheckSortableShort,
-    qcheckSortableTiny,
-    qcheckBits,
+  ( qcheckBitsInt,
+    qcheckRecsShortInt,
+    qcheckRecsTinyInt,
+    qcheckBitsOnlyInt,
+    qcheckRecsInt,
   )
 where
 
-import Data.Tensort.Utils.Types (Bit, SortAlg)
+import Data.Tensort.Utils.Types (SortAlg)
 import Test.SortSpec
-  ( result_is_sorted_bits,
-    result_is_sorted_bits_only,
-    result_is_sorted_records,
-    result_is_sorted_records_short,
-    result_is_sorted_records_tiny,
+  ( result_is_sorted_bits_only_ints,
+    result_is_sorted_ints,
+    result_is_sorted_records_ints,
+    result_is_sorted_records_ints_short,
+    result_is_sorted_records_ints_tiny,
   )
 import Test.TestCheck (check)
 
-qcheckSortable :: (SortAlg, String) -> IO ()
-qcheckSortable (sort, sortName) = do
+qcheckBitsInt :: (SortAlg Int, String) -> IO ()
+qcheckBitsInt (sort, sortName) = do
   putStrLn (sortName ++ " returns a sorted array..")
-  check (result_is_sorted_bits sort)
-  check (result_is_sorted_records sort)
+  check (result_is_sorted_ints sort)
   putStrLn "True!"
 
-qcheckSortableShort :: (SortAlg, String) -> IO ()
-qcheckSortableShort (sort, sortName) = do
+qcheckRecsInt :: (SortAlg (Int, Int), String) -> IO ()
+qcheckRecsInt (sort, sortName) = do
   putStrLn (sortName ++ " returns a sorted array..")
-  check (result_is_sorted_records_short sort)
+  check (result_is_sorted_records_ints sort)
   putStrLn "True!"
 
-qcheckSortableTiny :: (SortAlg, String) -> IO ()
-qcheckSortableTiny (sort, sortName) = do
+qcheckRecsShortInt :: (SortAlg (Int, Int), String) -> IO ()
+qcheckRecsShortInt (sort, sortName) = do
   putStrLn (sortName ++ " returns a sorted array..")
-  check (result_is_sorted_records_tiny sort)
+  check (result_is_sorted_records_ints_short sort)
   putStrLn "True!"
 
-qcheckBits :: ([Bit] -> [Bit], String) -> IO ()
-qcheckBits (sort, sortName) = do
+qcheckRecsTinyInt :: (SortAlg (Int, Int), String) -> IO ()
+qcheckRecsTinyInt (sort, sortName) = do
   putStrLn (sortName ++ " returns a sorted array..")
-  check (result_is_sorted_bits_only sort)
+  check (result_is_sorted_records_ints_tiny sort)
+  putStrLn "True!"
+
+qcheckBitsOnlyInt :: ([Int] -> [Int], String) -> IO ()
+qcheckBitsOnlyInt (sort, sortName) = do
+  putStrLn (sortName ++ " returns a sorted array..")
+  check (result_is_sorted_bits_only_ints sort)
   putStrLn "True!"

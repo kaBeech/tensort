@@ -1,5 +1,5 @@
--- | This module provides convenience functions that wraps common Robustsort
---   functions to sort lists of Bits without dealing with type conversion
+-- | This module provides common Robustsort functions defined without reference
+--   to Bits
 module Data.Robustsort
   ( robustsortP,
     robustsortB,
@@ -18,8 +18,6 @@ import qualified Data.Tensort.Robustsort
     robustsortRM,
     robustsortRP,
   )
-import Data.Tensort.Utils.Types (Bit)
-import Data.Tensort.Utils.WrapSortAlg (wrapSortAlg)
 
 -- | Takes a list of Bits and returns a sorted list of Bits using a Basic
 --   Mundane Robustsort algorithm with a Permutationsort adjudicator
@@ -30,8 +28,8 @@ import Data.Tensort.Utils.WrapSortAlg (wrapSortAlg)
 -- | ==== __Examples__
 --   >>> robustsortP [16, 23, 4, 8, 15, 42]
 --   [4,8,15,16,23,42]
-robustsortP :: [Bit] -> [Bit]
-robustsortP = wrapSortAlg Data.Tensort.Robustsort.robustsortP
+robustsortP :: (Ord a) => [a] -> [a]
+robustsortP = Data.Tensort.Robustsort.robustsortP
 
 -- | Takes a list of Bits and returns a sorted list of Bits using a Basic
 --   Mundane Robustsort algorithm with a Bogosort adjudicator
@@ -42,8 +40,8 @@ robustsortP = wrapSortAlg Data.Tensort.Robustsort.robustsortP
 -- | ==== __Examples__
 --  >>> robustsortB [16, 23, 4, 8, 15, 42]
 --  [4,8,15,16,23,42]
-robustsortB :: [Bit] -> [Bit]
-robustsortB = wrapSortAlg Data.Tensort.Robustsort.robustsortB
+robustsortB :: (Ord a) => [a] -> [a]
+robustsortB = Data.Tensort.Robustsort.robustsortB
 
 -- | Takes a list of Bits and returns a sorted list of Bits using a Basic
 --   Magic Robustsort algorithm
@@ -54,8 +52,8 @@ robustsortB = wrapSortAlg Data.Tensort.Robustsort.robustsortB
 -- | ==== __Examples__
 --  >>> robustsortM [16, 23, 4, 8, 15, 42]
 --  [4,8,15,16,23,42]
-robustsortM :: [Bit] -> [Bit]
-robustsortM = wrapSortAlg Data.Tensort.Robustsort.robustsortM
+robustsortM :: (Ord a) => [a] -> [a]
+robustsortM = Data.Tensort.Robustsort.robustsortM
 
 -- | Takes a list of Bits and returns a sorted list of Bits using a Recursive
 --   Mundane Robustsort algorithm with a Permutationsort adjudicator
@@ -66,8 +64,8 @@ robustsortM = wrapSortAlg Data.Tensort.Robustsort.robustsortM
 -- | ==== __Examples__
 --  >>> robustsortRP [16, 23, 4, 8, 15, 42]
 --  [4,8,15,16,23,42]
-robustsortRP :: [Bit] -> [Bit]
-robustsortRP = wrapSortAlg Data.Tensort.Robustsort.robustsortRP
+robustsortRP :: (Ord a) => [a] -> [a]
+robustsortRP = Data.Tensort.Robustsort.robustsortRP
 
 -- | Takes a list of Bits and returns a sorted list of Bits using a Recursive
 --  Mundane Robustsort algorithm with a Bogosort adjudicator
@@ -78,8 +76,8 @@ robustsortRP = wrapSortAlg Data.Tensort.Robustsort.robustsortRP
 --  | ==== __Examples__
 --  >>> robustsortRB [16, 23, 4, 8, 15, 42]
 --  [4,8,15,16,23,42]
-robustsortRB :: [Bit] -> [Bit]
-robustsortRB = wrapSortAlg Data.Tensort.Robustsort.robustsortRB
+robustsortRB :: (Ord a) => [a] -> [a]
+robustsortRB = Data.Tensort.Robustsort.robustsortRB
 
 -- | Takes a list of Bits and returns a sorted list of Bits using a Recursive
 --   Magic Robustsort algorithm
@@ -90,5 +88,5 @@ robustsortRB = wrapSortAlg Data.Tensort.Robustsort.robustsortRB
 --   | ==== __Examples__
 --   >>> robustsortRM [16, 23, 4, 8, 15, 42]
 --   [4,8,15,16,23,42]
-robustsortRM :: [Bit] -> [Bit]
-robustsortRM = wrapSortAlg Data.Tensort.Robustsort.robustsortRM
+robustsortRM :: (Ord a) => [a] -> [a]
+robustsortRM = Data.Tensort.Robustsort.robustsortRM
