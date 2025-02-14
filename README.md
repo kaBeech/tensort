@@ -1118,8 +1118,8 @@ Ord sorting:
 
   - Recursive Magic Robustsort
 
-It also provides many more algorithms and helper functions wrapped for both Bit
-and Record sorting so you can make your own Tensort variants!
+It also provides many more algorithms and helper functions so you can make your
+own Tensort variants!
 
 Check the code in `src/` or the documentation on Hackage/Hoogle
 for more details.
