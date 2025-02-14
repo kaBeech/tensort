@@ -85,7 +85,7 @@ type SortAlg a = [a] -> [a]
 --   and a SupersortStrat that does the adjudication.
 type SupersortProps a = (SortAlg a, SortAlg a, SortAlg a, SupersortStrat a)
 
--- | A SupersortStrat takes three Sortables and determines which of the three
+-- | A SupersortStrat takes three lists and determines which of the three
 --   is most likely to be in the correct order.
 type SupersortStrat a = ([a], [a], [a]) -> [a]
 
