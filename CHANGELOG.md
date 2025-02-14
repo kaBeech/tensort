@@ -104,4 +104,4 @@
 ## 1.0.2.0 -- TBA
 
 - Add support for sorting all Ord types
-- Improve readability of code
+- Immensely cleanup the code

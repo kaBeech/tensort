@@ -4,15 +4,14 @@ module Data.Tensort.Subalgorithms.Permutationsort (permutationsort) where
 import Data.List (permutations)
 import Data.Tensort.Utils.Check (isSorted)
 
--- | Takes a list and returns a sorted list using Permutationsort
---   algorithm
+-- | Takes a list and returns a sorted list using Permutationsort algorithm
 
 -- | ==== __Examples__
--- >>> permutationsort [16, 23, 4, 8, 15, 42]
+-- >>> permutationsort ([16, 23, 4, 8, 15, 42] :: [Int])
 -- [4,8,15,16,23,42]
 --
--- >>> permutationsort [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)]
--- [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+-- >>> permutationsort ([(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)] :: [(Int, Int)])
+-- [(0,15),(1,16),(2,4),(3,8),(4,42),(5,23)]
 permutationsort :: (Ord a) => [a] -> [a]
 permutationsort xs = acc (permutations xs) []
   where

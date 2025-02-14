@@ -14,11 +14,11 @@ import Data.Tensort.Subalgorithms.Permutationsort (permutationsort)
 --   otherwise repeats the process.
 
 -- | ==== __Examples__
--- >>> magicsort [16, 23, 4, 8, 15, 42]
+-- >>> magicsort ([16, 23, 4, 8, 15, 42] :: [Int])
 -- [4,8,15,16,23,42]
 --
--- >>> magicsort [(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15), (4, 42)]
--- [(2,4),(3,8),(0,15),(1,16),(5,23),(4,42)]
+-- >>> magicsort ([(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15), (4, 42)] :: [(Int, Int)])
+-- [(0,15),(1,16),(2,4),(3,8),(4,42),(5,23)]
 magicsort :: (Ord a) => [a] -> [a]
 magicsort xs =
   if result1 == result2
