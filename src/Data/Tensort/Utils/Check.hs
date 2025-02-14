@@ -6,10 +6,10 @@ module Data.Tensort.Utils.Check (isSorted) where
 --   order and False otherwise.
 
 -- | ==== __Examples__
--- >>> isSorted [0, 1, 2, 3, 4]
+-- >>> isSorted ([0, 1, 2, 3, 4] :: [Int])
 -- True
 --
--- >>> isSorted [0, 1, 2, 4, 3]
+-- >>> isSorted ([0, 1, 2, 4, 3] :: [Int])
 -- False
 isSorted :: (Ord a) => [a] -> Bool
 isSorted [] = True
