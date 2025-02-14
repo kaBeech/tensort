@@ -24,7 +24,7 @@ type Address = Int
 
 -- | A TopBit contains a copy of the last (i.e. highest) Bit in a Byte or
 --   Tensor.
-type TopBit = Bit
+type TopBit a = Bit a
 
 -- | A Record is an element in a Tensor's Register
 --   containing an Address pointer and a TopBit value.
