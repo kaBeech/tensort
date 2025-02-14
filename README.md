@@ -172,10 +172,11 @@ processing tailored to suit the current goals while preserving time efficiency.
 -------
 
 <i>
-  [Someone very smart](https://github.com/fNBU) pointed out to me that, while
-  what I'm calling 'tensors' in Tensort may satisfy the technical definition
-  (or at least come close), I don't need to go all the way to tensors to
-  satisfy this use case and could just call them 'multidimensional arrays'.
+  <a href="https://github.com/fNBU" rel="noopener noreferrer" target="_blank">
+  Someone very smart</a> pointed out to me that, while what I'm calling
+  'tensors' in Tensort may satisfy the technical definition (or at least come
+  close), I don't need to go all the way to tensors to satisfy this use case
+  and could just call them 'multidimensional arrays'.
 </i>
 
 <i>
@@ -186,8 +187,8 @@ processing tailored to suit the current goals while preserving time efficiency.
 <i>
   1. The average computer scientist is at least as likely to get distracted
        by the technical definition of 'array' as by that of 'tensor'
-       (especially here where the data structures in question could hold more
-       than a single data type).
+       (especially here where the data structures in question could hold
+       multiple data types).
 </i>
 
 <i>
