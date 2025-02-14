@@ -12,15 +12,14 @@ module Data.Tensort.Utils.Render (getSortedBits) where
 import Data.Maybe (isNothing)
 import Data.Tensort.Utils.Compose (createTensor)
 import Data.Tensort.Utils.Types
-  ( Bit,
-    Memory (..),
-    Record,
+  ( Memory (..),
     Register,
     SortAlg,
-    Tensor,
-    TensorStack,
+    Tensor (..),
+    TopBit,
     fromJust,
     fromRecord,
+    fromTensor,
   )
 
 -- | Compile a sorted list of Bits from a list of TensorStacks.
@@ -31,15 +30,15 @@ import Data.Tensort.Utils.Types
 -- [SBitBit 1,SBitBit 3,SBitBit 5,SBitBit 7]
 -- >>> getSortedBits bubblesort (STensorBit ([(0,8),(1,18)],TensorMem [([(0,7),(1,8)],TensorMem [([(0,3),(1,7)],ByteMem [[1,3],[5,7]]),([(0,4),(1,8)],ByteMem [[2,4],[6,8]])]),([(1,17),(0,18)],TensorMem [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(0,14),(1,17)],ByteMem [[12,14],[16,17]])])]))
 -- [SBitBit 1,SBitBit 2,SBitBit 3,SBitBit 4,SBitBit 5,SBitBit 6,SBitBit 7,SBitBit 8,SBitBit 11,SBitBit 12,SBitBit 13,SBitBit 14,SBitBit 15,SBitBit 16,SBitBit 17,SBitBit 18]
-getSortedBits :: (Ord a) => SortAlg (Bit a) -> SortAlg (Record a) -> TensorStack a -> [Bit a]
-getSortedBits subAlgB subAlgR tensorRaw = acc tensorRaw []
+getSortedBits :: (Ord a) => SortAlg a -> Tensor a -> [a]
+getSortedBits subAlg tensorRaw = acc (fromTensor tensorRaw) []
   where
     acc tensor sortedBits =
       if isNothing tensor'
         then nextBit' : sortedBits
         else acc (fromJust tensor') (nextBit' : sortedBits)
       where
-        (nextBit, tensor') = removeTopBit subAlgB subAlgR tensor
+        (nextBit, tensor') = removeTopBit subAlg tensor
         nextBit' = nextBit
 
 -- | For use in compiling a list of Tensors into a sorted list of Bits.
@@ -51,21 +50,21 @@ getSortedBits subAlgB subAlgR tensorRaw = acc tensorRaw []
 --   >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 --   >>> removeTopBit bubblesort ([(0,5),(1,7)],ByteMem [[1,5],[3,7]])
 --   (7,Just ([(1,3),(0,5)],ByteMem [[1,5],[3]]))
-removeTopBit :: (Ord a) => SortAlg (Bit a) -> SortAlg (Record a) -> (Register a, Memory a) -> (Bit a, Maybe (Tensor a))
-removeTopBit subAlgB subAlgR (register, memory) =
+removeTopBit :: (Ord a) => SortAlg a -> (Register a, Memory a) -> (TopBit a, Maybe (Register a, Memory a))
+removeTopBit subAlg (register, memory) =
   if isNothing memory'
     then (topBit, Nothing)
     else (topBit, tensor)
   where
-    (topBit, memory') = removeBit subAlgB subAlgR memory topAddress
+    (topBit, memory') = removeBit subAlg memory topAddress
     topRecord = last register
     topAddress = snd $ fromRecord topRecord
     tensor = Just tensorRaw
-    tensorRaw = createTensor subAlgR memRefined
+    tensorRaw = fromTensor $ createTensor subAlg memRefined
     memRefined = fromJust memory'
 
-removeBit :: (Ord a) => SortAlg (Bit a) -> SortAlg (Record a) -> Memory a -> Int -> (Bit a, Maybe (Memory a))
-removeBit subAlgB _ (ByteMem bytes) i =
+removeBit :: (Ord a) => SortAlg a -> Memory a -> Int -> (TopBit a, Maybe (Memory a))
+removeBit subAlg (ByteMem bytes) i =
   case length topByte' of
     0 ->
       let bytes' = left ++ right
@@ -77,7 +76,7 @@ removeBit subAlgB _ (ByteMem bytes) i =
        in (topBit, justMem bytes')
     _ ->
       let bytes' = left ++ [topByte''] ++ right
-          topByte'' = subAlgB topByte'
+          topByte'' = subAlg topByte'
        in (topBit, justMem bytes')
   where
     topByte = bytes !! i
@@ -86,18 +85,18 @@ removeBit subAlgB _ (ByteMem bytes) i =
     justMem = Just . ByteMem
     left = take i bytes
     right = drop (i + 1) bytes
-removeBit subAlgB subAlgR (TensorMem tensors) i
+removeBit subAlg (TensorMem tensors) i
   | isNothing topTensor' =
       let tensors' = left ++ right
        in if null tensors'
             then (topBit, Nothing)
             else (topBit, justMem tensors')
   | otherwise =
-      let tensors' = left ++ [fromJust topTensor'] ++ right
+      let tensors' = left ++ [Tensor (fromJust topTensor')] ++ right
        in (topBit, justMem tensors')
   where
     topTensor = tensors !! i
-    (topBit, topTensor') = removeTopBit subAlgB subAlgR topTensor
+    (topBit, topTensor') = removeTopBit subAlg $ fromTensor topTensor
     justMem = Just . TensorMem
     left = take i tensors
     right = drop (i + 1) tensors
