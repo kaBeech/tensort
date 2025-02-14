@@ -32,10 +32,10 @@ import Data.Tensort.Utils.Types
 reduceTensorStacks :: (Ord a) => TensortProps a -> [TensorStack a] -> TensorStack a
 reduceTensorStacks tsProps tensorStacks =
   if length newTensorStacks <= bytesize tsProps
-    then createTensor subAlgR memory
+    then createTensor subAlg memory
     else reduceTensorStacks tsProps newTensorStacks
   where
-    subAlgR = subAlgorithmRecs tsProps
+    subAlg = subAlgorithm tsProps
     memory = TensorMem tensorStacks
     newTensorStacks = reduceTensorStacksSinglePass tsProps tensorStacks
 
@@ -51,7 +51,7 @@ reduceTensorStacks tsProps tensorStacks =
 -- >>> reduceTensorStacksSinglePass (mkTsProps 2 bubblesort) [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(0,14),(1,17)],ByteMem [[12,14],[16,17]]),([(0,3),(1,7)],ByteMem [[1,3],[5,7]]),([(0,4),(1,8)],ByteMem [[2,4],[6,8]])]
 -- [([(0,7),(1,8)],TensorMem [([(0,3),(1,7)],ByteMem [[1,3],[5,7]]),([(0,4),(1,8)],ByteMem [[2,4],[6,8]])]),([(1,17),(0,18)],TensorMem [([(0,13),(1,18)],ByteMem [[11,13],[15,18]]),([(0,14),(1,17)],ByteMem [[12,14],[16,17]])])]
 reduceTensorStacksSinglePass ::
-  (Ord a) => 
+  (Ord a) =>
   TensortProps a ->
   [TensorStack a] ->
   [TensorStack a]
@@ -63,6 +63,6 @@ reduceTensorStacksSinglePass tsProps tensorStacks =
       newTensorStacks
         ++ [newTensorStack]
       where
-        newTensorStack = createTensor subAlgR memory
-        subAlgR = subAlgorithmRecs tsProps
+        newTensorStack = createTensor subAlg memory
+        subAlg = subAlgorithm tsProps
         memory = TensorMem tensorStack
