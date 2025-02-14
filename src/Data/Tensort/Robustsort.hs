@@ -1,5 +1,4 @@
--- | This module provides variations of the Robustsort algorithm using the
---   custom Sortable type for inputs and outputs
+-- | This module provides variations of the Robustsort algorithm
 module Data.Tensort.Robustsort
   ( robustsortP,
     robustsortB,
@@ -30,7 +29,7 @@ import Data.Tensort.Utils.LogNat (getLn, getLnBytesize)
 import Data.Tensort.Utils.MkTsProps (mkTsProps)
 import Data.Tensort.Utils.Types (Bit, SortAlg)
 
--- | Takes a Sortable and returns a sorted Sortable using a Recursive Mundane
+-- | Takes a list and returns a sorted list using a Recursive Mundane
 --   Robustsort algorithm with a Permutationsort adjudicator
 
 -- | ==== __Examples__
@@ -42,7 +41,7 @@ import Data.Tensort.Utils.Types (Bit, SortAlg)
 robustsortRP :: (Ord a) => [Bit a] -> [Bit a]
 robustsortRP = robustsortRCustom robustsortP
 
--- | Takes a Sortable and returns a sorted Sortable using a Basic Mundane
+-- | Takes a list and returns a sorted list using a Basic Mundane
 --   Robustsort algorithm with a Permutationsort adjudicator
 
 -- | ==== __Examples__
@@ -63,7 +62,7 @@ supersortP =
       mundaneSuperStrat
     )
 
--- | Takes a Sortable and returns a sorted Sortable using a Recursive Mundane
+-- | Takes a list and returns a sorted list using a Recursive Mundane
 --   Robustsort algorithm with a Bogosort adjudicator
 
 -- | ==== __Examples__
@@ -75,7 +74,7 @@ supersortP =
 robustsortRB :: (Ord a) => [Bit a] -> [Bit a]
 robustsortRB = robustsortRCustom robustsortB
 
--- | Takes a Sortable and returns a sorted Sortable using a Basic Mundane
+-- | Takes a list and returns a sorted list using a Basic Mundane
 --   Robustsort algorithm with a Bogosort adjudicator
 
 -- | ==== __Examples__
@@ -96,7 +95,7 @@ supersortB =
       mundaneSuperStrat
     )
 
--- | Takes a Sortable and returns a sorted Sortable using a Recursive Magic
+-- | Takes a list and returns a sorted list using a Recursive Magic
 --   Robustsort algorithm
 
 -- | ==== __Examples__
@@ -108,7 +107,7 @@ supersortB =
 robustsortRM :: (Ord a) => [Bit a] -> [Bit a]
 robustsortRM = robustsortRCustom robustsortM
 
--- | Takes a Sortable and returns a sorted Sortable using a Basic Magic
+-- | Takes a list and returns a sorted list using a Basic Magic
 --   Robustsort algorithm
 
 -- | ==== __Examples__
@@ -131,8 +130,8 @@ supersortM =
 
 -- | Used for making recursive Robustsort variants
 --
---   Takes the base SortAlg you want to use and a Sortable and returns a sorted
---   Sortable.
+--   Takes the base SortAlg you want to use and a list and returns a sorted
+--   list.
 --
 --   Uses a Logarithmic bytesize to determine when to stop recursing and use
 --   the base SortAlg to sort the records.
