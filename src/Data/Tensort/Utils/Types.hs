@@ -35,17 +35,20 @@ type TopBit = Bit
 
 --   A Record's TopBit is a copy of the last (i.e. highest) Bit in the Byte or
 --   Tensor that the Record references.
-type Record = (TopBit, Address)
+newtype Record a = Record (TopBit a, Address) deriving (Show, Eq, Ord)
+
+fromRecord :: Record a -> (TopBit a, Address)
+fromRecord (Record (tb, a)) = (tb, a)
 
 -- | A Register is a list of Records allowing for easy access to data in a
 --   Tensor's Memory.
-type Register = [Record]
+type Register a = [Record a]
 
 -- | A Memory contains the data to be sorted, either in the form of Bytes or
 --   Tensors.
-data Memory
-  = ByteMem [Byte]
-  | TensorMem [Tensor]
+data Memory a
+  = ByteMem [Byte a]
+  | TensorMem [Tensor a]
   deriving (Show, Eq, Ord)
 
 -- | A Tensor contains data to be sorted in a structure allowing for
