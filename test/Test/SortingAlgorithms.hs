@@ -38,12 +38,12 @@ import Data.Tensort.Subalgorithms.Supersort
   )
 import Data.Tensort.Tensort (tensort, tensortB4, tensortBL)
 import Data.Tensort.Utils.MkTsProps (mkTsProps)
-import Data.Tensort.Utils.Types (Bit, SortAlg, Sortable)
+import Data.Tensort.Utils.Types (SortAlg)
 
-tensortCustomExample :: Sortable -> Sortable
+tensortCustomExample :: (Ord a) => [a] -> [a]
 tensortCustomExample = tensort (mkTsProps 8 mergesort)
 
-supersortMundaneCustomExample :: Sortable -> Sortable
+supersortMundaneCustomExample :: (Ord a) => [a] -> [a]
 supersortMundaneCustomExample =
   supersort
     ( quicksort,
@@ -52,7 +52,7 @@ supersortMundaneCustomExample =
       mundaneSuperStrat
     )
 
-supersortMagicCustomExample :: Sortable -> Sortable
+supersortMagicCustomExample :: (Ord a) => [a] -> [a]
 supersortMagicCustomExample =
   supersort
     ( bogosort,
@@ -61,17 +61,17 @@ supersortMagicCustomExample =
       magicSuperStrat
     )
 
-robustsortMundaneCustomExample :: Sortable -> Sortable
+robustsortMundaneCustomExample :: (Ord a) => [a] -> [a]
 robustsortMundaneCustomExample =
   tensort
     (mkTsProps 3 supersortMundaneCustomExample)
 
-robustsortMagicCustomExample :: Sortable -> Sortable
+robustsortMagicCustomExample :: (Ord a) => [a] -> [a]
 robustsortMagicCustomExample =
   tensort
     (mkTsProps 3 supersortMagicCustomExample)
 
-sortingAlgorithmsSortable :: [(SortAlg, String)]
+sortingAlgorithmsSortable :: (Ord a) => [(SortAlg a, String)]
 sortingAlgorithmsSortable =
   [ (quicksort, "Quicksort"),
     (mergesort, "Mergesort"),
@@ -91,7 +91,7 @@ sortingAlgorithmsSortable =
     (robustsortRM, "Recursive Magic Robustsort")
   ]
 
-sortingAlgorithmsSortableShort :: [(SortAlg, String)]
+sortingAlgorithmsSortableShort :: (Ord a) => [(SortAlg a, String)]
 sortingAlgorithmsSortableShort =
   [ (bogosort, "Bogosort"),
     (magicsort, "Magicsort"),
@@ -102,7 +102,7 @@ sortingAlgorithmsSortableShort =
     (supersortMagicCustomExample, "Custom Magic Supersort")
   ]
 
-sortingAlgorithmsSortableTiny :: [(SortAlg, String)]
+sortingAlgorithmsSortableTiny :: (Ord a) => (Ord a) => [(SortAlg a, String)]
 sortingAlgorithmsSortableTiny =
   [ (rotationsort, "Rotationsort"),
     (rotationsortReverse, "Reverse Rotationsort"),
@@ -110,7 +110,7 @@ sortingAlgorithmsSortableTiny =
     (rotationsortReverseAmbi, "Reverse Ambidextrous Rotationsort")
   ]
 
-sortingAlgorithmsBits :: [([Bit] -> [Bit], String)]
+sortingAlgorithmsBits :: (Ord a) => [([a] -> [a], String)]
 sortingAlgorithmsBits =
   [ (Data.Tensort.tensort, "Top-level Tensort"),
     ( Data.Robustsort.robustsortP,
