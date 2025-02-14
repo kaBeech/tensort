@@ -115,6 +115,7 @@ library
                       Data.Tensort.Utils.LogNat,
                       Data.Tensort.Utils.MkTsProps,
                       Data.Tensort.Utils.RandomizeList,
+                      Data.Tensort.Utils.SortRecs,
                       Data.Tensort.Utils.Types,
 
     -- Modules included in this library but not exported.
