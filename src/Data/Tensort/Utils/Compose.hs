@@ -12,7 +12,6 @@ import Data.Tensort.Utils.Types
     Byte,
     Memory (..),
     Record (..),
-    Register,
     SortAlg,
     Tensor (..),
     TensortProps (..),
@@ -114,7 +113,7 @@ getRegisterFromTensors tensors = acc tensors []
       where
         record = (topBit, i)
         i = length records
-        topBit = getTopBitFromTensorStack (fromTensor tensor)
+        topBit = getTopBitFromTensorStack tensor
 
 -- | Get the top Bit from a TensorStack.
 
@@ -127,9 +126,9 @@ getRegisterFromTensors tensors = acc tensors []
 -- | ==== __Examples__
 -- >>> getTopBitFromTensorStack ([Record (0 :: Int,28),Record (1 :: Int,38)],TensorMem [Tensor ([Record (0 :: Int,27),Record (1 :: Int,28)],TensorMem [Tensor ([Record (0 :: Int,23),Record (1 :: Int,27)],ByteMem [[21,23] :: [Int],[25,27] :: [Int]]),Tensor ([Record (0 :: Int,24),Record (1 :: Int,28)],ByteMem [[22,24] :: [Int],[26,28] :: [Int]])]),Tensor ([Record (1 :: Int,37),Record (0 :: Int,38)],TensorMem [Tensor ([Record (0 :: Int,33),Record (1 :: Int,38)],ByteMem [[31,33] :: [Int],[35,38] :: [Int]]),Tensor ([Record (0 :: Int,34),Record (1 :: Int,37)],ByteMem [[32,14] :: [Int],[36,37] :: [Int]])])])
 -- 1
-getTopBitFromTensorStack :: (Register a, Memory a) -> Bit a
+getTopBitFromTensorStack :: Tensor a -> Bit a
 getTopBitFromTensorStack tensor =
-  let register = fst tensor
+  let register = fst $ fromTensor tensor
       topRecord = last register
       topBit = fst (fromRecord topRecord)
    in topBit
