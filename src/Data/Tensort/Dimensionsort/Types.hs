@@ -26,6 +26,14 @@ data Hyperverse a
   | Megaverse [Hyperverse a]
   deriving (Show, Eq, Ord)
 
+fromMegaverse :: Hyperverse a -> [Hyperverse a]
+fromMegaverse (Megaverse m) = m
+fromMegaverse _ = error "fromMegaverse: not a Megaverse"
+
+fromUniverse :: Hyperverse a -> [Element a]
+fromUniverse (Universe u) = u
+fromUniverse _ = error "fromUniverse: not a Universe"
+
 -- | A TopElement contains a copy of the last (i.e. highest) Element in a
 --   Hyperverse
 type TopElement a = Element a
