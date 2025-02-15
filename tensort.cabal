@@ -102,6 +102,7 @@ library
                       Data.Robustsort,
                       Data.Tensort.Tensort,
                       Data.Tensort.Robustsort,
+                      Data.Tensort.Dimensionsort.Types,
                       Data.Tensort.Subalgorithms.Bubblesort,
                       Data.Tensort.Subalgorithms.Exchangesort,
                       Data.Tensort.Subalgorithms.Rotationsort,
