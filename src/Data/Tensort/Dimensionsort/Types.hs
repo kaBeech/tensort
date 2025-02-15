@@ -5,7 +5,7 @@ module Data.Tensort.Dimensionsort.Types where
 
 -- | DimensionsortProps contains the Versesize and SubAlgorithm used in a
 --   Dimensionsort algorithm.
-data DimensionsortProps a = DiensionsortProps
+data DimensionsortProps a = DimensionsortProps
   { versesize :: Int,
     subAlgorithm :: SortAlg a
   }
