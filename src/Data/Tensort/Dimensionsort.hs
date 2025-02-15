@@ -14,6 +14,7 @@ import Data.Tensort.Dimensionsort.Types
   ( DimensionsortProps (..),
     Hyperverse (..),
     fromUniverse,
+    sortAlgToDimensional,
   )
 import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 import Data.Tensort.Utils.LogNat (getLnLength)
@@ -54,10 +55,7 @@ dimensionsort tsProps xs = Universe $ getSortedElems subAlg megaverse
 -- >>> dimensionsortB4 ([(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)] :: [(Int, Int)])
 -- [(0,15),(1,16),(2,4),(3,8),(4,42),(5,23)]
 dimensionsortB4 :: (Ord a) => Hyperverse a -> Hyperverse a
-dimensionsortB4 = dimensionsort $ mkDsProps 4 $ convertSortAlg bubblesort
-
-convertSortAlg :: (Ord a) => ([a] -> [a]) -> (Hyperverse a -> Hyperverse a)
-convertSortAlg alg = Universe . alg . fromUniverse
+dimensionsortB4 = dimensionsort $ mkDsProps 4 $ sortAlgToDimensional bubblesort
 
 -- | Sort a list using a Standard Dimensionsort algorithm with a custom
 --   Versesize
@@ -69,7 +67,7 @@ convertSortAlg alg = Universe . alg . fromUniverse
 -- >>> dimensionortBN 3 ([(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)] :: [(Int, Int)])
 -- [(0,15),(1,16),(2,4),(3,8),(4,42),(5,23)]
 dimensionortBN :: (Ord a) => Int -> Hyperverse a -> Hyperverse a
-dimensionortBN n = dimensionsort $ mkDsProps n $ convertSortAlg bubblesort
+dimensionortBN n = dimensionsort $ mkDsProps n $ sortAlgToDimensional bubblesort
 
 -- | Sort a list using a Standard Logarithmic Dimensionsort algorithm
 --
@@ -85,4 +83,4 @@ dimensionortBN n = dimensionsort $ mkDsProps n $ convertSortAlg bubblesort
 dimensionsortBL :: (Ord a) => Hyperverse a -> Hyperverse a
 dimensionsortBL xs = dimensionsort tsProps xs
   where
-    tsProps = mkDsProps (getLnLength (fromUniverse xs)) $ convertSortAlg bubblesort
+    tsProps = mkDsProps (getLnLength (fromUniverse xs)) $ sortAlgToDimensional bubblesort

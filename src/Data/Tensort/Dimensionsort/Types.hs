@@ -41,3 +41,11 @@ type TopElement a = Element a
 -- | A sorting algorithm is a function that takes a list of ordered elements
 --   and returns that list sorted.
 type SortAlg a = Hyperverse a -> Hyperverse a
+
+-- | Converts a regular SortAlg for use in Dimensionsort
+sortAlgToDimensional :: (Ord a) => ([a] -> [a]) -> (Hyperverse a -> Hyperverse a)
+sortAlgToDimensional alg = Universe . alg . fromUniverse
+
+-- | Converts a Dimensionsort SortAlg to a regular SortAlg
+sortAlgFromDimensional :: (Ord a) => (Hyperverse a -> Hyperverse a) -> ([a] -> [a])
+sortAlgFromDimensional alg = fromUniverse . alg . Universe
