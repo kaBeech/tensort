@@ -8,7 +8,7 @@ module Data.Tensort.Dimensionsort
 where
 
 import Data.Tensort.Dimensionsort.Compose (createInitialMegaverses)
-import Data.Tensort.Dimensionsort.Convert (condenseHyperverses, condenseMegaverse)
+import Data.Tensort.Dimensionsort.Condense (condenseHyperverses, condenseMegaverse)
 import Data.Tensort.Dimensionsort.MkDsProps (mkDsProps)
 -- import Data.Tensort.Dimensionsort.Reduce (combineMegaverses)
 import Data.Tensort.Dimensionsort.Render (getSortedElems)

@@ -1,4 +1,4 @@
-module Data.Tensort.Dimensionsort.Convert (condenseHyperverses, condenseMegaverse) where
+module Data.Tensort.Dimensionsort.Condense (condenseHyperverses, condenseMegaverse) where
 
 import Data.Tensort.Dimensionsort.Types
   ( DimensionsortProps (..),
@@ -16,8 +16,8 @@ condenseMegaverse dsProps (Megaverse megaverse) =
     then head megaverse
     else condenseMegaverse dsProps $ condenseHyperverses dsProps $ Megaverse megaverse
 
--- | Convert a list of Elems to a list of Universes of given versesize, sorting
---   each Universe with the given subalgorithm.
+-- | Condense a Hyperverse to one of one higher dimension with the same
+--   versesize, sorting each smaller Hyperverse with the given subalgorithm.
 
 -- | ==== __Examples__
 --   >>> import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
