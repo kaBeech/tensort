@@ -118,6 +118,8 @@ library
                       Data.Tensort.Utils.RandomizeList,
                       Data.Tensort.Utils.SortRecs,
                       Data.Tensort.Utils.Types,
+                      -- Data.Tensort.Dimensionsort.Compose,
+                      Data.Tensort.Dimensionsort.Convert,
                       Data.Tensort.Dimensionsort.MkDsProps,
                       Data.Tensort.Dimensionsort.Types,
 
