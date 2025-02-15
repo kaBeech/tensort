@@ -16,7 +16,7 @@ import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 -- import Data.Tensort.Dimensionsort.Compose (createInitialMegaverses)
 -- import Data.Tensort.Dimensionsort.Convert (rawElemsToUniverses)
 import Data.Tensort.Utils.LogNat (getLnLength)
--- import Data.Tensort.Dimensionsort.MkDsProps (mkDsProps)
+import Data.Tensort.Dimensionsort.MkDsProps (mkDsProps)
 import Data.Tensort.Utils.RandomizeList (randomizeList)
 
 -- import Data.Tensort.Dimensionsort.Reduce (combineMegaverses)

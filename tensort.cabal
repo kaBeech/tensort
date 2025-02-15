@@ -103,7 +103,6 @@ library
                       Data.Tensort.Tensort,
                       Data.Tensort.Robustsort,
                       Data.Tensort.Dimensionsort,
-                      Data.Tensort.Dimensionsort.Types,
                       Data.Tensort.Subalgorithms.Bubblesort,
                       Data.Tensort.Subalgorithms.Exchangesort,
                       Data.Tensort.Subalgorithms.Rotationsort,
@@ -119,6 +118,8 @@ library
                       Data.Tensort.Utils.RandomizeList,
                       Data.Tensort.Utils.SortRecs,
                       Data.Tensort.Utils.Types,
+                      Data.Tensort.Dimensionsort.MkDsProps,
+                      Data.Tensort.Dimensionsort.Types,
 
     -- Modules included in this library but not exported.
     other-modules:    Data.Tensort.Utils.Split,
