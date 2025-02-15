@@ -1,5 +1,5 @@
 -- | This module provides the mkDsProps function for creating DimensionsortProps.
-module Data.Tensort.Dimensionsort.MkTsProps (mkDsProps) where
+module Data.Tensort.Dimensionsort.MkDsProps (mkDsProps) where
 
 import Data.Tensort.Dimensionsort.Types (DimensionsortProps (..), SortAlg)
 
