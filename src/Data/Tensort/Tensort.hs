@@ -10,7 +10,7 @@ where
 import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 import Data.Tensort.Utils.Compose (createInitialTensors)
 import Data.Tensort.Utils.Convert (rawBitsToBytes)
-import Data.Tensort.Utils.LogNat (getLnBytesize)
+import Data.Tensort.Utils.LogNat (getLnLength)
 import Data.Tensort.Utils.MkTsProps (mkTsProps)
 import Data.Tensort.Utils.RandomizeList (randomizeList)
 import Data.Tensort.Utils.Reduce (reduceTensorStacks)
@@ -83,4 +83,4 @@ tensortBN n = tensort $ mkTsProps n bubblesort
 tensortBL :: (Ord a) => [Bit a] -> [Bit a]
 tensortBL xs = tensort tsProps xs
   where
-    tsProps = mkTsProps (getLnBytesize xs) bubblesort
+    tsProps = mkTsProps (getLnLength xs) bubblesort

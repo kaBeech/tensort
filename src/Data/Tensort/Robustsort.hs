@@ -25,7 +25,7 @@ import Data.Tensort.Subalgorithms.Supersort
     supersort,
   )
 import Data.Tensort.Tensort (tensort)
-import Data.Tensort.Utils.LogNat (getLn, getLnBytesize)
+import Data.Tensort.Utils.LogNat (getLn, getLnLength)
 import Data.Tensort.Utils.MkTsProps (mkTsProps)
 import Data.Tensort.Utils.Types (Bit, SortAlg)
 
@@ -155,7 +155,7 @@ robustsortRCustom :: (Ord a) => SortAlg (Bit a) -> [Bit a] -> [Bit a]
 robustsortRCustom baseSortAlg xs = tensort tsProps xs
   where
     tsProps = mkTsProps bytesize subAlg
-    bytesize = getLnBytesize xs
+    bytesize = getLnLength xs
     subAlg = robustsortRecursive bytesize baseSortAlg
 
 -- | Used to create SubAlgorithms for use in recursive Robustsort variants. See
