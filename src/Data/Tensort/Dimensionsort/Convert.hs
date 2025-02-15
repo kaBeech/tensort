@@ -6,7 +6,7 @@ import Data.Tensort.Dimensionsort.Types
   )
 import Data.Tensort.Utils.Split (splitEvery)
 
-condenseMegaverse :: (Eq a, Show a, Ord a) => DimensionsortProps a -> Hyperverse a -> Hyperverse a
+condenseMegaverse :: (Ord a) => DimensionsortProps a -> Hyperverse a -> Hyperverse a
 condenseMegaverse dsProps (Universe megaverse) =
   if length megaverse == 1
     then Universe megaverse
