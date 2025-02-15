@@ -7,20 +7,20 @@ module Data.Tensort.Dimensionsort
   )
 where
 
--- import Data.Tensort.Dimensionsort.Compose (createInitialMegaverses)
-import Data.Tensort.Dimensionsort.Convert (rawElemsToUniverses)
+import Data.Tensort.Dimensionsort.Compose (createInitialMegaverses)
+import Data.Tensort.Dimensionsort.Convert (condenseHyperverses, condenseMegaverse)
 import Data.Tensort.Dimensionsort.MkDsProps (mkDsProps)
+-- import Data.Tensort.Dimensionsort.Reduce (combineMegaverses)
+import Data.Tensort.Dimensionsort.Render (getSortedElems)
 import Data.Tensort.Dimensionsort.Types
   ( DimensionsortProps (..),
     Element,
     Hyperverse (..),
+    fromUniverse,
   )
 import Data.Tensort.Subalgorithms.Bubblesort (bubblesort)
 import Data.Tensort.Utils.LogNat (getLnLength)
 import Data.Tensort.Utils.RandomizeList (randomizeList)
-
--- import Data.Tensort.Dimensionsort.Reduce (combineMegaverses)
--- import Data.Tensort.Dimensionsort.Render (getSortedElems)
 
 -- | Sort a list using a custom Dimensionsort algorithm
 --
@@ -41,13 +41,11 @@ dimensionsort _ (Universe [x]) = Universe [x]
 dimensionsort tsProps (Universe [x, y]) = subAlgorithm tsProps uni
   where
     uni = Universe [x, y]
-dimensionsort tsProps xs = getSortedElems subAlg topMegaverse
+dimensionsort tsProps xs = Universe $ getSortedElems subAlg megaverse
   where
     subAlg = subAlgorithm tsProps
-    topMegaverse = combineMegaverses tsProps megaverses
-    megaverses = createInitialMegaverses tsProps universes
-    universes = rawElemsToUniverses tsProps elems
-    elems = randomizeList 143 xs
+    megaverse = condenseMegaverse tsProps (Universe elems)
+    elems = randomizeList 143 (fromUniverse xs)
 
 -- | Sort a list using a Standard Dimensionsort algorithm with a 4-Element
 --   Versesize
@@ -58,8 +56,11 @@ dimensionsort tsProps xs = getSortedElems subAlg topMegaverse
 --
 -- >>> dimensionsortB4 ([(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)] :: [(Int, Int)])
 -- [(0,15),(1,16),(2,4),(3,8),(4,42),(5,23)]
-dimensionsortB4 :: (Ord a) => [Element a] -> [Element a]
-dimensionsortB4 = dimensionsort $ mkDsProps 4 bubblesort
+dimensionsortB4 :: (Ord a) => Hyperverse a -> Hyperverse a
+dimensionsortB4 = dimensionsort $ mkDsProps 4 $ convertSortAlg bubblesort
+
+convertSortAlg :: (Ord a) => ([a] -> [a]) -> (Hyperverse a -> Hyperverse a)
+convertSortAlg alg = Universe . alg . fromUniverse
 
 -- | Sort a list using a Standard Dimensionsort algorithm with a custom
 --   Versesize
@@ -70,8 +71,8 @@ dimensionsortB4 = dimensionsort $ mkDsProps 4 bubblesort
 --
 -- >>> dimensionortBN 3 ([(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)] :: [(Int, Int)])
 -- [(0,15),(1,16),(2,4),(3,8),(4,42),(5,23)]
-dimensionortBN :: (Ord a) => Int -> [Element a] -> [Element a]
-dimensionortBN n = dimensionsort $ mkDsProps n bubblesort
+dimensionortBN :: (Ord a) => Int -> Hyperverse a -> Hyperverse a
+dimensionortBN n = dimensionsort $ mkDsProps n $ convertSortAlg bubblesort
 
 -- | Sort a list using a Standard Logarithmic Dimensionsort algorithm
 --
@@ -84,7 +85,7 @@ dimensionortBN n = dimensionsort $ mkDsProps n bubblesort
 --
 -- >>> dimensionsortBL ([(1, 16), (5, 23), (2, 4) ,(3, 8), (0, 15) , (4, 42)] :: [(Int, Int)])
 -- [(0,15),(1,16),(2,4),(3,8),(4,42),(5,23)]
-dimensionsortBL :: (Ord a) => [Element a] -> [Element a]
+dimensionsortBL :: (Ord a) => Hyperverse a -> Hyperverse a
 dimensionsortBL xs = dimensionsort tsProps xs
   where
-    tsProps = mkDsProps (getLnLength xs) bubblesort
+    tsProps = mkDsProps (getLnLength (fromUniverse xs)) $ convertSortAlg bubblesort
