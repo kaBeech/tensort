@@ -1,4 +1,3 @@
---   TODO: See if we can clean up the type conversion here.
 module Data.Tensort.Utils.Convert (rawBitsToBytes) where
 
 import Data.Tensort.Utils.Split (splitEvery)
