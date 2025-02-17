@@ -171,6 +171,7 @@ processing tailored to suit the current goals while preserving time efficiency.
 
 -------
 
+<p>
 <i>
   <a href="https://github.com/fNBU" rel="noopener noreferrer" target="_blank">
   Someone very smart</a> pointed out to me that, while what I'm calling
@@ -178,30 +179,39 @@ processing tailored to suit the current goals while preserving time efficiency.
     close), I don't need to go all the way to tensors to satisfy this use case
     and could just call them 'multidimensional arrays'.
 </i>
+</p>
 
+<p>
 <i>
   While I am sympathetic to this point, I like the 'tensor' phrasing for these
     reasons:
 </i>
+</p>
 
+<p>
 <i>
   1. The average computer scientist is at least as likely to get distracted
        by the technical definition of 'array' as by that of 'tensor'
        (especially here where the data structures in question could hold
        multiple data types).
 </i>
+</p>
 
+<p>
 <i>
   2. 'Tensort' rolls off the tongue more neatly than
        'Multidimensionalarraysort'.
 </i>
-
+</p>
+ 
+<p>
 <i>
   Looking back, 'Dimensionsort' may have been an even more fitting name, but
     I came up with that months after this project was published, so here we are
     =)
 </i>
-
+</p>
+ 
 -------
 
 ### Why Haskell?
