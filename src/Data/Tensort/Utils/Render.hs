@@ -74,9 +74,9 @@ removeBit subAlg (ByteMem bytes) i =
           topByte'' = subAlg topByte'
        in (topBit, justMem bytes')
   where
+    topByte' = init topByte
     topByte = bytes !! i
     topBit = last topByte
-    topByte' = init topByte
     justMem = Just . ByteMem
     left = take i bytes
     right = drop (i + 1) bytes
